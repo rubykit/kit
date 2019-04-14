@@ -13,6 +13,9 @@
 .env.local
 .env.*.local
 
+# Temporarily ignore test directory
+/test/
+
 ################################################################################
 #
 # Default Rails .gitignore
