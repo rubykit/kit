@@ -20,5 +20,6 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "devise", "~> 4.2"
   spec.add_dependency "doorkeeper", "~> 5.0", ">= 5.0.2"
+  spec.add_dependency "omniauth", "~> 1.6", ">= 1.6.1"
 
 end

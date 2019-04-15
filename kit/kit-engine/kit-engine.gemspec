@@ -18,9 +18,13 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "rails", "~> 5.2.3"
 
+  spec.add_dependency "multiverse", "~> 0.2.1"
+
   spec.add_dependency "pg", "~> 1.1", ">= 1.1.4"
   spec.add_dependency "activerecord-nulldb-adapter", "~> 0.3.9"
   spec.add_dependency "paranoia", "~> 2.4", ">= 2.4.1"
+
+  spec.add_dependency "dotenv-rails", "~> 2.1", ">= 2.1.1"
 
   spec.add_dependency "interactor"
   spec.add_dependency "contracts", "~> 0.16.0"
@@ -33,6 +37,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency "activeadmin_tables"
 
   spec.add_dependency "cells", "~> 4.1", ">= 4.1.7"
+
+  spec.add_development_dependency "annotate"
 
   #spec.add_dependency 'paranoia'
 
