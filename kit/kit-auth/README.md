@@ -21,6 +21,21 @@ Or install it yourself as:
 $ gem install kit-auth
 ```
 
+## Local development
+Note: `schema.rb` is generated in the dummy app.
+
+```
+RAILS_ENV=development DB=development_write rails db:create
+RAILS_ENV=development DB=development_write rails db:migrate
+```
+
+## Testing
+```
+RAILS_ENV=test DB=test_write rails db:create
+RAILS_ENV=test DB=test_write rails db:migrate
+```
+
+
 ## Contributing
 Contribution directions go here.
 
