@@ -10,6 +10,7 @@ gem 'puma', '~> 3.11'
 #gem 'bootsnap', '>= 1.1.0', require: false
 
 gem 'kit-auth', path: '../../kit/kit-auth' # DEV MODE
+gem 'doorkeeper', require: 'doorkeeper' # DEV MODE
 
 gem 'interactor', path: '../../gems/interactor' # DEV MODE
 gem 'activeadmin_tables', path: '../../gems/activeadmin_tables' # DEV MODE

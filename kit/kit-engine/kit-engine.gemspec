@@ -27,8 +27,10 @@ Gem::Specification.new do |spec|
   spec.add_dependency "dotenv-rails", "~> 2.1", ">= 2.1.1"
 
   spec.add_dependency "interactor"
-  spec.add_dependency "contracts", "~> 0.16.0"
   spec.add_dependency "rubocop", "~> 0.42.0"
+
+  spec.add_dependency "contracts", "~> 0.16.0"
+  spec.add_dependency "dry-validation", ">= 1.2.1"
 
   spec.add_dependency "fast_jsonapi", "~> 1.5"
 

@@ -1,0 +1,120 @@
+  [1m[35m (1129.4ms)[0m  [1m[35mCREATE DATABASE "elearning_development" ENCODING = 'utf8'[0m
+  ↳ bin/rails:14
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE DATABASE "elearning_development" ENCODING = 'utf8'[0m
+  ↳ bin/rails:14
+  [1m[35m (0.6ms)[0m  [1m[35mCREATE DATABASE "elearning_development" ENCODING = 'utf8'[0m
+  ↳ bin/rails:14
+  [1m[35m (0.7ms)[0m  [1m[35mCREATE DATABASE "elearning_development" ENCODING = 'utf8'[0m
+  ↳ bin/rails:14
+  [1m[35m (14.5ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY)[0m
+  ↳ bin/rails:14
+  [1m[35m (2.3ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  ↳ bin/rails:14
+  [1m[35m (0.6ms)[0m  [1m[34mSELECT pg_try_advisory_lock(2303487893571204270)[0m
+  ↳ bin/rails:14
+  [1m[35m (1.9ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  ↳ bin/rails:14
+Migrating to CreateUsers (20190415065010)
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_advisory_unlock(2303487893571204270)[0m
+  ↳ bin/rails:14
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_try_advisory_lock(2303487893571204270)[0m
+  ↳ bin/rails:14
+  [1m[35m (1.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  ↳ bin/rails:14
+Migrating to CreateUsers (20190415065010)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  ↳ bin/rails:14
+  [1m[35m (13.3ms)[0m  [1m[35mCREATE TABLE "users" ("id" bigserial primary key, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL, "deleted_at" timestamp DEFAULT NULL, "email" character varying NOT NULL)[0m
+  ↳ /Users/nathan/elearning/code/kit/kit-auth/db/migrate/20190415065010_create_users.rb:6
+  [1m[35m (1.2ms)[0m  [1m[35mCREATE  INDEX  "index_users_on_email" ON "users"  ("email")[0m
+  ↳ /Users/nathan/elearning/code/kit/kit-auth/db/migrate/20190415065010_create_users.rb:13
+  [1m[35m (1.9ms)[0m  [1m[35mCREATE  INDEX  "index_users_on_deleted_at" ON "users"  ("deleted_at")[0m
+  ↳ /Users/nathan/elearning/code/kit/kit-auth/db/migrate/20190415065010_create_users.rb:14
+  [1m[35m (1.3ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_email_and_deleted_at" ON "users"  ("email", "deleted_at") WHERE deleted_at IS NULL[0m
+  ↳ /Users/nathan/elearning/code/kit/kit-auth/db/migrate/20190415065010_create_users.rb:15
+  [1m[36mActiveRecord::SchemaMigration Create (0.9ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20190415065010"]]
+  ↳ bin/rails:14
+  [1m[35m (1.8ms)[0m  [1m[35mCOMMIT[0m
+  ↳ bin/rails:14
+Migrating to DeviseAddAuthenticatableToUsers (20190415065029)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  ↳ bin/rails:14
+  [1m[35m (6.0ms)[0m  [1m[35mALTER TABLE "users" ADD "encrypted_password" character varying DEFAULT '' NOT NULL[0m
+  ↳ /Users/nathan/elearning/code/kit/kit-auth/db/migrate/20190415065029_devise_add_authenticatable_to_users.rb:7
+  [1m[36mActiveRecord::SchemaMigration Create (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20190415065029"]]
+  ↳ bin/rails:14
+  [1m[35m (11.4ms)[0m  [1m[35mCOMMIT[0m
+  ↳ bin/rails:14
+Migrating to DeviseAddRecoverableToUsers (20190415065031)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ bin/rails:14
+  [1m[35m (0.3ms)[0m  [1m[35mALTER TABLE "users" ADD "reset_password_token" character varying[0m
+  ↳ /Users/nathan/elearning/code/kit/kit-auth/db/migrate/20190415065031_devise_add_recoverable_to_users.rb:7
+  [1m[35m (0.3ms)[0m  [1m[35mALTER TABLE "users" ADD "reset_password_sent_at" timestamp[0m
+  ↳ /Users/nathan/elearning/code/kit/kit-auth/db/migrate/20190415065031_devise_add_recoverable_to_users.rb:8
+  [1m[35m (41.2ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_reset_password_token" ON "users"  ("reset_password_token")[0m
+  ↳ /Users/nathan/elearning/code/kit/kit-auth/db/migrate/20190415065031_devise_add_recoverable_to_users.rb:11
+  [1m[36mActiveRecord::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20190415065031"]]
+  ↳ bin/rails:14
+  [1m[35m (2.3ms)[0m  [1m[35mCOMMIT[0m
+  ↳ bin/rails:14
+Migrating to DeviseAddRememberableToUsers (20190415065042)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  ↳ bin/rails:14
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "users" ADD "remember_created_at" timestamp[0m
+  ↳ /Users/nathan/elearning/code/kit/kit-auth/db/migrate/20190415065042_devise_add_rememberable_to_users.rb:7
+  [1m[36mActiveRecord::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20190415065042"]]
+  ↳ bin/rails:14
+  [1m[35m (40.7ms)[0m  [1m[35mCOMMIT[0m
+  ↳ bin/rails:14
+Migrating to DeviseAddTrackableToUsers (20190415065078)
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_advisory_unlock(2303487893571204270)[0m
+  ↳ bin/rails:14
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_try_advisory_lock(2303487893571204270)[0m
+  ↳ bin/rails:14
+  [1m[35m (9.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  ↳ bin/rails:14
+Migrating to DeviseAddTrackableToUsers (20190415065078)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ bin/rails:14
+  [1m[36mActiveRecord::SchemaMigration Create (0.6ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20190415065078"]]
+  ↳ bin/rails:14
+  [1m[35m (2.3ms)[0m  [1m[35mCOMMIT[0m
+  ↳ bin/rails:14
+Migrating to DeviseAddConfirmableToUsers (20190415065124)
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT pg_advisory_unlock(2303487893571204270)[0m
+  ↳ bin/rails:14
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_try_advisory_lock(2303487893571204270)[0m
+  ↳ bin/rails:14
+  [1m[35m (2.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  ↳ bin/rails:14
+Migrating to DeviseAddConfirmableToUsers (20190415065124)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ bin/rails:14
+  [1m[36mActiveRecord::SchemaMigration Create (0.9ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20190415065124"]]
+  ↳ bin/rails:14
+  [1m[35m (2.4ms)[0m  [1m[35mCOMMIT[0m
+  ↳ bin/rails:14
+Migrating to DeviseAddLockableToUsers (20190415065168)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ bin/rails:14
+  [1m[36mActiveRecord::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20190415065168"]]
+  ↳ bin/rails:14
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+  ↳ bin/rails:14
+  [1m[36mActiveRecord::InternalMetadata Load (3.7ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  ↳ bin/rails:14
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  ↳ bin/rails:14
+  [1m[36mActiveRecord::InternalMetadata Create (0.9ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "key"[0m  [["key", "environment"], ["value", "development"], ["created_at", "2019-04-15 08:22:47.067720"], ["updated_at", "2019-04-15 08:22:47.067720"]]
+  ↳ bin/rails:14
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+  ↳ bin/rails:14
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_advisory_unlock(2303487893571204270)[0m
+  ↳ bin/rails:14
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  ↳ bin/rails:14
+  [1m[35m (2.9ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  ↳ bin/rails:14
+  [1m[35m (2.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  ↳ bin/rails:14

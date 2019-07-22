@@ -17,23 +17,36 @@ gemspec
 gem 'dotenv-rails', require: 'dotenv/rails-now'
 
 gem 'paranoia', require: 'paranoia'
+gem 'doorkeeper', require: 'doorkeeper'
 
 gem 'kit-engine', path: '../kit-engine' # DEV MODE
+gem 'contracts', require: 'contracts' # DEV MODE
 
 gem 'interactor', path: '../../gems/interactor' # DEV MODE
 gem 'activeadmin_tables', path: '../../gems/activeadmin_tables' # DEV MODE
+
 
 group :development do
   gem 'annotate', '~> 2.7', '>= 2.7.4'
 end
 
 group :development, :test do
-  gem 'better_errors'
   gem 'awesome_print'
+  gem 'colorize'
+
+  gem 'better_errors'
 
   gem 'pry'
   gem 'pry-stack_explorer'
   gem 'pry-byebug'
+end
 
-  gem 'colorize'
+group :development, :test do
+  gem 'factory_bot_rails'
+  gem 'faker'
+  gem 'rspec-rails'
+end
+
+group :test do
+  gem 'database_cleaner'
 end
