@@ -1,6 +1,8 @@
 require "ostruct"
 require "interactor/railtie"
 
+require "organizer"
+
 module Interactor
   extend ActiveSupport::Concern
 

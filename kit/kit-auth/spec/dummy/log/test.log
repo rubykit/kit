@@ -499,3 +499,707 @@ FOREIGN KEY ("user_id")
   [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
   [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
   [1m[35m (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[35m (0.7ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (4.3ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (5.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (11.0ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (1.5ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (155.7ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (0.9ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.1ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.0ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (5.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (1.9ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (1.1ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (183.6ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (0.6ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.9ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (2.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (4.8ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (1.1ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (177.9ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (0.8ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.0ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (7.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (2.3ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (1.2ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (98.6ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (0.8ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (6.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.0ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (1.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (8.2ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (1.9ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (80.8ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (0.7ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (6.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.9ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (1.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (1.8ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (0.9ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (249.0ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (0.8ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (6.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.5ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (3.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (6.3ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (1.1ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (368.8ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (1.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.9ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (6.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.0ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (2.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (1.8ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (0.9ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (128.3ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (41.7ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.7ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (5.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.0ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (8.2ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (1.0ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (81.5ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (0.9ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (6.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.9ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (35.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (2.4ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (1.4ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (287.1ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (1.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (5.8ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.9ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (22.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (7.3ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (1.9ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (164.4ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (1.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (10.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.0ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (2.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (2.3ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (1.3ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (323.0ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (0.8ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (8.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.0ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (1.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (4.4ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (1.1ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (73.6ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (0.7ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (6.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.0ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (1.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (2.1ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (1.1ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (87.4ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (41.8ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.8ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (6.8ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.9ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (1.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (2.1ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (1.0ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (158.0ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (0.7ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (6.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.3ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (2.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (2.2ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (1.1ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (81.1ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (0.7ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (6.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (2.1ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (7.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (6.6ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (1.3ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (106.8ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (0.8ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (6.9ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.1ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (7.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (3.0ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (1.1ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (80.9ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (0.7ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (6.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.3ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (7.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (4.2ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (1.1ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (79.6ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (0.8ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (6.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.2ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (9.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (2.3ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (1.1ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (114.4ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (1.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.0ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (5.9ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.9ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (4.2ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (1.0ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (138.4ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (0.7ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (5.8ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.1ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (30.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (2.0ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (1.3ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (83.9ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (0.7ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (6.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.1ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (2.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (5.1ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (1.2ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (208.0ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (0.7ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (7.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.9ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (2.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (2.1ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (1.0ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (77.4ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (0.7ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (6.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.9ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (5.5ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (1.0ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (298.6ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (0.7ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (6.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.2ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (44.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (2.5ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (1.3ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (165.3ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (0.7ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (5.8ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.1ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (2.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (4.9ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (1.2ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (158.0ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (0.8ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (5.9ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.9ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (2.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (1.8ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (1.2ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (231.9ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (0.9ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (6.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.9ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (41.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (5.4ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (1.8ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (147.1ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (0.7ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (7.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.1ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (2.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (2.1ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (1.2ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (82.2ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (0.8ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (5.9ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.0ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (2.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (2.5ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (1.2ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (84.9ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (0.9ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (6.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.1ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (2.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (1.9ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (1.1ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (251.2ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (0.7ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.7ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (6.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.8ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (1.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (8.3ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (0.9ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (156.4ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (0.7ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (6.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mKit::Auth::Models::Write::User Create (125.8ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "email", "hashed_secret") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["created_at", "2019-07-23 14:11:00.596477"], ["updated_at", "2019-07-23 14:11:00.596477"], ["email", "email@gmail.com"], ["hashed_secret", "$2a$12$Jer88eRVxLiXLvNzUQtQYetkPSzrwSmUXpWKvgAuUkUnSUYt7LJrW"]]
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.2ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (3.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (1.8ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (1.0ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (173.9ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (0.7ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (6.8ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mKit::Auth::Models::Write::User Create (1.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "email", "hashed_secret") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["created_at", "2019-07-23 14:15:21.954473"], ["updated_at", "2019-07-23 14:15:21.954473"], ["email", "email@gmail.com"], ["hashed_secret", "$2a$12$E/fNAeBsNfbhV.a5BcbzhuzWjQEZZ.qUi05WRyj2Dm/VhmkHujUDG"]]
+  [1m[35m (40.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.9ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (2.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (4.7ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (0.9ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (171.9ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (0.8ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (6.8ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mKit::Auth::Models::Write::User Create (0.9ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "email", "hashed_secret") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["created_at", "2019-07-23 14:16:07.382812"], ["updated_at", "2019-07-23 14:16:07.382812"], ["email", "email@gmail.com"], ["hashed_secret", "$2a$12$9eyD8AGjJ4vOs1mof/FRQuk4fUy9CrI8p28wcu5knJ.MixoPy71oS"]]
+  [1m[35m (24.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.2ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (2.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (2.2ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (1.5ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (88.8ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (0.9ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (6.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mKit::Auth::Models::Write::User Create (0.9ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "email", "hashed_secret") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["created_at", "2019-07-23 14:16:40.372253"], ["updated_at", "2019-07-23 14:16:40.372253"], ["email", "email@gmail.com"], ["hashed_secret", "$2a$12$/PJPvhDpqgtMovei9N7bbOv5nBXrnzXhQnYeA4CGzgIjCdbXtDId2"]]
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.2ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (8.2ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (1.1ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (86.4ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (1.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (6.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mKit::Auth::Models::Write::User Create (0.9ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "email", "hashed_secret") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["created_at", "2019-07-23 14:18:08.411025"], ["updated_at", "2019-07-23 14:18:08.411025"], ["email", "email@gmail.com"], ["hashed_secret", "$2a$12$FzEXKsKy3tkK3dCFnnCt/ucgC7Dxpb1qfNounlE2tXWNrhy42EBjq"]]
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.9ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (2.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (1.9ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (1.0ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (97.9ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (0.9ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (6.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mKit::Auth::Models::Write::User Create (0.9ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "email", "hashed_secret") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["created_at", "2019-07-23 14:19:04.580774"], ["updated_at", "2019-07-23 14:19:04.580774"], ["email", "email@gmail.com"], ["hashed_secret", "$2a$12$CgHtpx57ps2dq8aUbqrqse9gQhZKkmbKoVORL9xC5Vq8WEiDBFs3y"]]
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.0ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (3.6ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (1.1ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (92.1ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (0.7ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.1ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (2.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (2.5ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (1.8ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (203.3ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (0.8ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.7ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.9ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (1.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (6.0ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (1.0ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (80.7ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (0.7ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.9ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (1.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (1.8ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (0.9ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (78.7ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (0.9ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.2ms)[0m  [1m[35mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" DISABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" DISABLE TRIGGER ALL;ALTER TABLE "oauth_identities" DISABLE TRIGGER ALL;ALTER TABLE "oauth_applications" DISABLE TRIGGER ALL[0m
+  [1m[35m (41.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (8.7ms)[0m  [1m[34m          SELECT schemaname || '.' || tablename
+          FROM pg_tables
+          WHERE
+            tablename !~ '_prt_' AND
+             tablename <> 'schema_migrations'  AND tablename <> 'ar_internal_metadata'  AND
+            schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35m (1.1ms)[0m  [1m[34mselect table_name from information_schema.views where table_schema = 'elearning_test'[0m
+  [1m[35m (87.0ms)[0m  [1m[35mTRUNCATE TABLE "public"."user_action_tokens", "public"."users", "public"."oauth_access_grants", "public"."oauth_access_tokens", "public"."oauth_identities", "public"."oauth_applications" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (0.7ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL;ALTER TABLE "user_action_tokens" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_grants" ENABLE TRIGGER ALL;ALTER TABLE "oauth_access_tokens" ENABLE TRIGGER ALL;ALTER TABLE "oauth_identities" ENABLE TRIGGER ALL;ALTER TABLE "oauth_applications" ENABLE TRIGGER ALL[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
