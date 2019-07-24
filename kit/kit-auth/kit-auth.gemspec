@@ -16,15 +16,14 @@ Gem::Specification.new do |spec|
 
   spec.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
-  spec.add_dependency "rails", "~> 5.2.3"
-
-  spec.add_dependency "devise", "~> 4.2"
-  spec.add_dependency "doorkeeper", "~> 5.0", ">= 5.0.2"
+  #spec.add_dependency "devise", "~> 4.2"
+  spec.add_dependency "doorkeeper", "~> 5.1"
   spec.add_dependency "omniauth", "~> 1.6", ">= 1.6.1"
+  spec.add_dependency "oauth2", "~> 1.4", ">= 1.4.1"
 
   spec.add_dependency "strong_password", "~> 0.0.8"
   spec.add_dependency "email_inquire", "~> 0.10.0"
 
-  spec.add_dependency "contracts", "~> 0.16.0"
+  spec.add_dependency "bcrypt"
 
 end

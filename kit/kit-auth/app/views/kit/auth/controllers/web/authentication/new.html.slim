@@ -1,0 +1,14 @@
+h2
+  | Log in
+
+= simple_form_for(@model, url: web_signin_path, method: :post) do |f|
+  .field
+    = f.label :email
+    br
+    = f.email_field :email, autofocus: true, autocomplete: "email"
+  .field
+    = f.label :password
+    br
+    = f.password_field :password, autocomplete: "current-password"
+  .actions
+    = f.submit "Log in"

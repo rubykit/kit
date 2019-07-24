@@ -18,6 +18,9 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "rails", "~> 5.2.3"
 
+  spec.add_dependency "slim-rails"
+  spec.add_dependency "simple_form"
+
   spec.add_dependency "multiverse", "~> 0.2.1"
 
   spec.add_dependency "pg", "~> 1.1", ">= 1.1.4"
@@ -30,7 +33,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency "rubocop", "~> 0.42.0"
 
   spec.add_dependency "contracts", "~> 0.16.0"
-  spec.add_dependency "dry-validation", ">= 1.2.1"
+  spec.add_dependency "dry-validation"
+  spec.add_dependency "dry-struct"
 
   spec.add_dependency "fast_jsonapi", "~> 1.5"
 
@@ -38,7 +42,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "activeadmin_addons", "~> 1.7", ">= 1.7.1"
   spec.add_dependency "activeadmin_tables"
 
-  spec.add_dependency "cells", "~> 4.1", ">= 4.1.7"
+  #spec.add_dependency "cells", "~> 4.1", ">= 4.1.7"
 
   spec.add_development_dependency "annotate"
 

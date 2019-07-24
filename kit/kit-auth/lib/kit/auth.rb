@@ -1,7 +1,10 @@
 require "kit/auth/engine"
+require "doorkeeper"
 
 module Kit
   module Auth
-    # Your code goes here...
+    Doorkeeper = ::Doorkeeper
+
   end
 end
+

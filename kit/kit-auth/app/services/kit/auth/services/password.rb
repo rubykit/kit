@@ -1,3 +1,5 @@
+require 'bcrypt'
+
 module Kit::Auth::Services::Password
 
   #Contract KeywordArgs[password: String, pepper: String] => [Symbol, KeywordArgs[hashed_secret: String]]

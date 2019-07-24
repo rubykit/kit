@@ -16,7 +16,6 @@ module Kit::Auth::Controllers::Api::V1
         body   = nil
       end
 
-
       render status: status, json: body
     end
 
