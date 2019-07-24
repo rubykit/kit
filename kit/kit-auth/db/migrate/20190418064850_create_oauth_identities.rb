@@ -18,7 +18,8 @@ class CreateOauthIdentities < ActiveRecord::Migration[5.2]
       t.jsonb      :extra
     end
 
-    add_index :oauth_identities, [:provider, :uid, :deleted_at], where: "deleted_at IS NULL", unique: true
+    add_index :oauth_identities, [:provider, :uid], where: "deleted_at IS NULL", unique: true
+    add_index :oauth_identities, [:provider, :uid, :deleted_at]
   end
 
 end

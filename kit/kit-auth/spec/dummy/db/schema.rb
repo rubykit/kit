@@ -78,7 +78,8 @@ ActiveRecord::Schema.define(version: 2019_04_18_064850) do
     t.jsonb "info"
     t.jsonb "extra"
     t.index ["deleted_at"], name: "index_oauth_identities_on_deleted_at"
-    t.index ["provider", "uid", "deleted_at"], name: "index_oauth_identities_on_provider_and_uid_and_deleted_at", unique: true, where: "(deleted_at IS NULL)"
+    t.index ["provider", "uid", "deleted_at"], name: "index_oauth_identities_on_provider_and_uid_and_deleted_at"
+    t.index ["provider", "uid"], name: "index_oauth_identities_on_provider_and_uid", unique: true, where: "(deleted_at IS NULL)"
     t.index ["provider"], name: "index_oauth_identities_on_provider"
     t.index ["token"], name: "index_oauth_identities_on_token"
     t.index ["uid"], name: "index_oauth_identities_on_uid"
@@ -108,8 +109,9 @@ ActiveRecord::Schema.define(version: 2019_04_18_064850) do
     t.datetime "confirmed_at"
     t.index ["confirmed_at"], name: "index_users_on_confirmed_at"
     t.index ["deleted_at"], name: "index_users_on_deleted_at"
-    t.index ["email", "deleted_at"], name: "index_users_on_email_and_deleted_at", unique: true, where: "(deleted_at IS NULL)"
+    t.index ["email", "deleted_at"], name: "index_users_on_email_and_deleted_at"
     t.index ["email"], name: "index_users_on_email"
+    t.index ["email"], name: "index_users_on_email_unique", unique: true, where: "(deleted_at IS NULL)"
   end
 
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"

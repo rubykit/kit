@@ -30,6 +30,7 @@
 /tmp/*
 !/log/.keep
 !/tmp/.keep
+spec/dummy/log/*
 
 # Ignore uploaded files in development
 /storage/*

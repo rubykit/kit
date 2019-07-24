@@ -52,20 +52,25 @@ class Kit::Auth::Actions::Users::CreateUserWithPassword
   end
 
   def self.persist_user(email:, hashed_secret:)
-    user  = Kit::Auth::Models::Write::User.create({
-      email:         email,
-      hashed_secret: hashed_secret,
-    })
+    begin
+      user  = Kit::Auth::Models::Write::User.create({
+        email:         email,
+        hashed_secret: hashed_secret,
+      })
+    rescue ActiveRecord::RecordNotUnique
+      return [:error, user: nil, errors: { email: ["is alreadky taken"] }]
+    end
 
-    if user.errors
-      [:error, user: nil, errors: user.errors]
-    else
+    if user.persisted?
       [:ok, user: user]
+    else
+      [:error, user: nil, errors: user.errors]
     end
   end
 
   def self.fire_user_created_event(user:)
     puts "Fire user_created event"
+    [:ok]
   end
 
 end

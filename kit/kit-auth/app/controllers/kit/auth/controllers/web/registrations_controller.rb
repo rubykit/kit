@@ -1,4 +1,11 @@
 module Kit::Auth::Controllers::Web
-  class RegistrationsController < Devise::RegistrationsController
+  class SignupController
+
+    def new
+    end
+
+    def create
+    end
+
   end
 end

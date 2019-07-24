@@ -11,7 +11,8 @@ class CreateUsers < ActiveRecord::Migration[5.2]
       t.date
     end
 
-    add_index :users, [:email, :deleted_at], where: "deleted_at IS NULL", unique: true
+    add_index :users, [:email], name: 'index_users_on_email_unique', where: "deleted_at IS NULL", unique: true
+    add_index :users, [:email, :deleted_at]
   end
 
 end

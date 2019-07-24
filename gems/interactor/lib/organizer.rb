@@ -12,10 +12,14 @@ module Organizer
       begin
         list.each do |calleable|
           ctx_in = generate_ctx_in(calleable: calleable, ctx: ctx)
-          #puts "# Calling `#{calleable}` with: #{ctx_in}"
+          if ENV['LOG_ORGANIZER']
+            puts "# Calling `#{calleable}` with: #{ctx_in}"
+          end
           result, ctx_out = calleable.call(ctx_in)
 
-          #puts "# |#{result}|#{ctx_out}|"
+          if ENV['LOG_ORGANIZER']
+            puts "# |#{result}|#{ctx_out}|"
+          end
           # TODO: should we do a deep merge?
           if ctx_out
             ctx = ctx.merge(ctx_out)

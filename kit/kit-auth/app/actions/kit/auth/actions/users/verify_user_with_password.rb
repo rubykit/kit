@@ -3,9 +3,9 @@ require 'bcrypt'
 class Kit::Auth::Actions::Users::VerifyUserWithPassword
   include Contracts
 
-  Contract Hash => [Symbol, KeywordArgs[verified_user: Any]]
+  Contract Hash => [Symbol, KeywordArgs[user: Any]]
   def self.call(email:, password:, **)
-    user     = Models::User::Read.find_by(email: email)
+    user     = Kit::Auth::Models::Read::User.find_by(email: email)
 
     reference_hashed_secret = user.try(:hashed_secret) || "FAKE_HASHED_SECRET"
 
@@ -14,10 +14,13 @@ class Kit::Auth::Actions::Users::VerifyUserWithPassword
       reference_hashed_secret: reference_hashed_secret,
       password:                password,
       pepper:                  ENV['AUTH_PEPPER'],
-    )
-    verified = !!user && valid_password
+    })
 
-    [:ok, verified_user: verified]
+    if !!user && valid_password
+      [:ok, user: user]
+    else
+      [:error, errors: [{ msg: "Non existing user or invalid password." }]]
+    end
   end
 
 end
