@@ -4,7 +4,7 @@ module Kit::Auth::Actions::Users::VerifyUserWithPassword
   include Contracts
 
   #Contract Hash => [Symbol, KeywordArgs[user: Any]]
-  def self.call(email:, password:, **)
+  def self.call(email:, password:)
     user     = Kit::Auth::Models::Read::User.find_by(email: email)
 
     # Pass of 'xxxxxx' with the same value as the pepper

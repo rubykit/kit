@@ -7,7 +7,7 @@ module Kit::Auth::Actions::Users::GetAccessTokenForUser
   include Contracts
 
   #Contract Hash => [Symbol, KeywordArgs[oauth_access_token: Any, errors: Any]]
-  def self.call(user:, **)
+  def self.call(user:)
     request_object = Doorkeeper::OAuth::PasswordAccessTokenRequest.new(
       Doorkeeper.configuration,
       Doorkeeper::Application.find_by!(name: 'self'),

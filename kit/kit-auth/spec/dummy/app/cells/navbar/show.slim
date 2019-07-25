@@ -1,0 +1,22 @@
+nav.navbar.navbar-expand-lg.fixed-top.navbar-dark.bg-dark
+  a.navbar-brand.mr-auto.mr-lg-0 href="#" Dummy container
+  button.navbar-toggler.p-0.border-0 data-toggle="offcanvas" type="button"
+    span.navbar-toggler-icon
+  #navbarsExampleDefault.navbar-collapse.offcanvas-collapse
+    ul.navbar-nav.mr-auto
+      li.nav-item.active
+        a.nav-link href=main_app.root_path
+          | Home
+          span.sr-only (current)
+    ul.navbar-nav
+      - if model[:current_user]
+        li.nav-item
+          a.nav-link href="#"
+            = model[:current_user].email
+        li.nav-item
+          = link_to kit_auth.web_signout_path, method: :delete, class: 'nav-link'
+            | Sign out
+      - else
+        li.nav-item
+          a.nav-link href=kit_auth.web_signin_path
+            | Sign in

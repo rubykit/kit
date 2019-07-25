@@ -3,7 +3,7 @@ module Kit::Auth::Actions::Users::IdentifyUserForRequest
 
   # Todo: add contract on request / cookies (based on needed access)
   #Contract Hash => [Symbol, KeywordArgs[user: Any]]
-  def self.call(request:, cookies:, **)
+  def self.call(request:, cookies:)
     status, ctx = Organizer.call({
       ctx: {
         request: request,

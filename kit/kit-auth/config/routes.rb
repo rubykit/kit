@@ -15,8 +15,6 @@ Kit::Auth::Engine.routes.draw do
     get    'signin',  to: 'authentication#new'
     post   'signin',  to: 'authentication#create'
     delete 'signout', to: 'authentication#delete'
-
-    get  'test',   to: 'authentication#test'
   end
 
 end

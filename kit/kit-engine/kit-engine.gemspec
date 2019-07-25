@@ -20,6 +20,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "slim-rails"
   spec.add_dependency "simple_form"
+  spec.add_dependency "cells-slim"
 
   spec.add_dependency "multiverse", "~> 0.2.1"
 

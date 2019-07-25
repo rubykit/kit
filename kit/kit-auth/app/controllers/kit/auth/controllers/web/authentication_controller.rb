@@ -57,20 +57,19 @@ module Kit::Auth::Controllers::Web
 
       if res == :ok
         cookies.encrypted[:access_token] = ctx[:oauth_access_token].token
-        redirect_to 'home'
+
+        # TODO: to fix this we probably need to add config from the top level app that knows the routes
+        redirect_to '/'
       else
         render :new
       end
     end
 
-    def test
-      render json: { user_id: current_user&.id, access_token: cookies.encrypted[:access_token] }
-    end
-
     def delete
       cookies.encrypted[:access_token] = nil
 
-      redirect_to 'home'
+      # TODO: to fix this we probably need to add config from the top level app that knows the routes
+      redirect_to '/'
     end
 
   end

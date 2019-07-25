@@ -4,6 +4,8 @@ module Kit::Auth::Controllers::Concerns
 
     included do
       before_action :resolve_current_user
+
+      helper_method :current_user
     end
 
     def resolve_current_user
@@ -11,7 +13,6 @@ module Kit::Auth::Controllers::Concerns
         request: request,
         cookies: cookies,
       })
-      #binding.pry
 
       if status == :ok
         request[:current_user] = ctx[:user]
@@ -21,7 +22,6 @@ module Kit::Auth::Controllers::Concerns
     end
 
     def current_user
-      #binding.pry
       request[:current_user]
     end
   end
