@@ -18,6 +18,7 @@ module Kit::Auth::Services::Password
     secret        = "#{password}#{pepper}"
     hashed_secret = ::BCrypt::Engine.hash_secret(secret, salt)
 
+    # ActiveSupport::SecurityUtils.secure_compare(reference_hashed_secret, hashed_secret)
     time_insensitive_compare(reference_hashed_secret, hashed_secret)
   end
 

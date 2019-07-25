@@ -1,6 +1,6 @@
 require 'bcrypt'
 
-class Kit::Auth::Actions::Users::VerifyUserWithPassword
+module Kit::Auth::Actions::Users::VerifyUserWithPassword
   include Contracts
 
   #Contract Hash => [Symbol, KeywordArgs[user: Any]]

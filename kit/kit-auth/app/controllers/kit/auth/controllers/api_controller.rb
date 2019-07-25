@@ -1,6 +1,8 @@
 module Kit::Auth::Controllers
   class ApiController < ActionController::API # :nodoc:
 
+    include Kit::Auth::Controllers::Concerns::CurrentUser
+
     before_action :set_response_headers
 
     protected

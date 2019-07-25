@@ -64,7 +64,7 @@ module Kit::Auth::Controllers::Web
     end
 
     def test
-      render json: { user_id: current_user.id }
+      render json: { user_id: current_user&.id, access_token: cookies.encrypted[:access_token] }
     end
 
     def delete

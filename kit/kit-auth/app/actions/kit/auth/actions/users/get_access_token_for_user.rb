@@ -3,7 +3,7 @@ require 'dry-validation'
 
 # TODO: audit if going through Doorkeeper is worth doing
 
-class Kit::Auth::Actions::Users::GetAccessTokenForUser
+module Kit::Auth::Actions::Users::GetAccessTokenForUser
   include Contracts
 
   #Contract Hash => [Symbol, KeywordArgs[oauth_access_token: Any, errors: Any]]
