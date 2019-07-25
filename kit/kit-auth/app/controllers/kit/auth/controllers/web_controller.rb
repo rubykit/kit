@@ -1,6 +1,6 @@
 module Kit::Auth::Controllers
-  class WebController < ActionController::Base
-
+  # NOTE: This is a little backward: we inherit from the engine container controller in order to display the layout
+  class WebController < ::WebController
     include Kit::Auth::Controllers::Concerns::CurrentUser
 
     protect_from_forgery with: :exception

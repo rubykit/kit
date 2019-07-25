@@ -1,4 +1,4 @@
-class ApplicationController < ActionController::Base
+class ApiController < ActionController::API # :nodoc:
   include Kit::Auth::Controllers::Concerns::CurrentUser
 
 end

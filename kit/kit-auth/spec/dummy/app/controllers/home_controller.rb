@@ -1,4 +1,4 @@
-class HomeController < ApplicationController
+class HomeController < WebController
 
   def index
     render

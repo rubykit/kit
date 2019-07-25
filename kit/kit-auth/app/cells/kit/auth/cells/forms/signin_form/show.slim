@@ -1,0 +1,13 @@
+= simple_form_for(model, url: kit_auth.web_signin_path, method: :post, html: { class: 'form-signin' }) do |f|
+
+  .text-center.mb-4
+    h1.h3.mb-3.font-weight-normal Sign in
+
+  .form-label-group
+    = f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control', placeholder: 'Email'
+    = f.label :email
+  .form-label-group
+    = f.password_field :password, autocomplete: "current-password", class: 'form-control', placeholder: 'Password'
+    = f.label :password
+  .actions
+    = f.submit "Log in", class: 'btn btn-lg btn-primary btn-block'

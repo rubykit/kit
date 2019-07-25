@@ -12,4 +12,6 @@
  *
  *= require_tree .
  *= require_self
+ *
+ *= require kit/auth/cells/forms/signin_form/signin_form
  */

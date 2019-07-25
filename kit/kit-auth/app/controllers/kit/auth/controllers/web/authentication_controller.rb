@@ -4,9 +4,8 @@ module Types
   include Dry::Types.module
 end
 
-
 module Kit::Auth::Controllers::Web
-  class AuthenticationController < WebController
+  class AuthenticationController < Kit::Auth::Controllers::WebController
 
     # https://cucumbersome.net/2016/09/06/rails-form-objects-with-dry-rb/
 
