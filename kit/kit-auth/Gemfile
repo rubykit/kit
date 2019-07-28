@@ -30,6 +30,8 @@ gem "simple_form" # DEV MODE ? doesn't get loaded otherwise
 gem "cells-rails" # DEV MODE ? doesn't get loaded otherwise
 gem "cells-slim" # DEV MODE ? doesn't get loaded otherwise
 
+gem "activeadmin" # DEV MODE ? doesn't get loaded otherwise
+
 
 group :development do
   gem 'annotate', '~> 2.7', '>= 2.7.4'

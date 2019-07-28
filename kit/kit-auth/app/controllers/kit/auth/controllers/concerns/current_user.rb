@@ -15,14 +15,16 @@ module Kit::Auth::Controllers::Concerns
       })
 
       if status == :ok
-        request[:current_user] = ctx[:user]
+        # NOTE: `request[:current_user]` adds the value to request.params, so it's a no go
+        request.instance_variable_set(:@current_user, ctx[:user])
       end
     #rescue Exception
       #binding.pry
     end
 
     def current_user
-      request[:current_user]
+      #request[:current_user]
+      request.instance_variable_get(:@current_user)
     end
   end
 end
