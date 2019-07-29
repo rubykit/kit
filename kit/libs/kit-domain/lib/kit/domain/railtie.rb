@@ -1,5 +1,5 @@
 module Kit
-  module Engine
+  module Domain
     class Railtie < ::Rails::Railtie
     end
   end

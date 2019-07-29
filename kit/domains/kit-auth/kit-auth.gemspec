@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.version     = Kit::Auth::VERSION
   spec.authors     = ["Nathan Appere"]
   spec.email       = ["nathan.appere@gmail.com"]
-  spec.homepage    = "https://ruby-kit-engines.localhost.com"
+  spec.homepage    = "https://ruby-kit-auth.localhost.com"
   spec.summary     = "Summary of Kit::Auth."
   spec.description = "Description of Kit::Auth."
   spec.license     = "MIT"
