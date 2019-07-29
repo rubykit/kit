@@ -1,0 +1,69 @@
+@import "active_admin/mixins";
+@import "active_admin_overides/mixins";
+@import "active_admin/base";
+
+@import "activeadmin_addons/all";
+@import "dependencies/sweetalert2-6.11.1";
+
+@import "active_admin_overides/structure";
+@import "active_admin_overides/components";
+
+@import "components/*";
+
+a, a:link, a:visited { text-decoration: none; }
+
+.paginated_collection table, table.table_list {
+  tr.odd:hover, tr.even:hover {
+    td {
+      background-color: #CAE0F6;
+      background-color: #E6EAD7
+    }
+  }
+}
+
+hr {
+  border-top: dotted #ddd;
+  margin: 30px 0px;
+  border-width: 1px 0px;
+}
+
+td pre {
+  margin: 0px;
+}
+
+.panel {
+
+  h3 { cursor: pointer; }
+
+  .panel_contents {
+    position: relative;
+
+    .panel_contents_inner_topbar {
+      position: absolute;
+      right:    10px;
+      top:      -20px;
+    }
+  }
+
+}
+
+//.bootstrap {
+//  @import 'app-theme';
+//}
+
+// INLINE BTN
+
+.inline-btn {
+  @include light-button;
+  font-weight: normal !important;
+  padding: 2px 6px;
+}
+
+a.inline-btn {
+  font: 0.8em 'andale mono', 'lucida console', monospace;
+  color: $primary-color;
+  &:hover {
+   text-decoration: none;
+    color: $primary-color;
+  }
+}

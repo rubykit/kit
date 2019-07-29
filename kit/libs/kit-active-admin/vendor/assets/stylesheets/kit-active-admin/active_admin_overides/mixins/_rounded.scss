@@ -1,0 +1,22 @@
+@mixin rounded($radius: 3px) {
+  border-radius: 3px;
+}
+
+@mixin rounded-all($top-left:3px, $top-right:3px, $bottom-right:3px, $bottom-left:3px) {
+  border-top-right-radius:    3px;
+  border-top-left-radius:     3px;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius:  3px;
+}
+
+@mixin rounded-top($radius: 3px) {
+  @include rounded(0);
+  border-top-right-radius: 3px;
+  border-top-left-radius:  3px;
+}
+
+@mixin rounded-bottom($radius: 3px) {
+  @include rounded(0);
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius:  3px;
+}

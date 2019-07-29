@@ -1,0 +1,46 @@
+@import 'colors';
+
+.status_tag {
+
+  &.home     { background-color: $amethyst;         }
+  &.away     { background-color: $midnight-blue;    }
+
+  &.disabled { background-color: $grapefruit-light; }
+  &.active   { background-color: $grass-dark;       }
+  &.paused   { background-color: $orange;           }
+
+  &.true     { background-color: $grass-dark; }
+  &.false    { background-color: $mediumgray-dark;  }
+
+  &.scheduled { background-color: $bluejeans-dark;  }
+  &.completed { background-color: $grass-dark;      }
+  &.live      { background-color: $sunflower-dark;  }
+
+  &.canceled      { background-color: $pumpkin;     }
+  &.soft_canceled { background-color: $pumpkin;     }
+
+
+  &.site_af  { background-color: #f6b647; }
+  &.site_dk  { background-color: #84e600; } /* OR: #ff8200 */
+  &.site_rg  { background-color: #0094df;}  /* OR: #ff9a00 */
+  &.site_fdu { background-color: #0090ff; color: #17365f; }
+  &.site_fdr { background-color: #00cff9; }
+  &.site_yh  { background-color: #470096; }
+  &.site_pdr { background-color: #fff; color: #000; }
+
+
+  &.league_nhl  { background-color: #000; }
+  &.league_epl  { background-color: #42145f; }
+  &.league_wnba { background-color: #ff7300; }
+  &.league_golf { background-color: #001768; }
+  &.league_mlb  { background-color: #01266d; /* color: #ff001a; */ }
+  &.league_nfl  { background-color: #003976; color: #ed0013; }
+  &.league_nba  { background-color: #006eba; } /* OR #e9284f */
+  &.league_cfl  { background-color: #e5e5e5; color: #202020; }
+  &.league_nas  { background-color: #fff; color: #000; }
+  &.league_lol  { background-color: #162726; color: #d4a034; }
+  &.league_mma  { background-color: #fff; color: #000; }
+
+  &.cash        { background-color: #85bb65; }
+  &.ticket      { background-color: $wet-asphalt; }
+}

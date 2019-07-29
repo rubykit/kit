@@ -1,0 +1,22 @@
+#title_bar {
+  border-bottom: 0px;
+  box-shadow: none;
+  padding: 5px 30px;
+
+  h2 {
+    font-size: 1.6em;
+  }
+
+  .breadcrumb {
+    margin-bottom: 5px;
+  }
+
+  .action_items {
+    span.action_item {
+      & > a, & > .dropdown_menu > a {
+        padding: 10px 16px;
+      }
+    }
+  }
+
+}

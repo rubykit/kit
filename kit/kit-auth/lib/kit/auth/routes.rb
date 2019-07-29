@@ -1,4 +1,4 @@
-module ActiveAdmin::KitAuthEngine
+module Kit::Auth
   module Routes
 
     # NOTE: The indirection is needed somehow for a thread safety thing.

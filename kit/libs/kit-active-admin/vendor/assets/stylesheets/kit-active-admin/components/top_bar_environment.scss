@@ -1,0 +1,25 @@
+@import 'colors';
+
+body {
+  #logout::after {
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    padding:        3px 5px 2px 5px;
+    font-size:      0.8em;
+    margin-left:    15px;
+  }
+}
+
+body.env_development #logout::after {
+  display:           inline;
+  content:           'development';
+  background-color:  $belize-hole;
+  color:             #fff;
+}
+
+body.env_production #logout::after {
+  display:           inline;
+  content:           'production';
+  background-color:  $pomegranate;
+  color:             #fff;
+}

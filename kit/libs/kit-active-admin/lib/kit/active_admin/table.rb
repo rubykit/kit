@@ -1,5 +1,4 @@
-class ActionAdminTables::Table
-  include Rails.application.routes.url_helpers
+class Kit::ActiveAdmin::Table
 
   attr_reader :ctx
 

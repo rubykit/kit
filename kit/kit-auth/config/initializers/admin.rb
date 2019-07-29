@@ -1,6 +1,4 @@
-# NOTE: the `zz` prefix ensures this file is loaded last
-
-ActiveAdmin.setup do |config|
+::ActiveAdmin.setup do |config|
   #config.site_title = "Admin"
   # config.site_title_link = "/"
   # config.site_title_image = "logo.png"
@@ -17,7 +15,7 @@ ActiveAdmin.setup do |config|
     admin.scope_module     = 'admin'
 
     admin.controllers_path = 'Kit::Auth::Admin'
-    admin.url_helpers      = ActiveAdmin::KitAuthEngine::Routes
+    admin.url_helpers      = Kit::Auth::Routes
 
     admin.comments = false
     admin.comments_menu = false

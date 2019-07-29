@@ -39,10 +39,6 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "fast_jsonapi", "~> 1.5"
 
-  spec.add_dependency "activeadmin", "~> 2.2"
-  spec.add_dependency "activeadmin_addons", "~> 1.7", ">= 1.7.1"
-  spec.add_dependency "activeadmin_tables"
-
   #spec.add_dependency "cells", "~> 4.1", ">= 4.1.7"
 
   spec.add_development_dependency "annotate"

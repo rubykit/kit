@@ -1,0 +1,15 @@
+@mixin shadow($x: 0, $y: 1px, $blur: 2px, $color: rgba(0,0,0,0.37)) {
+  box-shadow: none !important;
+}
+
+@mixin no-shadow {
+  box-shadow: none !important;
+}
+
+@mixin inset-shadow($x: 0, $y: 1px, $blur: 2px, $color: #aaa) {
+  box-shadow: none !important;
+}
+
+@mixin text-shadow($color: #fff, $x: 0, $y: 1px, $blur: 0) {
+  text-shadow: none !important;
+}

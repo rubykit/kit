@@ -1,4 +1,3 @@
-require "kit/auth/engine"
 require "doorkeeper"
 
 module Kit
@@ -8,3 +7,5 @@ module Kit
   end
 end
 
+require "kit/auth/engine"
+require "kit/auth/routes"

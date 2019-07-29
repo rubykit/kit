@@ -1,10 +1,4 @@
 PATH
-  remote: ../../gems/activeadmin_tables
-  specs:
-    activeadmin_tables (0.1.0)
-      rails (~> 5.2.3)
-
-PATH
   remote: ../../gems/interactor
   specs:
     interactor (0.1.0)
@@ -14,9 +8,6 @@ PATH
   remote: ../kit-engine
   specs:
     kit-engine (0.1.0)
-      activeadmin (~> 2.2)
-      activeadmin_addons (~> 1.7, >= 1.7.1)
-      activeadmin_tables
       activerecord-nulldb-adapter (~> 0.3.9)
       cells-slim
       contracts (~> 0.16.0)
@@ -32,6 +23,15 @@ PATH
       rubocop (~> 0.42.0)
       simple_form
       slim-rails
+
+PATH
+  remote: ../libs/kit-active-admin
+  specs:
+    kit-active-admin (0.1.0)
+      activeadmin (~> 2.2)
+      activeadmin_addons (~> 1.7, >= 1.7.1)
+      bootstrap (~> 4.0)
+      popper_js
 
 PATH
   remote: .
@@ -117,6 +117,8 @@ GEM
       activesupport (>= 3.0.0)
     arel (9.0.0)
     ast (2.4.0)
+    autoprefixer-rails (9.6.1)
+      execjs
     awesome_print (1.8.0)
     babel-source (5.8.35)
     babel-transpiler (0.7.0)
@@ -129,6 +131,10 @@ GEM
       rack (>= 0.9.0)
     binding_of_caller (0.8.0)
       debug_inspector (>= 0.0.1)
+    bootstrap (4.3.1)
+      autoprefixer-rails (>= 9.1.0)
+      popper_js (>= 1.14.3, < 2)
+      sassc-rails (>= 2.0.0)
     builder (3.2.3)
     byebug (11.0.1)
     cells (4.1.7)
@@ -288,6 +294,7 @@ GEM
     parser (2.6.3.0)
       ast (~> 2.4.0)
     pg (1.1.4)
+    popper_js (1.14.5)
     powerpack (0.1.2)
     pry (0.12.2)
       coderay (~> 1.1.0)
@@ -421,8 +428,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activeadmin
-  activeadmin_tables!
   annotate (~> 2.7, >= 2.7.4)
   awesome_print
   better_errors
@@ -436,6 +441,7 @@ DEPENDENCIES
   factory_bot_rails
   faker
   interactor!
+  kit-active-admin!
   kit-auth!
   kit-engine!
   paranoia

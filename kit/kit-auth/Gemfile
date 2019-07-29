@@ -23,15 +23,12 @@ gem 'kit-engine', path: '../kit-engine' # DEV MODE
 gem 'contracts', require: 'contracts' # DEV MODE
 
 gem 'interactor', path: '../../gems/interactor' # DEV MODE
-gem 'activeadmin_tables', path: '../../gems/activeadmin_tables' # DEV MODE
+gem 'kit-active-admin', path: '../libs/kit-active-admin', require: 'kit/active_admin' # DEV MODE
 
 gem "slim-rails" # DEV MODE ? doesn't get loaded otherwise
 gem "simple_form" # DEV MODE ? doesn't get loaded otherwise
 gem "cells-rails" # DEV MODE ? doesn't get loaded otherwise
 gem "cells-slim" # DEV MODE ? doesn't get loaded otherwise
-
-gem "activeadmin" # DEV MODE ? doesn't get loaded otherwise
-
 
 group :development do
   gem 'annotate', '~> 2.7', '>= 2.7.4'

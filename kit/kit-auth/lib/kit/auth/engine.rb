@@ -9,11 +9,11 @@ module Kit
         ::ActiveAdmin.application.load_paths += Dir[File.expand_path("../../../../app/admin", __FILE__)]
       end
 
-
-
+=begin
       initializer "web_app.assets.precompile" do |app|
-        app.config.assets.precompile += %w( active_admin.js active_admin.css )
+        app.config.assets.precompile += %w( kit-active-admin.js kit-active-admin.css )
       end
+=end
 
 =begin
       config.to_prepare do
