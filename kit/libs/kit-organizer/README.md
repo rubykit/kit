@@ -1,4 +1,4 @@
-# Interactor
+# KitOrganizer
 Short description and motivation.
 
 ## Usage
@@ -8,7 +8,7 @@ How to use my plugin.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'interactor'
+gem 'kit_organizer'
 ```
 
 And then execute:
@@ -18,7 +18,7 @@ $ bundle
 
 Or install it yourself as:
 ```bash
-$ gem install interactor
+$ gem install kit_organizer
 ```
 
 ## Contributing

@@ -6,7 +6,7 @@ module Kit::Auth::Actions::Users::CreateUserWithPassword
 
   #Contract Hash => [Symbol, KeywordArgs[user: Any, errors: Any]]
   def self.call(email:, password:, password_confirmation:)
-    status, ctx = Organizer.call({
+    status, ctx = Kit::Organizer.call({
       ctx: {
         email:                 email,
         password:              password,

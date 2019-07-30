@@ -19,8 +19,10 @@
 
     admin.comments = false
     admin.comments_menu = false
-    #admin.logout_link_path = :kit_auth_web_signout_path
-    admin.logout_link_path = '/'
+    #admin.logout_link_path = Kit::Auth::Routes.web_signout_path
+    admin.logout_link_path = '/kit-auth/web/signout'
+    admin.logout_link_method = :delete
+
     admin.root_to = 'users#index'
   end
 
@@ -76,4 +78,7 @@
   # config.footer = 'my custom footer text'
 
   # config.order_clause = MyOrderClause
+end
+
+module Kit::Auth::Admin
 end

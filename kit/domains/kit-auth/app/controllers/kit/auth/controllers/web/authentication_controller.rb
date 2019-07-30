@@ -46,7 +46,7 @@ module Kit::Auth::Controllers::Web
 
       @model = FormData.new(params.permit(form: [:email, :password])[:form].to_unsafe_h.symbolize_keys)
 
-      res, ctx = Organizer.call({
+      res, ctx = Kit::Organizer.call({
         ctx: @model.to_h,
         list: [
           Kit::Auth::Actions::Users::VerifyUserWithPassword,
