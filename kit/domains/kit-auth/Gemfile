@@ -46,6 +46,8 @@ group :development, :test do
 end
 
 group :development, :test do
+  gem 'kit-app-container', path: '../../libs/kit-app-container'
+
   gem 'factory_bot_rails'
   gem 'faker'
   gem 'rspec-rails'

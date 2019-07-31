@@ -20,6 +20,8 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "slim-rails"
   spec.add_dependency "simple_form"
+
+  #spec.add_dependency "cells", "~> 4.1", ">= 4.1.7"
   spec.add_dependency "cells-slim"
 
   spec.add_dependency "multiverse", "~> 0.2.1"
@@ -39,7 +41,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "fast_jsonapi", "~> 1.5"
 
-  #spec.add_dependency "cells", "~> 4.1", ">= 4.1.7"
+  spec.add_dependency "rails_event_store"
 
   spec.add_development_dependency "annotate"
 

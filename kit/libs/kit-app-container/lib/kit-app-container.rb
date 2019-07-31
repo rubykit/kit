@@ -1,0 +1,1 @@
+require 'kit/app_container'
