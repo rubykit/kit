@@ -14,16 +14,20 @@ module Kit
           list.each do |calleable|
             ctx_in = generate_ctx_in(calleable: calleable, ctx: ctx)
             if ENV['LOG_ORGANIZER']
-              puts "# Calling `#{calleable}` with: #{ctx_in}"
+              puts "# Calling `#{calleable}` with keys |#{ctx_in.keys}|".colorize(:yellow)
             end
             result, ctx_out = calleable.call(ctx_in)
 
             if ENV['LOG_ORGANIZER']
-              puts "# |#{result}|#{ctx_out}|"
+              puts "#   Result |#{result}|#{ctx_out}|".colorize(:yellow)
             end
             # TODO: should we do a deep merge?
             if ctx_out
               ctx = ctx.merge(ctx_out)
+            end
+
+            if ENV['LOG_ORGANIZER']
+              puts "#   New context keys |#{ctx.keys}|".colorize(:yellow)
             end
 
             if result == :error

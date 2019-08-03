@@ -31,7 +31,7 @@ module Kit::Auth::Controllers::Web
 
     def new
       if current_user
-        redirect_to :web_test
+        redirect_to '/'
         return
       end
 
@@ -40,17 +40,24 @@ module Kit::Auth::Controllers::Web
 
     def create
       if current_user
-        redirect_to :web_test
+        redirect_to '/'
         return
       end
 
       @model = FormData.new(params.permit(form: [:email, :password])[:form].to_unsafe_h.symbolize_keys)
 
+      context = @model.to_h.merge(
+        request:           request,
+        oauth_application: ::Doorkeeper::Application.find_by!(uid: 'webapp'),
+      )
+
       res, ctx = Kit::Organizer.call({
-        ctx: @model.to_h,
+        ctx: context,
         list: [
           Kit::Auth::Actions::Users::VerifyUserWithPassword,
-          Kit::Auth::Actions::Users::GetAccessTokenForUser,
+          Kit::Auth::Actions::Users::CreateUserRequestMetadata,
+          Kit::Auth::Actions::Users::GetAuthorizationTokenForUser,
+          Kit::Auth::Actions::Users::UpdateUamForAuthorizationToken,
         ],
       })
 

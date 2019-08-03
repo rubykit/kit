@@ -9,10 +9,12 @@ class CreateOauthAccessGrants < ActiveRecord::Migration[5.2]
       t.references :application,                      index: true, null: false, foreign_key: { to_table: :oauth_applications }
 
       t.string     :token,                            index: true, null: false, unique: true
-      t.integer    :expires_in,                                    null: false
-      t.text       :redirect_uri,                                  null: false
       t.string     :scopes
+      t.integer    :expires_in,                                    null: false
+
       t.datetime   :revoked_at
+
+      t.text       :redirect_uri,                                  null: false
     end
   end
 

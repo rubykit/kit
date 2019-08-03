@@ -26,6 +26,8 @@
     admin.root_to = 'users#index'
   end
 
+  config.display_name_methods = [:model_verbose_name]
+
   # config.authorization_adapter = ActiveAdmin::CanCanAdapter
   # config.pundit_default_policy = "MyDefaultPunditPolicy"
   # config.pundit_policy_namespace = :admin

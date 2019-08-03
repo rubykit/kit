@@ -19,5 +19,9 @@ module Kit::Auth::Models::Read
              class_name: 'Doorkeeper::AccessToken',
              foreign_key: :resource_owner_id
 
+    def model_verbose_name
+      "#{model_log_name}|#{email}"
+    end
+
   end
 end

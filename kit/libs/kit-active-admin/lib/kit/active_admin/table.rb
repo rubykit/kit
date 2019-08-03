@@ -34,7 +34,8 @@ class Kit::ActiveAdmin::Table
     title = options[:title]
     if !title
       if el
-        title = el.model_name.singular.gsub('models_', '').gsub('_', ' ').titleize.gsub(' ', '')
+        _, title = el.model_name.singular.split('models_')
+        title = title.gsub('write_', '').gsub('read_', '').gsub('_', ' ').titleize.gsub(' ', '')
       else
         title = self.class.to_s.gsub('Tables::', '')
       end
@@ -73,7 +74,8 @@ class Kit::ActiveAdmin::Table
 
     title = options[:title]
     if relation_data.is_a?(ActiveRecord::Relation)
-      title ||= relation_data.model_name.plural.gsub('models_', '').gsub('_', ' ').titleize.gsub(' ', '')
+      _, title = relation_data.model_name.singular.split('models_')
+      title = title.gsub('write_', '').gsub('read_', '').gsub('_', ' ').titleize.gsub(' ', '')
     else
       title ||= self.class.to_s.gsub('Tables::', '')
     end
@@ -126,21 +128,6 @@ class Kit::ActiveAdmin::Table
 
     ctx.paginated_collection(paginated_relation, download_links: false, param_name: param_name) do
       local_instance.list ctx.collection, options
-    end
-  end
-
-  def errors_and_events_list(resource)
-    errors_relation = Models::Error.where_target_eq(resource).order(created_at: :desc)
-    events_relation = Models::Event.where_target_eq(resource).order(created_at: :desc)
-
-    ctx.tabs do
-      ctx.tab "Errors - #{errors_relation.count}" do
-        Tables::Error.new(ctx).panel_list errors_relation
-      end
-
-      ctx.tab "Events - #{events_relation.count}" do
-        Tables::Event.new(ctx).panel_list events_relation
-      end
     end
   end
 
@@ -532,29 +519,6 @@ class Kit::ActiveAdmin::Table
     send(type, name) do |el|
       v = functor.call(el)
       ctx.pre v.to_yaml.gsub("---\n", '').gsub("--- ", '')
-    end
-  end
-
-  def attr_type_jsonb_targets(type, name, functor)
-    send(type, name) do |el|
-      v = functor.call(el)
-
-      list = []
-
-      v.each do |k, id|
-        model_name  = k.gsub('_id', '').camelize
-        if model_name == 'ErrorWrite'
-          model_name = 'Error'
-        end
-        model_klass = "Models::#{model_name}".constantize
-        config = ctx.active_admin_resource_for model_klass
-
-        url = url_for config.route_instance_path id
-        text = "#{model_name}##{id}"
-        list << ctx.link_to(text, url)
-      end
-
-      ctx.code ctx.raw list.join(' ')
     end
   end
 

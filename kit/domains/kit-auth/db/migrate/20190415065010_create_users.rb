@@ -8,7 +8,6 @@ class CreateUsers < ActiveRecord::Migration[5.2]
       t.string     :email,                       index: true, null: false
       t.string     :hashed_secret, default: nil
       t.datetime   :confirmed_at,  default: nil, index: true
-      t.date
     end
 
     add_index :users, [:email], name: 'index_users_on_email_unique', where: "deleted_at IS NULL", unique: true

@@ -1,5 +1,5 @@
 class WebController < ActionController::Base
-  include Kit::Auth::Controllers::Concerns::CurrentUser
+  include Kit::Auth::Controllers::Web::Concerns::CurrentUser
 
   layout 'application'
 

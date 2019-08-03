@@ -1,4 +1,4 @@
-module Kit::Auth::Controllers::Concerns
+module Kit::Auth::Controllers::Web::Concerns
   module CurrentUser
     extend ActiveSupport::Concern
 
@@ -9,9 +9,12 @@ module Kit::Auth::Controllers::Concerns
     end
 
     def resolve_current_user
+      oauth_application = Kit::Auth::Models::Read::OauthApplication.find_by!(uid: 'webapp')
+
       status, ctx = Kit::Auth::Actions::Users::IdentifyUserForRequest.call({
-        request: request,
-        cookies: cookies,
+        cookies:           cookies,
+        request:           request,
+        oauth_application: oauth_application,
       })
 
       if status == :ok

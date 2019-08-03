@@ -25,4 +25,6 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "bcrypt"
 
+  spec.add_dependency "browser"
+
 end

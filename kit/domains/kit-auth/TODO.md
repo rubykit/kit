@@ -1,3 +1,5 @@
+- Add IP / User agent to tokens
+
 - Event store?
 
 - Errors hash: establish format, probably like:
@@ -9,8 +11,9 @@
 
 - Figure out how to use kit-auth engine view path for doorkeeper engine
 
-- Add IP / User agent to tokens
-
-
-
 - Views: auto add class that matches the name of the cell? If so, on which element?
+
+- Currency engine
+
+- Geoloc engine
+

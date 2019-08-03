@@ -43,6 +43,10 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "rails_event_store"
 
+  spec.add_dependency "jsonapi-rails"
+
+  spec.add_dependency "seedbank"
+
   spec.add_development_dependency "annotate"
 
   #spec.add_dependency 'paranoia'

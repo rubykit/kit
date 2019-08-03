@@ -10,8 +10,7 @@ class CreateOauthIdentities < ActiveRecord::Migration[5.2]
       t.string     :provider,                         index: true, null: false
       t.string     :uid,                              index: true, null: false
 
-      t.text       :token,                            index: true, null: false
-      t.text       :secret
+      t.text       :token,                                         null: false
       t.integer    :expires_at,         default: nil
 
       t.jsonb      :info

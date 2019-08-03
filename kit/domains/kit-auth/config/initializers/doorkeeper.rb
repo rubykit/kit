@@ -10,15 +10,11 @@
 
   # This block will be called to check whether the resource owner is authenticated or not.
   resource_owner_authenticator do
-    puts request
-    puts cookies
     #   User.find_by_id(session[:user_id]) || redirect_to(new_user_session_url)
     Kit::Auth::Models::Write::User.first
   end
 
   admin_authenticator do |routes|
-    puts request
-    puts cookies
     #   User.find_by_id(session[:user_id]) || redirect_to(new_user_session_url)
     Kit::Auth::Models::Write::User.first
   end
@@ -65,12 +61,12 @@
 
   # Authorization Code expiration time (default 10 minutes).
   #
-  # authorization_code_expires_in 10.minutes
+  authorization_code_expires_in 10.minutes
 
   # Access token expiration time (default 2 hours).
   # If you want to disable expiration, set this to nil.
   #
-  # access_token_expires_in 2.hours
+  access_token_expires_in 30.days
 
   # Assign custom TTL for access tokens. Will be used instead of access_token_expires_in
   # option if defined. `context` has the following properties available
@@ -101,7 +97,7 @@
   # doesn't updates existing token expiration time, it will create a new token instead.
   # Rationale: https://github.com/doorkeeper-gem/doorkeeper/issues/383
   #
-  # reuse_access_token
+  reuse_access_token
 
   # Issue access tokens with refresh token (disabled by default), you may also
   # pass a block which accepts `context` to customize when to give a refresh
@@ -131,8 +127,10 @@
   # For more information go to
   # https://github.com/doorkeeper-gem/doorkeeper/wiki/Using-Scopes
   #
-  # default_scopes  :public
-  # optional_scopes :write, :update
+  default_scopes  :public
+
+  optional_scopes :admin,
+                  :update_user_secret
 
   # Change the way client credentials are retrieved from the request object.
   # By default it retrieves first from the `HTTP_AUTHORIZATION` header, then
@@ -156,7 +154,7 @@
   # The value can be any string. Use nil to disable this feature. When disabled, clients must provide a valid URL
   # (Similar behaviour: https://developers.google.com/accounts/docs/OAuth2InstalledApp#choosingredirecturi)
   #
-  # native_redirect_uri 'urn:ietf:wg:oauth:2.0:oob'
+  native_redirect_uri 'urn:ietf:wg:oauth:2.0:oob'
 
   # Forces the usage of the HTTPS protocol in non-native redirect uris (enabled
   # by default in non-development environments). OAuth2 delegates security in

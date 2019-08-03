@@ -3,14 +3,14 @@ require 'dry-validation'
 
 # TODO: audit if going through Doorkeeper is worth doing
 
-module Kit::Auth::Actions::Users::GetAccessTokenForUser
+module Kit::Auth::Actions::Users::GetAuthorizationTokenForUser
   include Contracts
 
   #Contract Hash => [Symbol, KeywordArgs[oauth_access_token: Any, errors: Any]]
-  def self.call(user:)
+  def self.call(user:, oauth_application:)
     request_object = Doorkeeper::OAuth::PasswordAccessTokenRequest.new(
       Doorkeeper.configuration,
-      Doorkeeper::Application.find_by!(name: 'self'),
+      oauth_application,
       user,
       {
         scope: nil,

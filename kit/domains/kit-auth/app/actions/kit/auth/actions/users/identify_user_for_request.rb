@@ -3,11 +3,12 @@ module Kit::Auth::Actions::Users::IdentifyUserForRequest
 
   # Todo: add contract on request / cookies (based on needed access)
   #Contract Hash => [Symbol, KeywordArgs[user: Any]]
-  def self.call(request:, cookies:)
+  def self.call(request:, cookies:, oauth_application:)
     status, ctx = Kit::Organizer.call({
       ctx: {
-        request: request,
-        cookies: cookies,
+        request:           request,
+        cookies:           cookies,
+        oauth_application: oauth_application,
       },
       list: [
         self.method(:extract_access_token),
@@ -42,9 +43,7 @@ module Kit::Auth::Actions::Users::IdentifyUserForRequest
     [:ok, access_token: access_token]
   end
 
-  def self.find_user(access_token:)
-    oauth_application  = Kit::Auth::Models::Read::OauthApplication.find_by(name: 'self')
-
+  def self.find_user(access_token:, oauth_application:)
     return [:error] if access_token == nil || oauth_application == nil
 
     oauth_access_token = Kit::Auth::Models::Read::OauthAccessToken.find_by({

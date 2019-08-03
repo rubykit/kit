@@ -1,8 +1,8 @@
 module Kit::Auth::Models::Read
   class OauthAccessGrant < Kit::Auth::Models::ReadRecord
 
-    belongs_to :oauth_access_application,
-               class_name: 'Kit::Auth::Models::Read::OauthAccessApplication',
+    belongs_to :oauth_application,
+               class_name: 'Kit::Auth::Models::Read::OauthApplication',
                foreign_key: 'application_id'
 
     belongs_to :user,
