@@ -1,7 +1,7 @@
 require 'browser'
 
 ActiveAdmin.register Kit::Auth::Models::Write::UserRequestMetadata, as: 'UserRequestMetadata', namespace: :kit_auth_admin do
-  menu parent: 'Users', parent: 'UserRequestMetadata'
+  menu parent: 'Users'
 
   actions :all, except: [:new, :edit, :destroy]
 

@@ -33,7 +33,10 @@ td pre {
 
 .panel {
 
-  h3 { cursor: pointer; }
+  h3 {
+    cursor: pointer;
+    margin: 0px;
+  }
 
   .panel_contents {
     position: relative;
@@ -50,6 +53,34 @@ td pre {
 //.bootstrap {
 //  @import 'app-theme';
 //}
+
+#active_admin_content {
+    padding: 30px;
+}
+
+#header {
+  #site_title {
+    font-family: 'andale mono', 'lucida console', monospace;
+    padding-top: 0px;
+  }
+  #current_user a {
+    font-family: 'andale mono', 'lucida console', monospace;
+  }
+}
+
+#title_bar {
+  #page_title {
+    font-family: 'andale mono', 'lucida console', monospace;
+    font-size: 1.2em;
+  }
+}
+
+
+.panel_contents table {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
 
 // INLINE BTN
 
