@@ -1,8 +1,12 @@
 module Kit::Auth::Models
-  class ReadRecord < ApplicationRecord
+  class ReadRecord < EngineRecord
     self.abstract_class = true
 
     establish_connection :"#{Rails.env}_readonly"
+
+    def self.to_read_class
+      self
+    end
 
     def self.to_write_class
       self.name.gsub('::Read::', '::Write::').constantize rescue nil
@@ -22,18 +26,6 @@ module Kit::Auth::Models
 
     def to_read_record
       self
-    end
-
-    def is_read_record?
-      self.class.is_read_class?
-    end
-
-    def is_write_record?
-      self.class.is_write_class?
-    end
-
-    def readonly?
-      self.class.is_read_class?
     end
 
     before_destroy { |record| raise ReadOnlyRecord }

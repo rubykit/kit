@@ -1,11 +1,15 @@
 module Kit::Auth::Models
-  class WriteRecord < ApplicationRecord
+  class WriteRecord < EngineRecord
     self.abstract_class = true
 
     establish_connection :"#{Rails.env}_write"
 
     def self.to_read_class
       self.name.gsub('::Write::', '::Read::').constantize rescue nil
+    end
+
+    def self.to_write_class
+      self
     end
 
     def self.is_read_class?
@@ -22,14 +26,6 @@ module Kit::Auth::Models
 
     def to_write_record
       self
-    end
-
-    def is_read_record?
-      self.class.is_read_class?
-    end
-
-    def is_write_record?
-      self.class.is_write_class?
     end
 
   end

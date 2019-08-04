@@ -1,6 +1,16 @@
 module Kit::Auth::Models::Read
   class User < Kit::Auth::Models::ReadRecord
-    #fields(:id, :email, :password_encrypted)
+
+
+    self.whitelisted_columns = [
+      :id,
+      :created_at,
+      :updated_at,
+      :deleted_at,
+      :email,
+      :hashed_secret,
+      :confirmed_at,
+    ]
 
     has_many :oauth_access_grants,
              class_name: 'Kit::Auth::Models::Read::OauthAccessGrant',

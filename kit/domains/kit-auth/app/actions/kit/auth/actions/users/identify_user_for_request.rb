@@ -19,7 +19,7 @@ module Kit::Auth::Actions::Users::IdentifyUserForRequest
     if ctx[:errors]
       [:error, user: nil, errors: ctx[:errors]]
     else
-      [:ok, user: ctx[:user]]
+      [:ok, ctx.slice(:user, :oauth_access_token)]
     end
   end
 
@@ -53,7 +53,7 @@ module Kit::Auth::Actions::Users::IdentifyUserForRequest
     user               = oauth_access_token&.user
 
     if user
-      [:ok, user: user]
+      [:ok, user: user, oauth_access_token: oauth_access_token]
     else
       [:error]
     end

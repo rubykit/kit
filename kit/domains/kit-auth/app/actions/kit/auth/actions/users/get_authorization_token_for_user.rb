@@ -7,13 +7,13 @@ module Kit::Auth::Actions::Users::GetAuthorizationTokenForUser
   include Contracts
 
   #Contract Hash => [Symbol, KeywordArgs[oauth_access_token: Any, errors: Any]]
-  def self.call(user:, oauth_application:)
+  def self.call(user:, oauth_application:, scopes: nil)
     request_object = Doorkeeper::OAuth::PasswordAccessTokenRequest.new(
       Doorkeeper.configuration,
       oauth_application,
       user,
       {
-        scope: nil,
+        scope: scopes,
       }
     )
 

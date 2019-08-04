@@ -72,6 +72,8 @@ module Kit::Auth::Controllers::Web
     end
 
     def delete
+      Kit::Auth::Services::OauthAccessToken.revoke({ oauth_access_token: current_user_oauth_access_token })
+
       cookies.encrypted[:access_token] = nil
 
       # TODO: to fix this we probably need to add config from the top level app that knows the routes

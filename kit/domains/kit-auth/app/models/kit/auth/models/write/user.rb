@@ -1,7 +1,16 @@
 module Kit::Auth::Models::Write
   class User < Kit::Auth::Models::WriteRecord
-    #fields(:id, :email, :password_encrypted)
     acts_as_paranoid
+
+    self.whitelisted_columns = [
+      :id,
+      :created_at,
+      :updated_at,
+      :deleted_at,
+      :email,
+      :hashed_secret,
+      :confirmed_at,
+    ]
 
     has_many :oauth_access_grants,
              class_name: 'Kit::Auth::Models::Write::OauthAccessGrant',

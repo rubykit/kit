@@ -1,5 +1,21 @@
 module Kit::Auth::Models::Write
   class OauthAccessToken < Kit::Auth::Models::WriteRecord
+    acts_as_paranoid
+
+    self.whitelisted_columns = [
+      :id,
+      :created_at,
+      :updated_at,
+      :deleted_at,
+      :resource_owner_id,
+      :application_id,
+      :token,
+      :scopes,
+      :expires_in,
+      :revoked_at,
+      :refresh_token,
+      :last_user_request_metadata_id,
+    ]
 
     belongs_to :oauth_application,
                class_name: 'Kit::Auth::Models::Write::OauthApplication',

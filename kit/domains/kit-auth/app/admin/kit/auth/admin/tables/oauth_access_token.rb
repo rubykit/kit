@@ -9,8 +9,9 @@ class Kit::Auth::Admin::Tables::OauthAccessToken < Kit::Auth::Admin::Tables::Bas
       user:              :model_verbose,
       oauth_application: :model_verbose,
       token:             :code,
+      active:            [nil, ->(el) { Kit::Auth::Services::OauthAccessToken.is_active?(oauth_access_token: el) }],
       refresh_token:     :code,
-      expires_in:        nil,
+      expires_in:        :code,
       scopes:            :code,
       revoked_at:        nil,
       last_urm:          [:model, ->(el) { el.last_user_request_metadata } ],
@@ -18,7 +19,7 @@ class Kit::Auth::Admin::Tables::OauthAccessToken < Kit::Auth::Admin::Tables::Bas
   end
 
   def attributes_for_index
-    attributes_for_all
+    attributes_for_all.slice(:id, :created_at, :user, :oauth_application, :token, :active, :expires_in, :revoked_at, :scopes, :last_urm)
   end
 
   def attributes_for_list

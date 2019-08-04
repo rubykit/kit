@@ -1,6 +1,20 @@
 module Kit::Auth::Models::Read
   class OauthApplication < Kit::Auth::Models::ReadRecord
 
+
+    self.whitelisted_columns = [
+      :id,
+      :created_at,
+      :updated_at,
+      :deleted_at,
+      :name,
+      :uid,
+      :secret,
+      :redirect_uri,
+      :scopes,
+      :confidential,
+    ]
+
     has_many :oauth_access_grants,
              class_name: 'Kit::Auth::Models::Read::OauthAccessGrant',
              foreign_key: 'application_id'

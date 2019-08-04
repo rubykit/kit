@@ -3,4 +3,4 @@ module Kit
   end
 end
 
-require "kit/domain/railtie"
+require "kit/domain/engine"
