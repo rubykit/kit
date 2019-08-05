@@ -1,5 +1,7 @@
 module Kit::Auth::Models::Write
   class User < Kit::Auth::Models::WriteRecord
+    self.table_name = 'users'
+
     acts_as_paranoid
 
     self.whitelisted_columns = [

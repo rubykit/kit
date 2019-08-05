@@ -1,5 +1,7 @@
 module Kit::Auth::Models::Write
   class OauthAccessToken < Kit::Auth::Models::WriteRecord
+    self.table_name = 'oauth_access_tokens'
+
     acts_as_paranoid
 
     self.whitelisted_columns = [

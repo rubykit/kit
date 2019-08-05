@@ -1,5 +1,7 @@
 module Kit::Auth::Models::Read
   class User < Kit::Auth::Models::ReadRecord
+    self.table_name = 'users'
+
 
 
     self.whitelisted_columns = [

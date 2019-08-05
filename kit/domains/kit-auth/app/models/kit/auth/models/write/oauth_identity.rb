@@ -1,5 +1,7 @@
 module Kit::Auth::Models::Write
   class OauthIdentity < Kit::Auth::Models::WriteRecord
+    self.table_name = 'oauth_identities'
+
     acts_as_paranoid
 
     self.whitelisted_columns = [

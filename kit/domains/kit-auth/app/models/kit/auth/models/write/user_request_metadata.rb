@@ -1,5 +1,7 @@
 module Kit::Auth::Models::Write
   class UserRequestMetadata < Kit::Auth::Models::WriteRecord
+    self.table_name = 'user_request_metadata'
+
     acts_as_paranoid
 
     self.whitelisted_columns = [

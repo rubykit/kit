@@ -1,5 +1,7 @@
 module Kit::Auth::Models::Read
   class OauthApplication < Kit::Auth::Models::ReadRecord
+    self.table_name = 'oauth_applications'
+
 
 
     self.whitelisted_columns = [

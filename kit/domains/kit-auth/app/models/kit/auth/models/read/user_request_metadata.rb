@@ -1,5 +1,7 @@
 module Kit::Auth::Models::Read
   class UserRequestMetadata < Kit::Auth::Models::ReadRecord
+    self.table_name = 'user_request_metadata'
+
 
 
     self.whitelisted_columns = [

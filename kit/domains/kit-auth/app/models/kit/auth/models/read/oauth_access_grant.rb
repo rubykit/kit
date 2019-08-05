@@ -1,5 +1,7 @@
 module Kit::Auth::Models::Read
   class OauthAccessGrant < Kit::Auth::Models::ReadRecord
+    self.table_name = 'oauth_access_grants'
+
 
 
     self.whitelisted_columns = [

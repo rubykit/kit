@@ -1,5 +1,7 @@
 module Kit::Auth::Models::Read
   class OauthAccessToken < Kit::Auth::Models::ReadRecord
+    self.table_name = 'oauth_access_tokens'
+
 
 
     self.whitelisted_columns = [

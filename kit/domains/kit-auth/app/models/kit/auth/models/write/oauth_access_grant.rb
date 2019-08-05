@@ -1,5 +1,7 @@
 module Kit::Auth::Models::Write
   class OauthAccessGrant < Kit::Auth::Models::WriteRecord
+    self.table_name = 'oauth_access_grants'
+
     acts_as_paranoid
 
     self.whitelisted_columns = [
