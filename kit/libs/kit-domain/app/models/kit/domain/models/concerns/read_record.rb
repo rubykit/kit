@@ -8,20 +8,24 @@ module Kit::Domain::Models::Concerns
       before_destroy { |record| raise ReadOnlyRecord }
     end
 
-    def self.to_read_class
-      self
-    end
+    class_methods do
 
-    def self.to_write_class
-      self.name.gsub('::Read::', '::Write::').constantize rescue nil
-    end
+      def to_read_class
+        self
+      end
 
-    def self.is_read_class?
-      true
-    end
+      def to_write_class
+        self.name.gsub('::Read::', '::Write::').constantize rescue nil
+      end
 
-    def self.is_write_class?
-      false
+      def is_read_class?
+        true
+      end
+
+      def is_write_class?
+        false
+      end
+
     end
 
     def to_write_record

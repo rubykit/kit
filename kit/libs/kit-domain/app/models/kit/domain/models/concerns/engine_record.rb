@@ -9,8 +9,13 @@ module Kit::Domain::Models::Concerns
       self.columns_whitelisting = true
     end
 
-    def self.table_name
-      name.demodulize.tableize
+    class_methods do
+
+       # Removes Engine modules name
+      def table_name
+        name.demodulize.tableize
+      end
+
     end
 
     # Ex: User#1

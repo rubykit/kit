@@ -6,20 +6,24 @@ module Kit::Domain::Models::Concerns
       self.abstract_class = true
     end
 
-    def self.to_read_class
-      self.name.gsub('::Write::', '::Read::').constantize rescue nil
-    end
+    class_methods do
 
-    def self.to_write_class
-      self
-    end
+      def to_read_class
+        self.name.gsub('::Write::', '::Read::').constantize rescue nil
+      end
 
-    def self.is_read_class?
-      false
-    end
+      def to_write_class
+        self
+      end
 
-    def self.is_write_class?
-      true
+      def is_read_class?
+        false
+      end
+
+      def is_write_class?
+        true
+      end
+
     end
 
     def to_read_record

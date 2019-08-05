@@ -13,8 +13,11 @@ module ActiveRecord
         @whitelisted_columns = columns.map(&:to_s)
       end
 
-      def load_schema!
-        @columns_hash = connection.schema_cache.columns_hash(table_name).except(*ignored_columns)
+      def ensure_whitelisted_columns!
+        return if self.in?([
+          ActiveRecord::SchemaMigration,
+          ActiveRecord::InternalMetadata,
+        ])
 
         if @whitelisted_columns || columns_whitelisting
           if !defined?(@whitelisted_columns)
@@ -25,6 +28,12 @@ module ActiveRecord
             @columns_hash.slice!(*@whitelisted_columns)
           end
         end
+      end
+
+      def load_schema!
+        @columns_hash = connection.schema_cache.columns_hash(table_name).except(*ignored_columns)
+
+        ensure_whitelisted_columns!
 
         @columns_hash.each do |name, column|
           define_attribute(
