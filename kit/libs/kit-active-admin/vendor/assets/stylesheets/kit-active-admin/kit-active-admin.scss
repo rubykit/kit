@@ -3,7 +3,9 @@
 @import "active_admin/base";
 
 @import "activeadmin_addons/all";
+
 @import "dependencies/sweetalert2-6.11.1";
+@import "dependencies/famfamfam-flags";
 
 @import "active_admin_overides/structure";
 @import "active_admin_overides/components";
