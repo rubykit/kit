@@ -4,11 +4,11 @@ ActiveAdmin.register Kit::Geolocation::Models::Write::Country, as: 'Country', na
 
   config.sort_order = 'name_asc'
 
-  filter :id,                   filters: ['eq']
-  filter :iso3166_alpha3,       filters: ['eq']
-  filter :iso3166_alpha2,       filters: ['eq']
-  filter :iso3166_numeric,      filters: ['eq']
-  filter :name,                 filters: ['eq']
+  filter :id,              filters: ['eq']
+  filter :iso3166_alpha3,  filters: ['eq']
+  filter :iso3166_alpha2,  filters: ['eq']
+  filter :iso3166_numeric, filters: ['eq']
+  filter :name,            filters: ['eq']
 
   controller do
     def scoped_collection

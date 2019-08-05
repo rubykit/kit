@@ -6,7 +6,8 @@ ActiveAdmin.register Kit::Geolocation::Models::Write::IpGeolocation, as: 'IpGeol
   config.sort_order = 'id_asc'
 
   filter :id,         filters: ['eq']
-  filter :ip,         as: :string, filters: ['eq']
+  filter :ip_start
+  filter :ip_end
   filter :country_id, filters: ['eq']
 
   controller do
