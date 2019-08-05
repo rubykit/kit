@@ -1,0 +1,45 @@
+default: &default
+  adapter:  <%= ENV['DATABASE_ADAPTER'] || 'postgresql' %>
+  encoding: utf8
+  pool:     <%= (ENV['DATABASE_POOL'] || ENV['MAX_THREADS'] || 5) %>
+
+default_readonly: &default_readonly
+  <<:  *default
+  url: <%= ENV['DATABASE_URL'] %>
+
+default_write: &default_write
+  <<:  *default
+  url: <%= ENV['DATABASE_URL'] %>
+
+# ------------------------------------------------------------------------------
+
+production:
+  adapter: nulldb
+
+development:
+  adapter: nulldb
+
+test:
+  adapter: nulldb
+
+# ------------------------------------------------------------------------------
+
+production_readonly:
+  <<: *default_readonly
+
+development_readonly:
+  <<: *default_readonly
+
+test_readonly:
+  <<: *default_readonly
+
+# ------------------------------------------------------------------------------
+
+production_write:
+  <<: *default_write
+
+development_write:
+  <<: *default_write
+
+test_write:
+  <<: *default_write
