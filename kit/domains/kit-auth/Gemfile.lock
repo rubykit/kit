@@ -23,7 +23,6 @@ PATH
       dotenv-rails (~> 2.1, >= 2.1.1)
       dry-struct
       dry-validation
-      fast_jsonapi (~> 1.5)
       interactor
       jsonapi-rails
       multiverse (~> 0.2.1)
@@ -41,6 +40,11 @@ PATH
   specs:
     kit-organizer (0.1.0)
       contracts (~> 0.16.0)
+
+PATH
+  remote: ../../libs/kit-pagination
+  specs:
+    kit-pagination (0.1.0)
 
 PATH
   remote: .
@@ -239,8 +243,6 @@ GEM
       i18n (>= 0.7)
     faraday (0.15.4)
       multipart-post (>= 1.2, < 3)
-    fast_jsonapi (1.5)
-      activesupport (>= 4.2)
     ffi (1.11.1)
     formtastic (3.1.5)
       actionpack (>= 3.2.13)
@@ -500,11 +502,13 @@ DEPENDENCIES
   dotenv-rails
   factory_bot_rails
   faker
+  jsonapi-rails
   kit-active-admin!
   kit-app-container!
   kit-auth!
   kit-domain!
   kit-organizer!
+  kit-pagination!
   paranoia
   pry
   pry-byebug

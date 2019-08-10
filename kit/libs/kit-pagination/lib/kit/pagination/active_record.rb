@@ -1,7 +1,6 @@
 module Kit::Pagination::ActiveRecord
   class << self
 
-    # where("created_at >= :start_date AND created_at <= :end_date", {start_date: params[:start_date], end_date: params[:end_date]})
     def to_where_arguments(conditions:)
       [
         to_string(condition: conditions),
@@ -10,7 +9,7 @@ module Kit::Pagination::ActiveRecord
     end
 
     def to_order_arguments(ordering:)
-      [ordering]
+      [ordering.to_h]
     end
 
     protected
@@ -20,8 +19,8 @@ module Kit::Pagination::ActiveRecord
       lte: '<=',
       gt:  '>',
       gte: '>=',
-      and: '&&',
-      or:  '||',
+      and: 'AND',
+      or:  'OR',
     }
 
     def to_string(condition:)

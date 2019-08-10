@@ -5,11 +5,13 @@ module Kit::Auth::Controllers::Api::Concerns
     included do
       before_action :resolve_current_user
 
-      helper_method :current_user
-      helper_method :current_user_oauth_access_token
+      #helper_method :current_user
+      #helper_method :current_user_oauth_access_token
     end
 
     def resolve_current_user
+      return current_user if current_user
+
       oauth_application = Kit::Auth::Models::Read::OauthApplication.find_by!(uid: 'api')
 
       status, ctx = Kit::Auth::Actions::Users::IdentifyUserForRequest.call({

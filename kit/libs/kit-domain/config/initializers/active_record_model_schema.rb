@@ -19,12 +19,12 @@ module ActiveRecord
           ActiveRecord::InternalMetadata,
         ])
 
-        if @whitelisted_columns || columns_whitelisting
+        if @whitelisted_columns || (respond_to?(:columns_whitelisting) && columns_whitelisting)
           if !defined?(@whitelisted_columns)
             @whitelisted_columns = []
           end
 
-          if @whitelisted_columns.size > 0 || columns_whitelisting
+          if @whitelisted_columns.size > 0 || (respond_to?(:columns_whitelisting) && columns_whitelisting)
             @columns_hash.slice!(*@whitelisted_columns)
           end
         end

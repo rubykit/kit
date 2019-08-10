@@ -39,8 +39,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "dry-validation"
   spec.add_dependency "dry-struct"
 
-  spec.add_dependency "fast_jsonapi", "~> 1.5"
-
   spec.add_dependency "rails_event_store"
 
   spec.add_dependency "jsonapi-rails"

@@ -20,7 +20,7 @@ describe Kit::Pagination::ActiveRecord do
     it 'generates the correct `where` values' do
       string, hash = subject
 
-      expect(string).to eq "(((ca1 > :ca1_value)) || ((ca1 >= :ca1_value) && (ca2 < :ca2_value)) || ((ca1 >= :ca1_value) && (ca2 <= :ca2_value) && (ua > :ua_value)))"
+      expect(string).to eq "(((ca1 > :ca1_value)) OR ((ca1 >= :ca1_value) AND (ca2 < :ca2_value)) OR ((ca1 >= :ca1_value) AND (ca2 <= :ca2_value) AND (ua > :ua_value)))"
       expect(hash).to   eq record.to_h.map { |k, v| ["#{k}_value".to_sym, v] }.to_h
     end
   end

@@ -6,6 +6,7 @@
 - Event store?
 
 - API / JSON-api
+  -> Relationship VS resources. Implement as alias to resources links when not an attribute (not a belongs_to)
 
 - Views: auto add class that matches the name of the cell? If so, on which element?
 

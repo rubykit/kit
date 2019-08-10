@@ -5,5 +5,11 @@ module Kit::Auth::Controllers
 
     protect_from_forgery with: :exception
 
+    def require_current_user!
+      return if current_user
+
+      redirect_to '/kit-auth/web/signin'
+    end
+
   end
 end

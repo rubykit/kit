@@ -1,24 +1,27 @@
 # frozen_string_literal: true
 
 module Kit::Auth::Controllers::Api::V1
-  class UsersController < ApiV1Controller # :nodoc:
+  class UsersController < Kit::Auth::Controllers::Api::ApiV1Controller # :nodoc:
+
+    # Show ---------------------------------------------------------------------
+
+    afore_action :show, list: [
+      :require_current_user!,
+      -> { load_resource!(model: Kit::Auth::Models::Read::User, param: :id) },
+      -> { require_belongs_to!(parent: current_user, child: resource) },
+    ]
 
     def show
-      params.permit(:id)
-
-      resource = Kit::Auth::Models::Read::User.find_by(id: params[:id])
-
-      if resource
-        status = :ok
-        body   = Kit::Auth::Serializers::User.new(resource).serialized_json
-      else
-        status = :not_found
-        body   = nil
-      end
-
-      render status: status, json: body
+      render({
+        status: :ok,
+        jsonapi: resource,
+      })
     end
 
+
+    # Create -------------------------------------------------------------------
+
+=begin
     def create
       safe_params = params.permit(:email, :password, :password_confirmation).to_h
 
@@ -34,6 +37,7 @@ module Kit::Auth::Controllers::Api::V1
 
       render status: status, json: body
     end
+=end
 
   end
 end

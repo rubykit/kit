@@ -26,9 +26,11 @@ module Kit::Auth::Actions::Users::GetAuthorizationTokenForUser
         request_object.server
       )
 
+      just_created       = access_token.id_previously_changed?
+
       oauth_access_token = Kit::Auth::Models::Read::OauthAccessToken.find(access_token.id)
 
-      [:ok, oauth_access_token: oauth_access_token]
+      [:ok, oauth_access_token: oauth_access_token, oauth_access_token_created: just_created]
     else
       [:error, errors: [{ msg: request_object.error }]]
     end

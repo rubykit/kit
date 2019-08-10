@@ -1,17 +1,26 @@
 
+JSON API
+https://jsonapi.org/
 
-- JSON API https://jsonapi.org/
-- Add proper support for:
-    - Pagination:
-        - absolute (by value, with support for multi-fields, like 1datetime, 2id), relative (by offset/index)
-        - with clear values (passed as is in parameters) or encapsulated through a token (I think this is what “cursor” should refer to, regardless of the type of pagination)
-        - when using a cursor, should sparse fields or limit be embedded in the token?
-        - when duplicates (clear values + token), which wins?
+Pagination:
+    - absolute (by value, with support for multi-fields, like 1datetime, 2id), relative (by offset/index)
+    - with clear values (passed as is in parameters) or encapsulated through a token (I think this is what “cursor” should refer to, regardless of the type of pagination)
+    - when using a cursor, should sparse fields or limit be embedded in the token?
+    - when duplicates (clear values + token), which wins?
+  https://jsonapi.org/extensions/##profiles-category-pagination
+
+In a scenario where we nest like A -> B -> C, there is NO dependency from C on A !
+  -> This matters for cursor pagination links in a relationship scenario
+
+JSON-api relationships
+- Relationships links should be aliases on the resource when the relation IS a resource
+- When it is an attribute (1 to 1 scenario) treat the suppresion of the relationship like an attribute update
 
 - Every resource should be exposed as a top level endpoint (meaning: only one ID needs to be known to make a request).
 Nesting is allowed but is purely an alias.
 
 - POST for UPSERT
+
 
 Notes:
 
