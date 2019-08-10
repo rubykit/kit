@@ -1,7 +1,7 @@
 require 'kit/pagination'
 require 'ostruct'
 
-require_relative '../support/spec_db'
+require_relative 'support/spec_db'
 
 describe "Pagination page access" do
   let(:records)          { records_base.map { |el| OpenStruct.new(el) } }

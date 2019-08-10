@@ -33,9 +33,8 @@ module SpecDb
 
     # Check that an element obeys a number of "conditions" structs
     def obeys?(element:, condition:)
-      conditions = conditions.dup
+      condition = condition.dup
 
-      # ConditionSet
       if condition.is_a?(Kit::Pagination::Conditions::Set)
         values = condition.values.map do |value|
           # Boolean (condition has already been checked)
@@ -53,8 +52,7 @@ module SpecDb
           values.include?(true)
         end
 
-      # Condition
-      else
+      elsif condition.is_a?(Kit::Pagination::Conditions::Single)
         value    = condition.value
         el_value = element.send(condition.name)
 
