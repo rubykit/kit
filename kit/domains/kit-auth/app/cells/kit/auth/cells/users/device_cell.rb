@@ -9,7 +9,6 @@ module Kit::Auth::Cells::Users
     end
 
     def token
-      puts model
       model[:oauth_access_token]
     end
 

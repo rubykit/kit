@@ -36,12 +36,6 @@ module Kit::Auth::Controllers::Api
       end
     end
 
-    def self.afore_action(name, list:)
-      list.each do |el|
-        self.before_action el, only: [name]
-      end
-    end
-
     def paginate(relation:, ordering:)
       page_size       = api_page_size(size: request.params.dig(:page, :size))
       where_arguments = []
@@ -73,6 +67,40 @@ module Kit::Auth::Controllers::Api
       relation
         .order(*Kit::Pagination::ActiveRecord.to_order_arguments(ordering: ordering))
         .limit(page_size)
+    end
+
+    def get_pagination_parameters(collection:, ordering:)
+      params = { next: {}, prev: {} }
+
+      list = [
+        [:prev,  0, :before],
+        [:next, -1, :after],
+      ]
+
+      # NOTE: implicit dependency, should this be parametized?
+      page_size = request.params.dig(:page, :size).to_i
+      if page_size > 0
+        page_size = api_page_size(size: page_size)
+      end
+
+      list.each do |el|
+        id, offset, param_name = el
+
+        cursor_data = Kit::Pagination::Cursor.cursor_data_for_element(ordering: ordering, element: collection[offset])
+        token       = Kit::Pagination::Cursor.encode_cursor(cursor_data: cursor_data)
+
+        if token
+          params[id][:page] ||= {}
+          params[id][:page][param_name] = token
+        end
+
+        if page_size > 0
+          params[id][:page] ||= {}
+          params[id][:page][:size] = page_size
+        end
+      end
+
+      params
     end
 
     def load_resource!(model:, param:, column: nil)
