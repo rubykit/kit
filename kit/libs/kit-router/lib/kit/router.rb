@@ -26,15 +26,11 @@ module Kit
         end
       end
 
-      def register(uid:, controller:, action:, engine: nil)
+      def register(uid:, aliases:, controller:, action:)
         #controller.ancestors.include?(ActionController::Metal)
 
-        @store ||= {}
-        if @store[uid.to_sym]
-          @store[uid.to_sym].merge({ controller: controller, action: action })
-        else
-          @store[uid.to_sym] = { controller: controller, action: action, mounted: false }
-        end
+        add_to_store(uid: uid, controller: controller, action: action)
+        add_aliases(uid: uid, aliases: aliases)
 
         true
       end
@@ -72,18 +68,52 @@ module Kit
 
       protected
 
+      def add_aliases(uid:, aliases:)
+        @aliases ||= {}
+
+        if !aliases.is_a?(Array)
+          aliases = [aliases]
+        end
+
+        aliases.each do |alias_id|
+          @aliases[alias_id.to_sym] = uid.to_sym
+        end
+      end
+
+      def add_to_store(uid:, controller:, action:)
+        uid = uid.to_sym
+
+        @store ||= {}
+
+        if @store[uid.to_sym]
+          raise "Kit::Router | already defined route `#{uid}`"
+        end
+
+        @store[uid.to_sym] = { controller: controller, action: action, mounted: false }
+      end
+
       def get_record(uid:)
         uid = uid.to_sym
+
         if !(record = store[uid])
+          if (alias_id = aliases[uid])
+            record = store[alias_id]
+          end
+        end
+
+        if !record
           raise "Kit::Router | unknown route `#{uid}`"
         end
 
         record
       end
 
-
       def store
         @store || {}
+      end
+
+      def aliases
+        @aliases || {}
       end
 
     end

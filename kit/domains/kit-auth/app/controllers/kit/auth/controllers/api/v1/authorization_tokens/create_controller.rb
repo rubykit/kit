@@ -1,9 +1,10 @@
 module Kit::Auth::Controllers::Api::V1::AuthorizationTokens
   class CreateController < Kit::Auth::Controllers::Api::ApiV1Controller # :nodoc:
 
-    ROUTE_UID = 'api_v1|authorization_tokens|create'
+    ROUTE_ID  = 'api_v1|authorization_tokens|create'
+    ROUTE_UID = "kit_auth|#{ROUTE_ID}"
 
-    Kit::Router.register(uid: ROUTE_UID, controller: self, action: :endpoint)
+    Kit::Router.register(uid: ROUTE_UID, aliases: [ROUTE_ID], controller: self, action: :endpoint)
 
     def endpoint
       attributes = params[:authorization_token][:data][:attributes]
