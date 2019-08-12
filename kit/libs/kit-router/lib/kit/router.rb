@@ -6,7 +6,7 @@ module Kit
 
       def map_routes(list:, context:)
         list.each do |uid, attrs|
-          record = get_record(uid: uid)
+          record = get_record(id: uid)
 
           # https://github.com/rails/rails/blob/9a2e00e27b87632be3528b53efb8bba504688711/actionpack/lib/action_dispatch/http/request.rb#L85
           controller_name = record[:controller].name.underscore.gsub(/_controller$/, '')
@@ -35,12 +35,12 @@ module Kit
         true
       end
 
-      def path(uid:, params:)
-        record = get_record(uid: uid)
+      def path(id:, params: {})
+        record = get_record(id: id)
         path   = record[:mounted_path]
 
         if path.blank?
-          raise "Kit::Router | not mounted `#{uid}`"
+          raise "Kit::Router | not mounted `#{id}`"
         end
 
         uri = URI(path)
@@ -63,7 +63,18 @@ module Kit
           .merge(params)
           .to_query
 
-        uri.to_s
+        uri.to_s.gsub(/\?$/, '')
+      end
+
+      def verb(id:)
+        record = get_record(id: id)
+        verb   = record[:mounted_verb]
+
+        if verb.blank?
+          raise "Kit::Router | not mounted `#{id}`"
+        end
+
+        verb
       end
 
       protected
@@ -85,24 +96,29 @@ module Kit
 
         @store ||= {}
 
-        if @store[uid.to_sym]
-          raise "Kit::Router | already defined route `#{uid}`"
+        # NOTE: because of live reloading it is easier to allow this
+        if (el = @store[uid.to_sym])
+          if el[:controller].name == controller.name && el[:action] == action
+             return
+          else
+            raise "Kit::Router | already defined route `#{uid}`"
+          end
         end
 
         @store[uid.to_sym] = { controller: controller, action: action, mounted: false }
       end
 
-      def get_record(uid:)
-        uid = uid.to_sym
+      def get_record(id:)
+        id = id.to_sym
 
-        if !(record = store[uid])
-          if (alias_id = aliases[uid])
+        if !(record = store[id])
+          if (alias_id = aliases[id])
             record = store[alias_id]
           end
         end
 
         if !record
-          raise "Kit::Router | unknown route `#{uid}`"
+          raise "Kit::Router | unknown route `#{id}`"
         end
 
         record
@@ -119,3 +135,5 @@ module Kit
     end
   end
 end
+
+require "kit/router/railtie"

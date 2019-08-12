@@ -10,9 +10,23 @@ Rails.application.routes.draw do
       'api_v1|authorization_tokens|show'   => { path: '/api/authorization_tokens/:resource_id', verb: :get },
       'api_v1|authorization_tokens|index'  => { path: '/api/authorization_tokens',              verb: :get },
       'api_v1|authorization_tokens|create' => { path: '/api/authorization_tokens',              verb: :post },
+
+      'web|authorization_tokens|new'     => { path: '/authorization_tokens', verb: :get },
+      'web|authorization_tokens|create'  => { path: '/authorization_tokens', verb: :post },
+      'web|authorization_tokens|destroy' => { path: '/authorization_tokens', verb: :delete },
     },
   )
 
   # Local to this app
-  root to: "home#index"
+
+  Kit::Router.register(uid: 'app|home', aliases: ['web|users|after_sign_in'], controller: HomeController, action: :index)
+
+  Kit::Router.map_routes(
+    context: self,
+    list: {
+      'app|home' => { path: '/', verb: :get },
+    },
+  )
+
+  #root to: "home#index"
 end

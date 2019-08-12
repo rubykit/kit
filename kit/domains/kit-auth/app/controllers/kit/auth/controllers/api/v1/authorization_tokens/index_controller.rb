@@ -32,8 +32,8 @@ module Kit::Auth::Controllers::Api::V1::AuthorizationTokens
       pagination_params = get_pagination_parameters(collection: collection, ordering: PAGE_ORDERING)
 
       {
-        prev: Kit::Router.path(uid: ROUTE_UID, params: pagination_params[:prev]),
-        next: Kit::Router.path(uid: ROUTE_UID, params: pagination_params[:next]),
+        prev: Kit::Router.path(id: ROUTE_UID, params: pagination_params[:prev]),
+        next: Kit::Router.path(id: ROUTE_UID, params: pagination_params[:next]),
       }
     end
 

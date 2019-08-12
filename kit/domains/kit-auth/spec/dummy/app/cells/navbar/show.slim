@@ -5,7 +5,7 @@ nav.navbar.navbar-expand-lg.fixed-top.navbar-dark.bg-dark
   #navbarsExampleDefault.navbar-collapse.offcanvas-collapse
     ul.navbar-nav.mr-auto
       li.nav-item.active
-        a.nav-link href=main_app.root_path
+        = router_link_to(id: 'app|home', html: { class: 'nav-link' })
           | Home
           span.sr-only (current)
     ul.navbar-nav
@@ -14,9 +14,9 @@ nav.navbar.navbar-expand-lg.fixed-top.navbar-dark.bg-dark
           a.nav-link href="#"
             = model[:current_user].email
         li.nav-item
-          = link_to kit_auth.web_signout_path, method: :delete, class: 'nav-link'
+          = router_link_to(id: 'web|users|sign_out', html: { class: 'nav-link' })
             | Sign out
       - else
         li.nav-item
-          a.nav-link href=kit_auth.web_signin_path
+          = router_link_to(id: 'web|users|sign_in', html: { class: 'nav-link' })
             | Sign in

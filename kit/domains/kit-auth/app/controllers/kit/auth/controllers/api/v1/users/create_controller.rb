@@ -7,7 +7,7 @@ module Kit::Auth::Controllers::Api::V1::Users
     Kit::Router.register(uid: ROUTE_UID, aliases: [ROUTE_ID], controller: self, action: :endpoint)
 
     def endpoint
-      safe_params = params.permit(:email, :password, :password_confirmation).to_h
+      safe_params = params.slice(:email, :password, :password_confirmation)
 
       res, ctx = Kit::Auth::Actions::Users::CreateUserWithPassword(safe_params)
 

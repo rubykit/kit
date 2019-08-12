@@ -8,7 +8,13 @@ module Kit::Auth::Controllers
     def require_current_user!
       return if current_user
 
-      redirect_to '/kit-auth/web/signin'
+      redirect_to Kit::Router.path(id: 'web|users|sign_in')
+    end
+
+    def redirect_if_current_user!
+      return if !current_user
+
+      redirect_to Kit::Router.path(id: 'web|users|after_sign_in')
     end
 
   end

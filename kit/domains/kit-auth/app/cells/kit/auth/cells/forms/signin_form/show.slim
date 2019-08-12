@@ -1,13 +1,28 @@
-= simple_form_for(model, url: kit_auth.web_signin_path, method: :post, html: { class: 'form-signin' }) do |f|
+= form_tag(router_path(id: 'web|authorization_tokens|create'), method: router_verb(id: 'web|authorization_tokens|create'), class: 'form-signin') do |f|
 
   .text-center.mb-4
     h1.h3.mb-3.font-weight-normal Sign in
 
+  - if @model[:errors].size > 0
+    .alert.alert-danger role="alert"
+      - @model[:errors].each do |error|
+        p = error[:msg]
+
   .form-label-group
-    = f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control', placeholder: 'Email'
-    = f.label :email
+    input#input_email.form-control placeholder='Email' autofocus=true autocomplete='email' aria-describedby="emailHelp" value=@model[:values][:email] name='email'
+    label for='input_email'
+      | Email
+    /small#emailHelp.form-text.text-muted
+      | We'll never share your email with anyone else.
+
+
   .form-label-group
-    = f.password_field :password, autocomplete: "current-password", class: 'form-control', placeholder: 'Password'
-    = f.label :password
+    input#input_password.form-control type="password" placeholder='Password' aria-describedby="passwordHelp" name='password'
+    label for='input_password'
+      | Password
+    /small#passwordHelp.form-text.text-muted
+      | Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.
+
   .actions
-    = f.submit "Log in", class: 'btn btn-lg btn-primary btn-block'
+    button.btn.btn-lg.btn-primary.btn-block type="submit"
+      | Log in
