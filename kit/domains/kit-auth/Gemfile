@@ -28,9 +28,8 @@ gem 'kit-router', path: '../../libs/kit-router' # DEV MODE
 gem 'kit-active-admin', path: '../../libs/kit-active-admin', require: 'kit/active_admin' # DEV MODE
 
 gem "slim-rails" # DEV MODE ? doesn't get loaded otherwise
-gem "simple_form" # DEV MODE ? doesn't get loaded otherwise
-gem "cells-rails" # DEV MODE ? doesn't get loaded otherwise
-gem "cells-slim" # DEV MODE ? doesn't get loaded otherwise
+
+gem "browser"  # DEV MODE ? doesn't get loaded otherwise
 
 gem "jsonapi-rails" # DEV MODE ?
 

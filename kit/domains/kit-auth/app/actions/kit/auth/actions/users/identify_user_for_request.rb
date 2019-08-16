@@ -37,15 +37,13 @@ module Kit::Auth::Actions::Users::IdentifyUserForRequest
     end
 
     if access_token.blank?
-      access_token = nil
+      [:error, { attribute: :access_token, desc: "is missing" }]
+    else
+      [:ok, access_token: access_token]
     end
-
-    [:ok, access_token: access_token]
   end
 
   def self.find_user(access_token:, oauth_application:)
-    return [:error] if access_token == nil || oauth_application == nil
-
     oauth_access_token = Kit::Auth::Models::Read::OauthAccessToken.find_by({
       token:          access_token,
       application_id: oauth_application.id,
@@ -55,7 +53,7 @@ module Kit::Auth::Actions::Users::IdentifyUserForRequest
     if user
       [:ok, user: user, oauth_access_token: oauth_access_token]
     else
-      [:error]
+      [:error, { attribute: :access_token, desc: "is invalid" }]
     end
   end
 

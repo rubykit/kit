@@ -5,7 +5,6 @@ module Kit::Router
 
     initializer "kit-router.view_helpers" do
       ActionView::Base.send :include, Kit::Router::ViewHelpers
-      Cell::ViewModel.send  :include, Kit::Router::ViewHelpers
     end
 
   end

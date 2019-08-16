@@ -6,12 +6,16 @@ module Kit
 
     class << self
 
+
+
       Contract KeywordArgs[list: ArrayOf[RespondTo[:call]], ctx: Optional[Hash]] => [Symbol, Hash]
       def call(list:, ctx: {})
         result = :ok
 
         begin
           list.each do |calleable|
+            calleable = to_calleable(calleable: calleable)
+
             ctx_in = generate_ctx_in(calleable: calleable, ctx: ctx)
             if ENV['LOG_ORGANIZER']
               puts "# Calling `#{calleable}` with keys |#{ctx_in.keys}|".colorize(:yellow)
@@ -21,13 +25,13 @@ module Kit
             if ENV['LOG_ORGANIZER']
               puts "#   Result |#{result}|#{ctx_out}|".colorize(:yellow)
             end
-            # TODO: should we do a deep merge?
-            if ctx_out
-              ctx = ctx.merge(ctx_out)
-            end
+
+            # NOTE: should we do a deep merge?
+            ctx = ctx.merge(context_update(ctx_out: ctx_out, result: result))
 
             if ENV['LOG_ORGANIZER']
               puts "#   New context keys |#{ctx.keys}|".colorize(:yellow)
+              puts "#   Errors |#{ctx[:errors]}|".colorize(:yellow)
             end
 
             if result == :error
@@ -42,7 +46,43 @@ module Kit
         [result, ctx]
       end
 
+      def always(calleable, key)
+        calleable = to_calleable(calleable: calleable)
+        ->(ctx_in) { [:ok, key: calleable.call(ctx_in)] }
+      end
+
       protected
+
+      def context_update(ctx_out:, result:)
+        return {} if !ctx_out
+
+        ctx_out = ctx_out.dup
+
+        if result == :error
+          if ctx_out.is_a?(Hash)
+            if !ctx_out[:errors]
+              ctx_out = { errors: [ctx_out] }
+            end
+          elsif ctx_out.is_a?(Array)
+            ctx_out = { errors: ctx_out }
+          else
+            # NOTE: not sure failing silently the best course
+            ctx_out = {}
+          end
+        end
+
+        ctx_out
+      end
+
+      def to_calleable(calleable:)
+        if calleable.is_a?(Array)
+          class_object, method_name = calleable
+
+          calleable = class_object.method(method_name)
+        end
+
+        calleable
+      end
 
       def generate_ctx_in(calleable:, ctx:)
         if calleable.is_a?(Proc) || calleable.is_a?(Method)

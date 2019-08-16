@@ -3,13 +3,10 @@ JSON API
 https://jsonapi.org/
 
 Pagination:
-    - absolute (by value, with support for multi-fields, like 1datetime, 2id), relative (by offset/index)
-    - with clear values (passed as is in parameters) or encapsulated through a token (I think this is what “cursor” should refer to, regardless of the type of pagination)
-    - when using a cursor, should sparse fields or limit be embedded in the token?
-    - when duplicates (clear values + token), which wins?
-  https://jsonapi.org/extensions/##profiles-category-pagination
+  - by cursor (aka "absolute pagination")
+  - cursor responsability: identify element of a collection, THAT'S IT! No filtering, no page size, etc.
 
-In a scenario where we nest like A -> B -> C, there is NO dependency from C on A !
+Note: In a scenario where we nest like A -> B -> C, there is NO dependency from C on A !
   -> This matters for cursor pagination links in a relationship scenario
 
 JSON-api relationships
@@ -24,7 +21,7 @@ Nesting is allowed but is purely an alias.
 
 Notes:
 
-- GraphQL could be a valid alternative, but I think they lost conceptually. Would not try to discourage someone from using it, but I’m personally 90% sure JSON-api is a better choice.
+- GraphQL could be a valid alternative, but I think they lost conceptually. Would not try to discourage someone from using it, but I’m 90% sure JSON-api is a better choice :)
 
 
 Ressources:

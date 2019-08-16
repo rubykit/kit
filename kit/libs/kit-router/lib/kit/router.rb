@@ -22,12 +22,16 @@ module Kit
           record[:mounted_verb] = verb
           record[:mounted_path] = path
 
+          #puts "Kit::Router - Mounting `#{path}`".colorize(:green)
+
           context.send :match, path, { action: action, controller: controller_name, via: [verb] }
         end
       end
 
       def register(uid:, aliases:, controller:, action:)
         #controller.ancestors.include?(ActionController::Metal)
+
+        #puts "Kit::Router - Registering `#{uid}` (aliases: #{aliases})".colorize(:green)
 
         add_to_store(uid: uid, controller: controller, action: action)
         add_aliases(uid: uid, aliases: aliases)
@@ -47,10 +51,10 @@ module Kit
 
         new_path = uri.path
 
-        params = params.each do |k, v|
+        params = params.map do |k, v|
           marker = ":#{k}"
           if path.include?(marker)
-            new_path.gsub!(marker, v)
+            new_path.gsub!(marker, v.to_s)
             nil
           else
             [k, v]
@@ -64,6 +68,30 @@ module Kit
           .to_query
 
         uri.to_s.gsub(/\?$/, '')
+      end
+
+      def url(id:, params: {})
+        host   = ENV['URI_HOST']
+        scheme = ENV['URI_SCHEME']
+
+        if scheme.blank?
+          scheme = 'http'
+        end
+
+        # TODO: fix this
+        if host.blank?
+          port = 3000
+          host = 'localhost'
+        end
+
+        current_path = path(id: id, params: params)
+
+        uri          = URI(current_path)
+        uri.host     = host
+        uri.port     = port
+        uri.scheme   = scheme
+
+        uri.to_s
       end
 
       def verb(id:)

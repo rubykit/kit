@@ -1,13 +1,14 @@
+require 'kit/domain'
+
 module Kit
   module Auth
     class Engine < ::Rails::Engine
-      isolate_namespace Kit::Auth
 
-      config.assets.paths << File.expand_path("../../../../app/cells", __FILE__)
-
-      initializer :kit_auth_engine do
-        ::ActiveAdmin.application.load_paths += Dir[File.expand_path("../../../../app/admin", __FILE__)]
-      end
+      Kit::Domain.config_engine(
+        context:   self,
+        namespace: Kit::Auth,
+        file:      __FILE__,
+      )
 
 =begin
       initializer "web_app.assets.precompile" do |app|

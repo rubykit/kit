@@ -11,9 +11,13 @@ Rails.application.routes.draw do
       'api_v1|authorization_tokens|index'  => { path: '/api/authorization_tokens',              verb: :get },
       'api_v1|authorization_tokens|create' => { path: '/api/authorization_tokens',              verb: :post },
 
-      'web|authorization_tokens|new'     => { path: '/authorization_tokens', verb: :get },
-      'web|authorization_tokens|create'  => { path: '/authorization_tokens', verb: :post },
-      'web|authorization_tokens|destroy' => { path: '/authorization_tokens', verb: :delete },
+      'web|authorization_tokens|new'     => { path: '/web/sign-in',  verb: :get },
+      'web|authorization_tokens|create'  => { path: '/web/sign-in',  verb: :post },
+      'web|authorization_tokens|destroy' => { path: '/web/sign-out', verb: :delete },
+      'web|authorization_tokens|index'   => { path: '/web/settings/devices', verb: :get },
+
+      'web|users|new'    => { path: '/web/sign-up',          verb: :get },
+      'web|users|create' => { path: '/web/sign-up',          verb: :post },
     },
   )
 

@@ -16,13 +16,9 @@ Gem::Specification.new do |spec|
 
   spec.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
-  spec.add_dependency "rails", "~> 5.2.3"
+  spec.add_dependency "rails", "~> 6.0.0.rc2"
 
   spec.add_dependency "slim-rails"
-  spec.add_dependency "simple_form"
-
-  #spec.add_dependency "cells", "~> 4.1", ">= 4.1.7"
-  spec.add_dependency "cells-slim"
 
   spec.add_dependency "multiverse", "~> 0.2.1"
 

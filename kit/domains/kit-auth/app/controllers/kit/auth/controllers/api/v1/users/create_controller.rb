@@ -4,7 +4,7 @@ module Kit::Auth::Controllers::Api::V1::Users
     ROUTE_ID  = 'api_v1|users|create'
     ROUTE_UID = "kit_auth|#{ROUTE_ID}"
 
-    Kit::Router.register(uid: ROUTE_UID, aliases: [ROUTE_ID], controller: self, action: :endpoint)
+    Kit::Router.register(uid: ROUTE_UID, aliases: [ROUTE_ID, 'api|users|create'], controller: self, action: :endpoint)
 
     def endpoint
       safe_params = params.slice(:email, :password, :password_confirmation)

@@ -5,7 +5,7 @@ module Kit::Auth::Actions::Users::CreateUserWithPassword
   include Contracts
 
   #Contract Hash => [Symbol, KeywordArgs[user: Any, errors: Any]]
-  def self.call(email:, password:, password_confirmation:)
+  def self.call(email:, password:, password_confirmation: nil)
     status, ctx = Kit::Organizer.call({
       ctx: {
         email:                 email,
@@ -13,8 +13,8 @@ module Kit::Auth::Actions::Users::CreateUserWithPassword
         password_confirmation: password_confirmation,
       },
       list: [
-        self.method(:validate_password),
         self.method(:validate_email),
+        self.method(:validate_password),
         Kit::Auth::Services::Password.method(:generate_hashed_secret),
         self.method(:persist_user),
         self.method(:fire_user_created_event),
@@ -35,7 +35,7 @@ module Kit::Auth::Actions::Users::CreateUserWithPassword
     })
 
     if res.errors.count > 0
-      [:error, errors: res.errors.to_h]
+      [:error, Kit::Error.from_contract(res)]
     else
       [:ok]
     end
@@ -45,7 +45,7 @@ module Kit::Auth::Actions::Users::CreateUserWithPassword
     res = Kit::Auth::Services::Contracts::Email.new.call(email: email)
 
     if res.errors.count > 0
-      [:error, errors: res.errors.to_h]
+      [:error, errors: Kit::Error.from_contract(res)]
     else
       [:ok]
     end
@@ -58,7 +58,7 @@ module Kit::Auth::Actions::Users::CreateUserWithPassword
         hashed_secret: hashed_secret,
       })
     rescue ActiveRecord::RecordNotUnique
-      return [:error, user: nil, errors: { email: ["is alreadky taken"] }]
+      return [:error, user: nil, errors: { attribute: :email, detail: "$attribute is alreadky taken." }]
     end
 
     if user.persisted?

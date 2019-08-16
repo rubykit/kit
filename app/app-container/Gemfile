@@ -3,17 +3,14 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.6.2'
 
-gem 'rails', '~> 5.2.3'
-gem 'puma', '~> 3.11'
+gem 'rails', '~> 6.0.0.rc2'
+gem 'puma'
 
-# Reduces boot times through caching; required in config/boot.rb
-#gem 'bootsnap', '>= 1.1.0', require: false
+gem 'kit-app-container', path: '../../kit/libs/kit-app-container' # DEV MODE
 
-gem 'kit-auth', path: '../../kit/kit-auth' # DEV MODE
-gem 'doorkeeper', require: 'doorkeeper' # DEV MODE
-
-gem 'interactor', path: '../../gems/interactor' # DEV MODE
-gem 'activeadmin_tables', path: '../../gems/activeadmin_tables' # DEV MODE
+gem 'kit-auth',          path: '../../kit/domains/kit-auth' # DEV MODE
+gem 'kit-geolocation',   path: '../../kit/domains/kit-geolocation' # DEV MODE
+gem 'kit-payment',       path: '../../kit/domains/kit-payment' # DEV MODE
 
 group :development do
   gem 'listen'

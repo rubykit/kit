@@ -22,12 +22,12 @@ module Kit::Auth::Serializers
 
     belongs_to :user do
       link :related do
-        #@url_helpers.user_posts_url(@object.id)
+        Kit::Router.url(id: 'api|users|show', params: { resource_id: @object.resource_owner_id })
       end
     end
 
     link :self do
-      #@url_helpers.post_url(@object.id)
+      Kit::Router.url(id: 'api|authorization_tokens|show', params: { resource_id: @object.id })
     end
 
   end

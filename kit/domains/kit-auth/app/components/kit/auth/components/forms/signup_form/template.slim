@@ -1,0 +1,37 @@
+= form_tag(router_path(id: 'web|users|create'), method: router_verb(id: 'web|users|create'), class: "#{component_class_name} needs-validation floating-labels") do |f|
+  - if csrf_token
+    = hidden_field_tag :authenticity_token, csrf_token
+
+  .text-center.mb-4
+    h1.h3.mb-3.font-weight-normal Sign up
+
+  - if generic_errors.size > 0
+    .alert.alert-danger role="alert"
+      - generic_errors.each do |error|
+        p = error[:detail]
+
+  = render Kit::Auth::Components::Inputs::Email.new({ \
+    value:  model[:email], \
+    name:  'email', \
+    label: 'Email', \
+    errors: errors_by_field[:email], \
+  })
+
+  = render Kit::Auth::Components::Inputs::Password.new({ \
+    value:  model[:password],
+    name:  'password',
+    label:  'Password',
+    errors: errors_by_field[:password],
+    help:  "Your password just be 10 characters min. Please use: 1 uppercase, 1 lowercase, 1 digit and 1 special character.", \
+  })
+
+  = render Kit::Auth::Components::Inputs::Password.new({ \
+    value:  model[:password_confirmation],
+    name:  'password_confirmation',
+    label:  'Password confirmation',
+    errors: errors_by_field[:password_confirmation], \
+  })
+
+  .actions
+    button.btn.btn-lg.btn-primary.btn-block type="submit"
+      | Sign up

@@ -3,6 +3,7 @@ html
   head
     title
       | Dummy Container
+
     = csrf_meta_tags
     = csp_meta_tag
 
@@ -11,10 +12,11 @@ html
     = javascript_include_tag 'application'
 
     link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"
+    link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.css"
 
   body
 
-    == concept("navbar_cell", current_user: current_user)
+    = render Components::Navbar.new(current_user: current_user)
 
     main.container style='padding-top: 80px;'
       = yield

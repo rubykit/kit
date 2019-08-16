@@ -1,0 +1,29 @@
+= form_tag(router_path(id: 'web|authorization_tokens|create'), method: router_verb(id: 'web|authorization_tokens|create'), class: "#{component_class_name} needs-validation floating-labels") do |f|
+  - if csrf_token
+    = hidden_field_tag :authenticity_token, csrf_token
+
+  .text-center.mb-4
+    h1.h3.mb-3.font-weight-normal Sign in
+
+  - if generic_errors.size > 0
+    .alert.alert-danger role="alert"
+      - generic_errors.each do |error|
+        p = error[:detail]
+
+  = render Kit::Auth::Components::Inputs::Email.new({ \
+    value:  model[:email], \
+    name:  'email', \
+    label: 'Email', \
+    errors: errors_by_field[:email], \
+  })
+
+  = render Kit::Auth::Components::Inputs::Password.new({ \
+    value:  model[:password],
+    name:  'password',
+    label:  'Password',
+    errors: errors_by_field[:password],
+  })
+
+  .actions
+    button.btn.btn-lg.btn-primary.btn-block type="submit"
+      | Log in

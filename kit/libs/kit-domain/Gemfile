@@ -10,5 +10,5 @@ gemspec
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
 
-gem 'interactor', path: '../../gems/interactor'
-gem 'activeadmin_tables', path: '../../gems/activeadmin_tables'
+gem 'kit-organizer',    path: '../kit-organizer'
+gem 'kit-active-admin', path: '../kit-active-admin'

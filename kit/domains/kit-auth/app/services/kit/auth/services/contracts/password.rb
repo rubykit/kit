@@ -19,7 +19,7 @@ class Kit::Auth::Services::Contracts::Password < Dry::Validation::Contract
     end
   end
 
-  rule(:password, :password_confirmation) do
+  rule(:password_confirmation, :password) do
     if values[:password] != values[:password_confirmation]
       key.failure('Password confirmation does not match.')
     end

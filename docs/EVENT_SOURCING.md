@@ -12,6 +12,3 @@ Vero got this right: the external service should have a way to hydrate the event
 - Rails implementation: https://railseventstore.org/
 - "Applying CQRS & Event Sourcing on Rails applications": https://www.youtube.com/watch?v=cdwX1ZU623E
 
-
-Ressources
-- https://kickstarter.engineering/event-sourcing-made-simple-4a2625113224

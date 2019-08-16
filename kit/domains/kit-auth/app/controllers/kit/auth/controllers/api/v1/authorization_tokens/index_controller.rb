@@ -4,7 +4,7 @@ module Kit::Auth::Controllers::Api::V1::AuthorizationTokens
     ROUTE_ID  = 'api_v1|authorization_tokens|index'
     ROUTE_UID = "kit_auth|#{ROUTE_ID}"
 
-    Kit::Router.register(uid: ROUTE_UID, aliases: [ROUTE_ID], controller: self, action: :endpoint)
+    Kit::Router.register(uid: ROUTE_UID, aliases: [ROUTE_ID, 'api|authorization_tokens|index'], controller: self, action: :endpoint)
 
     before_action *[
       :require_current_user!,
@@ -32,8 +32,8 @@ module Kit::Auth::Controllers::Api::V1::AuthorizationTokens
       pagination_params = get_pagination_parameters(collection: collection, ordering: PAGE_ORDERING)
 
       {
-        prev: Kit::Router.path(id: ROUTE_UID, params: pagination_params[:prev]),
-        next: Kit::Router.path(id: ROUTE_UID, params: pagination_params[:next]),
+        prev: Kit::Router.url(id: ROUTE_UID, params: pagination_params[:prev]),
+        next: Kit::Router.url(id: ROUTE_UID, params: pagination_params[:next]),
       }
     end
 

@@ -1,0 +1,12 @@
+.form-label-group class=component_class_name
+  input.form-control id=input_id type=input_type placeholder=placeholder aria-describedby=help_id name=name value=value class=(errors.size > 0 ? 'is-invalid' : '')
+  label for=input_id
+    = label
+
+  - if errors.size > 0
+    .invalid-feedback
+      - errors.each do |error|
+        p = error[:detail]
+  - if help
+    small.form-text.text-muted id=help_id
+      = help
