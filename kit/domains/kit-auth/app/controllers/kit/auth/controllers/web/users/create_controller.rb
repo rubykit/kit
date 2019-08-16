@@ -8,15 +8,14 @@ module Kit::Auth::Controllers::Web::Users
     Kit::Router.register(uid: 'kit_auth|web|users|new', aliases: ['web|users|new', 'web|users|sign_up'], controller: self, action: :new)
 
     def new
-      @model = { values: { email: nil, password: nil, password_confirmation: nil }, errors: [] }
+      @model = { email: nil, password: nil, password_confirmation: nil }
     end
 
 
     Kit::Router.register(uid: 'kit_auth|web|users|create', aliases: ['web|users|create'], controller: self, action: :create)
 
     def create
-      parameters = params.to_h.slice(:email, :password, :password_confirmation).symbolize_keys
-      @model     = parameters
+      @model = params.to_h.slice(:email, :password, :password_confirmation).symbolize_keys
 
       context = @model.merge(
         request:           request,
@@ -39,8 +38,6 @@ module Kit::Auth::Controllers::Web::Users
         redirect_to Kit::Router.path(id: 'web|users|after_sign_up')
       else
         @errors_list = ctx[:errors]
-
-        puts @errors_list.to_json.colorize(:red)
 
         render :new
       end

@@ -11,3 +11,5 @@
 // about supported directives.
 //
 //= require rails-ujs
+
+//= require kit/auth/application

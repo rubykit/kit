@@ -32,7 +32,7 @@ module Kit::Auth::Actions::Users::GetAuthorizationTokenForUser
 
       [:ok, oauth_access_token: oauth_access_token, oauth_access_token_created: just_created]
     else
-      [:error, errors: [{ msg: request_object.error }]]
+      [:error, errors: [{ detail: request_object.error }]]
     end
   end
 

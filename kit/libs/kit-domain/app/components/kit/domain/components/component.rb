@@ -1,5 +1,9 @@
 class Kit::Domain::Components::Component < ActionView::Component
-  attr_accessor :id
+  attr_accessor :id, :request
+
+  def initialize(request: nil, **)
+    @request = request
+  end
 
   def component_class_name
     @component_class_name ||= self.class.component_class_name

@@ -15,9 +15,9 @@ module Kit::Auth::Controllers::Web::AuthorizationTokens
     Kit::Router.register(uid: 'kit_auth|web|authorization_tokens|create', aliases: ['web|authorization_tokens|create'], controller: self, action: :create)
 
     def create
-      @model = { values: params.to_h.slice(:email, :password).symbolize_keys, errors: [] }
+      @model = params.to_h.slice(:email, :password).symbolize_keys
 
-      context = @model[:values].merge(
+      context = @model.merge(
         request:           request,
         oauth_application: ::Doorkeeper::Application.find_by!(uid: 'webapp'),
       )
@@ -37,7 +37,7 @@ module Kit::Auth::Controllers::Web::AuthorizationTokens
 
         redirect_to Kit::Router.path(id: 'web|users|after_sign_in')
       else
-        @model[:errors] = ctx[:errors]
+        @errors_list = ctx[:errors]
 
         render :new
       end

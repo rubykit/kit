@@ -1,0 +1,4 @@
+- if errors.size > 0
+  .alert.alert-danger role="alert" class=component_class_name
+    - errors.each do |error|
+      p = error[:detail]

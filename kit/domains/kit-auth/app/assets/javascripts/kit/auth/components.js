@@ -1,2 +1,5 @@
- // require kit/auth/components/forms/signin_form/signin_form
- // require kit/auth/components/forms/signup_form/signup_form
+ // require kit/auth/components/forms/signin_form/javascript
+ // require kit/auth/components/forms/signup_form/javascript
+
+//= require kit/auth/components/inputs/input/javascript
+//= require kit/auth/components/inputs/password/javascript

@@ -5,10 +5,11 @@ module Kit::Auth::Actions::Users::CreateUserWithPassword
   include Contracts
 
   #Contract Hash => [Symbol, KeywordArgs[user: Any, errors: Any]]
-  def self.call(email:, password:, password_confirmation: nil)
+  def self.call(email:, password:, password_confirmation:, email_confirmation: nil)
     status, ctx = Kit::Organizer.call({
       ctx: {
         email:                 email,
+        email_confirmation:    email_confirmation,
         password:              password,
         password_confirmation: password_confirmation,
       },
@@ -30,7 +31,7 @@ module Kit::Auth::Actions::Users::CreateUserWithPassword
 
   def self.validate_password(password:, password_confirmation:)
     res = Kit::Auth::Services::Contracts::Password.new.call({
-      password: password,
+      password:              password,
       password_confirmation: password_confirmation,
     })
 
@@ -41,8 +42,11 @@ module Kit::Auth::Actions::Users::CreateUserWithPassword
     end
   end
 
-  def self.validate_email(email:)
-    res = Kit::Auth::Services::Contracts::Email.new.call(email: email)
+  def self.validate_email(email:, email_confirmation:)
+    res = Kit::Auth::Services::Contracts::Email.new.call({
+      email:              email,
+      email_confirmation: email_confirmation,
+    })
 
     if res.errors.count > 0
       [:error, errors: Kit::Error.from_contract(res)]

@@ -105,6 +105,15 @@ module Kit
         verb
       end
 
+      def is_request_route?(request:, id:, params: {})
+        request_url = request&.url
+        return false if request_url.blank?
+
+        id_path = path(id: id, params: params)
+
+        URI(request_url).path == URI(id_path).path
+      end
+
       protected
 
       def add_aliases(uid:, aliases:)

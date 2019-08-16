@@ -6,8 +6,6 @@ module Kit
 
     class << self
 
-
-
       Contract KeywordArgs[list: ArrayOf[RespondTo[:call]], ctx: Optional[Hash]] => [Symbol, Hash]
       def call(list:, ctx: {})
         result = :ok
@@ -95,7 +93,7 @@ module Kit
 
         keys_list = parameters
           .map do |el|
-            if el[0] == :keyreq || el[1] == :key && ctx.has_key?(el[1])
+            if el[0] == :keyreq || el[0] == :key && ctx.has_key?(el[1])
               el[1]
             else
               nil

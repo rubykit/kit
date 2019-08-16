@@ -5,7 +5,13 @@
 
     position: absolute;
     right: 12px;
-    top:   18px;
+    top:   17px;
+
+    cursor: pointer;
+  }
+
+  input.is-invalid ~ i.password_visibility {
+    right: 35px;
   }
 
 }

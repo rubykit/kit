@@ -21,7 +21,7 @@ module Kit::Auth::Actions::Users::VerifyUserWithPassword
     if user&.hashed_secret && valid_password
       [:ok, user: user]
     else
-      [:error, msg: "Non existing user or invalid password."]
+      [:error, detail: "Non existing user or invalid password."]
     end
   end
 

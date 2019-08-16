@@ -1,13 +1,14 @@
 module Kit::Auth::Components::Inputs
   class Input < Kit::Domain::Components::Component
-    attr_reader :help, :label, :name, :value, :errors, :ids, :input_type, :placeholder
+    attr_reader :help, :label, :name, :value, :errors, :ids, :input_type, :placeholder, :required
 
-    def initialize(help: nil, label:, name:, placeholder: nil, value:, errors: [], **args)
+    def initialize(help: nil, label:, name:, placeholder: nil, required: false, value:, errors: [], **)
       @label       = label
       @name        = name
       @placeholder = placeholder || label
       @value       = value
       @errors      = errors
+      @required    = required
     end
 
     def input_id

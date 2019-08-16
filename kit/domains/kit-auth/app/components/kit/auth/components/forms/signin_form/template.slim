@@ -5,23 +5,24 @@
   .text-center.mb-4
     h1.h3.mb-3.font-weight-normal Sign in
 
-  - if generic_errors.size > 0
-    .alert.alert-danger role="alert"
-      - generic_errors.each do |error|
-        p = error[:detail]
+  = render Kit::Auth::Components::Various::ErrorsAlert.new({ \
+    errors: generic_errors,
+  })
 
   = render Kit::Auth::Components::Inputs::Email.new({ \
-    value:  model[:email], \
-    name:  'email', \
-    label: 'Email', \
-    errors: errors_by_field[:email], \
+    value:    model[:email],
+    name:     'email',
+    label:    'Email',
+    errors:   errors_by_field[:email],
+    required: true,
   })
 
   = render Kit::Auth::Components::Inputs::Password.new({ \
-    value:  model[:password],
-    name:  'password',
-    label:  'Password',
-    errors: errors_by_field[:password],
+    value:    model[:password],
+    name:     'password',
+    label:    'Password',
+    errors:   errors_by_field[:password],
+    required: true,
   })
 
   .actions

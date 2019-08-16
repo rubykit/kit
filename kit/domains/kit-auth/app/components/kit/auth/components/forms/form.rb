@@ -25,7 +25,7 @@ module Kit::Auth::Components::Forms
   class Form < Kit::Domain::Components::Component
     attr_reader :csrf_token, :model, :errors_list
 
-    def initialize(csrf_token: nil, model:, errors_list: [])
+    def initialize(csrf_token: nil, model:, errors_list: [], **)
       @csrf_token  = csrf_token
       @model       = model
       @errors_list = errors_list || []
