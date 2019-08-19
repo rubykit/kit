@@ -1,5 +1,4 @@
-module Kit::Auth::Actions::Users::CreateUserRequestMetadata
-  include Contracts
+module Kit::Auth::Actions::UserRequestMetadata::CreateUserRequestMetadata
 
   #Contract Hash => [Symbol, KeywordArgs[user: Any, errors: Any]]
   def self.call(user:, request:)

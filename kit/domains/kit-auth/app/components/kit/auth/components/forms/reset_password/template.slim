@@ -1,0 +1,32 @@
+= form_tag(router_path(id: 'web|users|reset_password|update', params: { auth_token: auth_token_secret }), method: router_verb(id: 'web|users|reset_password_request|update'), class: "#{classes_str} needs-validation floating-labels") do |f|
+  - if csrf_token
+    = hidden_field_tag :authenticity_token, csrf_token
+
+  .text-center.mb-4
+    h1.h3.mb-3.font-weight-normal = t('kit.auth.passwords.reset.title')
+    h2.h5.font-weight-normal = t('kit.auth.passwords.reset.prompt')
+
+  = render Kit::Auth::Components::Various::ErrorsAlert.new({ \
+    errors: generic_errors,
+  })
+
+  = render Kit::Auth::Components::Inputs::Password.new({ \
+    value:    model[:password],
+    name:     'password',
+    label:    'Password',
+    errors:   errors_by_field[:password],
+    help:     t('kit.auth.passwords.requirements'),
+    required: true,
+  })
+
+  = render Kit::Auth::Components::Inputs::Password.new({ \
+    value:    model[:password_confirmation],
+    name:     'password_confirmation',
+    label:    'Password confirmation',
+    errors:   errors_by_field[:password_confirmation],
+    required: true,
+  })
+
+  .actions
+    button.btn.btn-lg.btn-primary.btn-block type="submit"
+      = t('kit.auth.passwords.reset.submit')

@@ -5,7 +5,7 @@ module Kit::Auth::Controllers::Web::AuthorizationTokens
       :redirect_if_current_user!,
     ]
 
-    Kit::Router.register(uid: 'kit_auth|web|authorization_tokens|new', aliases: ['web|authorization_tokens|new', 'web|users|sign_in', 'web|users|after_sign_out'], controller: self, action: :new)
+    Kit::Router.register(uid: 'kit_auth|web|authorization_tokens|new', aliases: ['web|authorization_tokens|new', 'web|users|sign_in', 'web|users|after_sign_out', 'web|users|after_reset_password_request'], controller: self, action: :new)
 
     def new
       @model = { values: { email: nil, password: nil }, errors: [] }
@@ -18,22 +18,20 @@ module Kit::Auth::Controllers::Web::AuthorizationTokens
       @model = params.to_h.slice(:email, :password).symbolize_keys
 
       context = @model.merge(
-        request:           request,
-        oauth_application: ::Doorkeeper::Application.find_by!(uid: 'webapp'),
+        request: request,
       )
 
       res, ctx = Kit::Organizer.call({
         ctx: context,
         list: [
-          Kit::Auth::Actions::Users::VerifyUserWithPassword,
-          Kit::Auth::Actions::Users::CreateUserRequestMetadata,
-          Kit::Auth::Actions::Users::GetAuthorizationTokenForUser,
-          Kit::Auth::Actions::Users::UpdateUamForAuthorizationToken,
+          ->(email:) { [:ok, user: Kit::Auth::Models::Read::User.find_by(email: email)] },
+          Kit::Auth::Actions::Users::VerifyPassword,
+          Kit::Auth::Actions::Users::SignInWeb,
         ],
       })
 
       if res == :ok
-        cookies.encrypted[:access_token] = ctx[:oauth_access_token].token
+        cookies.encrypted[:access_token] = ctx[:oauth_access_token_plaintext_secret]
 
         redirect_to Kit::Router.path(id: 'web|users|after_sign_in')
       else

@@ -1,8 +1,4 @@
-require 'bcrypt'
-require 'dry-validation'
-
-module Kit::Auth::Actions::Users::CreateUserWithPassword
-  include Contracts
+module Kit::Auth::Actions::Users::CreateWithPassword
 
   #Contract Hash => [Symbol, KeywordArgs[user: Any, errors: Any]]
   def self.call(email:, password:, password_confirmation:, email_confirmation: nil)

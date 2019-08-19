@@ -1,4 +1,7 @@
 - if errors.size > 0
-  .alert.alert-danger role="alert" class=component_class_name
+  = render Kit::Auth::Components::Various::ErrorsAlert.new({ \
+    type:    'danger',
+    classes: [component_class_name],
+  }) do
     - errors.each do |error|
       p = error[:detail]

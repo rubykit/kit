@@ -16,8 +16,17 @@ Rails.application.routes.draw do
       'web|authorization_tokens|destroy' => { path: '/web/sign-out', verb: :delete },
       'web|authorization_tokens|index'   => { path: '/web/settings/devices', verb: :get },
 
+      'web|users|reset_password_request|new'    => { path: '/web/reset-password',  verb: :get },
+      'web|users|reset_password_request|create' => { path: '/web/reset-password',  verb: :post },
+
+      'web|users|reset_password|edit'   => { path: '/web/update-password',  verb: :get },
+      'web|users|reset_password|update' => { path: '/web/update-password',  verb: :put },
+
       'web|users|new'    => { path: '/web/sign-up',          verb: :get },
       'web|users|create' => { path: '/web/sign-up',          verb: :post },
+
+      #'web|users|edit'   => { path: '/web/settings/account', verb: :get },
+      #'web|users|update' => { path: '/web/settings/account', verb: :put },
     },
   )
 

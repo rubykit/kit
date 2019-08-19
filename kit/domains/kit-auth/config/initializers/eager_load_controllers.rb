@@ -15,6 +15,9 @@ list = [
   'kit/auth/controllers/web/authorization_tokens/destroy_controller',
   'kit/auth/controllers/web/authorization_tokens/index_controller',
 
+  'kit/auth/controllers/web/users/reset_password_controller',
+  'kit/auth/controllers/web/users/reset_password_request_controller',
+
   'kit/auth/controllers/web/users/create_controller',
 ]
 

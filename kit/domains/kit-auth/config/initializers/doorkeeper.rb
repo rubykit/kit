@@ -1,11 +1,8 @@
-# https://github.com/doorkeeper-gem/doorkeeper/issues/1083
-# https://github.com/doorkeeper-gem/doorkeeper/wiki/Integration-with-multi-engine-Rails-application
+# LINK: https://github.com/doorkeeper-gem/doorkeeper/issues/1083
+# LINK: https://github.com/doorkeeper-gem/doorkeeper/wiki/Integration-with-multi-engine-Rails-application
+# LINK: https://github.com/doorkeeper-gem/doorkeeper/issues/356
 
-::Doorkeeper.configure do
-
-  # REF: https://github.com/doorkeeper-gem/doorkeeper/issues/356
-
-  # Change the ORM that doorkeeper will use (needs plugins)
+Doorkeeper.configure do
   orm :active_record
 
   # This block will be called to check whether the resource owner is authenticated or not.
@@ -14,14 +11,34 @@
     Kit::Auth::Models::Write::User.first
   end
 
+=begin
   admin_authenticator do |routes|
     #   User.find_by_id(session[:user_id]) || redirect_to(new_user_session_url)
     Kit::Auth::Models::Write::User.first
   end
+=end
+
+  authorization_code_expires_in 10.minutes
+
+  access_token_expires_in 30.days
+
+  # base_controller 'ApplicationController'
+
+  hash_application_secrets using: '::Doorkeeper::SecretStoring::Sha256Hash'
+  hash_token_secrets       using: '::Doorkeeper::SecretStoring::Sha256Hash'
+
+  default_scopes  :public
+
+  optional_scopes :admin,
+                  :user_update_password,
+                  :one_time_sign_in,
+                  :user_confirmation
+
+  grant_flows %w[authorization_code client_credentials password]
 
   resource_owner_from_credentials do |routes|
-    status, ctx = Kit::Auth::Actions::Users::VerifyUserWithPassword.call({
-      email:    params[:username],
+    status, ctx = Kit::Auth::Actions::Users::VerifyPassword.call({
+      user:     Kit::Auth::Models::Read::User.find_by(email: params[:username]),
       password: params[:password],
     })
 
@@ -31,6 +48,23 @@
       nil
     end
   end
+
+end
+
+
+# NOTE: for reference, last vestion of the initializer template
+
+#Doorkeeper.configure do
+  # Change the ORM that doorkeeper will use (needs plugins)
+  #orm :active_record
+
+  # This block will be called to check whether the resource owner is authenticated or not.
+  #resource_owner_authenticator do
+  #  raise "Please configure doorkeeper resource_owner_authenticator block located in #{__FILE__}"
+    # Put your resource owner authentication logic here.
+    # Example implementation:
+    #   User.find_by(id: session[:user_id]) || redirect_to(new_user_session_url)
+  #end
 
   # If you didn't skip applications controller from Doorkeeper routes in your application routes.rb
   # file then you need to declare this block in order to restrict access to the web interface for
@@ -61,15 +95,20 @@
 
   # Authorization Code expiration time (default 10 minutes).
   #
-  authorization_code_expires_in 10.minutes
+  # authorization_code_expires_in 10.minutes
 
   # Access token expiration time (default 2 hours).
   # If you want to disable expiration, set this to nil.
   #
-  access_token_expires_in 30.days
+  # access_token_expires_in 2.hours
 
   # Assign custom TTL for access tokens. Will be used instead of access_token_expires_in
-  # option if defined. `context` has the following properties available
+  # option if defined. In case the block returns `nil` value Doorkeeper fallbacks to
+  # `access_token_expires_in` configuration option value. If you really need to issue a
+  # non-expiring access token (which is not recommended) then you need to return
+  # Float::INFINITY from this block.
+  #
+  # `context` has the following properties available:
   #
   # `client` - the OAuth client application (see Doorkeeper::OAuth::Client)
   # `grant_type` - the grant type of the request (see Doorkeeper::OAuth)
@@ -80,13 +119,13 @@
   # end
 
   # Use a custom class for generating the access token.
-  # See https://github.com/doorkeeper-gem/doorkeeper#custom-access-token-generator
+  # See https://doorkeeper.gitbook.io/guides/configuration/other-configurations#custom-access-token-generator
   #
   # access_token_generator '::Doorkeeper::JWT'
 
   # The controller Doorkeeper::ApplicationController inherits from.
   # Defaults to ActionController::Base.
-  # See https://github.com/doorkeeper-gem/doorkeeper#custom-base-controller
+  # See https://doorkeeper.gitbook.io/guides/configuration/other-configurations#custom-base-controller
   #
   # base_controller 'ApplicationController'
 
@@ -97,7 +136,62 @@
   # doesn't updates existing token expiration time, it will create a new token instead.
   # Rationale: https://github.com/doorkeeper-gem/doorkeeper/issues/383
   #
-  reuse_access_token
+  # You can not enable this option together with +hash_token_secrets+.
+  #
+  # reuse_access_token
+
+  # Set a limit for token_reuse if using reuse_access_token option
+  #
+  # This option limits token_reusability to some extent.
+  # If not set then access_token will be reused unless it expires.
+  # Rationale: https://github.com/doorkeeper-gem/doorkeeper/issues/1189
+  #
+  # This option should be a percentage(i.e. (0,100])
+  #
+  # token_reuse_limit 100
+
+  # Hash access and refresh tokens before persisting them.
+  # This will disable the possibility to use +reuse_access_token+
+  # since plain values can no longer be retrieved.
+  #
+  # Note: If you are already a user of doorkeeper and have existing tokens
+  # in your installation, they will be invalid without enabling the additional
+  # setting `fallback_to_plain_secrets` below.
+  #
+  # hash_token_secrets
+  # By default, token secrets will be hashed using the
+  # +Doorkeeper::Hashing::SHA256+ strategy.
+  #
+  # If you wish to use another hashing implementation, you can override
+  # this strategy as follows:
+  #
+  # hash_token_secrets using: '::Doorkeeper::Hashing::MyCustomHashImpl'
+  #
+  # Keep in mind that changing the hashing function will invalidate all existing
+  # secrets, if there are any.
+
+  # Hash application secrets before persisting them.
+  #
+  # hash_application_secrets
+  #
+  # By default, applications will be hashed
+  # with the +Doorkeeper::SecretStoring::SHA256+ strategy.
+  #
+  # If you wish to use bcrypt for application secret hashing, uncomment
+  # this line instead:
+  #
+  # hash_application_secrets using: '::Doorkeeper::SecretStoring::BCrypt'
+
+  # When the above option is enabled,
+  # and a hashed token or secret is not found,
+  # you can allow to fall back to another strategy.
+  # For users upgrading doorkeeper and wishing to enable hashing,
+  # you will probably want to enable the fallback to plain tokens.
+  #
+  # This will ensure that old access tokens and secrets
+  # will remain valid even if the hashing above is enabled.
+  #
+  # fallback_to_plain_secrets
 
   # Issue access tokens with refresh token (disabled by default), you may also
   # pass a block which accepts `context` to customize when to give a refresh
@@ -110,27 +204,35 @@
   #
   # use_refresh_token
 
-  # Forbids creating/updating applications with arbitrary scopes that are
-  # not in configuration, i.e. `default_scopes` or `optional_scopes`.
-  # (disabled by default)
-  #
-  # enforce_configured_scopes
-
   # Provide support for an owner to be assigned to each registered application (disabled by default)
   # Optional parameter confirmation: true (default false) if you want to enforce ownership of
   # a registered application
-  # Note: you must also run the rails g doorkeeper:application_owner generator to provide the necessary support
+  # NOTE: you must also run the rails g doorkeeper:application_owner generator
+  # to provide the necessary support
   #
   # enable_application_owner confirmation: false
 
   # Define access token scopes for your provider
   # For more information go to
-  # https://github.com/doorkeeper-gem/doorkeeper/wiki/Using-Scopes
+  # https://doorkeeper.gitbook.io/guides/ruby-on-rails/scopes
   #
-  default_scopes  :public
+  # default_scopes  :public
+  # optional_scopes :write, :update
 
-  optional_scopes :admin,
-                  :update_user_secret
+  # Define scopes_by_grant_type to restrict only certain scopes for grant_type
+  # By default, all the scopes will be available for all the grant types.
+  #
+  # Keys to this hash should be the name of grant_type and
+  # values should be the array of scopes for that grant type.
+  # Note: scopes should be from configured_scopes(i.e. default or optional)
+  #
+  # scopes_by_grant_type password: [:write], client_credentials: [:update]
+
+  # Forbids creating/updating applications with arbitrary scopes that are
+  # not in configuration, i.e. `default_scopes` or `optional_scopes`.
+  # (disabled by default)
+  #
+  # enforce_configured_scopes
 
   # Change the way client credentials are retrieved from the request object.
   # By default it retrieves first from the `HTTP_AUTHORIZATION` header, then
@@ -147,14 +249,6 @@
   # for more information on customization
   #
   # access_token_methods :from_bearer_authorization, :from_access_token_param, :from_bearer_param
-
-  # Change the native redirect uri for client apps
-  # When clients register with the following redirect uri, they won't be redirected to any server and
-  # the authorizationcode will be displayed within the provider
-  # The value can be any string. Use nil to disable this feature. When disabled, clients must provide a valid URL
-  # (Similar behaviour: https://developers.google.com/accounts/docs/OAuth2InstalledApp#choosingredirecturi)
-  #
-  native_redirect_uri 'urn:ietf:wg:oauth:2.0:oob'
 
   # Forces the usage of the HTTPS protocol in non-native redirect uris (enabled
   # by default in non-development environments). OAuth2 delegates security in
@@ -176,6 +270,22 @@
   #
   # forbid_redirect_uri { |uri| uri.scheme.to_s.downcase == 'javascript' }
 
+  # Allows to set blank redirect URIs for Applications in case Doorkeeper configured
+  # to use URI-less OAuth grant flows like Client Credentials or Resource Owner
+  # Password Credentials. The option is on by default and checks configured grant
+  # types, but you **need** to manually drop `NOT NULL` constraint from `redirect_uri`
+  # column for `oauth_applications` database table.
+  #
+  # You can completely disable this feature with:
+  #
+  # allow_blank_redirect_uri false
+  #
+  # Or you can define your custom check:
+  #
+  # allow_blank_redirect_uri do |grant_flows, client|
+  #   client.superapp?
+  # end
+
   # Specify how authorization errors should be handled.
   # By default, doorkeeper renders json errors when access token
   # is invalid, expired, revoked or has invalid scopes.
@@ -188,6 +298,24 @@
   #   Doorkeeper::Errors::TokenRevoked, Doorkeeper::Errors::TokenUnknown
   #
   # handle_auth_errors :raise
+
+  # Customize token introspection response.
+  # Allows to add your own fields to default one that are required by the OAuth spec
+  # for the introspection response. It could be `sub`, `aud` and so on.
+  # This configuration option can be a proc, lambda or any Ruby object responds
+  # to `.call` method and result of it's invocation must be a Hash.
+  #
+  # custom_introspection_response do |token, context|
+  #   {
+  #     "sub": "Z5O3upPC88QrAjx00dis",
+  #     "aud": "https://protected.example.net/resource",
+  #     "username": User.find(token.resource_owner_id).username
+  #   }
+  # end
+  #
+  # or
+  #
+  # custom_introspection_response CustomIntrospectionResponder
 
   # Specify what grant flows are enabled in array of Strings. The valid
   # strings and the flows they enable are:
@@ -205,7 +333,38 @@
   #   http://tools.ietf.org/html/rfc6819#section-4.4.2
   #   http://tools.ietf.org/html/rfc6819#section-4.4.3
   #
-  grant_flows %w[authorization_code client_credentials password]
+  # grant_flows %w[authorization_code client_credentials]
+
+  # Allows to customize OAuth grant flows that +each+ application support.
+  # You can configure a custom block (or use a class respond to `#call`) that must
+  # return `true` in case Application instance supports requested OAuth grant flow
+  # during the authorization request to the server. This configuration +doesn't+
+  # set flows per application, it only allows to check if application supports
+  # specific grant flow.
+  #
+  # For example you can add an additional database column to `oauth_applications` table,
+  # say `t.array :grant_flows, default: []`, and store allowed grant flows that can
+  # be used with this application there. Then when authorization requested Doorkeeper
+  # will call this block to check if specific Application (passed with client_id and/or
+  # client_secret) is allowed to perform the request for the specific grant type
+  # (authorization, password, client_credentials, etc).
+  #
+  # Example of the block:
+  #
+  #   ->(flow, client) { client.grant_flows.include?(flow) }
+  #
+  # In case this option invocation result is `false`, Doorkeeper server returns
+  # :unauthorized_client error and stops the request.
+  #
+  # @param allow_grant_flow_for_client [Proc] Block or any object respond to #call
+  # @return [Boolean] `true` if allow or `false` if forbid the request
+  #
+  # allow_grant_flow_for_client do |grant_flow, client|
+  #   # `grant_flows` is an Array column with grant
+  #   # flows that application supports
+  #
+  #   client.grant_flows.include?(grant_flow)
+  # end
 
   # Hook into the strategies' request & response life-cycle in case your
   # application needs advanced customization or logging:
@@ -219,10 +378,10 @@
   # end
 
   # Hook into Authorization flow in order to implement Single Sign Out
-  # or add ny other functionality.
+  # or add any other functionality.
   #
   # before_successful_authorization do |controller|
-  #   Rails.logger.info(params.inspect)
+  #   Rails.logger.info(controller.request.params.inspect)
   # end
   #
   # after_successful_authorization do |controller|
@@ -240,7 +399,61 @@
   #   client.superapp? or resource_owner.admin?
   # end
 
+  # Configure custom constraints for the Token Introspection request.
+  # By default this configuration option allows to introspect a token by another
+  # token of the same application, OR to introspect the token that belongs to
+  # authorized client (from authenticated client) OR when token doesn't
+  # belong to any client (public token). Otherwise requester has no access to the
+  # introspection and it will return response as stated in the RFC.
+  #
+  # Block arguments:
+  #
+  # @param token [Doorkeeper::AccessToken]
+  #   token to be introspected
+  #
+  # @param authorized_client [Doorkeeper::Application]
+  #   authorized client (if request is authorized using Basic auth with
+  #   Client Credentials for example)
+  #
+  # @param authorized_token [Doorkeeper::AccessToken]
+  #   Bearer token used to authorize the request
+  #
+  # In case the block returns `nil` or `false` introspection responses with 401 status code
+  # when using authorized token to introspect, or you'll get 200 with { "active": false } body
+  # when using authorized client to introspect as stated in the
+  # RFC 7662 section 2.2. Introspection Response.
+  #
+  # Using with caution:
+  # Keep in mind that these three parameters pass to block can be nil as following case:
+  #  `authorized_client` is nil if and only if `authorized_token` is present, and vice versa.
+  #  `token` will be nil if and only if `authorized_token` is present.
+  # So remember to use `&` or check if it is present before calling method on
+  # them to make sure you doesn't get NoMethodError exception.
+  #
+  # You can define your custom check:
+  #
+  # allow_token_introspection do |token, authorized_client, authorized_token|
+  #   if authorized_token
+  #     # customize: require `introspection` scope
+  #     authorized_token.application == token&.application ||
+  #       authorized_token.scopes.include?("introspection")
+  #   elsif token.application
+  #     # `protected_resource` is a new database boolean column, for example
+  #     authorized_client == token.application || authorized_client.protected_resource?
+  #   else
+  #     # public token (when token.application is nil, token doesn't belong to any application)
+  #     true
+  #   end
+  # end
+  #
+  # Or you can completely disable any token introspection:
+  #
+  # allow_token_introspection false
+  #
+  # If you need to block the request at all, then configure your routes.rb or web-server
+  # like nginx to forbid the request.
+
   # WWW-Authenticate Realm (default "Doorkeeper").
   #
   # realm "Doorkeeper"
-end
+#end

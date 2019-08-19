@@ -1,10 +1,4 @@
-require 'bcrypt'
-require 'dry-validation'
-
-# TODO: audit if going through Doorkeeper is worth doing
-
-module Kit::Auth::Actions::Users::UpdateUamForAuthorizationToken
-  include Contracts
+module Kit::Auth::Actions::OauthAccessTokens::UpdateUserRequestMetadata
 
   #Contract Hash => [Symbol, KeywordArgs[oauth_access_token: Any, errors: Any]]
   def self.call(oauth_access_token:, user_request_metadata:)

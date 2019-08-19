@@ -16,8 +16,8 @@ html
     link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.css"
 
   body
-
     = render Components::Navbar.new(current_user: current_user, request: request)
 
     main.container style='padding-top: 80px;'
+      = render Kit::Auth::Components::Various::Flash.new(flash: flash.to_h)
       = yield

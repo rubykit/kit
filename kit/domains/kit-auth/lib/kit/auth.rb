@@ -9,6 +9,3 @@ end
 
 require "kit/auth/engine"
 require "kit/auth/routes"
-
-# DEV
-require_relative "error"

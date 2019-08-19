@@ -1,8 +1,19 @@
 class Kit::Domain::Components::Component < ActionView::Component
-  attr_accessor :id, :request
+  attr_accessor :id, :request, :classes
+  attr_reader   :classes_str
 
-  def initialize(request: nil, **)
+  def initialize(request: nil, classes: [], **)
+    super
+
     @request = request
+    @classes = [classes].flatten
+
+    self.classes << component_class_name
+  end
+
+  def classes_str
+
+    classes.join(' ')
   end
 
   def component_class_name

@@ -1,5 +1,5 @@
 module Kit::Auth::Components::Users
-  class Device < Kit::Domain::Components::Component
+  class Device < Kit::Auth::Components::Component
 
     attr_reader :model
 

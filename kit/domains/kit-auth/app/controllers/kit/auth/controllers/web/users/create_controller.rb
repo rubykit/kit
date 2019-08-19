@@ -18,17 +18,14 @@ module Kit::Auth::Controllers::Web::Users
       @model = params.to_h.slice(:email, :password, :password_confirmation).symbolize_keys
 
       context = @model.merge(
-        request:           request,
-        oauth_application: ::Doorkeeper::Application.find_by!(uid: 'webapp'),
+        request: request,
       )
 
       res, ctx = Kit::Organizer.call({
         ctx: context,
         list: [
-          Kit::Auth::Actions::Users::CreateUserWithPassword,
-          Kit::Auth::Actions::Users::CreateUserRequestMetadata,
-          Kit::Auth::Actions::Users::GetAuthorizationTokenForUser,
-          Kit::Auth::Actions::Users::UpdateUamForAuthorizationToken,
+          Kit::Auth::Actions::Users::CreateWithPassword,
+          Kit::Auth::Actions::Users::SignInWeb,
         ],
       })
 

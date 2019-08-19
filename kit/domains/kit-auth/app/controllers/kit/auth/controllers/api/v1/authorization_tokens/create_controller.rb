@@ -10,7 +10,7 @@ module Kit::Auth::Controllers::Api::V1::AuthorizationTokens
       attributes = params[:authorization_token][:data][:attributes]
 
       context = {
-        email:             attributes[:uid],
+        user:              attributes[:uid],
         password:          attributes[:secret],
         request:           request,
         oauth_application: ::Doorkeeper::Application.find_by!(uid: 'api'),
@@ -19,10 +19,11 @@ module Kit::Auth::Controllers::Api::V1::AuthorizationTokens
       res, ctx = Kit::Organizer.call({
         ctx: context,
         list: [
-          Kit::Auth::Actions::Users::VerifyUserWithPassword,
-          Kit::Auth::Actions::Users::CreateUserRequestMetadata,
-          Kit::Auth::Actions::Users::GetAuthorizationTokenForUser,
-          Kit::Auth::Actions::Users::UpdateUamForAuthorizationToken,
+          ->(email:) { [:ok, user: Kit::Auth::Models::Read::User.find_by(email: email)] },
+          Kit::Auth::Actions::Users::VerifyPassword,
+          Kit::Auth::Actions::UserRequestMetadata::CreateUserRequestMetadata,
+          Kit::Auth::Actions::OauthAccessTokens::Create,
+          Kit::Auth::Actions::OauthAccessTokens::UpdateUserRequestMetadata,
         ],
       })
 

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# LINK: https://github.com/rails/rails/pull/36388?fbclid=IwAR24W0c0MgJny1KvQyM3FxvpdSowv14F-BnoAVgI2KG7EW_DVmreB40FAV8
 # LINK: https://github.com/joelhawksley/actionview-component-demo/blob/master/app/lib/action_view/component.rb
 
 # Use this monkey patch if you aren't running Rails master / 6.1 alpha
