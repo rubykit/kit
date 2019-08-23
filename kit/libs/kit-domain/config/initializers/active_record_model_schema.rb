@@ -1,5 +1,4 @@
-# frozen_string_literal: true
-
+# REF: https://github.com/rails/rails/blob/master/activerecord/lib/active_record/model_schema.rb
 module ActiveRecord
   module ModelSchema
 
@@ -30,6 +29,7 @@ module ActiveRecord
         end
       end
 
+      # REF: https://github.com/rails/rails/blob/master/activerecord/lib/active_record/model_schema.rb#L484
       def load_schema!
         @columns_hash = connection.schema_cache.columns_hash(table_name).except(*ignored_columns)
 

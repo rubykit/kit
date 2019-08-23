@@ -1,0 +1,10 @@
+= render Kit::Auth::Components::Forms::ResetPasswordRequest.new( \
+  model:       model,
+  csrf_token:  csrf_token,
+  errors_list: errors_list,
+)
+
+.text-center.mt-3
+  ' Already have an account?
+  = router_link_to(id: 'web|users|sign_in')
+    b Sign in!

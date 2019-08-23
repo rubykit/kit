@@ -1,20 +1,21 @@
 module Kit::Auth::Controllers::Web::Users
   class ResetPasswordController < Kit::Auth::Controllers::WebController
 
+=begin
     before_action *[
       :redirect_if_current_user!,
       :extract_auth_token!,
       -> { redirect_if_missing_scope!(scope: 'update_user_secret') },
     ]
 
-    Kit::Router.register(uid: 'kit_auth|web|users|reset_password|edit', aliases: ['web|users|reset_password|edit'], controller: self, action: :edit)
+    Kit::Router.register_rails_action(uid: 'kit_auth|web|users|reset_password|edit', aliases: ['web|users|reset_password|edit'], controller: self, action: :edit)
 
     def edit
       @model = { password: nil, password_confirmation: nil }
     end
 
 
-    Kit::Router.register(uid: 'kit_auth|web|users|reset_password|update', aliases: ['web|users|reset_password|update'], controller: self, action: :update)
+    Kit::Router.register_rails_action(uid: 'kit_auth|web|users|reset_password|update', aliases: ['web|users|reset_password|update'], controller: self, action: :update)
 
     def update
       @model = params.to_h.slice(:password, :password_confirmation).symbolize_keys
@@ -54,6 +55,7 @@ module Kit::Auth::Controllers::Web::Users
 
       redirect_to Kit::Router.path(id: 'web|users|sign_in')
     end
+=end
 
   end
 end

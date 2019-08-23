@@ -4,6 +4,19 @@ module Kit
   module Router
     class << self
 
+      def call(id:, request: nil, params: {})
+        record = get_record(id: id)
+
+        if !request
+          request = Kit::Domain::Services::Request::Request.new(params: OpenStruct.new(params))
+        end
+
+        # TODO: fix the need to "unpack", not even sure we should do this in the first place
+        target = record[:target_method].call
+
+        target.call(request: request)
+      end
+
       def map_routes(list:, context:)
         list.each do |uid, attrs|
           record = get_record(id: uid)
@@ -24,16 +37,41 @@ module Kit
 
           #puts "Kit::Router - Mounting `#{path}`".colorize(:green)
 
-          context.send :match, path, { action: action, controller: controller_name, via: [verb] }
+          defaults = {}
+          if record[:target_method]
+            defaults[:kit_router_method] = record[:target_method].call()
+          end
+
+          context.send :match, path, { action: action, controller: controller_name, via: [verb], defaults: defaults }
         end
       end
 
-      def register(uid:, aliases:, controller:, action:)
-        #controller.ancestors.include?(ActionController::Metal)
+      def register_rails_action(uid:, aliases:, controller:, action:)
+        #puts "Kit::Router - Registering `#{uid}` (aliases: #{aliases})".colorize(:green)
+        add_to_store(uid: uid, controller: controller, action: action, target_method: nil)
+        add_aliases(uid: uid, aliases: aliases)
 
+        true
+      end
+
+      def register(uid:, aliases:, target: nil, object: nil, method_name: nil)
         #puts "Kit::Router - Registering `#{uid}` (aliases: #{aliases})".colorize(:green)
 
-        add_to_store(uid: uid, controller: controller, action: action)
+        if target
+          real_target = target
+          target = -> { real_target }
+        else
+          if object || method_name
+            target = ->() { object.method(method_name) }
+          else
+            raise "Invalid target"
+          end
+        end
+
+        controller = Kit::Router::Controllers::RouterController
+        action     = :route
+
+        add_to_store(uid: uid, controller: controller, action: action, target_method: target)
         add_aliases(uid: uid, aliases: aliases)
 
         true
@@ -128,7 +166,7 @@ module Kit
         end
       end
 
-      def add_to_store(uid:, controller:, action:)
+      def add_to_store(uid:, controller:, action:, target_method: nil)
         uid = uid.to_sym
 
         @store ||= {}
@@ -142,7 +180,12 @@ module Kit
           end
         end
 
-        @store[uid.to_sym] = { controller: controller, action: action, mounted: false }
+        @store[uid.to_sym] = {
+          controller:    controller,
+          action:        action,
+          target_method: target_method,
+          mounted:       false,
+        }
       end
 
       def get_record(id:)

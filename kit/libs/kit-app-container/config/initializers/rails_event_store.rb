@@ -1,5 +1,11 @@
 require 'rails_event_store'
 
-Rails.configuration.to_prepare do
-  Rails.configuration.event_store = RailsEventStore::Client.new
+Rails.application.configure do
+  config.to_prepare do
+    Rails.configuration.event_store = RailsEventStore::Client.new(
+      mapper: RubyEventStore::Mappers::Default.new(
+        serializer: JSON,
+      )
+    )
+  end
 end

@@ -1,18 +1,19 @@
 module Kit::Auth::Controllers::Web::Users
   class CreateController < Kit::Auth::Controllers::WebController
 
+=begin
     before_action *[
       :redirect_if_current_user!,
     ]
 
-    Kit::Router.register(uid: 'kit_auth|web|users|new', aliases: ['web|users|new', 'web|users|sign_up'], controller: self, action: :new)
+    Kit::Router.register_rails_action(uid: 'kit_auth|web|users|new', aliases: ['web|users|new', 'web|users|sign_up'], controller: self, action: :new)
 
     def new
       @model = { email: nil, password: nil, password_confirmation: nil }
     end
 
 
-    Kit::Router.register(uid: 'kit_auth|web|users|create', aliases: ['web|users|create'], controller: self, action: :create)
+    Kit::Router.register_rails_action(uid: 'kit_auth|web|users|create', aliases: ['web|users|create'], controller: self, action: :create)
 
     def create
       @model = params.to_h.slice(:email, :password, :password_confirmation).symbolize_keys
@@ -39,6 +40,7 @@ module Kit::Auth::Controllers::Web::Users
         render :new
       end
     end
+=end
 
   end
 end

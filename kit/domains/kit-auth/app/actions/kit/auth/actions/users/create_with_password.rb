@@ -39,7 +39,7 @@ module Kit::Auth::Actions::Users::CreateWithPassword
   end
 
   def self.validate_email(email:, email_confirmation:)
-    res = Kit::Auth::Services::Contracts::Email.new.call({
+    res = Kit::Auth::Services::Contracts::EmailSignup.new.call({
       email:              email,
       email_confirmation: email_confirmation,
     })

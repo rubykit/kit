@@ -13,7 +13,7 @@ module Kit::Domain::Models::Concerns
 
        # Removes Engine modules name
       def table_name
-        name.demodulize.tableize
+        super.demodulize.tableize
       end
 
     end

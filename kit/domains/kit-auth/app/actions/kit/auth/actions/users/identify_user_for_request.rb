@@ -2,11 +2,10 @@ module Kit::Auth::Actions::Users::IdentifyUserForRequest
 
   # Todo: add contract on request / cookies (based on needed access)
   #Contract Hash => [Symbol, KeywordArgs[user: Any]]
-  def self.call(request:, cookies:, oauth_application:)
+  def self.call(request:, oauth_application:)
     status, ctx = Kit::Organizer.call({
       ctx: {
         request:           request,
-        cookies:           cookies,
         oauth_application: oauth_application,
       },
       list: [
@@ -22,16 +21,19 @@ module Kit::Auth::Actions::Users::IdentifyUserForRequest
     end
   end
 
-  def self.extract_access_token(request:, cookies:)
+  def self.extract_access_token(request:)
     access_tokens = {
-      params:  request.params[:access_token],
-      cookies: cookies.encrypted[:access_token],
-      headers: nil,
+      from_param:  request.params[:access_token],
+      from_cookie: request.http.cookies[:access_token]&.dig(:value),
+      from_header: nil,
     }
 
-    if request.authorization.present?
-      headers_value, _ = ActionController::HttpAuthentication::Token.token_and_options(request)
-      access_tokens[:headers] = headers_value
+    # REF: https://www.iana.org/assignments/http-authschemes/http-authschemes.xhtml
+    if !(auth_header = request.http.headers['Authorization']).blank?
+      token = auth_header.split('Bearer ')[1]
+      if !token.blank?
+        access_tokens[:from_header] = token
+      end
     end
 
     access_tokens = access_tokens

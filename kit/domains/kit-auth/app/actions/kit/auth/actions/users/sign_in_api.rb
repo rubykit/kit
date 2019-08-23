@@ -8,7 +8,9 @@ module Kit::Auth::Actions::Users::SignInApi
       },
       list: [
         Kit::Auth::Actions::OauthApplications::LoadApi,
-        Kit::Auth::Actions::Users::SignIn,
+        Kit::Auth::Actions::RequestMetadata::Create,
+        Kit::Auth::Actions::OauthAccessTokens::CreateForSignIn,
+        Kit::Auth::Actions::OauthAccessTokens::UpdateRequestMetadata,
       ],
     })
   end

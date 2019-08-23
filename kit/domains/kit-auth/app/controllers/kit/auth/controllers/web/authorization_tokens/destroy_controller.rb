@@ -1,10 +1,11 @@
 module Kit::Auth::Controllers::Web::AuthorizationTokens
   class DestroyController < Kit::Auth::Controllers::WebController
 
+=begin
     ROUTE_ID  = 'web|authorization_tokens|destroy'
     ROUTE_UID = "kit_auth|#{ROUTE_ID}"
 
-    Kit::Router.register(uid: ROUTE_UID, aliases: [ROUTE_ID, 'web|users|sign_out'], controller: self, action: :destroy)
+    Kit::Router.register_rails_action(uid: ROUTE_UID, aliases: [ROUTE_ID, 'web|users|sign_out'], controller: self, action: :destroy)
 
     def destroy
       if current_user_oauth_access_token
@@ -15,6 +16,7 @@ module Kit::Auth::Controllers::Web::AuthorizationTokens
 
       redirect_to Kit::Router.path(id: 'web|users|sign_in')
     end
+=end
 
   end
 end

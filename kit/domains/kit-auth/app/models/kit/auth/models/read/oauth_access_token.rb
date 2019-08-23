@@ -16,7 +16,7 @@ module Kit::Auth::Models::Read
       :expires_in,
       :revoked_at,
       :refresh_token,
-      :last_user_request_metadata_id,
+      :last_request_metadata_id,
     ]
 
     belongs_to :oauth_application,
@@ -27,8 +27,8 @@ module Kit::Auth::Models::Read
                class_name: 'Kit::Auth::Models::Read::User',
                foreign_key: 'resource_owner_id'
 
-    belongs_to :last_user_request_metadata,
-               class_name: 'Kit::Auth::Models::Read::UserRequestMetadata'
+    belongs_to :last_request_metadata,
+               class_name: 'Kit::Auth::Models::Read::RequestMetadata'
 
   end
 end

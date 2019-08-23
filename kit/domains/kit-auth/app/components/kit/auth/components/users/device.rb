@@ -9,7 +9,7 @@ module Kit::Auth::Components::Users
     end
 
     def user_agent_string
-      model&.dig(:user_request_metadata, :user_agent)
+      model&.dig(:request_metadata, :user_agent)
     end
 
     def token
@@ -46,7 +46,7 @@ module Kit::Auth::Components::Users
     end
 
     def last_date
-      model&.dig(:user_request_metadata, :created_at)&.strftime('%A %F')
+      model&.dig(:request_metadata, :created_at)&.strftime('%A %F')
     end
 
 

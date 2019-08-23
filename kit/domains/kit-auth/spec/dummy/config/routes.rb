@@ -32,7 +32,7 @@ Rails.application.routes.draw do
 
   # Local to this app
 
-  Kit::Router.register(uid: 'app|home', aliases: ['web|users|after_sign_in', 'web|users|after_sign_up'], controller: HomeController, action: :index)
+  Kit::Router.register_rails_action(uid: 'app|home', aliases: ['web|users|after_sign_in', 'web|users|after_sign_up'], controller: HomeController, action: :index)
 
   Kit::Router.map_routes(
     context: self,

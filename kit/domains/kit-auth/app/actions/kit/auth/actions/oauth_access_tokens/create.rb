@@ -1,4 +1,3 @@
-# TODO: audit if going through Doorkeeper is worth doing
 module Kit::Auth::Actions::OauthAccessTokens::Create
 
   #Contract Hash => [Symbol, KeywordArgs[oauth_access_token: Any, errors: Any]]
@@ -18,10 +17,11 @@ module Kit::Auth::Actions::OauthAccessTokens::Create
     })
   end
 
+  # TODO: audit if going through Doorkeeper is actually worth doing
   def self.create_doorkeeper_request_object(user:, oauth_application:, scopes: nil)
     request_object = ::Doorkeeper::OAuth::PasswordAccessTokenRequest.new(
       ::Doorkeeper.configuration,
-      ::Doorkeeper::Application.find!(oauth_application.id),
+      ::Doorkeeper::Application.find(oauth_application.id),
       user,
       {
         scope: scopes,
@@ -44,10 +44,10 @@ module Kit::Auth::Actions::OauthAccessTokens::Create
 
     client                = doorkeeper_request_object.client
     scopes                = doorkeeper_request_object.scopes
-    resource_owner_id     = doorkeeper_request_object.resource_owner,
+    resource_owner_id     = doorkeeper_request_object.resource_owner.id
     refresh_token_enabled = false
 
-    access_token = ::AccessToken.find_or_create_for(
+    access_token = ::Doorkeeper::AccessToken.find_or_create_for(
       client,
       resource_owner_id,
       scopes,

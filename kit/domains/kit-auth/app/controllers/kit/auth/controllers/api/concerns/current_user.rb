@@ -15,7 +15,6 @@ module Kit::Auth::Controllers::Api::Concerns
       oauth_application = Kit::Auth::Models::Read::OauthApplication.find_by!(uid: 'api')
 
       status, ctx = Kit::Auth::Actions::Users::IdentifyUserForRequest.call({
-        cookies:           cookies,
         request:           request,
         oauth_application: oauth_application,
       })

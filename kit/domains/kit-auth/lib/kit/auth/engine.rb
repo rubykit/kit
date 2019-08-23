@@ -10,15 +10,13 @@ module Kit
         file:      __FILE__,
       )
 
+      initializer "kit-auth.view_helpers" do
+        ActionView::Base.send :include, Kit::Auth::Helpers::ViewHelpers
+      end
+
 =begin
       initializer "web_app.assets.precompile" do |app|
         app.config.assets.precompile += %w( kit-active-admin.js kit-active-admin.css )
-      end
-=end
-
-=begin
-      config.to_prepare do
-        ApplicationController.helper(Kit::Auth::Helpers::CurrentUserHelper)
       end
 =end
 

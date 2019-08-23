@@ -6,7 +6,7 @@ module Kit
 
     class << self
 
-      Contract KeywordArgs[list: ArrayOf[RespondTo[:call]], ctx: Optional[Hash]] => [Symbol, Hash]
+      Contract KeywordArgs[list: ArrayOf[Or[RespondTo[:call], Symbol]], ctx: Optional[Hash]] => [Symbol, Hash]
       def call(list:, ctx: {})
         result = :ok
 
@@ -32,13 +32,17 @@ module Kit
               puts "#   Errors |#{ctx[:errors]}|".colorize(:yellow)
             end
 
-            if result == :error
+            if result == :error || result == :ok_stop
               break
             end
           end
         #rescue StandardException => e
         #  result = :error
         #  # Todo: use event bus to notify error handlers ?
+        end
+
+        if result == :ok_stop
+          result = :ok
         end
 
         [result, ctx]
@@ -49,7 +53,35 @@ module Kit
         ->(ctx_in) { [:ok, key: calleable.call(ctx_in)] }
       end
 
+      def register(id:, target:)
+        id = id.to_sym
+
+        if !target.respond_to?(:call)
+          raise "Kit::Organizer::Store | target `#{id}` is not a calleable"
+        end
+
+        store[id] = {
+          target: target,
+        }
+      end
+
+      def get_from_store(id:)
+        id = id.to_sym
+
+        record = store[id]
+
+        if !record
+          raise "Kit::Router | unknown route `#{id}`"
+        end
+
+        record[:target]
+      end
+
       protected
+
+      def store
+        @store ||= {}
+      end
 
       def context_update(ctx_out:, result:)
         return {} if !ctx_out
@@ -77,6 +109,8 @@ module Kit
           class_object, method_name = calleable
 
           calleable = class_object.method(method_name)
+        elsif calleable.is_a?(Symbol)
+          calleable = get_from_store(id: calleable)
         end
 
         calleable

@@ -4,6 +4,7 @@
 
 - Add reset password
   - How should this work with 2step auth?
+  - To prevent timing attack, we should make sure that only the event is created in a sync way, not the tokens.
 
 - Add one time log in link
   - LINK: https://hackernoon.com/magic-links-d680d410f8f7

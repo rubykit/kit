@@ -8,7 +8,9 @@ module Kit::Auth::Actions::Users::SignInWeb
       },
       list: [
         Kit::Auth::Actions::OauthApplications::LoadWeb,
-        Kit::Auth::Actions::Users::SignIn,
+        Kit::Auth::Actions::RequestMetadata::Create,
+        Kit::Auth::Actions::OauthAccessTokens::CreateForSignIn,
+        Kit::Auth::Actions::OauthAccessTokens::UpdateRequestMetadata,
       ],
     })
   end

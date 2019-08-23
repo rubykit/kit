@@ -14,7 +14,7 @@ class Kit::Auth::Admin::Tables::OauthAccessToken < Kit::Auth::Admin::Tables::Bas
       expires_in:        :code,
       scopes:            :code,
       revoked_at:        nil,
-      last_urm:          [:model, ->(el) { el.last_user_request_metadata } ],
+      last_urm:          [:model, ->(el) { el.last_request_metadata } ],
     )
   end
 

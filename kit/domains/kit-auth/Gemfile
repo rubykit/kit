@@ -31,6 +31,7 @@ gem 'kit-active-admin', path: '../../libs/kit-active-admin', require: 'kit/activ
 gem "slim-rails" # DEV MODE ? doesn't get loaded otherwise
 
 gem "browser"  # DEV MODE ? doesn't get loaded otherwise
+gem "sidekiq"  # DEV MODE ? doesn't get loaded otherwise
 
 gem "jsonapi-rails" # DEV MODE ?
 

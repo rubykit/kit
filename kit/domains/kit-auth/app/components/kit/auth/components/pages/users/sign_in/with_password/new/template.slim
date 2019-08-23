@@ -1,0 +1,15 @@
+= render Kit::Auth::Components::Forms::SigninForm.new( \
+  model:       model,
+  csrf_token:  csrf_token,
+  errors_list: errors_list,
+)
+
+.text-center.mt-3
+  ' Forgot your password?
+  = router_link_to(id: 'web|users|reset_password_request|new')
+    b Reset it!
+
+.text-center.mt-3
+  ' Don't have an account?
+  = router_link_to(id: 'web|users|sign_up')
+    b Sign up!

@@ -1,7 +1,7 @@
 class CreateOauthAccessTokens < ActiveRecord::Migration[5.2]
 
   def change
-    create_table :oauth_access_tokens do |t|
+    create_table   :oauth_access_tokens do |t|
       t.timestamps                                                 null: false
       t.datetime   :deleted_at,         default: nil, index: true
 
@@ -16,7 +16,7 @@ class CreateOauthAccessTokens < ActiveRecord::Migration[5.2]
 
       t.text       :refresh_token,                    index: true,              unique: true
 
-      t.references :last_user_request_metadata,                                 foreign_key: { to_table: :user_request_metadata }
+      t.references :last_request_metadata,                                      foreign_key: { to_table: :request_metadata }
 
       # If there is a previous_refresh_token column,
       # refresh tokens will be revoked after a related access token is used.
