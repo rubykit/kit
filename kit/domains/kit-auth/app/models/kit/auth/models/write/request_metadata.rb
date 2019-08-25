@@ -16,7 +16,8 @@ module Kit::Auth::Models::Write
     ]
 
     belongs_to :user,
-               class_name: 'Kit::Auth::Models::Write::User'
+               class_name: 'Kit::Auth::Models::Write::User',
+               optional: true
 
   end
 end

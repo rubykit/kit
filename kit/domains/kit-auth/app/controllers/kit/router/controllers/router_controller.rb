@@ -21,17 +21,34 @@ module Kit::Router::Controllers
         render layout: true, html: ctx[:content]
       else
         http_metadata = ctx.dig(:metadata, :http) || {}
-        if (300...400).cover?(http_metadata[:status])
-          redirect_to(http_metadata.dig(:redirect, :location), status: http_metadata[:status])
+        if is_redirect?(http_metadata: http_metadata)
+          handle_redirect(http_metadata: http_metadata)
         else
-          raise "ERROR"
+          raise "UNHANDLED SITUATION"
         end
       end
     end
 
     protected
 
-    # LINK: https://api.rubyonrails.org/v5.1.7/classes/ActionDispatch/Cookies.html
+    def is_redirect?(http_metadata:)
+      (300...400).cover?(http_metadata[:status])
+    end
+
+    # REF: https://github.com/rails/rails/blob/master/actionpack/lib/action_controller/metal/redirecting.rb
+    def handle_redirect(http_metadata:)
+      redirect_data = http_metadata[:redirect]
+
+      options = {
+        status: http_metadata[:status],
+        notice: redirect_data[:notice],
+        alert:  redirect_data[:alert],
+      }
+
+      redirect_to(redirect_data[:location], options)
+    end
+
+    # REF: https://api.rubyonrails.org/v5.1.7/classes/ActionDispatch/Cookies.html
     def set_cookies(request_object:)
       data = request_object.http.cookies
       return if data.blank?

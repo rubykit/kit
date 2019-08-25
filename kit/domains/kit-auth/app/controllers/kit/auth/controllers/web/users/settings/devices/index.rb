@@ -21,7 +21,7 @@ module Kit::Auth::Controllers::Web::Users::Settings::Devices
       list = Kit::Auth::Models::Read::OauthAccessToken
         .where('revoked_at IS NULL')
         .where("(created_at + expires_in * INTERVAL '1 second') > ?", DateTime.now)
-        .where(resource_owner_id: request.medatata[:current_user].id)
+        .where(resource_owner_id: request.metadata[:current_user].id)
         .preload(:last_request_metadata)
         .load
 
@@ -45,7 +45,7 @@ module Kit::Auth::Controllers::Web::Users::Settings::Devices
       end
 
       page = Kit::Auth::Components::Pages::Users::Settings::Devices::Index.new(
-        model: list,
+        list: list,
       )
       content = page.local_render
 

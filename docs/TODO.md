@@ -4,6 +4,10 @@
   - Blacklist certain attributes (like auth_token) so that they only get sent to the services that requires them
   - How to process event? 2 behaviours: sync / async that are explicit? consumed_at on the event? (or should we trust Sidekiq?)
 
+- Kit::Events
+  - Add a "store" (like in router & organizer) so that every engine can register specific targets for an event
+  - There probably needs to be a concept of "categories" or "type of targets" (like :notifications, :email_notifications, :analytics, etc)
+
 - Kit::Errors
   - Write JSON::Api adapter (title, desc, status)
   - Handle message generation with I18n support
@@ -26,6 +30,9 @@
   - Async implementation:
     - Async middleware that reacts to certain parameters (headers for "meta information")
     - https://jsonapi.org/recommendations/#asynchronous-processing
+
+  - Start to categorize: Web / Api / System (non mountable externally) !
+  - Add `.safe_delay` if redis is not available
 
 - Admin
   - Add "act as" log (to know who actually did the action VS what the target was)

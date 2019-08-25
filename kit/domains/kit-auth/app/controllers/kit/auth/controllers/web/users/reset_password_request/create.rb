@@ -24,6 +24,7 @@ module Kit::Auth::Controllers::Web::Users::ResetPasswordRequest
         ctx: {
           email:   model[:email],
           request: request,
+          user:    nil,
         },
         list: [
           self.method(:validate_email),
@@ -70,16 +71,13 @@ module Kit::Auth::Controllers::Web::Users::ResetPasswordRequest
     end
 
     def self.create_event(email:, request_metadata:)
-      event = Kit::Auth::Events::ResetPasswordRequested.new(data: {
-        email:               email,
-        request_metadata_id: request_metadata&.id,
+      Kit::Events::Actions::CreateEvent.call({
+        type: Kit::Auth::Events::ResetPasswordRequested,
+        data: {
+          email:               email,
+         request_metadata_id: request_metadata&.id,
+        },
       })
-
-      Rails.configuration.event_store.publish(event)
-
-      event_record = Kit::Domain::Models::Read::Event.find(event.event_id)
-
-      [:ok, event: event_record]
     end
 
     def self.schedule_process_action(event:)

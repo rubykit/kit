@@ -12,6 +12,9 @@ module Kit::Domain::Models::Read
       :created_at,
     ]
 
+    store :data,     coder: JSON
+    store :metadata, coder: JSON
+
     has_many :stream_events,
              class_name: 'Kit::Eventable::Models::Read::StreamEvent',
              foreign_key: :event_id
