@@ -13,7 +13,7 @@ module Kit::Auth::Controllers::Web::Users::SignUp::WithPassword
       })
     end
 
-    Kit::Router.register({
+    Kit::Router::Services::Router.register({
       uid:     'kit_auth|web|users|create',
       aliases: [
         'web|users|create',
@@ -39,7 +39,7 @@ module Kit::Auth::Controllers::Web::Users::SignUp::WithPassword
         request.http.cookies[:access_token] = { value: ctx[:oauth_access_token_plaintext_secret], encrypted: true }
 
         Kit::Router::Controllers::Http.redirect_to(
-          location: Kit::Router.path(id: 'web|users|after_sign_up')
+          location: Kit::Router::Services::Router.path(id: 'web|users|after_sign_up')
         )
       else
         page = Kit::Auth::Components::Pages::Users::SignUp::WithPassword::New.new(

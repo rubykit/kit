@@ -11,6 +11,8 @@ list = [
 
   'kit/auth/controllers/web_controller',
 
+  'kit/auth/controllers/web/current_user',
+
   #'kit/auth/controllers/web/authorization_tokens/create_controller',
   #'kit/auth/controllers/web/authorization_tokens/destroy_controller',
   #'kit/auth/controllers/web/authorization_tokens/index_controller',

@@ -13,7 +13,7 @@ module Kit::Auth::Controllers::Web::Users::ResetPassword
       })
     end
 
-    Kit::Router.register({
+    Kit::Router::Services::Router.register({
       uid:     'kit_auth|web|users|reset_password|edit',
       aliases: ['web|users|reset_password|edit'],
       target:  self.method(:endpoint),

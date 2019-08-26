@@ -13,7 +13,7 @@ module Kit::Auth::Controllers::Web::Users::SignOut
       })
     end
 
-    Kit::Router.register({
+    Kit::Router::Services::Router.register({
       uid:     'kit_auth|web|authorization_tokens|destroy',
       aliases: [
         'web|authorization_tokens|destroy',
@@ -31,7 +31,7 @@ module Kit::Auth::Controllers::Web::Users::SignOut
       end
 
       Kit::Router::Controllers::Http.redirect_to(
-        location: Kit::Router.path(id: 'web|users|sign_in')
+        location: Kit::Router::Services::Router.path(id: 'web|users|sign_in')
       )
     end
 

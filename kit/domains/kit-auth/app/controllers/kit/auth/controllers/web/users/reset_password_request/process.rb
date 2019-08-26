@@ -25,7 +25,7 @@ module Kit::Auth::Controllers::Web::Users::ResetPasswordRequest
       end
     end
 
-    Kit::Router.register({
+    Kit::Router::Services::Router.register({
       uid:     'kit_auth|web|users|reset_password_request|process',
       aliases: ['web|users|reset_password_request|process'],
       target:  self.method(:endpoint),

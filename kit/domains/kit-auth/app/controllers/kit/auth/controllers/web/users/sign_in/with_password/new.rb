@@ -13,7 +13,7 @@ module Kit::Auth::Controllers::Web::Users::SignIn::WithPassword
       })
     end
 
-    Kit::Router.register({
+    Kit::Router::Services::Router.register({
       uid:     'kit_auth|web|authorization_tokens|new',
       aliases: [
         'web|authorization_tokens|new',

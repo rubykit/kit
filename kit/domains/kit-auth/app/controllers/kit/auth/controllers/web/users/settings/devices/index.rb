@@ -11,7 +11,7 @@ module Kit::Auth::Controllers::Web::Users::Settings::Devices
       })
     end
 
-    Kit::Router.register({
+    Kit::Router::Services::Router.register({
       uid:     'kit_auth|web|authorization_tokens|index',
       aliases: ['web|authorization_tokens|index'],
       target:  self.method(:endpoint),

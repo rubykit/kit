@@ -5,13 +5,13 @@ module Kit::Auth::Controllers::Web::Users::ResetPasswordRequest
       Kit::Organizer.call({
         ctx:  { request: request, },
         list: [
-          Kit::Auth::Controllers::Web::CurrentUser.method(:redirect_if_current_user!),
+          :redirect_if_current_user!,
           self.method(:new_reset_password_request),
         ],
       })
     end
 
-    Kit::Router.register({
+    Kit::Router::Services::Router.register({
       uid:     'kit_auth|web|users|reset_password_request|new',
       aliases: ['web|users|reset_password_request|new'],
       target:  self.method(:endpoint),

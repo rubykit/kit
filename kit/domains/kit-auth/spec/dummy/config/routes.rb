@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   #mount Kit::Auth::Engine => "/kit-auth", as: 'kit_auth'
 
-  Kit::Router.map_routes(
+  Kit::Router::Services::Router.map_routes(
     context: self,
     list: {
       'api_v1|users|show'   => { path: '/api/users/:resource_id', verb: :get },
@@ -32,9 +32,9 @@ Rails.application.routes.draw do
 
   # Local to this app
 
-  Kit::Router.register_rails_action(uid: 'app|home', aliases: ['web|users|after_sign_in', 'web|users|after_sign_up'], controller: HomeController, action: :index)
+  Kit::Router::Services::Router.register_rails_action(uid: 'app|home', aliases: ['web|users|after_sign_in', 'web|users|after_sign_up'], controller: HomeController, action: :index)
 
-  Kit::Router.map_routes(
+  Kit::Router::Services::Router.map_routes(
     context: self,
     list: {
       'app|home' => { path: '/', verb: :get },

@@ -13,7 +13,7 @@ module Kit::Auth::Controllers::Web::Users::ResetPassword
       })
     end
 
-    Kit::Router.register({
+    Kit::Router::Services::Router.register({
       uid:     'kit_auth|web|users|reset_password|update',
       aliases: ['web|users|reset_password|update'],
       target:  self.method(:endpoint),
@@ -40,7 +40,7 @@ module Kit::Auth::Controllers::Web::Users::ResetPassword
         request.http.cookies[:access_token] = { value: ctx[:oauth_access_token_plaintext_secret], encrypted: true }
 
         Kit::Router::Controllers::Http.redirect_to(
-          location: Kit::Router.path(id: 'web|users|after_reset_password'),
+          location: Kit::Router::Services::Router.path(id: 'web|users|after_reset_password'),
           notice:   I18n.t('kit.auth.passwords.updated'),
         )
       else

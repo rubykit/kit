@@ -8,14 +8,15 @@ module Kit::Auth::Controllers::Web::Concerns
 
     def resolve_current_user
       status, ctx = Kit::Organizer.call({
+        # TODO: should there be an explicit or impliticit reference ?
         list: [
-          Kit::Domain::Services::Request.method(:create_from_rails_request),
-          Kit::Auth::Controllers::Web::CurrentUser.method(:resolve_current_user),
+          Kit::Router::Services::Request::Rails::Import.method(:import_request),
+          :resolve_current_user,
         ],
         ctx:  {
-          rails_request:      request,
-          rails_cookies:      cookies,
-          controller_context: self,
+          rails_request:    request,
+          rails_cookies:    cookies,
+          rails_controller: self,
         },
       })
     end

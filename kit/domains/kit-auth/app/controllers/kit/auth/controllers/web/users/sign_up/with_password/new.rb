@@ -13,7 +13,7 @@ module Kit::Auth::Controllers::Web::Users::SignUp::WithPassword
       })
     end
 
-    Kit::Router.register({
+    Kit::Router::Services::Router.register({
       uid:     'kit_auth|web|users|new',
       aliases: [
         'web|users|new',
