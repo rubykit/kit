@@ -2,13 +2,11 @@ module Kit::Auth::Controllers::Web::Users::SignUp::WithPassword
   module Create
 
     def self.endpoint(request:)
-      list = [
-        :redirect_if_current_user!,
-        self.method(:create_user),
-      ]
-
       Kit::Organizer.call({
-        list: list,
+        list: [
+          :redirect_if_current_user!,
+          self.method(:create_user),
+        ],
         ctx: { request: request, },
       })
     end
@@ -42,17 +40,14 @@ module Kit::Auth::Controllers::Web::Users::SignUp::WithPassword
           location: Kit::Router::Services::Router.path(id: 'web|users|after_sign_up')
         )
       else
-        page = Kit::Auth::Components::Pages::Users::SignUp::WithPassword::New.new(
-          model:       model,
-          csrf_token:  request.http[:csrf_token],
-          errors_list: ctx[:errors],
+        Kit::Router::Controllers::Http.render(
+          component: Kit::Auth::Components::Pages::Users::SignUp::WithPassword::New,
+          params: {
+            model:       model,
+            csrf_token:  request.http[:csrf_token],
+            errors_list: ctx[:errors],
+          },
         )
-        content = page.local_render
-
-        [:ok, {
-          mime:    :html,
-          content: content,
-        }]
       end
     end
 

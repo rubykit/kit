@@ -2,13 +2,11 @@ module Kit::Auth::Controllers::Web::Users::SignOut
   module Destroy
 
     def self.endpoint(request:)
-      list = [
-        :require_current_user!,
-        self.method(:sign_out),
-      ]
-
       Kit::Organizer.call({
-        list: list,
+        list: [
+          :require_current_user!,
+          self.method(:sign_out),
+        ],
         ctx: { request: request, },
       })
     end
@@ -31,7 +29,7 @@ module Kit::Auth::Controllers::Web::Users::SignOut
       end
 
       Kit::Router::Controllers::Http.redirect_to(
-        location: Kit::Router::Services::Router.path(id: 'web|users|sign_in')
+        location: Kit::Router::Services::Router.path(id: 'web|users|sign_in'),
       )
     end
 

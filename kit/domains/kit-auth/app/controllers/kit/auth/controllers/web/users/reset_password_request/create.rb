@@ -40,22 +40,15 @@ module Kit::Auth::Controllers::Web::Users::ResetPasswordRequest
           notice:   I18n.t('kit.auth.passwords.send_paranoid_instructions'),
         })
       else
-        handle_errors(request: request, ctx: ctx, model: model)
+        Kit::Router::Controllers::Http.render(
+          component: Kit::Auth::Components::Pages::Users::ResetPasswordRequest::New,
+          params: {
+            model:       model,
+            csrf_token:  request.http[:csrf_token],
+            errors_list: ctx[:errors],
+          }
+        )
       end
-    end
-
-    def self.handle_errors(request:, ctx:, model:)
-      page = Kit::Auth::Components::Pages::Users::ResetPasswordRequest::New.new(
-        model:       model,
-        csrf_token:  request.http[:csrf_token],
-        errors_list: ctx[:errors],
-      )
-      content = page.local_render
-
-      [:ok, {
-        mime:    :html,
-        content: content,
-      }]
     end
 
     def self.validate_email(email:)

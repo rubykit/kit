@@ -2,13 +2,11 @@ module Kit::Auth::Controllers::Web::Users::SignIn::WithPassword
   module New
 
     def self.endpoint(request:)
-      list = [
-        :redirect_if_current_user!,
-        self.method(:new_sign_in),
-      ]
-
       Kit::Organizer.call({
-        list: list,
+        list: [
+          :redirect_if_current_user!,
+          self.method(:new_sign_in),
+        ],
         ctx: { request: request, },
       })
     end
@@ -28,16 +26,13 @@ module Kit::Auth::Controllers::Web::Users::SignIn::WithPassword
     def self.new_sign_in(request:)
       model = { email: nil, password: nil }
 
-      page = Kit::Auth::Components::Pages::Users::SignIn::WithPassword::New.new(
-        model:      model,
-        csrf_token: request.http[:csrf_token],
+      Kit::Router::Controllers::Http.render(
+        component: Kit::Auth::Components::Pages::Users::SignIn::WithPassword::New,
+        params: {
+          model:      model,
+          csrf_token: request.http[:csrf_token],
+        },
       )
-      content = page.local_render
-
-      [:ok, {
-        mime:    :html,
-        content: content,
-      }]
     end
 
   end

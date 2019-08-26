@@ -2,13 +2,11 @@ module Kit::Auth::Controllers::Web::Users::SignIn::WithPassword
   module Create
 
     def self.endpoint(request:)
-      list = [
-        :redirect_if_current_user!,
-        self.method(:create_sign_in),
-      ]
-
       Kit::Organizer.call({
-        list: list,
+        list: [
+          :redirect_if_current_user!,
+          self.method(:create_sign_in),
+        ],
         ctx: { request: request, },
       })
     end
@@ -43,17 +41,14 @@ module Kit::Auth::Controllers::Web::Users::SignIn::WithPassword
           location: Kit::Router::Services::Router.path(id: 'web|users|after_sign_in')
         )
       else
-        page = Kit::Auth::Components::Pages::Users::SignIn::WithPassword::New.new(
-          model:       model,
-          csrf_token:  request.http[:csrf_token],
-          errors_list: ctx[:errors],
+        Kit::Router::Controllers::Http.render(
+          component: Kit::Auth::Components::Pages::Users::SignIn::WithPassword::New,
+          params: {
+            model:       model,
+            csrf_token:  request.http[:csrf_token],
+            errors_list: ctx[:errors],
+          },
         )
-        content = page.local_render
-
-        [:ok, {
-          mime:    :html,
-          content: content,
-        }]
       end
     end
 

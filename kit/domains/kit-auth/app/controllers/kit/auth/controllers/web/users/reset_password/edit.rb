@@ -22,16 +22,13 @@ module Kit::Auth::Controllers::Web::Users::ResetPassword
     def self.render_view(request:)
       model = { password: nil, password_confirmation: nil }
 
-      page = Kit::Auth::Components::Pages::Users::ResetPassword::Edit.new(
-        model:      model,
-        csrf_token: request.http[:csrf_token],
+      Kit::Router::Controllers::Http.render(
+        component: Kit::Auth::Components::Pages::Users::ResetPassword::Edit,
+        params: {
+          model:      model,
+          csrf_token: request.http[:csrf_token],
+        }
       )
-      content = page.local_render
-
-      [:ok, {
-        mime:    :html,
-        content: content,
-      }]
     end
 
   end

@@ -44,17 +44,14 @@ module Kit::Auth::Controllers::Web::Users::ResetPassword
           notice:   I18n.t('kit.auth.passwords.updated'),
         )
       else
-        page = Kit::Auth::Components::Pages::Users::ResetPassword::Edit.new(
-          model:       model,
-          csrf_token:  request.http[:csrf_token],
-          errors_list: ctx[:errors],
+        Kit::Router::Controllers::Http.render(
+          component: Kit::Auth::Components::Pages::Users::ResetPassword::Edit,
+          params: {
+            model:       model,
+            csrf_token:  request.http[:csrf_token],
+            errors_list: ctx[:errors],
+          },
         )
-        content = page.local_render
-
-        [:ok, {
-          mime:    :html,
-          content: content,
-        }]
       end
     end
 

@@ -20,16 +20,13 @@ module Kit::Auth::Controllers::Web::Users::ResetPasswordRequest
     def self.new_reset_password_request(request:)
       model = { email: nil }
 
-      page = Kit::Auth::Components::Pages::Users::ResetPasswordRequest::New.new(
-        model:      model,
-        csrf_token: request.http[:csrf_token],
+      Kit::Router::Controllers::Http.render(
+        component: Kit::Auth::Components::Pages::Users::ResetPasswordRequest::New,
+        params: {
+          model:      model,
+          csrf_token: request.http[:csrf_token],
+        },
       )
-      content = page.local_render
-
-      [:ok, {
-        mime:    :html,
-        content: content,
-      }]
     end
 
   end
