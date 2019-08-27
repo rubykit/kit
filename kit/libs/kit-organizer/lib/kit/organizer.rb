@@ -7,7 +7,7 @@ module Kit
     class << self
 
       Contract KeywordArgs[list: ArrayOf[Or[RespondTo[:call], Symbol]], ctx: Optional[Hash]] => [Symbol, Hash]
-      def call(list:, ctx: {})
+      def call(list:, ctx: {}, expose: nil)
         result = :ok
 
         begin
@@ -21,7 +21,7 @@ module Kit
             result, ctx_out = calleable.call(ctx_in)
 
             if ENV['LOG_ORGANIZER']
-              puts "#   Result |#{result}|#{ctx_out}|".colorize(:yellow)
+              puts "#   Result |#{result}|#{ctx_out}|".colorize(:blue)
             end
 
             # NOTE: should we do a deep merge?
@@ -29,7 +29,11 @@ module Kit
 
             if ENV['LOG_ORGANIZER']
               puts "#   New context keys |#{ctx.keys}|".colorize(:yellow)
-              puts "#   Errors |#{ctx[:errors]}|".colorize(:yellow)
+              if ctx[:errors]
+                puts "#   Errors |#{ctx[:errors]}|".colorize(:red)
+              end
+              puts ""
+              puts ""
             end
 
             if result == :error || result == :ok_stop
@@ -43,6 +47,10 @@ module Kit
 
         if result == :ok_stop
           result = :ok
+        end
+
+        if expose && expose[result]
+          ctx = ctx.slice([expose[result]].flatten)
         end
 
         [result, ctx]
@@ -89,15 +97,13 @@ module Kit
         ctx_out = ctx_out.dup
 
         if result == :error
+          # NOTE: this is a potenially dangerous unexpected behaviour !
           if ctx_out.is_a?(Hash)
-            if !ctx_out[:errors]
+            if !ctx_out.has_key?(:errors) && ctx_out.has_key?(:detail)
               ctx_out = { errors: [ctx_out] }
             end
           elsif ctx_out.is_a?(Array)
             ctx_out = { errors: ctx_out }
-          else
-            # NOTE: not sure failing silently the best course
-            ctx_out = {}
           end
         end
 

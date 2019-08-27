@@ -1,3 +1,7 @@
+- General
+  - Audit response format. Should it be nested instead of top level? (like `response: { content:, type:, meta: }`)
+  - How should we handle templates so that we do not rely on rails rendering ?
+
 - Event store
   - Settle on a way to persist
   - How should the event be processed? What does that event bus looks like / is it local?

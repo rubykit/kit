@@ -6,6 +6,7 @@ module Kit::Router::Controllers
         rails_request:    self.request,
         rails_cookies:    cookies,
         rails_controller: self,
+        rails_response:   self.response,
       }
 
       status, ctx = Kit::Organizer.call({
@@ -14,9 +15,16 @@ module Kit::Router::Controllers
           # NOTE: should this be here?
           :resolve_current_user,
           request.params[:kit_router_method],
-          Kit::Router::Services::Request::Rails::Export.method(:export_request),
         ],
         ctx: controller_ctx,
+      })
+
+      # NOTE: we need to run this regardless of the previous status
+      Kit::Organizer.call({
+        list: [
+          Kit::Router::Services::Request::Rails::Export.method(:export_request),
+        ],
+        ctx: controller_ctx.merge(ctx.slice(:request, :response)),
       })
 
       return

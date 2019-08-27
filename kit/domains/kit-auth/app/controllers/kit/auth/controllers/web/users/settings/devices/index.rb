@@ -44,15 +44,12 @@ module Kit::Auth::Controllers::Web::Users::Settings::Devices
         }
       end
 
-      page = Kit::Auth::Components::Pages::Users::Settings::Devices::Index.new(
-        list: list,
+      Kit::Router::Controllers::Http.render(
+        component: Kit::Auth::Components::Pages::Users::Settings::Devices::Index,
+        params: {
+          list: list,
+        },
       )
-      content = page.local_render
-
-      [:ok, {
-        mime:    :html,
-        content: content,
-      }]
     end
 
   end

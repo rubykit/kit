@@ -199,25 +199,5 @@ module Kit::Auth::Controllers::Api
       })
     end
 
-    def render_404(model:, id:)
-      status_code = 404
-      model_name  = model.name.demodulize
-
-      errors = [
-        {
-          id:     id.to_s,
-          status: status_code.to_s,
-          code:   "not-found",
-          title:  "User Not Found",
-          detail: "User #{id} is not available on this server",
-        },
-      ]
-
-      render({
-        status:         status_code,
-        jsonapi_errors: errors,
-      })
-    end
-
   end
 end

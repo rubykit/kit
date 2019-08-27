@@ -2,11 +2,12 @@ module Kit::Auth::Actions::Users::IdentifyUserForRequest
 
   # Todo: add contract on request / cookies (based on needed access)
   #Contract Hash => [Symbol, KeywordArgs[user: Any]]
-  def self.call(request:, oauth_application:)
+  def self.call(request:, oauth_application:, allow: [:param, :cookie, :header])
     status, ctx = Kit::Organizer.call({
       ctx: {
         request:           request,
         oauth_application: oauth_application,
+        allow:             allow,
       },
       list: [
         self.method(:extract_access_token),
@@ -21,23 +22,23 @@ module Kit::Auth::Actions::Users::IdentifyUserForRequest
     end
   end
 
-  def self.extract_access_token(request:)
+  def self.extract_access_token(request:, allow:)
     access_tokens = {
-      from_param:  request.params[:access_token],
-      from_cookie: request.http.cookies[:access_token]&.dig(:value),
-      from_header: nil,
+      param:  request.params[:access_token],
+      cookie: request.http&.cookies&.dig(:access_token, :value),
+      header: nil,
     }
 
     # REF: https://www.iana.org/assignments/http-authschemes/http-authschemes.xhtml
     if !(auth_header = request.http.headers['Authorization']).blank?
       token = auth_header.split('Bearer ')[1]
       if !token.blank?
-        access_tokens[:from_header] = token
+        access_tokens[:header] = token
       end
     end
 
     access_tokens = access_tokens
-      .map { |k, v| [k, (v.blank? ? nil : v)] }
+      .reject { |k, v| !allow.include?(k) || v.blank? }
       .to_h
 
     values = access_tokens.values.compact.uniq

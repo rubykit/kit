@@ -3,26 +3,45 @@ module Kit::Router::Services::Request::Rails
 
     # NOTE: very much a WIP!
 
-    def self.export_request(request:, rails_request:, rails_cookies:, rails_controller:, mime: nil, content: nil, errors: nil, metadata: {})
-      export_rails_cookies(request: request, rails_cookies: rails_cookies)
-      handle_result(mime: mime, content: content, rails_controller: rails_controller, metadata: metadata)
+    def self.export_request(request:, response:, rails_cookies:, rails_controller:, rails_response:)
+      Kit::Organizer.call({
+        list: [
+          self.method(:export_rails_cookies),
+          self.method(:handle_result),
+        ],
+        ctx: {
+          request:          request,
+          response:         response,
+          rails_cookies:    rails_cookies,
+          rails_controller: rails_controller,
+          rails_response:   rails_response,
+        },
+      })
     end
 
-    def self.handle_result(mime:, content:, rails_controller:, metadata: {})
-      if mime == :html
-        handle_html(content: content, rails_controller: rails_controller)
-      else
-        http_metadata = metadata.dig(:http) || {}
-        if is_redirect?(http_metadata: http_metadata)
-          handle_redirect(http_metadata: http_metadata, rails_controller: rails_controller)
-        else
-          raise "UNHANDLED SITUATION, NEEDS TO BE IMPLEMENTED!"
-        end
+    def self.handle_result(request:, response:, rails_controller:, rails_response:)
+      metadata      = response[:metadata] || {}
+      mime          = response[:mime]
+      content       = response[:content]
+
+      http_metadata = metadata.dig(:http) || {}
+      content_type  = mime ? Mime[mime.to_sym].to_s : nil
+      status        = http_metadata[:status] || 200
+
+      if content_type
+        rails_response.headers['Content-Type'] = content_type
       end
-    end
 
-    def self.handle_html(content:, rails_controller:)
-      rails_controller.render layout: true, html: content
+      rails_response.status = status
+
+      if is_redirect?(http_metadata: http_metadata)
+        handle_redirect(rails_controller: rails_controller, http_metadata: http_metadata)
+      elsif mime == :html
+        rails_controller.render status: status, content_type: content_type, layout: true, html: content
+      else
+        rails_controller.render status: status, content_type: content_type, body: content
+      end
+
       [:ok]
     end
 
@@ -41,6 +60,7 @@ module Kit::Router::Services::Request::Rails
       }
 
       rails_controller.redirect_to(redirect_data[:location], options)
+
       [:ok]
     end
 

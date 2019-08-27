@@ -12,17 +12,9 @@ module Kit::Auth::Controllers::Web::Users::ResetPasswordRequest
           self.method(:create_event),
           self.method(:target_email_system),
         ],
-        ctx: {
-          event_record: event_record,
-        },
+        ctx:    { event_record: event_record, },
+        expose: { ok: [:user, :oauth_access_token], error: [:errors] },
       })
-
-      # TODO: replace these 5 lines with a helper ?
-      if ctx[:errors]
-        [:error, errors: ctx[:errors]]
-      else
-        [:ok, user: ctx[:user], oauth_access_token: ctx[:oauth_access_token]]
-      end
     end
 
     Kit::Router::Services::Router.register({

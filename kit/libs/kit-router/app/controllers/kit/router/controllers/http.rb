@@ -1,13 +1,80 @@
+require 'oj'
+
 module Kit::Router::Controllers
   module Http
 
-    def self.render(component:, params:)
+    def self.render(component:, params:, status: 200)
       page    = component.new(params)
       content = page.local_render
 
       [:ok, {
-        mime:    :html,
-        content: content,
+        response: {
+          mime:     :html,
+          content:  content,
+          metadata: {
+            http: {
+              status: status,
+            },
+          },
+        },
+      }]
+    end
+
+    def self.render_jsonapi_errors(resources:, status:, meta: {}, serializers: nil)
+      serializers ||= {
+        :Hash => JSONAPI::Rails::SerializableErrorHash,
+      }
+
+      renderer = JSONAPI::Serializable::Renderer.new
+      options  = {
+        :class   => serializers,
+      }
+      if !meta.empty?
+        options[:meta] = meta
+      end
+
+      content  = renderer.render_errors(resources, options)
+      content  = Oj.dump(content, mode: :compat)
+
+      [:error, {
+        response: {
+          mime:     :json_api,
+          content:  content,
+          metadata: {
+            http: {
+              status: status,
+            },
+          },
+        },
+      }]
+    end
+
+    def self.render_jsonapi(resources:, serializers:, fields: {}, sideload: {}, links: {}, meta: {}, status: 200)
+      renderer = JSONAPI::Serializable::Renderer.new
+      options  = {
+        :class   => serializers,
+        :fields  => fields,
+        :include => sideload,
+        :links   => links.respond_to?(:call) ? links.call(resources: resources) : links,
+      }
+
+      if !meta.empty?
+        options[:meta] = meta
+      end
+
+      content  = renderer.render(resources, options)
+      content  = Oj.dump(content, mode: :compat)
+
+      [:ok, {
+        response: {
+          mime:     :json_api,
+          content:  content,
+          metadata: {
+            http: {
+              status: status,
+            },
+          },
+        },
       }]
     end
 
@@ -16,16 +83,18 @@ module Kit::Router::Controllers
       status = 302 if status.blank?
 
       [:ok_stop, {
-        metadata: {
-          http: {
-            status: status,
-            redirect: {
-              location: location,
-              domain:   domain,
-              notice:   notice,
-              alert:    alert,
-            }
-          }
+        response: {
+          metadata: {
+            http: {
+              status: status,
+              redirect: {
+                location: location,
+                domain:   domain,
+                notice:   notice,
+                alert:    alert,
+              },
+            },
+          },
         },
       }]
     end

@@ -40,13 +40,14 @@ module Kit::Auth::Controllers::Web
 
     def self.resolve_current_user(request:)
       status, ctx = Kit::Organizer.call({
-        ctx: {
-          request: request,
-        },
         list: [
           Kit::Auth::Actions::OauthApplications::LoadWeb,
           Kit::Auth::Actions::Users::IdentifyUserForRequest,
         ],
+        ctx: {
+          request: request,
+        },
+        #expose: { ok: { current_user: :user, current_user_oauth_access_token: :oauth_access_token }}
       })
 
       if status == :ok

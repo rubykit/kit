@@ -1,5 +1,6 @@
 list = [
   'kit/auth/controllers/api_controller',
+  'kit/auth/controllers/api/current_user',
   'kit/auth/controllers/api/api_v1_controller',
 
   'kit/auth/controllers/api/v1/authorization_tokens/create_controller',
@@ -7,7 +8,7 @@ list = [
   'kit/auth/controllers/api/v1/authorization_tokens/show_controller',
 
   'kit/auth/controllers/api/v1/users/create_controller',
-  'kit/auth/controllers/api/v1/users/show_controller',
+  'kit/auth/controllers/api/v1/users/show',
 
   'kit/auth/controllers/web_controller',
 
