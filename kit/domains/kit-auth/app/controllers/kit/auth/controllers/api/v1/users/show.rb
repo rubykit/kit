@@ -1,5 +1,5 @@
 module Kit::Auth::Controllers::Api::V1::Users
-  class Show
+  module Show
 
     ROUTE_UID = 'kit_auth|api_v1|users|show'
 

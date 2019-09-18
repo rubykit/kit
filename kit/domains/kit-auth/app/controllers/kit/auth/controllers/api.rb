@@ -102,5 +102,105 @@ module Kit::Auth::Controllers
       field
     end
 
+    def self.api_default_page_size
+      if !defined?(@api_default_page_size)
+        @api_default_page_size = ENV['API_DEFAULT_PAGE_SIZE'].to_i
+        if @api_default_page_size == 0
+          @api_default_page_size = 50
+        end
+      end
+
+      @api_default_page_size
+    end
+
+    def self.api_max_page_size
+      if !defined?(@api_max_page_size)
+        @api_max_page_size = ENV['API_MAX_PAGE_SIZE'].to_i
+        if @api_max_page_size == 0 || @api_max_page_size > 500
+          @api_max_page_size = 500
+        end
+      end
+
+      @api_max_page_size
+    end
+
+    def self.api_page_size(size:)
+      size = size.to_i
+      if size == 0
+        api_default_page_size
+      elsif size > api_max_page_size
+        api_max_page_size
+      else
+        size
+      end
+    end
+
+    def self.paginate(request:, relation:, ordering:)
+      page_size       = api_page_size(size: request.params.dig(:page, :size))
+      where_arguments = []
+      conditions      = nil
+
+      if request.params[:page]
+        cursor_str = request.params[:page][:after]
+        if !cursor_str.blank?
+          cursor_data = Kit::Pagination::Cursor.decode_cursor(cursor_str: cursor_str)
+          conditions = Kit::Pagination::Conditions.conditions_for_after(ordering: ordering, cursor_data: cursor_data)
+        else
+          cursor_str = request.params[:page][:before]
+          if !cursor_str.blank?
+            cursor_data = Kit::Pagination::Cursor.decode_cursor(cursor_str: cursor_str)
+            conditions = Kit::Pagination::Conditions.conditions_for_before(ordering: ordering, cursor_data: cursor_data)
+          end
+        end
+
+        if conditions
+          where_arguments = Kit::Pagination::ActiveRecord.to_where_arguments(conditions: conditions)
+        end
+      end
+
+      if where_arguments.size > 0
+        relation = relation
+          .where(*where_arguments)
+      end
+
+      relation
+        .order(*Kit::Pagination::ActiveRecord.to_order_arguments(ordering: ordering))
+        .limit(page_size)
+    end
+
+    def self.get_pagination_parameters(collection:, ordering:)
+      params = { next: {}, prev: {} }
+
+      list = [
+        [:prev,  0, :before],
+        [:next, -1, :after],
+      ]
+
+      # NOTE: implicit dependency, should this be parametized?
+      page_size = request.params.dig(:page, :size).to_i
+      if page_size > 0
+        page_size = api_page_size(size: page_size)
+      end
+
+      list.each do |el|
+        id, offset, param_name = el
+
+        cursor_data = Kit::Pagination::Cursor.cursor_data_for_element(ordering: ordering, element: collection[offset])
+        token       = Kit::Pagination::Cursor.encode_cursor(cursor_data: cursor_data)
+
+        if token
+          params[id][:page] ||= {}
+          params[id][:page][param_name] = token
+        end
+
+        if page_size > 0
+          params[id][:page] ||= {}
+          params[id][:page][:size] = page_size
+        end
+      end
+
+      params
+    end
+
   end
 end

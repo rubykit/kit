@@ -5,7 +5,7 @@ module Kit::Auth::Controllers::Web::Users::ResetPassword
       Kit::Organizer.call({
         ctx:  { request: request, },
         list: [
-          :require_current_user!,
+          :web_require_current_user!,
           # TODO: fix this explicit dependency, not sure how?
           ->(ctx) { Kit::Auth::Controllers::WebController.redirect_if_missing_scope!(request: ctx[:request], scope: 'update_user_secret') },
           self.method(:render_view),
@@ -40,7 +40,7 @@ module Kit::Auth::Controllers::Web::Users::ResetPassword
         request.http.cookies[:access_token] = { value: ctx[:oauth_access_token_plaintext_secret], encrypted: true }
 
         Kit::Router::Controllers::Http.redirect_to(
-          location: Kit::Router::Services::Router.path(id: 'web|users|after_reset_password'),
+          location: Kit::Router::Services::HttpRoutes.path(id: 'web|users|after_reset_password'),
           notice:   I18n.t('kit.auth.passwords.updated'),
         )
       else

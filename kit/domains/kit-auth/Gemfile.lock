@@ -11,6 +11,7 @@ PATH
   remote: ../../libs/kit-app-container
   specs:
     kit-app-container (0.1.0)
+      activerecord-nulldb-adapter
       rails_event_store
       sidekiq
 
@@ -35,6 +36,13 @@ PATH
       slim-rails
 
 PATH
+  remote: ../../libs/kit-engine
+  specs:
+    kit-engine (0.1.0)
+      activerecord-nulldb-adapter
+      rails
+
+PATH
   remote: ../../libs/kit-error
   specs:
     kit-error (0.1.0)
@@ -55,6 +63,7 @@ PATH
   specs:
     kit-router (0.1.0)
       oj
+      rails (~> 6.0)
 
 PATH
   remote: .
@@ -333,7 +342,7 @@ GEM
       multi_json (~> 1.3)
       multi_xml (~> 0.5)
       rack (>= 1.2, < 3)
-    oj (3.9.0)
+    oj (3.9.1)
     omniauth (1.9.0)
       hashie (>= 3.4.6, < 3.7.0)
       rack (>= 1.6.2, < 3)
@@ -530,6 +539,7 @@ DEPENDENCIES
   kit-app-container!
   kit-auth!
   kit-domain!
+  kit-engine!
   kit-error!
   kit-organizer!
   kit-pagination!

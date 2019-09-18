@@ -1,17 +1,16 @@
-require 'kit/domain'
-require_relative 'view_helpers'
+require 'kit/engine'
 
 module Kit::Router
   class Engine < ::Rails::Engine
 
-    Kit::Domain.config_engine(
+    Kit::Engine.config_engine(
       context:   self,
       namespace: Kit::Router,
       file:      __FILE__,
     )
 
     initializer "kit-router.view_helpers" do
-      ActionView::Base.send :include, Kit::Router::ViewHelpers
+      ActionView::Base.send :include, Kit::Router::ViewHelpers::HttpRoutes
     end
 
     # TODO: move this to an kit-api gem ?

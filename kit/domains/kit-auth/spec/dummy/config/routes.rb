@@ -1,45 +1,61 @@
 Rails.application.routes.draw do
   #mount Kit::Auth::Engine => "/kit-auth", as: 'kit_auth'
 
-  Kit::Router::Services::Router.map_routes(
-    context: self,
-    list: {
-      'api_v1|users|show'   => { path: '/api/users/:resource_id', verb: :get },
-      'api_v1|users|create' => { path: '/api/users',              verb: :post },
+  list_api = [
+    { id: 'api_v1|users|show',                       path: '/api/users/:resource_id',                verb: :get },
+    { id: 'api_v1|users|create',                     path: '/api/users',                             verb: :post },
 
-      'api_v1|authorization_tokens|show'   => { path: '/api/authorization_tokens/:resource_id', verb: :get },
-      'api_v1|authorization_tokens|index'  => { path: '/api/authorization_tokens',              verb: :get },
-      'api_v1|authorization_tokens|create' => { path: '/api/authorization_tokens',              verb: :post },
+    { id: 'api_v1|authorization_tokens|show',        path: '/api/authorization_tokens/:resource_id', verb: :get },
+    { id: 'api_v1|authorization_tokens|index',       path: '/api/authorization_tokens',              verb: :get },
+    { id: 'api_v1|authorization_tokens|create',      path: '/api/authorization_tokens',              verb: :post },
+  ]
 
-      'web|authorization_tokens|new'     => { path: '/web/sign-in',  verb: :get },
-      'web|authorization_tokens|create'  => { path: '/web/sign-in',  verb: :post },
-      'web|authorization_tokens|destroy' => { path: '/web/sign-out', verb: :delete },
-      'web|authorization_tokens|index'   => { path: '/web/settings/devices', verb: :get },
+  list_api.each do |entry|
+    entry.merge!({
+      rails_endpoint_wrapper: [::ApiController, :route],
+    })
+  end
 
-      'web|users|reset_password_request|new'    => { path: '/web/reset-password',  verb: :get },
-      'web|users|reset_password_request|create' => { path: '/web/reset-password',  verb: :post },
+  Kit::Router::Services::Adapters::Http::Rails::Routes.mount_http_targets(rails_router_context: self, list: list_api,)
 
-      'web|users|reset_password|edit'   => { path: '/web/update-password',  verb: :get },
-      'web|users|reset_password|update' => { path: '/web/update-password',  verb: :put },
+  list_web = [
+    { id: 'web|authorization_tokens|new',            path: '/web/sign-in',                           verb: :get },
+    { id: 'web|authorization_tokens|create',         path: '/web/sign-in',                           verb: :post },
+    { id: 'web|authorization_tokens|destroy',        path: '/web/sign-out',                          verb: :delete },
+    { id: 'web|authorization_tokens|index',          path: '/web/settings/devices',                  verb: :get },
 
-      'web|users|new'    => { path: '/web/sign-up',          verb: :get },
-      'web|users|create' => { path: '/web/sign-up',          verb: :post },
+    { id: 'web|users|reset_password_request|new',    path: '/web/reset-password',                    verb: :get },
+    { id: 'web|users|reset_password_request|create', path: '/web/reset-password',                    verb: :post },
 
-      #'web|users|edit'   => { path: '/web/settings/account', verb: :get },
-      #'web|users|update' => { path: '/web/settings/account', verb: :put },
-    },
-  )
+    { id: 'web|users|reset_password|edit',           path: '/web/update-password',                   verb: :get },
+    { id: 'web|users|reset_password|update',         path: '/web/update-password',                   verb: :put },
 
-  # Local to this app
+    { id: 'web|users|new',                           path: '/web/sign-up',                           verb: :get },
+    { id: 'web|users|create',                        path: '/web/sign-up',                           verb: :post },
+  ]
 
-  Kit::Router::Services::Router.register_rails_action(uid: 'app|home', aliases: ['web|users|after_sign_in', 'web|users|after_sign_up'], controller: HomeController, action: :index)
+  list_web.each do |entry|
+    entry.merge!({
+      rails_endpoint_wrapper: [::WebController, :route],
+    })
+  end
 
-  Kit::Router::Services::Router.map_routes(
-    context: self,
-    list: {
-      'app|home' => { path: '/', verb: :get },
-    },
-  )
+  Kit::Router::Services::Adapters::Http::Rails::Routes.mount_http_targets(rails_router_context: self, list: list_web,)
 
-  #root to: "home#index"
+
+
+  list_admin = []
+
+  Kit::Router::Services::Adapters::Http::Rails::Routes.mount_http_targets(rails_router_context: self, list: list_admin,)
+
+
+  # ----------------------------------------------------------------------------
+  # Local to this app container
+
+  list_local = [
+    { id: 'app|home', path: '/', verb: :get },
+  ]
+
+  Kit::Router::Services::Adapters::Http::Rails::Routes.mount_rails_targets(rails_router_context: self, list: list_local,)
+
 end

@@ -4,7 +4,7 @@ module Kit::Auth::Controllers::Web::Users::SignUp::WithPassword
     def self.endpoint(request:)
       Kit::Organizer.call({
         list: [
-          :redirect_if_current_user!,
+          :web_redirect_if_current_user!,
           self.method(:new_sign_up),
         ],
         ctx: { request: request, },

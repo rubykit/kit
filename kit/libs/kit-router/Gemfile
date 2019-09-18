@@ -14,4 +14,13 @@ gemspec
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
 
-gem 'rspec'
+gem 'rails'
+gem 'pry'
+
+group :test do
+  gem 'rspec-rails'
+end
+
+gem 'kit-engine',              path: '../../libs/kit-engine' # DEV MODE
+gem 'kit-app-container',       path: '../../libs/kit-app-container' # DEV MODE
+gem 'kit-dummy-app-container', path: '../../libs/kit-dummy-app-container' # DEV MODE

@@ -4,7 +4,7 @@ module Kit::Auth::Controllers::Web::Users::SignUp::WithPassword
     def self.endpoint(request:)
       Kit::Organizer.call({
         list: [
-          :redirect_if_current_user!,
+          :web_redirect_if_current_user!,
           self.method(:create_user),
         ],
         ctx: { request: request, },
@@ -37,7 +37,7 @@ module Kit::Auth::Controllers::Web::Users::SignUp::WithPassword
         request.http.cookies[:access_token] = { value: ctx[:oauth_access_token_plaintext_secret], encrypted: true }
 
         Kit::Router::Controllers::Http.redirect_to(
-          location: Kit::Router::Services::Router.path(id: 'web|users|after_sign_up')
+          location: Kit::Router::Services::HttpRoutes.path(id: 'web|users|after_sign_up')
         )
       else
         Kit::Router::Controllers::Http.render(

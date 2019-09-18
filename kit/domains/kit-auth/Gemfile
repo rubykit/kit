@@ -19,6 +19,7 @@ gem 'dotenv-rails', require: 'dotenv/rails-now'
 gem 'paranoia', require: 'paranoia'
 gem 'doorkeeper', require: 'doorkeeper'
 
+gem 'kit-engine', path: '../../libs/kit-engine' # DEV MODE
 gem 'kit-domain', path: '../../libs/kit-domain' # DEV MODE
 gem 'contracts', require: 'contracts' # DEV MODE
 

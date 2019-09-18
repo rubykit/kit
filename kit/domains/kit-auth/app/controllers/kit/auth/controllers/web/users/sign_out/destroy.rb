@@ -4,7 +4,7 @@ module Kit::Auth::Controllers::Web::Users::SignOut
     def self.endpoint(request:)
       Kit::Organizer.call({
         list: [
-          :require_current_user!,
+          :web_require_current_user!,
           self.method(:sign_out),
         ],
         ctx: { request: request, },
@@ -29,7 +29,7 @@ module Kit::Auth::Controllers::Web::Users::SignOut
       end
 
       Kit::Router::Controllers::Http.redirect_to(
-        location: Kit::Router::Services::Router.path(id: 'web|users|sign_in'),
+        location: Kit::Router::Services::HttpRoutes.path(id: 'web|users|sign_in'),
       )
     end
 

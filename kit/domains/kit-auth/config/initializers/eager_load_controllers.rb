@@ -1,26 +1,23 @@
 list = [
-  'kit/auth/controllers/api_controller',
+
+  # API ------------------------------------------------------------------------
+
+  'kit/auth/controllers/api',
   'kit/auth/controllers/api/current_user',
-  'kit/auth/controllers/api/api_v1_controller',
+  #'kit/auth/controllers/api_controller',
+  #'kit/auth/controllers/api/api_v1_controller',
 
-  'kit/auth/controllers/api/v1/authorization_tokens/create_controller',
-  'kit/auth/controllers/api/v1/authorization_tokens/index_controller',
-  'kit/auth/controllers/api/v1/authorization_tokens/show_controller',
+  'kit/auth/controllers/api/v1/authorization_tokens/create',
+  'kit/auth/controllers/api/v1/authorization_tokens/index',
+  'kit/auth/controllers/api/v1/authorization_tokens/show',
 
-  'kit/auth/controllers/api/v1/users/create_controller',
+  'kit/auth/controllers/api/v1/users/create',
   'kit/auth/controllers/api/v1/users/show',
 
-  'kit/auth/controllers/web_controller',
+  # WEB ------------------------------------------------------------------------
 
+  #'kit/auth/controllers/web_controller',
   'kit/auth/controllers/web/current_user',
-
-  #'kit/auth/controllers/web/authorization_tokens/create_controller',
-  #'kit/auth/controllers/web/authorization_tokens/destroy_controller',
-  #'kit/auth/controllers/web/authorization_tokens/index_controller',
-
-  #'kit/auth/controllers/web/users/reset_password_controller',
-
-  #'kit/auth/controllers/web/users/create_controller',
 
   'kit/auth/controllers/web/users/reset_password/edit',
   'kit/auth/controllers/web/users/reset_password/update',

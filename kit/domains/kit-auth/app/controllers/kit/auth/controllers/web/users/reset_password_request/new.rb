@@ -5,7 +5,7 @@ module Kit::Auth::Controllers::Web::Users::ResetPasswordRequest
       Kit::Organizer.call({
         ctx:  { request: request, },
         list: [
-          :redirect_if_current_user!,
+          :web_redirect_if_current_user!,
           self.method(:new_reset_password_request),
         ],
       })

@@ -1,10 +1,17 @@
+require 'kit/engine'
 require 'kit/domain'
 
 module Kit
   module Auth
     class Engine < ::Rails::Engine
 
-      Kit::Domain.config_engine(
+      ::Kit::Engine.config_engine(
+        context:   self,
+        namespace: Kit::Auth,
+        file:      __FILE__,
+      )
+
+      ::Kit::Domain.config_domain(
         context:   self,
         namespace: Kit::Auth,
         file:      __FILE__,

@@ -19,4 +19,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "rails_event_store"
 
   spec.add_dependency "sidekiq"
+
+  spec.add_dependency "activerecord-nulldb-adapter"
+
 end
