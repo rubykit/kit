@@ -104,6 +104,8 @@ module Kit
             end
           elsif ctx_out.is_a?(Array)
             ctx_out = { errors: ctx_out }
+          elsif ctx_out.is_a?(String)
+            ctx_out = { errors: [{ detail: ctx_out }] }
           end
         end
 

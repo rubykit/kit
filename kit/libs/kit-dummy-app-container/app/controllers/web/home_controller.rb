@@ -1,5 +1,6 @@
 class ::Web::HomeController < ::WebController
 
+=begin
   Kit::Router::Services::Router.register_without_target({
     uid:     'app|home',
     aliases: [
@@ -12,6 +13,7 @@ class ::Web::HomeController < ::WebController
       },
     },
   })
+=end
 
   def index
     render

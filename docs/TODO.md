@@ -25,6 +25,7 @@
   - Would replacing the tupple format with only a ctx with status: key help ?
   - The hash format would allow to have "flow metadata" (like explicit "stop" instead of :ok_stop)
   - Should this just be N call to organize ? (the danger I see is: easy to make a mistake and chain the organized calleables to get the context feeding behaviour even though they are not purely linear) >> Answer: if named flowed, no linearization, each new call to organize creates a new named flow. The glue just becomes: what is exposed from one flow to another, an on what conditions
+  - We need a primitive to merge the context of N organized operations (maybe this only makes sense when merging :error ?)
 
   - Should "organize" help represent higher order flows with branching ?
   - Is the role of railway programming to ALWAYS go back to a ":ok" path for the caller ?
