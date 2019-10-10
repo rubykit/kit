@@ -110,6 +110,11 @@
   - Solve controller eager login at the kit-domain level
   - Solve plugin reloading
 
+- Code representation:
+  - What primitives do we need to be able to represent code execution & reason about its validity?
+     > Higher level "AST"
+     > Contracts as a way to auto-generate tests && doc ? (through property testing ?)
+
 - Figure out how to use kit-auth engine view path for doorkeeper engine
 
 - Geolocation >> add geocoder + GeoLite2 City database

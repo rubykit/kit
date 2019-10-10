@@ -15,11 +15,13 @@ gemspec
 # gem 'byebug', group: [:development, :test]
 
 gem 'rails'
-gem 'pry'
+
+group :test, :development do
+  gem 'contracts'
+  gem 'pry'
+end
 
 group :test do
-  gem 'sorbet'
-  gem 'sorbet-runtime'
   gem 'rspec-rails'
 end
 

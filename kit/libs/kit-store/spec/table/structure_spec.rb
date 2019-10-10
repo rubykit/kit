@@ -1,5 +1,4 @@
 require_relative '../rails_helper'
-require_relative '../../lib/kit/store'
 
 describe "Table Structure" do
   let(:service) { Kit::Store::Services::Table }

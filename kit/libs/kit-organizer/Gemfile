@@ -13,3 +13,16 @@ gemspec
 
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
+
+gem 'rails'
+
+group :test, :development do
+  gem 'pry'
+  gem 'contracts'
+end
+
+group :test do
+  gem 'sorbet'
+  gem 'sorbet-runtime'
+  gem 'rspec-rails'
+end

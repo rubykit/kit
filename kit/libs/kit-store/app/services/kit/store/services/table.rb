@@ -1,9 +1,10 @@
 module Kit::Store::Services
   module Table
-    extend T::Sig
 
     def self.select(store:, from:, select:, where: [], limit: nil, order: nil)
       arguments = { store: store, from: from, select: select, where: where, limit: limit, order: order, }
+
+      Kit::Store::Services::Table::Structure.select(arguments)
     end
 
     def self.insert(store:, table_name:, data:)
@@ -35,7 +36,6 @@ module Kit::Store::Services
         list: [
           Kit::Store::Services::Table::Structure.method(:get_table),
           Kit::Store::Services::Table::Structure.method(:add_column),
-          Kit::Store::Services::Table::Structure.method(:add_auto_increment),
         ],
         ctx: arguments,
       })
@@ -48,7 +48,6 @@ module Kit::Store::Services
 
       Kit::Store::Services::Table::Structure.add_unique_constraint(arguments)
     end
-
 
   end
 end

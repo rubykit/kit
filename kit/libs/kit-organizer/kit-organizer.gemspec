@@ -16,5 +16,11 @@ Gem::Specification.new do |spec|
 
   spec.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
-  spec.add_dependency "contracts", "~> 0.16.0"
+  spec.add_dependency "rails", "~> 6.0"
+
+  spec.add_development_dependency 'contracts'
+  spec.add_development_dependency 'sorbet'
+  spec.add_development_dependency 'sorbet-runtime'
+  spec.add_development_dependency 'rspec-rails'
+  spec.add_development_dependency 'listen'
 end
