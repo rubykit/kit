@@ -1,6 +1,11 @@
 # KitOrganizer
 Short description and motivation.
 
+### Flow
+2 goals:
+- add contracts around methods
+- maintain the signature of the original method for the proxy method
+
 ## Usage
 How to use my plugin.
 

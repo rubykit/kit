@@ -2,11 +2,17 @@ module Kit
   module Organizer
     include Contracts
 
-    Contract KeywordArgs[list: ArrayOf[Or[RespondTo[:call], Symbol]], ctx: Optional[Hash]] => [Symbol, Hash]
+    #Contract KeywordArgs[list: ArrayOf[Or[RespondTo[:call], Symbol]], ctx: Optional[Hash]] => [Symbol, Hash]
     def self.call(list:, ctx: {}, expose: nil)
       arguments = { list: list, ctx: ctx, expose: expose }
 
       Kit::Organizer::Services::Organize.call(arguments)
+    end
+
+    def self.call_for_contract(list:, ctx: {})
+      arguments = { list: list, ctx: ctx }
+
+      Kit::Organizer::Services::Organize.call_for_contract(arguments)
     end
 
 =begin

@@ -17,7 +17,6 @@ gemspec
 gem 'rails'
 
 group :test, :development do
-  gem 'contracts'
   gem 'pry'
 end
 

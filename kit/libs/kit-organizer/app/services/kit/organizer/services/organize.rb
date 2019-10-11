@@ -51,6 +51,39 @@ module Kit::Organizer::Services
       [result, ctx]
     end
 
+    def self.call_for_contract(list:, ctx: {})
+      result     = :ok
+      result_ctx = nil
+
+      begin
+        list.each do |calleable|
+          calleable = to_calleable(calleable: calleable)
+
+          ctx_in = generate_ctx_in(calleable: calleable, ctx: ctx)
+          if ENV['LOG_ORGANIZER']
+            puts "# Calling `#{calleable}` with keys |#{ctx_in.keys}|".colorize(:yellow)
+          end
+
+          predicate_result = calleable.call(ctx_in)
+          if !predicate_result
+            result = :error
+          end
+
+          if ENV['LOG_ORGANIZER']
+            puts "#   Result |#{result}|".colorize(:blue)
+          end
+
+          if result == :error
+            result_ctx = { callable: calleable, ctx: ctx_in }
+            break
+          end
+        end
+      end
+
+      [result, result_ctx]
+    end
+
+
     def self.context_update(ctx_out:, result:)
       return {} if !ctx_out
 
