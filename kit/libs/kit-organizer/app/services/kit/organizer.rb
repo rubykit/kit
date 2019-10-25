@@ -1,6 +1,6 @@
 module Kit
   module Organizer
-    include Contracts
+    include Contract
 
     #Contract KeywordArgs[list: ArrayOf[Or[RespondTo[:call], Symbol]], ctx: Optional[Hash]] => [Symbol, Hash]
     def self.call(list:, ctx: {}, expose: nil)

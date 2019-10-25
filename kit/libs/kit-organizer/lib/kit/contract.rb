@@ -10,6 +10,8 @@ module Kit
 
     class_methods do
       def before(arg)
+        return if !Kit::Contract::Services::Store.is_active?
+
         if arg.is_a?(Array)
           self.tmp_before = self.tmp_before + arg
         else
@@ -18,6 +20,8 @@ module Kit
       end
 
       def after(arg)
+        return if !Kit::Contract::Services::Store.is_active?
+
         if arg.is_a?(Array)
           self.tmp_after = self.tmp_after + arg
         else
@@ -26,6 +30,8 @@ module Kit
       end
 
       def contract(args)
+        return if !Kit::Contract::Services::Store.is_active?
+
         if args[:before]
           before(args[:before])
         end
@@ -40,6 +46,7 @@ module Kit
       attr_accessor :tmp_after
 
       def singleton_method_added(method_name)
+        return if !Kit::Contract::Services::Store.is_active?
         return if method_name.to_s.start_with?(prefix)
         return if self.respond_to?("#{prefix}#{method_name}")
 
@@ -66,12 +73,12 @@ module Kit
 
         types_diff = parameters_types - accepted_types
         if types_diff.size > 0
-          raise "Kit::Contracts | Unsupported parameters types for `#{target_class.name}.#{method_name}`: `#{types_diff}` "
+          raise "Kit::Contract | Unsupported parameters types for `#{target_class.name}.#{method_name}`: `#{types_diff}` "
         end
       end
 
       def save_contracts(target_class:, method_name:)
-        Kit::Contracts::Services::Store.add(
+        Kit::Contract::Services::Store.add(
           class_name:  target_class.name,
           method_name: method_name,
           contracts: {
@@ -106,7 +113,7 @@ module Kit
 
         (class << target_class; self; end).module_eval <<-METHOD, __FILE__, __LINE__ + 1
           def #{method_name}(#{signature_str})
-            Kit::Contracts::Services::Call.instrument(
+            Kit::Contract::Services::Call.instrument(
               method_name:  "#{method_name}",
               aliased_name: "#{aliased_name}",
               target_class: #{class_name},

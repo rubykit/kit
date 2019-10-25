@@ -1,4 +1,4 @@
-module Kit::Contracts::Services::Store
+module Kit::Contract::Services::Store
 
   def self.add(store: nil, class_name:, method_name:, contracts:)
     store ||= self.local_store
@@ -16,6 +16,10 @@ module Kit::Contracts::Services::Store
 
   def self.local_store
     @local_store ||= {}
+  end
+
+  def self.is_active?
+    @active ||= (ENV['KIT_CONTRACTS'] != 'false' && ENV['KIT_CONTRACTS'] != false)
   end
 
 end

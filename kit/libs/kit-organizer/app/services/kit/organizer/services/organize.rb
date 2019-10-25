@@ -3,7 +3,7 @@ module Kit::Organizer::Services
 
     #Contract KeywordArgs[list: ArrayOf[Or[RespondTo[:call], Symbol]], ctx: Optional[Hash]] => [Symbol, Hash]
     def self.call(list:, ctx: {}, expose: nil)
-      result = :ok
+      status = :ok
 
       begin
         list.each do |calleable|
@@ -11,16 +11,15 @@ module Kit::Organizer::Services
 
           ctx_in = generate_ctx_in(calleable: calleable, ctx: ctx)
           if ENV['LOG_ORGANIZER']
-            puts "# Calling `#{calleable}` with keys |#{ctx_in.keys}|".colorize(:yellow)
+            puts "# Calling `#{calleable}` with keys |#{ctx_in}|".colorize(:yellow)
           end
-          result, ctx_out = calleable.call(ctx_in)
+          status, ctx_out = calleable.call(*ctx_in)
 
           if ENV['LOG_ORGANIZER']
-            puts "#   Result |#{result}|#{ctx_out}|".colorize(:blue)
+            puts "#   Result |#{status}|#{ctx_out}|".colorize(:blue)
           end
 
-          # NOTE: should we do a deep merge?
-          ctx = ctx.merge(context_update(ctx_out: ctx_out, result: result))
+          ctx = context_update(ctx_current: ctx, ctx_out: ctx_out, status: status)
 
           if ENV['LOG_ORGANIZER']
             puts "#   New context keys |#{ctx.keys}|".colorize(:yellow)
@@ -31,65 +30,70 @@ module Kit::Organizer::Services
             puts ""
           end
 
-          if result == :error || result == :ok_stop
+          if status == :error || status == :ok_stop
             break
           end
         end
       #rescue StandardException => e
-      #  result = :error
+      #  status = :error
       #  # Todo: use event bus to notify error handlers ?
       end
 
-      if result == :ok_stop
-        result = :ok
+      if status == :ok_stop
+        status = :ok
       end
 
-      if expose && expose[result]
-        ctx = ctx.slice([expose[result]].flatten)
+      if expose && expose[status]
+        ctx = ctx.slice([expose[status]].flatten)
       end
 
-      [result, ctx]
+      [status, ctx]
     end
 
     def self.call_for_contract(list:, ctx: {})
-      result     = :ok
-      result_ctx = nil
+      status = :ok
 
       begin
         list.each do |calleable|
           calleable = to_calleable(calleable: calleable)
 
-          ctx_in = generate_ctx_in(calleable: calleable, ctx: ctx)
+          ctx_in    = generate_ctx_in(calleable: calleable, ctx: ctx)
           if ENV['LOG_ORGANIZER']
-            puts "# Calling `#{calleable}` with keys |#{ctx_in.keys}|".colorize(:yellow)
+            puts "# Calling `#{calleable}` with keys |#{ctx_in}|".colorize(:yellow)
           end
 
-          predicate_result = calleable.call(ctx_in)
-          if !predicate_result
-            result = :error
+          result = calleable.call(*ctx_in)
+
+          if result == true
+            status = :ok
+          elsif result == false
+            status = :error
+          else
+            status, ctx_out = result
+            ctx = context_update(ctx_current: ctx, ctx_out: ctx_out, status: status)
           end
 
           if ENV['LOG_ORGANIZER']
             puts "#   Result |#{result}|".colorize(:blue)
           end
 
-          if result == :error
-            result_ctx = { callable: calleable, ctx: ctx_in }
+          if status == :error
+            ctx[:contract_error] = { callable: calleable, ctx: ctx_in }
             break
           end
         end
       end
 
-      [result, result_ctx]
+      [status, ctx]
     end
 
 
-    def self.context_update(ctx_out:, result:)
+    def self.context_update(ctx_current:, ctx_out:, status:)
       return {} if !ctx_out
 
       ctx_out = ctx_out.dup
 
-      if result == :error
+      if status == :error
         # NOTE: this is a potenially dangerous unexpected behaviour !
         if ctx_out.is_a?(Hash)
           if !ctx_out.has_key?(:errors) && ctx_out.has_key?(:detail)
@@ -102,7 +106,8 @@ module Kit::Organizer::Services
         end
       end
 
-      ctx_out
+      # NOTE: should we do a deep merge?
+      ctx_current.merge(ctx_out)
     end
 
     def self.to_calleable(calleable:)
@@ -120,23 +125,32 @@ module Kit::Organizer::Services
     def self.generate_ctx_in(calleable:, ctx:)
       if calleable.is_a?(Proc) || calleable.is_a?(Method)
         parameters = calleable.parameters
-      elsif calleable.is_a?(Module)
+      #elsif calleable.is_a?(Module)
+      #  parameters = calleable.method(:call).parameters
+      elsif calleable.respond_to?(:call)
         parameters = calleable.method(:call).parameters
       else
         raise "Unsupported calleable"
       end
 
-      keys_list = parameters
-        .map do |el|
-          if el[0] == :keyreq || el[0] == :key && ctx.has_key?(el[1])
-            el[1]
-          else
-            nil
-          end
-        end
+      result = []
+
+      expected_keys = parameters
+        .map { |el| el[0].in?([:keyreq, :key]) ? el[1] : nil }
         .compact
 
-      ctx.slice(*keys_list)
+      if expected_keys.size > 0
+        available_keys = expected_keys
+          .select { |name| ctx.has_key?(name) }
+
+        result << ctx.slice(*available_keys)
+      end
+
+      if parameters.any? { |el| el[0] == :keyrest }
+        result << ctx.slice(*(ctx.keys - expected_keys))
+      end
+
+      result
     end
 
   end
