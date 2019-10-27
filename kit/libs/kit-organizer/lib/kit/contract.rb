@@ -12,24 +12,43 @@ module Kit
       def before(arg)
         return if !Kit::Contract::Services::Store.is_active?
 
-        if arg.is_a?(Array)
-          self.tmp_before = self.tmp_before + arg
+        if arg.is_a?(::Array)
+          self.tmp_before.concat(arg)
         else
           self.tmp_before << arg
         end
+
+        true
       end
 
       def after(arg)
         return if !Kit::Contract::Services::Store.is_active?
 
-        if arg.is_a?(Array)
-          self.tmp_after = self.tmp_after + arg
+        if arg.is_a?(::Array)
+          self.tmp_after.concat(arg)
         else
           self.tmp_after << arg
         end
+
+        true
       end
 
-      def contract(args)
+      def contract(arg)
+        return if !Kit::Contract::Services::Store.is_active?
+
+        if !arg.is_a?(::Hash) || arg.size != 1
+          raise "Invalid use"
+        end
+
+        data = arg.first
+
+        before(data[0])
+        after(data[1])
+
+        true
+      end
+
+      def contracts(args)
         return if !Kit::Contract::Services::Store.is_active?
 
         if args[:before]
@@ -38,6 +57,8 @@ module Kit
         if args[:after]
           after(args[:after])
         end
+
+        true
       end
 
       protected

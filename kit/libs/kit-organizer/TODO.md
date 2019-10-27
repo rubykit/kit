@@ -4,7 +4,9 @@ Kit::Contract
 
   - Is Optional needed ? (Or is it implicit ?)
 
-  - Lookup Ruby types and add them.
+  - Do contracts work with ActiveSupport::Concern ?
+
+  - Add support for ** arguments
 
   - Add And
   - Add RespondTo

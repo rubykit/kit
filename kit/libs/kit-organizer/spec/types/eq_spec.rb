@@ -5,13 +5,13 @@ module TestModule
   include Kit::Contract
   include Kit::Contract::Types
 
-  before Hash[a: Or[Eq[1], Eq['1']]]
+  before Hash[a: Eq[1]]
   def self.test_before(a:)
     [:ok]
   end
 end
 
-describe "OR type" do
+describe "EQ type" do
   subject { TestModule.method(:test_before) }
 
   context 'before' do
@@ -19,8 +19,7 @@ describe "OR type" do
     context 'with valid values' do
       let(:values) do
         [
-          { a: 1, },
-          { a: '1', },
+          { a: 1 },
         ]
       end
 
@@ -34,9 +33,9 @@ describe "OR type" do
     context 'with invalid values' do
       let(:values) do
         [
-          { a: nil, },
-          { a: 2, },
-          { a: { c: :ok, }, },
+          { a: '1' },
+          { a: 2 },
+          { a: { c: :ok } },
         ]
       end
 

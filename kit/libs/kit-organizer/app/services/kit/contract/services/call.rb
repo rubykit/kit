@@ -32,12 +32,12 @@ module Kit::Contract::Services::Call
 
     return if list.size == 0
 
-    result, ctx_out = Kit::Organizer.call_for_contract({
+    status, ctx_out = Kit::Organizer.call_for_contract({
       list: list,
       ctx:  ctx,
     })
 
-    return if result == :ok
+    return if status == :ok
 
     raise Kit::Contract::Error.new(ctx_out[:contract_error], ctx_out[:errors])
 

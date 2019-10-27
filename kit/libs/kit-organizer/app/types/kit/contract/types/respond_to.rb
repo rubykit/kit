@@ -6,10 +6,10 @@ module Kit::Contract::Types
     end
 
     def call(args)
-      if args.first.respond_to?(@method_name)
+      if args.respond_to?(@method_name)
         [:ok]
       else
-        [:error, "RESPOND_TO failed: (object does not respond_to `#{@method_name}`)"]
+        [:error, "RESPOND_TO failed: object does not respond_to `#{@method_name}`"]
       end
     end
   end

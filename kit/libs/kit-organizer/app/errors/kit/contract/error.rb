@@ -9,7 +9,8 @@ module Kit::Contract
     end
 
     def message
-      error.message
+      #error.message
+      @errors
     end
   end
 
