@@ -1,7 +1,7 @@
 module Kit::Organizer::Services
   module Organize
 
-    #Contract KeywordArgs[list: ArrayOf[Or[RespondTo[:call], Symbol]], ctx: Optional[Hash]] => [Symbol, Hash]
+    #contract Hash[list: Array.of(Or[Callable, Symbol]), ctx: Optional[Hash], expose: Optional[Boolean]] => ResultTupple
     def self.call(list:, ctx: {}, expose: nil)
       status = :ok
 

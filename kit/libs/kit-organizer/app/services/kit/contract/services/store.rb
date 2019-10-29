@@ -1,15 +1,15 @@
 module Kit::Contract::Services::Store
 
-  def self.add(store: nil, class_name:, method_name:, contracts:)
+  def self.add(store: nil, class_name:, method_name:, method_type:, contracts:)
     store ||= self.local_store
-    key     = [class_name.to_sym, method_name.to_sym]
+    key     = [class_name.to_sym, method_name.to_sym, method_type.to_sym]
 
     store[key] = contracts
   end
 
-  def self.get(store: nil, class_name:, method_name:)
+  def self.get(store: nil, class_name:, method_name:, method_type:)
     store ||= self.local_store
-    key     = [class_name.to_sym, method_name.to_sym]
+    key     = [class_name.to_sym, method_name.to_sym, method_type.to_sym]
 
     store[key] || {}
   end

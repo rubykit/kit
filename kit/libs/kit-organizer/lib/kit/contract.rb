@@ -71,9 +71,28 @@ module Kit
         return if method_name.to_s.start_with?(prefix)
         return if self.respond_to?("#{prefix}#{method_name}")
 
-        validate_signature!(target_class: self, method_name: method_name)
+        method_type = :singleton
 
-        save_contracts(target_class: self, method_name: method_name)
+        validate_signature!(target_class: self, method_name: method_name, method_type: method_type)
+
+        save_contracts(target_class_name: self.name, method_name: method_name, method_type: method_type)
+
+        aliased_name = "#{prefix}#{method_name}"
+
+        singleton_method_alias(method_name: method_name, aliased_name: aliased_name, target_class: self)
+        singleton_method_redefine(method_name: method_name, aliased_name: aliased_name, target_class: self)
+      end
+
+      def method_added(method_name)
+        return if !Kit::Contract::Services::Store.is_active?
+        return if method_name.to_s.start_with?(prefix)
+        return if self.method_defined?("#{prefix}#{method_name}")
+
+        method_type = :method
+
+        validate_signature!(target_class: self, method_name: method_name, method_type: method_type)
+
+        save_contracts(target_class_name: self.name, method_name: method_name, method_type: method_type)
 
         aliased_name = "#{prefix}#{method_name}"
 
@@ -85,8 +104,12 @@ module Kit
         "_orig_"
       end
 
-      def validate_signature!(target_class:, method_name:)
-        callable         = target_class.method(method_name)
+      def validate_signature!(target_class:, method_name:, method_type:)
+        if method_type == :singleton
+          callable       = target_class.method(method_name)
+        else
+          callable       = target_class.instance_method(method_name)
+        end
         #accepted_types   = [:key, :keyreq, :keyrest, :block]
         accepted_types   = [:key, :keyreq, :keyrest]
 
@@ -94,14 +117,16 @@ module Kit
 
         types_diff = parameters_types - accepted_types
         if types_diff.size > 0
-          raise "Kit::Contract | Unsupported parameters types for `#{target_class.name}.#{method_name}`: `#{types_diff}` "
+          method_type = (method_type == :singleton) ? '#' : '.'
+          raise "Kit::Contract | Unsupported parameters types for `#{target_class.name}#{method_type}#{method_name}`: `#{types_diff}` "
         end
       end
 
-      def save_contracts(target_class:, method_name:)
+      def save_contracts(target_class_name:, method_name:, method_type:)
         Kit::Contract::Services::Store.add(
-          class_name:  target_class.name,
+          class_name:  target_class_name,
           method_name: method_name,
+          method_type: method_type,
           contracts: {
             before: self.tmp_before,
             after:  self.tmp_after,
@@ -116,13 +141,13 @@ module Kit
         self.tmp_after  = []
       end
 
-      def method_alias(method_name:, aliased_name:, target_class:)
+      def singleton_method_alias(method_name:, aliased_name:, target_class:)
         (class << target_class; self; end).module_eval do
           alias_method aliased_name, method_name
         end
       end
 
-      def method_redefine(method_name:, aliased_name:, target_class:)
+      def singleton_method_redefine(method_name:, aliased_name:, target_class:)
         class_name    = target_class.name
         parameters    = target_class.method(aliased_name).parameters
 
@@ -137,6 +162,39 @@ module Kit
             Kit::Contract::Services::Call.instrument(
               method_name:  "#{method_name}",
               aliased_name: "#{aliased_name}",
+              method_type:  :singleton,
+              target:       #{class_name},
+              target_class: #{class_name},
+              args: {
+                kargs:      {#{kargs_str}},
+                keyrest:    #{keyrest_str},
+              },
+            )
+          end
+        METHOD
+      end
+
+      def method_alias(method_name:, aliased_name:, target_class:)
+        target_class.alias_method aliased_name, method_name
+      end
+
+      def method_redefine(method_name:, aliased_name:, target_class:)
+        class_name    = target_class.name
+        parameters    = target_class.instance_method(aliased_name).parameters
+
+        signature_str = signature_as_string(parameters: parameters)
+
+        kargs_str     = parameters.select { |t, n| t == :key || t == :keyreq }.map { |t, n| "#{n}: #{n}" }.join(',')
+        #keyrest       = parameters.select { |type, name| type == :keyrest }.try(:[], 1)
+        keyrest_str   = 'nil'.to_s
+
+        target_class.module_eval <<-METHOD, __FILE__, __LINE__ + 1
+          def #{method_name}(#{signature_str})
+            Kit::Contract::Services::Call.instrument(
+              method_name:  "#{method_name}",
+              aliased_name: "#{aliased_name}",
+              method_type:  :method,
+              target:       self,
               target_class: #{class_name},
               args: {
                 kargs:      {#{kargs_str}},

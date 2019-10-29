@@ -1,33 +1,35 @@
 module Kit::Contract::Services::Call
 
-  def self.instrument(args:, block: nil, target_class:, method_name:, aliased_name:)
+  def self.instrument(args:, block: nil, target:, target_class:, method_name:, method_type:, aliased_name:)
     class_name = target_class.name
-    contracts  = Kit::Contract::Services::Store.get(class_name: class_name, method_name: method_name)
+    contracts  = Kit::Contract::Services::Store.get(class_name: class_name, method_name: method_name, method_type: method_type)
 
     run_contracts(
       contracts:    contracts,
       method_name:  method_name,
       aliased_name: aliased_name,
+      target:       target,
       target_class: target_class,
       type:         :before,
       ctx:          args[:kargs],
     )
 
-    result = target_class.send(aliased_name, args[:kargs])
+    result = target.send(aliased_name, args[:kargs])
 
     run_contracts(
       contracts:    contracts,
       method_name:  method_name,
       aliased_name: aliased_name,
+      target:       target,
       target_class: target_class,
-      type: :after,
-      ctx: { result: result },
+      type:         :after,
+      ctx:          { result: result },
     )
 
     result
   end
 
-  def self.run_contracts(contracts:, target_class:, method_name:, aliased_name:, ctx:, type:)
+  def self.run_contracts(contracts:, target:, target_class:, method_name:, aliased_name:, ctx:, type:)
     list = contracts[type]
 
     return if list.size == 0
@@ -41,7 +43,7 @@ module Kit::Contract::Services::Call
 
     raise Kit::Contract::Error.new(ctx_out[:contract_error], ctx_out[:errors])
 
-    callable  = target_class.method(aliased_name)
+    callable  = target.method(aliased_name)
 
     error_msg = [
       "Kit::Contract | #{type} failure for `#{target_class.name}.#{method_name}`",

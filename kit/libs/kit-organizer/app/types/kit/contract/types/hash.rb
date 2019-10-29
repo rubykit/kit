@@ -2,134 +2,203 @@ module Kit::Contract::Types
 
 =begin
   Contract types:
-    all:      run on all [key, value]
-    instance: run on the hash instance itself
-    keys:     run on all keys
-    targeted: run on the value of specific key (this is the default when defining contracts)
-    values:   run on all values
+    of:          alias of `every`, for types
+    with:        run on the value of specific keys (this is the default when using Hash[data])
 
-    size:     specific instance contract
+    every:       run on every [key, value]
+    every_key:   run on every key
+    every_value: run on every value
+    instance:    run on the hash instance itself
+
+    size:        instance contract about size
 =end
 
+=begin
+  Internal types of behaviour:
+    every_key:       run on every key
+    every_key_value: run on every [key, value]
+    every_value:     run on every value
+    keyword_args:    run on the value of specific keys
+    instance:        run on the hash instance itself
+=end
+
+  module HashHelper
+
+    def self.run_contracts(list:, args:)
+      list.each do |contract|
+        status, _ = result = contract.call(*args)
+        return result if status == :error
+      end
+
+      [:ok]
+    end
+
+    def self.get_keyword_arg_contract(key:, contract:)
+      ->(hash) do
+        Kit::Contract::Services::Types.valid?(contract: contract, args: hash[key])
+      end
+    end
+
+    def self.get_instance_contract(contract:)
+      ->(hash) do
+        Kit::Contract::Services::Types.valid?(contract: contract, args: hash)
+      end
+    end
+
+    def self.get_every_key_value_contract(contract:)
+      ->(hash) do
+        hash.each do |key, value|
+          result = status, _ = Kit::Contract::Services::Types.valid?(contract: contract, args: { key: key, value: value })
+          return result if status == :error
+        end
+        [:ok]
+      end
+    end
+
+    def self.get_every_key_contract(contract:)
+      ->(hash) do
+        hash.keys.each do |key|
+          result = status, _ = Kit::Contract::Services::Types.valid?(contract: contract, args: { key: key })
+          return result if status == :error
+        end
+        [:ok]
+      end
+    end
+
+    def self.get_every_value_contract(contract:)
+      ->(hash) do
+        hash.values.each do |key|
+          result = status, ctx = Kit::Contract::Services::Types.valid?(contract: contract, args: { value: key })
+          return result if status == :error
+        end
+        [:ok]
+      end
+    end
+  end
+
   class Hash < InstanciableType
-    def initialize(targeted_contracts = nil)
-      targeted_contracts ||= []
 
-      @contracts = {
-        all:      { callable: self.class.method(:enforce_all_contracts),      list: [], },
-        instance: { callable: self.class.method(:enforce_instance_contracts), list: [IsA[::Hash]], },
-        keys:     { callable: self.class.method(:enforce_keys_contracts),     list: [], },
-        targeted: { callable: self.class.method(:enforce_targeted_contracts), list: targeted_contracts, },
-        values:   { callable: self.class.method(:enforce_values_contracts),   list: [], },
-      }
+    def initialize(keyword_args_contracts = nil)
+      @contracts_list = []
+
+      instance(IsA[::Hash])
+      with(keyword_args_contracts || [])
     end
 
-    def all(contracts)
-      @contracts[:all][:list].send((contracts.is_a?(::Array) ? :concat : :push), contracts)
-      self
-    end
-
-    def instance(contracts)
-      @contracts[:instance][:list].send((contracts.is_a?(::Array) ? :concat : :push), contracts)
-      self
-    end
-
-    def keys(contracts)
-      @contracts[:keys][:list].send((contracts.is_a?(::Array) ? :concat : :push), contracts)
-      self
-    end
-
-    def targeted(contracts)
-      @contracts[:targeted][:list].send((contracts.is_a?(::Array) ? :concat : :push), contracts)
-      self
-    end
-
-    def values(contracts)
-      @contracts[:values][:list].send((contracts.is_a?(::Array) ? :concat : :push), contracts)
-      self
-    end
-
+    # TODO: fix this! The signature should be (*args) but this is not supported by Organizer yet
     def call(**args)
-      order = [:instance, :targeted, :keys, :values, :all]
+      HashHelper.run_contracts(list: @contracts_list, args: [args])
+    end
 
-      status = :ok
-      ctx    = {}
+    def add_contract(contract)
+      @contracts_list << contract
+    end
 
-      order.each do |contract_type|
-        data           = @contracts[contract_type]
-        callable       = data[:callable]
-        contracts_list = data[:list]
+    # NOTE: this will only be useful when Organizer can handle any signature
+    def to_contracts
+      @contracts_list
+    end
 
-        local_status, local_ctx = callable.call({ args: args, contracts_list: contracts_list })
+    # Convenience methods. They provide a slighly terser external API.
+    def self.of(contracts);          self.new.of(contracts);          end;
+    def self.with(contracts);        self.new.with(contracts);        end;
+    def self.every(contracts);       self.new.every(contracts);       end;
+    def self.every_key(contracts);   self.new.every_key(contracts);   end;
+    def self.every_value(contracts); self.new.every_value(contracts); end;
+    def self.instance(contracts);    self.new.instance(contracts);    end;
+    def self.size(size);             self.new.size(size);             end;
 
-        if local_status == :error
-          status       = :error
-          ctx[:errors] = local_ctx&.dig(:errors)
-          break
+
+    # contract Hash.of(Any => Contract)
+    def with(contracts)
+      contracts.each do |key, contract|
+        if !contract.respond_to?(:call)
+          raise "Invalid contract usage: Hash.with values must be contracts (callable)"
         end
+
+        add_contract HashHelper.get_keyword_arg_contract(key: key, contract: contract)
       end
 
-      [status, ctx]
+      self
     end
 
-    def self.enforce_all_contracts(args:, contracts_list:)
-      return [:ok] if contracts_list.size == 0
+    # contract Or[Contract, Array.of(Contract)]
+    def every(contracts)
+      [contracts]
+        .flatten
+        .each do |contract|
+          if !contract.respond_to?(:call)
+            raise "Invalid contract usage: Hash.every_key values must be contracts (callable)"
+          end
 
-      list = args.map do |key, value|
-        contracts_list.map do |contract|
-          { contract: contract, args: [key, value], }
+          # TODO: check signature compatibility here ?
+
+          add_contract HashHelper.get_every_key_value_contract(contract: contract)
         end
-      end.flatten(1)
 
-      Kit::Contract::Services::Types.all_valid?(list: list)
+      self
     end
 
-    def self.enforce_instance_contracts(args:, contracts_list:)
-      return [:ok] if contracts_list.size == 0
+    # contract Or[Contract, Array.of(Contract)]
+    def every_key(contracts)
+      [contracts]
+        .flatten
+        .each do |contract|
+          if !contract.respond_to?(:call)
+            raise "Invalid contract usage: Hash.every_key values must be contracts (callable)"
+          end
 
-      list = contracts_list.map do |contract|
-        { contract: contract, args: args, }
+          add_contract HashHelper.get_every_key_contract(contract: contract)
+        end
+
+      self
+    end
+
+    # contract Or[Contract, Array.of(Contract)]
+    def every_value(contracts)
+      [contracts]
+        .flatten
+        .each do |contract|
+          if !contract.respond_to?(:call)
+            raise "Invalid contract usage: Hash.every_value values must be contracts (callable)"
+          end
+
+          add_contract HashHelper.get_every_value_contract(contract: contract)
+        end
+
+      self
+    end
+
+    # contract Hash.of(Type1 => Type2).size(1)
+    def of(contracts)
+      if contracts.keys.size > 1
+        raise "Invalid contract usage: Hash.every can only accept one key <> value"
       end
 
-      Kit::Contract::Services::Types.all_valid?(list: list)
+      every_key(contracts.keys.first)
+      every_value(contracts.values.first)
+
+      self
     end
 
-    def self.enforce_keys_contracts(args:, contracts_list:)
-      return [:ok] if contracts_list.size == 0
+    # contract Or[Contract, Array.of(Contract)]
+    def instance(contracts)
+      [contracts]
+        .flatten
+        .each do |contract|
+          if !contract.respond_to?(:call)
+            raise "Invalid contract usage: Hash.instance values must be contracts (callable)"
+          end
 
-      list = args.map do |key, value|
-        contracts_list.map do |contract|
-          { contract: contract, args: key, }
+          add_contract HashHelper.get_instance_contract(contract: contract)
         end
-      end.flatten(1)
 
-      Kit::Contract::Services::Types.all_valid?(list: list)
+      self
     end
 
-    def self.enforce_targeted_contracts(args:, contracts_list:)
-      return [:ok] if contracts_list.size == 0
-
-      expected_keys = contracts_list.keys
-      missing_keys  = expected_keys - args.keys
-      return [:error, "Missing keys `#{missing_keys}`"] if missing_keys.size > 0
-
-      list = contracts_list.map do |key_name, contract|
-        { contract: contract, args: args[key_name], }
-      end
-
-      Kit::Contract::Services::Types.all_valid?(list: list)
-    end
-
-    def self.enforce_values_contracts(args:, contracts_list:)
-      return [:ok] if contracts_list.size == 0
-
-      list = args.map do |key, value|
-        contracts_list.map do |contract|
-          { contract: contract, args: value, }
-        end
-      end.flatten(1)
-
-      Kit::Contract::Services::Types.all_valid?(list: list)
+    # contract And[Integer, ->(x) { x > 0 }]
+    def size(size)
+      instance(->(i) { i.size == size })
     end
 
   end

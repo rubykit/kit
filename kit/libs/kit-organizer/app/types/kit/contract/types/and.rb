@@ -1,5 +1,6 @@
 module Kit::Contract::Types
 
+  # Ensures all contracts are valid
   class And < InstanciableType
     def initialize(*contracts)
       @contracts = contracts

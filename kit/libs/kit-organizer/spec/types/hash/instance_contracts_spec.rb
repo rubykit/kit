@@ -5,12 +5,12 @@ module TestModule
   include Kit::Contract
   include Kit::Contract::Types
 
-  before Hash[].instance(->(el) { el.size == 2 })
+  before Hash.instance(->(el) { el.size == 2 })
   def self.test_instance_valid(a:, b:)
     [:ok]
   end
 
-  before Hash[].instance(->(h) { h.size == 2 })
+  before Hash.instance(->(h) { h.size == 2 })
   def self.test_instance_invalid(a:, b:, c:)
     [:ok]
   end

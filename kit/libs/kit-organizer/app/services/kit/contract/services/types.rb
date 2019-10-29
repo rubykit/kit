@@ -4,7 +4,8 @@ module Kit::Contract::Services::Types
   # NOTE: adding this level of indirection allows us to ensures the result is always a Tupple
   #before Hash[contract: Callable, args: Any] #->(contract:) { contract.respond_to?(:call) }
   #after  Result                              #->(result:)   { result.is_a?(Array) && result.first.in?([:ok, :error]) }
-  #contract Hash[contract: Callable, args: Any] => Result
+
+  contract Hash[contract: Callable, args: Any] => ResultTupple
   def self.valid?(contract:, args:)
     result = contract.call(args)
 
@@ -27,6 +28,7 @@ module Kit::Contract::Services::Types
     result
   end
 
+=begin
   #contract Hash[list: Array[].all(Hash[contract: Callable, args: Any])] => Result
   def self.all_valid?(list:)
     global_status = :ok
@@ -50,5 +52,6 @@ module Kit::Contract::Services::Types
 
     result
   end
+=en d
 
 end

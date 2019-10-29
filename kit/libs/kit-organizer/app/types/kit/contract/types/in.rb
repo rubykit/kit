@@ -5,11 +5,7 @@ module Kit::Contract::Types
   # Handle ranges too
   class In < InstanciableType
 
-    def initialize(expected_values)
-      if !expected_values.is_a?(::Array)
-        expected_values = [expected_values]
-      end
-
+    def initialize(*expected_values)
       @expected_values = expected_values
     end
 
