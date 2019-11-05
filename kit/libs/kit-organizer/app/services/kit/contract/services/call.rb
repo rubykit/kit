@@ -11,7 +11,7 @@ module Kit::Contract::Services::Call
       target:       target,
       target_class: target_class,
       type:         :before,
-      ctx:          args[:kargs],
+      args:         args[:kargs],
     )
 
     result = target.send(aliased_name, args[:kargs])
@@ -23,25 +23,27 @@ module Kit::Contract::Services::Call
       target:       target,
       target_class: target_class,
       type:         :after,
-      ctx:          { result: result },
+      args:         { result: result },
     )
 
     result
   end
 
-  def self.run_contracts(contracts:, target:, target_class:, method_name:, aliased_name:, ctx:, type:)
+  def self.run_contracts(contracts:, target:, target_class:, method_name:, aliased_name:, args:, type:)
     list = contracts[type]
 
     return if list.size == 0
 
-    status, ctx_out = Kit::Organizer.call_for_contract({
-      list: list,
-      ctx:  ctx,
+    status, ctx_out = Kit::Contracts::Services::Validate.all({
+      contracts: list,
+      args:      args,
     })
 
     return if status == :ok
 
     raise Kit::Contract::Error.new(ctx_out[:contract_error], ctx_out[:errors])
+
+=begin
 
     callable  = target.method(aliased_name)
 
@@ -75,6 +77,7 @@ module Kit::Contract::Services::Call
     error_msg << "    Called with: #{ctx_out[:contract_error][:ctx]}"
 
     raise error_msg.join("\n")
+=end
   end
 
   def self.check_if_returns_tupple

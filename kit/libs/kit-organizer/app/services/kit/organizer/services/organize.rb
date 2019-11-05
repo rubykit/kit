@@ -50,44 +50,6 @@ module Kit::Organizer::Services
       [status, ctx]
     end
 
-    def self.call_for_contract(list:, ctx: {})
-      status = :ok
-
-      begin
-        list.each do |calleable|
-          calleable = to_calleable(calleable: calleable)
-
-          ctx_in    = generate_ctx_in(calleable: calleable, ctx: ctx)
-          if ENV['LOG_ORGANIZER']
-            puts "# Calling `#{calleable}` with keys |#{ctx_in}|".colorize(:yellow)
-          end
-
-          result = calleable.call(*ctx_in)
-
-          if result == true
-            status = :ok
-          elsif result == false
-            status = :error
-          else
-            status, ctx_out = result
-            ctx = context_update(ctx_current: ctx, ctx_out: ctx_out, status: status)
-          end
-
-          if ENV['LOG_ORGANIZER']
-            puts "#   Result |#{result}|".colorize(:blue)
-          end
-
-          if status == :error
-            ctx[:contract_error] = { callable: calleable, ctx: ctx_in }
-            break
-          end
-        end
-      end
-
-      [status, ctx]
-    end
-
-
     def self.context_update(ctx_current:, ctx_out:, status:)
       return {} if !ctx_out
 
