@@ -1,23 +1,13 @@
 module Kit::Contract::Services
   module SignatureMatcher
 
-    def self.get_parameters(callable: callable)
-      if callable.is_a?(Proc) || callable.is_a?(Method)
-        callable.parameters
-      elsif callable.respond_to?(:call)
-        callable.method(:call).parameters
-      else
-        # NOTE: not sure what this leaves ?
-        raise "Unsupported callable"
-      end
-    end
-
     # Valid ordering is as follows: [:req, :opt], :rest, [:req, :opt], [:key, :keyreq], :keyrest, :block
     def self.generate_args_in(callable:, args:)
       parameters = get_parameters(callable: callable)
       payload    = []
 
       if parameters.last&.last == :block
+        parameters.pop
         payload << args.pop
       end
 
@@ -39,7 +29,17 @@ module Kit::Contract::Services
       payload
     end
 
-    # NOTE: this probabluy can be reused for the organizer ?
+    def self.get_parameters(callable:)
+      if callable.is_a?(Proc) || callable.is_a?(Method)
+        callable.parameters
+      elsif callable.respond_to?(:call)
+        callable.method(:call).parameters
+      else
+        # NOTE: not sure what this leaves ?
+        raise "Unsupported callable"
+      end
+    end
+
     def self.handle_key_args(hash:, parameters:)
       raise "Expected hash" if !hash.is_a?(::Hash)
 
@@ -68,7 +68,35 @@ module Kit::Contract::Services
     end
 
     def self.handle_regular_args(args:, parameters:)
-      []
+      payload     = []
+      payload_end = []
+
+      # Start left, if we find `rest`, pause, start right, assign whatever is left
+      while parameters.size > 0
+        type, name = parameters.first
+
+        if type == :req || type == :opt
+          parameters.shift
+          payload << args.shift
+        elsif type == :rest
+          parameters.shift
+          while parameters.size > 0
+            type, name = parameters.last
+
+            if type == :req || type == :opt
+              payload_end.unshift args.pop
+              parameters.pop
+            end
+          end
+
+          payload << args
+          payload.concat(payload_end)
+        else
+          "Unsupported parameter type `#{type}` (named `#{name}`)"
+        end
+      end
+
+      payload
     end
 
   end
