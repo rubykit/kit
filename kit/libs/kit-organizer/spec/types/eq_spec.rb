@@ -1,51 +1,24 @@
 require_relative '../rails_helper'
+require_relative '../types_helper'
 require_relative '../../lib/kit/contract'
 
-module TestModule
-  include Kit::Contract
-  include Kit::Contract::Types
+describe Kit::Contract::Types::Eq do
 
-  before Eq[1]
-  def self.singleton_test_eq(a)
-    [:ok]
+  let(:contract) { described_class[1] }
+  let(:args_valid) do
+    [
+      [1],
+    ]
+  end
+  let(:args_invalid) do
+    {
+      ['1']        => 'EQ failed: expected `1`, got `1`',
+      [2]          => 'EQ failed: expected `1`, got `2`',
+      [{ c: :ok }] => 'EQ failed: expected `1`, got `{:c=>:ok}`',
+    }
   end
 
-end
-
-describe "EQ type" do
-
-  context 'singleton method contract' do
-    subject { TestModule.method(:singleton_test_eq) }
-
-    context 'with valid values' do
-      let(:values) do
-        [
-          1,
-        ]
-      end
-
-      it 'succeeds' do
-        values.each do |payload|
-          expect(subject.call(payload)).to eq [:ok]
-        end
-      end
-    end
-
-    context 'with invalid values' do
-      let(:values) do
-        [
-          '1',
-          2,
-          { c: :ok },
-        ]
-      end
-
-      it 'fails' do
-        values.each do |payload|
-          expect { subject.call(payload) }.to raise_error(Kit::Contract::Error)
-        end
-      end
-    end
-  end
+  it_behaves_like 'a contract that succeeds on valid values'
+  it_behaves_like 'a contract that fails on invalid values'
 
 end

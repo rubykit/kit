@@ -1,49 +1,25 @@
 require_relative '../rails_helper'
+require_relative '../types_helper'
 require_relative '../../lib/kit/contract'
 
-module TestModule
-  include Kit::Contract
-  include Kit::Contract::Types
+describe Kit::Contract::Types::Rational do
 
-  before Rational
-  def self.test_rational(a)
-    [:ok]
+  let(:contract) { described_class }
+  let(:args_valid) do
+    [
+      [::Kernel::Rational(1)],
+    ]
   end
-end
-
-describe "BIG DECIMAL type" do
-  subject { TestModule.method(:test_rational) }
-
-  context 'with valid values' do
-    let(:values) do
-      [
-        ::Kernel::Rational(1),
-      ]
-    end
-
-    it 'succeeds' do
-      values.each do |payload|
-        expect(subject.call(payload)).to eq [:ok]
-      end
-    end
+  let(:args_invalid) do
+    {
+      [nil]                  => 'IS_A failed: expected `` to be a `Rational`',
+      [1]                    => 'IS_A failed: expected `1` to be a `Rational`',
+      [1.0]                  => 'IS_A failed: expected `1.0` to be a `Rational`',
+      [::Kernel::Complex(1)] => 'IS_A failed: expected `1+0i` to be a `Rational`',
+    }
   end
 
-  context 'with invalid values' do
-    let(:values) do
-      [
-        nil,
-        1,
-        1.0,
-        ::Kernel::Complex(1),
-      ]
-    end
-
-    it 'fails' do
-      values.each do |payload|
-        expect { subject.call(payload) }.to raise_error(Kit::Contract::Error)
-      end
-    end
-  end
+  it_behaves_like 'a contract that succeeds on valid values'
+  it_behaves_like 'a contract that fails on invalid values'
 
 end
-

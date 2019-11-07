@@ -74,8 +74,6 @@ module Kit
 
         method_type = :singleton
 
-        #validate_signature!(target_class: self, method_name: method_name, method_type: method_type)
-
         save_contracts(target_class_name: self.name, method_name: method_name, method_type: method_type)
 
         aliased_name = "#{prefix}#{method_name}"
@@ -92,8 +90,6 @@ module Kit
 
         method_type = :method
 
-        #validate_signature!(target_class: self, method_name: method_name, method_type: method_type)
-
         save_contracts(target_class_name: self.name, method_name: method_name, method_type: method_type)
 
         aliased_name = "#{prefix}#{method_name}"
@@ -105,26 +101,6 @@ module Kit
       def prefix
         "_orig_"
       end
-
-=begin
-      def validate_signature!(target_class:, method_name:, method_type:)
-        if method_type == :singleton
-          callable       = target_class.method(method_name)
-        else
-          callable       = target_class.instance_method(method_name)
-        end
-        #accepted_types   = [:key, :keyreq, :keyrest, :block]
-        accepted_types   = [:key, :keyreq, :keyrest]
-
-        parameters_types = callable.parameters.map { |type, name| type }
-
-        types_diff = parameters_types - accepted_types
-        if types_diff.size > 0
-          method_type = (method_type == :singleton) ? '#' : '.'
-          raise "Kit::Contract | Unsupported parameters types for `#{target_class.name}#{method_type}#{method_name}`: `#{types_diff}` "
-        end
-      end
-=end
 
       def save_contracts(target_class_name:, method_name:, method_type:)
         Kit::Contract::Services::Store.add(
@@ -160,7 +136,7 @@ module Kit
 
         (class << target_class; self; end).module_eval <<-METHOD, __FILE__, __LINE__ + 1
           def #{method_name}(#{signature_str})
-            Kit::Contract::Services::Call.instrument(
+            ::Kit::Contract::Services::Runtime.instrument(
               method_name:  "#{method_name}",
               aliased_name: "#{aliased_name}",
               method_type:  :singleton,
@@ -185,7 +161,7 @@ module Kit
 
         target_class.module_eval <<-METHOD, __FILE__, __LINE__ + 1
           def #{method_name}(#{signature_str})
-            Kit::Contract::Services::Call.instrument(
+            ::Kit::Contract::Services::Runtime.instrument(
               method_name:  "#{method_name}",
               aliased_name: "#{aliased_name}",
               method_type:  :method,

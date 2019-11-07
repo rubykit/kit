@@ -1,49 +1,25 @@
 require_relative '../rails_helper'
+require_relative '../types_helper'
 require_relative '../../lib/kit/contract'
 
-module TestModule
-  include Kit::Contract
-  include Kit::Contract::Types
+describe Kit::Contract::Types::Boolean do
 
-  before Boolean
-  def self.test_boolean(a)
-    [:ok]
+  let(:contract) { described_class }
+  let(:args_valid) do
+    [
+      [true],
+      [false],
+    ]
   end
-end
-
-describe "BOOLEAN type" do
-  subject { TestModule.method(:test_boolean) }
-
-  context 'with valid values' do
-    let(:values) do
-      [
-        true,
-        false,
-      ]
-    end
-
-    it 'succeeds' do
-      values.each do |payload|
-        expect(subject.call(payload)).to eq [:ok]
-      end
-    end
+  let(:args_invalid) do
+    {
+      [nil] => 'OR failed',
+      [1]   => 'OR failed',
+      ['1'] => 'OR failed',
+    }
   end
 
-  context 'with invalid values' do
-    let(:values) do
-      [
-        nil,
-        1,
-        '1',
-      ]
-    end
-
-    it 'fails' do
-      values.each do |payload|
-        expect { subject.call(payload) }.to raise_error(Kit::Contract::Error)
-      end
-    end
-  end
+  it_behaves_like 'a contract that succeeds on valid values'
+  it_behaves_like 'a contract that fails on invalid values'
 
 end
-

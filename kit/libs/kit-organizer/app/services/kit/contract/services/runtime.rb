@@ -1,4 +1,4 @@
-module Kit::Contract::Services::Call
+module Kit::Contract::Services::Runtime
 
   def self.instrument(args:, block: nil, target:, target_class:, method_name:, method_type:, aliased_name:)
     class_name = target_class.name
@@ -38,7 +38,7 @@ module Kit::Contract::Services::Call
 
     return if list.size == 0
 
-    status, ctx_out = Kit::Contract::Services::Validate.all({
+    status, ctx_out = Kit::Contract::Services::Validation.all({
       contracts: list,
       args:      args,
     })

@@ -1,53 +1,29 @@
 require_relative '../rails_helper'
+require_relative '../types_helper'
 require_relative '../../lib/kit/contract'
 
-module TestModule
-  include Kit::Contract
-  include Kit::Contract::Types
+describe Kit::Contract::Types::Float do
 
-  before Float
-  def self.test_float(a)
-    [:ok]
+  let(:contract) { described_class }
+  let(:args_valid) do
+    [
+      [0.0],
+      [1.0],
+      [Float::MAX],
+      [Float::MIN],
+      [Float::INFINITY],
+      [Float::EPSILON],
+    ]
   end
-end
-
-describe "Float type" do
-  subject { TestModule.method(:test_float) }
-
-  context 'with valid values' do
-    let(:values) do
-      [
-        0.0,
-        1.0,
-        Float::MAX,
-        Float::MIN,
-        Float::INFINITY,
-        Float::EPSILON,
-      ]
-    end
-
-    it 'succeeds' do
-      values.each do |payload|
-        expect(subject.call(payload)).to eq [:ok]
-      end
-    end
+  let(:args_invalid) do
+    {
+      [nil] => 'IS_A failed: expected `` to be a `Float`',
+      [1]   => 'IS_A failed: expected `1` to be a `Float`',
+      ['1'] => 'IS_A failed: expected `1` to be a `Float`',
+    }
   end
 
-  context 'with invalid values' do
-    let(:values) do
-      [
-        nil,
-        1,
-        '1',
-      ]
-    end
-
-    it 'fails' do
-      values.each do |payload|
-        expect { subject.call(payload) }.to raise_error(Kit::Contract::Error)
-      end
-    end
-  end
+  it_behaves_like 'a contract that succeeds on valid values'
+  it_behaves_like 'a contract that fails on invalid values'
 
 end
-

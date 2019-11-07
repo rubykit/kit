@@ -1,49 +1,25 @@
 require_relative '../rails_helper'
+require_relative '../types_helper'
 require_relative '../../lib/kit/contract'
 
-module TestModule
-  include Kit::Contract
-  include Kit::Contract::Types
+describe Kit::Contract::Types::TrueClass do
 
-  before TrueClass
-  def self.test_true_class(a)
-    [:ok]
+  let(:contract) { described_class }
+  let(:args_valid) do
+    [
+      [true],
+    ]
   end
-end
-
-describe "TRUE CLASS type" do
-  subject { TestModule.method(:test_true_class) }
-
-  context 'with valid values' do
-    let(:values) do
-      [
-        true,
-      ]
-    end
-
-    it 'succeeds' do
-      values.each do |payload|
-        expect(subject.call(payload)).to eq [:ok]
-      end
-    end
+  let(:args_invalid) do
+    {
+      [false] => 'IS_A failed: expected `false` to be a `TrueClass`',
+      [nil]  => 'IS_A failed: expected `` to be a `TrueClass`',
+      [1]    => 'IS_A failed: expected `1` to be a `TrueClass`',
+      ['1']  => 'IS_A failed: expected `1` to be a `TrueClass`',
+    }
   end
 
-  context 'with invalid values' do
-    let(:values) do
-      [
-        false,
-        nil,
-        1,
-        '1',
-      ]
-    end
-
-    it 'fails' do
-      values.each do |payload|
-        expect { subject.call(payload) }.to raise_error(Kit::Contract::Error)
-      end
-    end
-  end
+  it_behaves_like 'a contract that succeeds on valid values'
+  it_behaves_like 'a contract that fails on invalid values'
 
 end
-

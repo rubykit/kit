@@ -1,49 +1,25 @@
 require_relative '../rails_helper'
+require_relative '../types_helper'
 require_relative '../../lib/kit/contract'
 
-module TestModule
-  include Kit::Contract
-  include Kit::Contract::Types
+describe Kit::Contract::Types::In do
 
-  before In[1, '1']
-  def self.test_in(a)
-    [:ok]
+  let(:contract) { described_class[1, '1'] }
+  let(:args_valid) do
+    [
+      [1],
+      ['1'],
+    ]
   end
-end
-
-describe "IN type" do
-  subject { TestModule.method(:test_in) }
-
-  context 'with valid values' do
-    let(:values) do
-      [
-        1,
-        '1',
-      ]
-    end
-
-    it 'succeeds' do
-      values.each do |payload|
-        expect(subject.call(payload)).to eq [:ok]
-      end
-    end
+  let(:args_invalid) do
+    {
+      [nil]         => 'IN failed: `` is not in `[1, "1"]`',
+      [4]           => 'IN failed: `4` is not in `[1, "1"]`',
+      [{ c: :ok, }] => 'IN failed: `{:c=>:ok}` is not in `[1, "1"]`',
+    }
   end
 
-  context 'with invalid values' do
-    let(:values) do
-      [
-        nil,
-        4,
-        { c: :ok, },
-      ]
-    end
-
-    it 'fails' do
-      values.each do |payload|
-        expect { subject.call(payload) }.to raise_error(Kit::Contract::Error)
-      end
-    end
-  end
+  it_behaves_like 'a contract that succeeds on valid values'
+  it_behaves_like 'a contract that fails on invalid values'
 
 end
-

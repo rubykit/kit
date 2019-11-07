@@ -1,48 +1,24 @@
 require_relative '../rails_helper'
+require_relative '../types_helper'
 require_relative '../../lib/kit/contract'
 
-module TestModule
-  include Kit::Contract
-  include Kit::Contract::Types
+describe Kit::Contract::Types::String do
 
-  before String
-  def self.test_string(a)
-    [:ok]
+  let(:contract) { described_class }
+  let(:args_valid) do
+    [
+      ["a"],
+    ]
   end
-end
-
-describe "STRING type" do
-  subject { TestModule.method(:test_string) }
-
-  context 'with valid values' do
-    let(:values) do
-      [
-        "a",
-      ]
-    end
-
-    it 'succeeds' do
-      values.each do |payload|
-        expect(subject.call(payload)).to eq [:ok]
-      end
-    end
+  let(:args_invalid) do
+    {
+      [nil] => 'IS_A failed: expected `` to be a `String`',
+      [:a]  => 'IS_A failed: expected `a` to be a `String`',
+      [1]   => 'IS_A failed: expected `1` to be a `String`',
+    }
   end
 
-  context 'with invalid values' do
-    let(:values) do
-      [
-        nil,
-        :a,
-        1,
-      ]
-    end
-
-    it 'fails' do
-      values.each do |payload|
-        expect { subject.call(payload) }.to raise_error(Kit::Contract::Error)
-      end
-    end
-  end
+  it_behaves_like 'a contract that succeeds on valid values'
+  it_behaves_like 'a contract that fails on invalid values'
 
 end
-

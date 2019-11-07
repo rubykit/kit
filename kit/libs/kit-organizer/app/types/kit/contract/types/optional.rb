@@ -12,7 +12,7 @@ module Kit::Contract::Types
       if value == nil
         [:ok]
       else
-        Kit::Contract::Services::Validate.valid?(contract: @contract, args: [value])
+        Kit::Contract::Services::Validation.valid?(contract: @contract, args: [value])
       end
     end
   end

@@ -1,15 +1,8 @@
 require_relative '../rails_helper'
+require_relative '../types_helper'
 require_relative '../../lib/kit/contract'
 
 module TestModule
-  include Kit::Contract
-  include Kit::Contract::Types
-
-  before Callable
-  def self.test_callable(a)
-    [:ok]
-  end
-
   def self.callable_method()
     true
   end
@@ -19,42 +12,26 @@ module TestModule
       true
     end
   end
-
 end
 
-describe "CALLABLE type" do
-  subject { TestModule.method(:test_callable) }
+describe Kit::Contract::Types::Callable do
 
-  context 'with valid values' do
-    let(:values) do
-      [
-        ->(v) { true },
-        TestModule.method(:callable_method),
-        TestModule::Functor.new,
-      ]
-    end
-
-    it 'succeeds' do
-      values.each do |payload|
-        expect(subject.call(payload)).to eq [:ok]
-      end
-    end
+  let(:contract) { described_class }
+  let(:args_valid) do
+    [
+      [->(v) { true }],
+      [TestModule.method(:callable_method)],
+      [TestModule::Functor.new],
+    ]
+  end
+  let(:args_invalid) do
+    {
+      [nil] => 'RESPOND_TO failed: object does not respond_to `call`',
+      [3]   => 'RESPOND_TO failed: object does not respond_to `call`',
+    }
   end
 
-  context 'with invalid values' do
-    let(:values) do
-      [
-        nil,
-        3,
-      ]
-    end
-
-    it 'fails' do
-      values.each do |payload|
-        expect { subject.call(payload) }.to raise_error(Kit::Contract::Error)
-      end
-    end
-  end
+  it_behaves_like 'a contract that succeeds on valid values'
+  it_behaves_like 'a contract that fails on invalid values'
 
 end
-

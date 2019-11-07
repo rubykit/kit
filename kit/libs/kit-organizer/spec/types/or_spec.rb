@@ -1,49 +1,25 @@
 require_relative '../rails_helper'
+require_relative '../types_helper'
 require_relative '../../lib/kit/contract'
 
-module TestModule
-  include Kit::Contract
-  include Kit::Contract::Types
+describe Kit::Contract::Types::Or do
 
-  before Or[Eq[1], Eq['1']]
-  def self.test_or(a)
-    [:ok]
+  let(:contract) { described_class[->(v) { v == 1 }, ->(v) { v == '1' }] }
+  let(:args_valid) do
+    [
+      [1],
+      ['1'],
+    ]
   end
-end
-
-describe "OR type" do
-  subject { TestModule.method(:test_or) }
-
-  context 'with valid values' do
-    let(:values) do
-      [
-        1,
-        '1',
-      ]
-    end
-
-    it 'succeeds' do
-      values.each do |payload|
-        expect(subject.call(payload)).to eq [:ok]
-      end
-    end
+  let(:args_invalid) do
+    {
+      [nil]         => 'OR failed',
+      [2]           => 'OR failed',
+      [{ c: :ok, }] => 'OR failed',
+    }
   end
 
-  context 'with invalid values' do
-    let(:values) do
-      [
-        nil,
-        2,
-        { c: :ok, },
-      ]
-    end
-
-    it 'fails' do
-      values.each do |payload|
-        expect { subject.call(payload) }.to raise_error(Kit::Contract::Error)
-      end
-    end
-  end
+  it_behaves_like 'a contract that succeeds on valid values'
+  it_behaves_like 'a contract that fails on invalid values'
 
 end
-
