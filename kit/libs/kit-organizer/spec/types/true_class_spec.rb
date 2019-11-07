@@ -5,8 +5,8 @@ module TestModule
   include Kit::Contract
   include Kit::Contract::Types
 
-  before Hash[a: TrueClass]
-  def self.test_true_class(a:)
+  before TrueClass
+  def self.test_true_class(a)
     [:ok]
   end
 end
@@ -17,7 +17,7 @@ describe "TRUE CLASS type" do
   context 'with valid values' do
     let(:values) do
       [
-        { a: true },
+        true,
       ]
     end
 
@@ -31,10 +31,10 @@ describe "TRUE CLASS type" do
   context 'with invalid values' do
     let(:values) do
       [
-        { a: false },
-        { a: nil },
-        { a: 1 },
-        { a: '1' },
+        false,
+        nil,
+        1,
+        '1',
       ]
     end
 

@@ -5,8 +5,8 @@ module TestModule
   include Kit::Contract
   include Kit::Contract::Types
 
-  before Hash[a: Float]
-  def self.test_float(a:)
+  before Float
+  def self.test_float(a)
     [:ok]
   end
 end
@@ -17,12 +17,12 @@ describe "Float type" do
   context 'with valid values' do
     let(:values) do
       [
-        { a: 0.0 },
-        { a: 1.0 },
-        { a: Float::MAX },
-        { a: Float::MIN },
-        { a: Float::INFINITY },
-        { a: Float::EPSILON },
+        0.0,
+        1.0,
+        Float::MAX,
+        Float::MIN,
+        Float::INFINITY,
+        Float::EPSILON,
       ]
     end
 
@@ -36,9 +36,9 @@ describe "Float type" do
   context 'with invalid values' do
     let(:values) do
       [
-        { a: nil },
-        { a: 1 },
-        { a: '1' },
+        nil,
+        1,
+        '1',
       ]
     end
 

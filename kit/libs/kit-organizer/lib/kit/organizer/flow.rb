@@ -1,7 +1,7 @@
 module Kit::Organizer
   module Flow
 
-    # Flows is a hash where the value are calleables
+    # Flows is a hash where the value are callables
     def self.organize(flows:)
     end
 

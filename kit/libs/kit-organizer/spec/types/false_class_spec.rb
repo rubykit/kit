@@ -5,8 +5,8 @@ module TestModule
   include Kit::Contract
   include Kit::Contract::Types
 
-  before Hash[a: FalseClass]
-  def self.test_false_class(a:)
+  before FalseClass
+  def self.test_false_class(a)
     [:ok]
   end
 end
@@ -17,7 +17,7 @@ describe "FALSE CLASS type" do
   context 'with valid values' do
     let(:values) do
       [
-        { a: false },
+        false,
       ]
     end
 
@@ -31,10 +31,10 @@ describe "FALSE CLASS type" do
   context 'with invalid values' do
     let(:values) do
       [
-        { a: true },
-        { a: nil },
-        { a: 1 },
-        { a: '1' },
+        true,
+        nil,
+        1,
+        '1',
       ]
     end
 

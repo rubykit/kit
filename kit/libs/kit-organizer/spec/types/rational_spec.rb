@@ -5,19 +5,19 @@ module TestModule
   include Kit::Contract
   include Kit::Contract::Types
 
-  before Hash[a: Rational]
-  def self.test_rational(a:)
+  before Rational
+  def self.test_rational(a)
     [:ok]
   end
 end
 
 describe "BIG DECIMAL type" do
-  subject { TestModule.method(:test_big_decimal) }
+  subject { TestModule.method(:test_rational) }
 
   context 'with valid values' do
     let(:values) do
       [
-        { a: ::Kernel::Rational(1), },
+        ::Kernel::Rational(1),
       ]
     end
 
@@ -31,10 +31,10 @@ describe "BIG DECIMAL type" do
   context 'with invalid values' do
     let(:values) do
       [
-        { a: nil, },
-        { a: 1, },
-        { a: 1.0, },
-        { a: ::Kernel::Complex(1), },
+        nil,
+        1,
+        1.0,
+        ::Kernel::Complex(1),
       ]
     end
 

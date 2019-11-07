@@ -5,8 +5,8 @@ module TestModule
   include Kit::Contract
   include Kit::Contract::Types
 
-  before Hash[a: Callable]
-  def self.test_callable(a:)
+  before Callable
+  def self.test_callable(a)
     [:ok]
   end
 
@@ -28,9 +28,9 @@ describe "CALLABLE type" do
   context 'with valid values' do
     let(:values) do
       [
-        { a: ->(v) { true }, },
-        { a: TestModule.method(:callable_method), },
-        { a: TestModule::Functor.new, },
+        ->(v) { true },
+        TestModule.method(:callable_method),
+        TestModule::Functor.new,
       ]
     end
 
@@ -44,8 +44,8 @@ describe "CALLABLE type" do
   context 'with invalid values' do
     let(:values) do
       [
-        { a: nil },
-        { a: 3 },
+        nil,
+        3,
       ]
     end
 

@@ -2,7 +2,11 @@ module Kit::Contract::Services::Call
 
   def self.instrument(args:, block: nil, target:, target_class:, method_name:, method_type:, aliased_name:)
     class_name = target_class.name
-    contracts  = Kit::Contract::Services::Store.get(class_name: class_name, method_name: method_name, method_type: method_type)
+    contracts  = Kit::Contract::Services::Store.get(
+      class_name:  class_name,
+      method_name: method_name,
+      method_type: method_type,
+    )
 
     run_contracts(
       contracts:    contracts,
@@ -11,10 +15,10 @@ module Kit::Contract::Services::Call
       target:       target,
       target_class: target_class,
       type:         :before,
-      args:         args[:kargs],
+      args:         args,
     )
 
-    result = target.send(aliased_name, args[:kargs])
+    result = target.send(aliased_name, *args)
 
     run_contracts(
       contracts:    contracts,
@@ -23,7 +27,7 @@ module Kit::Contract::Services::Call
       target:       target,
       target_class: target_class,
       type:         :after,
-      args:         { result: result },
+      args:         [{ result: result }],
     )
 
     result
@@ -34,7 +38,7 @@ module Kit::Contract::Services::Call
 
     return if list.size == 0
 
-    status, ctx_out = Kit::Contracts::Services::Validate.all({
+    status, ctx_out = Kit::Contract::Services::Validate.all({
       contracts: list,
       args:      args,
     })
@@ -78,9 +82,6 @@ module Kit::Contract::Services::Call
 
     raise error_msg.join("\n")
 =end
-  end
-
-  def self.check_if_returns_tupple
   end
 
 end

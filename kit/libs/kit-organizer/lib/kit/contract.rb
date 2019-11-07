@@ -67,13 +67,14 @@ module Kit
       attr_accessor :tmp_after
 
       def singleton_method_added(method_name)
+        return if self.tmp_before.size == 0 && self.tmp_after.size == 0
         return if !Kit::Contract::Services::Store.is_active?
         return if method_name.to_s.start_with?(prefix)
         return if self.respond_to?("#{prefix}#{method_name}")
 
         method_type = :singleton
 
-        validate_signature!(target_class: self, method_name: method_name, method_type: method_type)
+        #validate_signature!(target_class: self, method_name: method_name, method_type: method_type)
 
         save_contracts(target_class_name: self.name, method_name: method_name, method_type: method_type)
 
@@ -84,13 +85,14 @@ module Kit
       end
 
       def method_added(method_name)
+        return if self.tmp_before.size == 0 && self.tmp_after.size == 0
         return if !Kit::Contract::Services::Store.is_active?
         return if method_name.to_s.start_with?(prefix)
         return if self.method_defined?("#{prefix}#{method_name}")
 
         method_type = :method
 
-        validate_signature!(target_class: self, method_name: method_name, method_type: method_type)
+        #validate_signature!(target_class: self, method_name: method_name, method_type: method_type)
 
         save_contracts(target_class_name: self.name, method_name: method_name, method_type: method_type)
 
@@ -104,6 +106,7 @@ module Kit
         "_orig_"
       end
 
+=begin
       def validate_signature!(target_class:, method_name:, method_type:)
         if method_type == :singleton
           callable       = target_class.method(method_name)
@@ -121,6 +124,7 @@ module Kit
           raise "Kit::Contract | Unsupported parameters types for `#{target_class.name}#{method_type}#{method_name}`: `#{types_diff}` "
         end
       end
+=end
 
       def save_contracts(target_class_name:, method_name:, method_type:)
         Kit::Contract::Services::Store.add(
@@ -152,10 +156,7 @@ module Kit
         parameters    = target_class.method(aliased_name).parameters
 
         signature_str = signature_as_string(parameters: parameters)
-
-        kargs_str     = parameters.select { |t, n| t == :key || t == :keyreq }.map { |t, n| "#{n}: #{n}" }.join(',')
-        #keyrest       = parameters.select { |type, name| type == :keyrest }.try(:[], 1)
-        keyrest_str   = 'nil'.to_s
+        args_str      = parameters_to_arguments_as_string(parameters: parameters)
 
         (class << target_class; self; end).module_eval <<-METHOD, __FILE__, __LINE__ + 1
           def #{method_name}(#{signature_str})
@@ -165,10 +166,7 @@ module Kit
               method_type:  :singleton,
               target:       #{class_name},
               target_class: #{class_name},
-              args: {
-                kargs:      {#{kargs_str}},
-                keyrest:    #{keyrest_str},
-              },
+              args:         #{args_str},
             )
           end
         METHOD
@@ -183,10 +181,7 @@ module Kit
         parameters    = target_class.instance_method(aliased_name).parameters
 
         signature_str = signature_as_string(parameters: parameters)
-
-        kargs_str     = parameters.select { |t, n| t == :key || t == :keyreq }.map { |t, n| "#{n}: #{n}" }.join(',')
-        #keyrest       = parameters.select { |type, name| type == :keyrest }.try(:[], 1)
-        keyrest_str   = 'nil'.to_s
+        args_str      = parameters_to_arguments_as_strint(parameters: parameters)
 
         target_class.module_eval <<-METHOD, __FILE__, __LINE__ + 1
           def #{method_name}(#{signature_str})
@@ -196,10 +191,7 @@ module Kit
               method_type:  :method,
               target:       self,
               target_class: #{class_name},
-              args: {
-                kargs:      {#{kargs_str}},
-                keyrest:    #{keyrest_str},
-              },
+              args:         #{args_str},
             )
           end
         METHOD
@@ -228,6 +220,40 @@ module Kit
             end
           end
           .join(', ')
+      end
+
+      def parameters_to_arguments_as_string(parameters:)
+        block_name   = (parameters.last&.first == :block)   ? parameters.pop.first : nil
+        keyrest_name = (parameters.last&.first == :keyrest) ? parameters.pop.first : nil
+
+        named_str = nil
+        keys_str  = nil
+
+        named = parameters
+          .select { |t, n| t == :req || t == :rest || t == :opt }
+          .map    { |t, n| "#{n}" }
+
+        if named.count > 0
+          named_str = named.join(', ')
+        end
+
+        keys = parameters
+          .select { |t, n| t == :key || t == :keyreq }
+          .map    { |t, n| "#{n}: #{n}" }
+
+        if keys.count > 0
+          keys_str = "{ #{keys.join(', ')} }"
+        end
+
+        if keyrest_name
+          if keys_str
+            keys_str = "#{keys_str}.merge(#{keyrest_name})"
+          else
+            keys_str = keyrest_name
+          end
+        end
+
+        "[#{ named_str ? "#{named_str}, " : '' }#{ keys_str ? "#{keys_str}, " : '' }#{ block_name }]"
       end
 
     end

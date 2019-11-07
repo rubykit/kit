@@ -6,14 +6,14 @@ module Kit::Organizer::Services
       status = :ok
 
       begin
-        list.each do |calleable|
-          calleable = to_calleable(calleable: calleable)
+        list.each do |callable|
+          callable = to_callable(callable: callable)
 
-          ctx_in = generate_ctx_in(calleable: calleable, ctx: ctx)
+          ctx_in = generate_ctx_in(callable: callable, ctx: ctx)
           if ENV['LOG_ORGANIZER']
-            puts "# Calling `#{calleable}` with keys |#{ctx_in}|".colorize(:yellow)
+            puts "# Calling `#{callable}` with keys |#{ctx_in}|".colorize(:yellow)
           end
-          status, ctx_out = calleable.call(*ctx_in)
+          status, ctx_out = callable.call(*ctx_in)
 
           if ENV['LOG_ORGANIZER']
             puts "#   Result |#{status}|#{ctx_out}|".colorize(:blue)
@@ -72,27 +72,27 @@ module Kit::Organizer::Services
       ctx_current.merge(ctx_out)
     end
 
-    def self.to_calleable(calleable:)
-      if calleable.is_a?(Array)
-        class_object, method_name = calleable
+    def self.to_callable(callable:)
+      if callable.is_a?(Array)
+        class_object, method_name = callable
 
-        calleable = class_object.method(method_name)
-      elsif calleable.is_a?(Symbol)
-        calleable = Kit::Organizer::Services::Store.get(id: calleable)
+        callable = class_object.method(method_name)
+      elsif callable.is_a?(Symbol)
+        callable = Kit::Organizer::Services::Store.get(id: callable)
       end
 
-      calleable
+      callable
     end
 
-    def self.generate_ctx_in(calleable:, ctx:)
-      if calleable.is_a?(Proc) || calleable.is_a?(Method)
-        parameters = calleable.parameters
-      #elsif calleable.is_a?(Module)
-      #  parameters = calleable.method(:call).parameters
-      elsif calleable.respond_to?(:call)
-        parameters = calleable.method(:call).parameters
+    def self.generate_ctx_in(callable:, ctx:)
+      if callable.is_a?(Proc) || callable.is_a?(Method)
+        parameters = callable.parameters
+      #elsif callable.is_a?(Module)
+      #  parameters = callable.method(:call).parameters
+      elsif callable.respond_to?(:call)
+        parameters = callable.method(:call).parameters
       else
-        raise "Unsupported calleable"
+        raise "Unsupported callable"
       end
 
       result = []

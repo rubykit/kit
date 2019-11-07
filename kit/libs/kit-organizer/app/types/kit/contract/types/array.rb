@@ -32,20 +32,20 @@ module Kit::Contract::Types
 
     def self.get_index_contract(contract:, index:)
       ->(instance) do
-        Kit::Contract::Services::Types.valid?(contract: contract, args: instance[index])
+        Kit::Contract::Services::Validate.valid?(contract: contract, args: [instance[index]])
       end
     end
 
     def self.get_instance_contract(contract:)
       ->(instance) do
-        Kit::Contract::Services::Types.valid?(contract: contract, args: instance)
+        Kit::Contract::Services::Validate.valid?(contract: contract, args: [instance])
       end
     end
 
     def self.get_every_value_contract(contract:)
       ->(instance) do
         instance.each do |value|
-          result = status, ctx = Kit::Contract::Services::Types.valid?(contract: contract, args: value)
+          result = status, ctx = Kit::Contract::Services::Validate.valid?(contract: contract, args: [value])
           return result if status == :error
         end
         [:ok]
@@ -62,9 +62,8 @@ module Kit::Contract::Types
       with(index_contracts || [])
     end
 
-    # TODO: fix this! The signature should be (*args) but this is not supported by Organizer yet
-    def call(**args)
-      ArrayHelper.run_contracts(list: @contracts_list, args: [args])
+    def call(*args)
+      ArrayHelper.run_contracts(list: @contracts_list, args: args)
     end
 
     def add_contract(contract)

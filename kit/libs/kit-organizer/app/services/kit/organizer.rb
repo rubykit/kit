@@ -16,9 +16,9 @@ module Kit
     end
 
 =begin
-      def always(calleable, key)
-        calleable = to_calleable(calleable: calleable)
-        ->(ctx_in) { [:ok, key: calleable.call(ctx_in)] }
+      def always(callable, key)
+        callable = to_callable(callable: callable)
+        ->(ctx_in) { [:ok, key: callable.call(ctx_in)] }
       end
 =end
 

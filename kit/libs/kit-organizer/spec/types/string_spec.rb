@@ -5,8 +5,8 @@ module TestModule
   include Kit::Contract
   include Kit::Contract::Types
 
-  before Hash[a: String]
-  def self.test_string(a:)
+  before String
+  def self.test_string(a)
     [:ok]
   end
 end
@@ -17,7 +17,7 @@ describe "STRING type" do
   context 'with valid values' do
     let(:values) do
       [
-        { a: "a", },
+        "a",
       ]
     end
 
@@ -31,10 +31,9 @@ describe "STRING type" do
   context 'with invalid values' do
     let(:values) do
       [
-        { a: nil, },
-        { a: :a, },
-        { a: 1, },
-        { a: '1', },
+        nil,
+        :a,
+        1,
       ]
     end
 

@@ -5,8 +5,8 @@ module TestModule
   include Kit::Contract
   include Kit::Contract::Types
 
-  before Hash[a: Numeric]
-  def self.test_numeric(a:)
+  before Numeric
+  def self.test_numeric(a)
     [:ok]
   end
 end
@@ -17,13 +17,13 @@ describe "Numeric type" do
   context 'with valid values' do
     let(:values) do
       [
-        { a: 1, },
-        { a: 1.0, },
-        { a: ::Kernel::Integer(1), },
-        { a: ::Kernel::Float(1), },
-        { a: ::Kernel::Rational(1), },
-        { a: ::Kernel::Complex(1), },
-        { a: ::BigDecimal.new(1), },
+        1,
+        1.0,
+        ::Kernel::Integer(1),
+        ::Kernel::Float(1),
+        ::Kernel::Rational(1),
+        ::Kernel::Complex(1),
+        BigDecimal(1),
       ]
     end
 
@@ -37,8 +37,8 @@ describe "Numeric type" do
   context 'with invalid values' do
     let(:values) do
       [
-        { a: nil, },
-        { a: '1', },
+        nil,
+        '1',
       ]
     end
 

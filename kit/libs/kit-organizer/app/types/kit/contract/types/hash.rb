@@ -35,20 +35,20 @@ module Kit::Contract::Types
 
     def self.get_keyword_arg_contract(key:, contract:)
       ->(hash) do
-        Kit::Contract::Services::Types.valid?(contract: contract, args: hash[key])
+        Kit::Contract::Services::Validate.valid?(contract: contract, args: [hash[key]])
       end
     end
 
     def self.get_instance_contract(contract:)
-      ->(hash) do
-        Kit::Contract::Services::Types.valid?(contract: contract, args: hash)
+      ->(instance) do
+        Kit::Contract::Services::Validate.valid?(contract: contract, args: [instance])
       end
     end
 
     def self.get_every_key_value_contract(contract:)
       ->(hash) do
         hash.each do |key, value|
-          result = status, _ = Kit::Contract::Services::Types.valid?(contract: contract, args: { key: key, value: value })
+          result = status, _ = Kit::Contract::Services::Validate.valid?(contract: contract, args: [{ key: key, value: value }])
           return result if status == :error
         end
         [:ok]
@@ -58,7 +58,7 @@ module Kit::Contract::Types
     def self.get_every_key_contract(contract:)
       ->(hash) do
         hash.keys.each do |key|
-          result = status, _ = Kit::Contract::Services::Types.valid?(contract: contract, args: { key: key })
+          result = status, _ = Kit::Contract::Services::Validate.valid?(contract: contract, args: [{ key: key }])
           return result if status == :error
         end
         [:ok]
@@ -68,7 +68,7 @@ module Kit::Contract::Types
     def self.get_every_value_contract(contract:)
       ->(hash) do
         hash.values.each do |key|
-          result = status, ctx = Kit::Contract::Services::Types.valid?(contract: contract, args: { value: key })
+          result = status, ctx = Kit::Contract::Services::Validate.valid?(contract: contract, args: [{ value: key }])
           return result if status == :error
         end
         [:ok]
@@ -85,9 +85,8 @@ module Kit::Contract::Types
       with(keyword_args_contracts || [])
     end
 
-    # TODO: fix this! The signature should be (*args) but this is not supported by Organizer yet
-    def call(**args)
-      HashHelper.run_contracts(list: @contracts_list, args: [args])
+    def call(*args)
+      HashHelper.run_contracts(list: @contracts_list, args: args)
     end
 
     def add_contract(contract)

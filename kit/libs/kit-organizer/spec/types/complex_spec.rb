@@ -5,8 +5,8 @@ module TestModule
   include Kit::Contract
   include Kit::Contract::Types
 
-  before Hash[a: Complex]
-  def self.test_complex(a:)
+  before Complex
+  def self.test_complex(a)
     [:ok]
   end
 end
@@ -17,7 +17,7 @@ describe "BIG DECIMAL type" do
   context 'with valid values' do
     let(:values) do
       [
-        { a: ::Kernel::Complex(1), },
+        Kernel::Complex(1),
       ]
     end
 
@@ -31,10 +31,10 @@ describe "BIG DECIMAL type" do
   context 'with invalid values' do
     let(:values) do
       [
-        { a: nil, },
-        { a: 1, },
-        { a: 1.0, },
-        { a: ::Kernel::Rational(1), },
+        nil,
+        1,
+        1.0,
+        ::Kernel::Rational(1),
       ]
     end
 

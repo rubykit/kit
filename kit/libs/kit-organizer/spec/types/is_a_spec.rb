@@ -5,8 +5,8 @@ module TestModule
   include Kit::Contract
   include Kit::Contract::Types
 
-  before Hash[a: IsA[::String]]
-  def self.test_is_a(a:)
+  before IsA[::String]
+  def self.test_is_a(a)
     [:ok]
   end
 end
@@ -17,7 +17,7 @@ describe "IS A type" do
   context 'with valid values' do
     let(:values) do
       [
-        { a: 'a', },
+        'a',
       ]
     end
 
@@ -31,9 +31,9 @@ describe "IS A type" do
   context 'with invalid values' do
     let(:values) do
       [
-        { a: nil, },
-        { a: 1, },
-        { a: { c: :ok, }, },
+        nil,
+        1,
+        { c: :ok, },
       ]
     end
 

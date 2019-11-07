@@ -6,12 +6,13 @@ module Kit::Contract::Types
     end
 
     def call(value)
+    end
 
     def self.call(value = nil)
       if value == nil
         [:ok]
       else
-        Kit::Contract::Services::Types.valid?(contract: @contract, args: value)
+        Kit::Contract::Services::Validate.valid?(contract: @contract, args: [value])
       end
     end
   end

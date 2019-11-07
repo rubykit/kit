@@ -5,8 +5,8 @@ module TestModule
   include Kit::Contract
   include Kit::Contract::Types
 
-  before Hash[a: Integer]
-  def self.test_integer(a:)
+  before Integer
+  def self.test_integer(a)
     [:ok]
   end
 end
@@ -17,8 +17,8 @@ describe "INTEGER type" do
   context 'with valid values' do
     let(:values) do
       [
-        { a: 1, },
-        { a: 9000000000000000000000000000, },
+        1,
+        9000000000000000000000000000,
       ]
     end
 
@@ -32,9 +32,9 @@ describe "INTEGER type" do
   context 'with invalid values' do
     let(:values) do
       [
-        { a: nil, },
-        { a: 1.0, },
-        { a: ::Kernel::Rational(1), },
+        nil,
+        1.0,
+        ::Kernel::Rational(1),
       ]
     end
 

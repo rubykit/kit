@@ -3,7 +3,8 @@ module Kit::Contract::Services
 
     # Valid ordering is as follows: [:req, :opt], :rest, [:req, :opt], [:key, :keyreq], :keyrest, :block
     def self.generate_args_in(callable:, args:)
-      parameters = get_parameters(callable: callable)
+      args       = args.dup
+      parameters = get_parameters(callable: callable).dup
       payload    = []
 
       if parameters.last&.last == :block
@@ -23,7 +24,9 @@ module Kit::Contract::Services
       end
 
       if parameters.size > 0
-        payload.unshift(*handle_regular_args(args: args, parameters: parameters))
+        #payload.unshift(*handle_regular_args(args: args, parameters: parameters))
+
+        payload.unshift(*args)
       end
 
       payload
@@ -61,12 +64,15 @@ module Kit::Contract::Services
         arg_available_keys = rest_keys
           .select { |name| hash.has_key?(name) }
 
-        payload << hash.slice(*arg_available_keys)
+        if arg_available_keys.size > 0
+          payload << hash.slice(*arg_available_keys)
+        end
       end
 
       payload
     end
 
+=begin
     def self.handle_regular_args(args:, parameters:)
       payload     = []
       payload_end = []
@@ -98,6 +104,7 @@ module Kit::Contract::Services
 
       payload
     end
+=end
 
   end
 end

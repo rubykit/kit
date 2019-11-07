@@ -5,7 +5,7 @@ module Kit::Organizer::Services
       id = id.to_sym
 
       if !target.respond_to?(:call)
-        raise "Kit::Organizer::Store | target `#{id}` is not a calleable"
+        raise "Kit::Organizer::Store | target `#{id}` is not a callable"
       end
 
       store[id] = {

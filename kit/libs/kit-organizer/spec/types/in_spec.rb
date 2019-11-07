@@ -5,8 +5,8 @@ module TestModule
   include Kit::Contract
   include Kit::Contract::Types
 
-  before Hash[a: In[1, '1']]
-  def self.test_in(a:)
+  before In[1, '1']
+  def self.test_in(a)
     [:ok]
   end
 end
@@ -17,8 +17,8 @@ describe "IN type" do
   context 'with valid values' do
     let(:values) do
       [
-        { a: 1, },
-        { a: '1', },
+        1,
+        '1',
       ]
     end
 
@@ -32,9 +32,9 @@ describe "IN type" do
   context 'with invalid values' do
     let(:values) do
       [
-        { a: nil, },
-        { a: 4, },
-        { a: { c: :ok, }, },
+        nil,
+        4,
+        { c: :ok, },
       ]
     end
 

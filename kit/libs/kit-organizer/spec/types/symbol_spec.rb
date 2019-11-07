@@ -5,8 +5,8 @@ module TestModule
   include Kit::Contract
   include Kit::Contract::Types
 
-  before Hash[a: Symbol]
-  def self.test_symbol(a:)
+  before Symbol
+  def self.test_symbol(a)
     [:ok]
   end
 end
@@ -17,8 +17,8 @@ describe "SYMBOL type" do
   context 'with valid values' do
     let(:values) do
       [
-        { a: :a },
-        { a: :"1" },
+        :a,
+        :"1",
       ]
     end
 
@@ -32,10 +32,10 @@ describe "SYMBOL type" do
   context 'with invalid values' do
     let(:values) do
       [
-        { a: nil },
-        { a: 'a' },
-        { a: 1 },
-        { a: '1' },
+        nil,
+        'a',
+        1,
+        '1',
       ]
     end
 

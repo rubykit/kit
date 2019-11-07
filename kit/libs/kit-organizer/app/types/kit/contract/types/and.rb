@@ -6,9 +6,9 @@ module Kit::Contract::Types
       @contracts = contracts
     end
 
-    def call(args)
+    def call(*args)
       failed = @contracts.any? do |contract|
-        status, _ = Kit::Contract::Services::Types.valid?(contract: contract, args: args)
+        status, _ = Kit::Contract::Services::Validate.valid?(contract: contract, args: args)
         status != :ok
       end
 

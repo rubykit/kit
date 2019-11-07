@@ -1,48 +1,26 @@
 require_relative '../rails_helper'
+require_relative '../types_helper'
 require_relative '../../lib/kit/contract'
 
-module TestModule
-  include Kit::Contract
-  include Kit::Contract::Types
+describe Kit::Contract::Types::And do
 
-  before Hash[a: And[->(v) { v && v > 3 }, ->(v) { v && v < 5 }]]
-  def self.test_and(a:)
-    [:ok]
-  end
-end
-
-describe "AND type" do
-  subject { TestModule.method(:test_and) }
-
-  context 'with valid values' do
-    let(:values) do
+  context 'Ordering combinations 1' do
+    let(:contract) { described_class[->(v) { v && v > 3 }, ->(v) { v && v < 5 }] }
+    let(:args_valid) do
       [
-        { a: 4 },
+        [4],
       ]
     end
-
-    it 'succeeds' do
-      values.each do |payload|
-        expect(subject.call(payload)).to eq [:ok]
-      end
-    end
-  end
-
-  context 'with invalid values' do
-    let(:values) do
-      [
-        { a: nil },
-        { a: 3 },
-        { a: 5 },
-      ]
+    let(:args_invalid) do
+      {
+        [nil] => 'AND failed',
+        [3]   => 'AND failed',
+        [5]   => 'AND failed',
+      }
     end
 
-    it 'fails' do
-      values.each do |payload|
-        expect { subject.call(payload) }.to raise_error(Kit::Contract::Error)
-      end
-    end
+    it_behaves_like 'a contract that succeeds on valid values'
+    it_behaves_like 'a contract that fails on invalid values'
   end
 
 end
-

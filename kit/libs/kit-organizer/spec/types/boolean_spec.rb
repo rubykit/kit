@@ -5,8 +5,8 @@ module TestModule
   include Kit::Contract
   include Kit::Contract::Types
 
-  before Hash[a: Boolean]
-  def self.test_boolean(a:)
+  before Boolean
+  def self.test_boolean(a)
     [:ok]
   end
 end
@@ -17,8 +17,8 @@ describe "BOOLEAN type" do
   context 'with valid values' do
     let(:values) do
       [
-        { a: true, },
-        { a: false, },
+        true,
+        false,
       ]
     end
 
@@ -32,9 +32,9 @@ describe "BOOLEAN type" do
   context 'with invalid values' do
     let(:values) do
       [
-        { a: nil, },
-        { a: 1, },
-        { a: '1', },
+        nil,
+        1,
+        '1',
       ]
     end
 
