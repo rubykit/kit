@@ -7,16 +7,16 @@ module Test
 
     before ->(r:, g:, b:) { (0..255) === r && (0..255) === g && (0..255) === b }
     after  [
-      ->(result:) { result.is_a?(String) },
-      ->(result:) { result.start_with?('#') },
-      ->(result:) do
+      ->(result) { result.is_a?(String) },
+      ->(result) { result.start_with?('#') },
+      ->(result) do
         if result.start_with?('#')
           [:ok]
         else
           [:error, "The result should start with a `#` sign"]
         end
       end,
-      ->(result:) { result.length.in?([4, 7]) },
+      ->(result) { result.length.in?([4, 7]) },
     ]
     def self.rgb_to_hex(r:, g:, b:)
       "#" << [r, g, b].map { |el| el.to_s(16).rjust(2, '0') }.join

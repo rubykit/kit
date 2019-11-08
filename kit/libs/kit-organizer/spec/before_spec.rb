@@ -5,13 +5,17 @@ require_relative 'signature_helper'
 module TestModule
   include Kit::Contract
 
-  before ->(**h) { h.has_key?(:b) }
-  def self.test_before_callable(a:, **)
+  before ->(value:) { value > 0 }
+  before ->(value:) { value < 10 }
+  def self.test_before_multiple_contracts(value:)
     [:ok]
   end
 
-  before [->(h) { h.is_a?(::Hash) }, ->(h) { h[:a] == 2 },]
-  def self.test_before_array(a:)
+  before [
+    ->(value:) { value > 0 },
+    ->(value:) { value < 10 },
+  ]
+  def self.test_before_multiple_contracts_array(value:)
     [:ok]
   end
 
@@ -19,12 +23,12 @@ end
 
 describe "before" do
 
-  context 'with a single contract' do
-    subject { TestModule.method(:test_before_callable) }
+  context 'with multiple single contracts' do
+    subject { TestModule.method(:test_before_multiple_contracts) }
 
     let(:args_valid) do
       {
-        [{ a: 2, b: 3 }] => [:ok],
+        [{ value: 2, }] => [:ok],
       }
     end
 
@@ -32,7 +36,29 @@ describe "before" do
 
     let(:args_invalid) do
       {
-        [{ a: 2, }] => "Contract failure before `TestModule#test_before_callable`"
+        [{ value: 0, }] => "Contract failure before `TestModule#test_before_multiple_contracts`",
+        [{ value: 10, }] => "Contract failure before `TestModule#test_before_multiple_contracts`",
+      }
+    end
+
+    it_behaves_like 'a signature contract that fails on invalid values'
+  end
+
+  context 'with multiple single contracts' do
+    subject { TestModule.method(:test_before_multiple_contracts_array) }
+
+    let(:args_valid) do
+      {
+        [{ value: 2 }] => [:ok],
+      }
+    end
+
+    it_behaves_like 'a signature contract that succeeds on valid values'
+
+    let(:args_invalid) do
+      {
+        [{ value: 0, }] => "Contract failure before `TestModule#test_before_multiple_contracts_array`",
+        [{ value: 10, }] => "Contract failure before `TestModule#test_before_multiple_contracts_array`",
       }
     end
 

@@ -29,7 +29,7 @@ module Kit::Contract::Services::Runtime
       aliased_name: aliased_name,
       target:       target,
       target_class: target_class,
-      args:         [{ result: result }],
+      args:         [result],
     )
 
     result
