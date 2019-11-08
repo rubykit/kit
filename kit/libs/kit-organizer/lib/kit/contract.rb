@@ -174,13 +174,13 @@ module Kit
       end
 
       def signature_as_string(parameters:)
-        parameters
+        signature = parameters
           .map do |type, name|
             case type
             when :req
               name
             when :rest
-              "*#{name}"
+              "*#{name || '_kc_rest'}"
             when :opt
               # Unknown default argument.
               "#{name} = nil"
@@ -190,24 +190,34 @@ module Kit
             when :keyreq
               "#{name}:"
             when :keyrest
-              "**#{name}"
-            when :block
+              "**#{name || '_kc_keyrest'}"
+            when :block # NOTE: name can not be nil for block
               "&#{name}"
             end
           end
           .join(', ')
+
+        signature
       end
 
       def parameters_to_arguments_as_string(parameters:)
-        block_name   = (parameters.last&.first == :block)   ? parameters.pop.first : nil
-        keyrest_name = (parameters.last&.first == :keyrest) ? parameters.pop.first : nil
+        block_name   = (parameters.last&.first == :block)   ? parameters.pop[1] : nil
+        keyrest_name = (parameters.last&.first == :keyrest) ? (parameters.pop[1] || '_kc_keyrest') : nil
 
         named_str = nil
         keys_str  = nil
 
         named = parameters
-          .select { |t, n| t == :req || t == :rest || t == :opt }
-          .map    { |t, n| "#{n}" }
+          .map do |type, name|
+            if type == :req || name == :opt
+              "#{n}"
+            elsif type == :rest
+              "#{n || '_kc_rest'}"
+            else
+              nil
+            end
+          end
+          .compact
 
         if named.count > 0
           named_str = named.join(', ')

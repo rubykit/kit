@@ -9,31 +9,33 @@ module Kit::Contract::Services::Runtime
     )
 
     run_contracts(
+      type:         :before,
       contracts:    contracts,
       method_name:  method_name,
+      method_type:  method_type,
       aliased_name: aliased_name,
       target:       target,
       target_class: target_class,
-      type:         :before,
       args:         args,
     )
 
     result = target.send(aliased_name, *args)
 
     run_contracts(
+      type:         :after,
       contracts:    contracts,
       method_name:  method_name,
+      method_type:  method_type,
       aliased_name: aliased_name,
       target:       target,
       target_class: target_class,
-      type:         :after,
       args:         [{ result: result }],
     )
 
     result
   end
 
-  def self.run_contracts(contracts:, target:, target_class:, method_name:, aliased_name:, args:, type:)
+  def self.run_contracts(contracts:, target:, target_class:, method_name:, aliased_name:, args:, type:, method_type:)
     list = contracts[type]
 
     return if list.size == 0
@@ -45,43 +47,16 @@ module Kit::Contract::Services::Runtime
 
     return if status == :ok
 
-    raise Kit::Contract::Error.new(ctx_out[:contract_error], ctx_out[:errors])
-
-=begin
-
-    callable  = target.method(aliased_name)
-
-    error_msg = [
-      "Kit::Contract | #{type} failure for `#{target_class.name}.#{method_name}`",
-    ]
-
-    if ctx_out[:errors]
-      ctx_out[:errors].each do |error|
-        error_msg << "  #{error[:detail]}"
-      end
-    end
-
-    if ctx_out[:contract_error]
-      error_callable = ctx_out[:contract_error][:callable]
-      if error_callable.respond_to?(:source_location)
-        source_location = ctx_out[:contract_error][:callable]&.source_location
-        if source_location
-          str                    = "  #{source_location}"
-          file_name, line_number = source_location
-          source                 = IO.readlines(file_name)[line_number - 1].strip
-
-          # NOTE: naive way to detect one-liner predicates
-          if source.count('{') > 0 && source.count('{') == source.count('}')
-            error_msg << "  #{source_location} #{source}"
-          end
-        end
-      end
-    end
-
-    error_msg << "    Called with: #{ctx_out[:contract_error][:ctx]}"
-
-    raise error_msg.join("\n")
-=end
+    raise Kit::Contract::Error.new(
+      contract_errors: ctx_out[:contract_error],
+      errors:          ctx_out[:errors],
+      target:          target,
+      target_class:    target_class,
+      method_name:     method_name,
+      method_type:     method_type,
+      type:            type,
+      args:            args,
+    )
   end
 
 end

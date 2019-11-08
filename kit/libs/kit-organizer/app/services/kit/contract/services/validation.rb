@@ -20,7 +20,7 @@ module Kit::Contract::Services::Validation
 
     if result == true
       status = :ok
-    elsif result == false
+    elsif !result# Falsey
       status = :error
     elsif result.is_a?(::Array) && result[0].in?([:ok, :error])
       status, ctx = result
@@ -36,7 +36,7 @@ module Kit::Contract::Services::Validation
     end
 
     if status == :error
-      (ctx[:errors] ||= []) << "Invalid result type for contract"
+      (ctx[:errors] ||= []) << { detail: "Invalid result type for contract" }
       ctx[:contract_error] = { callable: contract, args: args, }
     end
 

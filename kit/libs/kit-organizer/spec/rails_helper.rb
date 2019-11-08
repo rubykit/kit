@@ -12,7 +12,7 @@ require 'bundler/setup' if File.exist?(ENV['BUNDLE_GEMFILE'])
 
 require 'kit/dummy-app-container/rails_rspec'
 
-require 'spec_helper'
+require_relative 'spec_helper'
 
 Dir[Rails.root.join('../support/**/*.rb')].each { |f| require f }
 
