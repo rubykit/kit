@@ -1,13 +1,10 @@
 module Kit::Contract::Types
 
   # Less permissive version of Array. On a Tupple the size is implicit.
-  class Tupple < Array
+  class Tupple < Kit::Contract::Types::Array
 
-    def initialize(index_contracts)
-      @contracts_list = []
-
-      instance(IsA[::Array])
-      with(index_contracts)
+    def initialize(*index_contracts)
+      super
       size(index_contracts.size)
     end
 
