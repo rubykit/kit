@@ -31,21 +31,22 @@ module Kit::Contract::Types
     end
 
     def self.get_index_contract(contract:, index:)
-      ->(instance) do
-        Kit::Contract::Services::Validation.valid?(contract: contract, args: [instance[index]])
+      ->(array) do
+        Kit::Contract::Services::Validation.valid?(contract: contract, args: [array[index]])
       end
     end
 
     def self.get_instance_contract(contract:)
-      ->(instance) do
-        Kit::Contract::Services::Validation.valid?(contract: contract, args: [instance])
+      ->(array) do
+        Kit::Contract::Services::Validation.valid?(contract: contract, args: [array])
       end
     end
 
     def self.get_every_value_contract(contract:)
-      ->(instance) do
-        instance.each do |value|
-          result = status, ctx = Kit::Contract::Services::Validation.valid?(contract: contract, args: [value])
+      ->(array) do
+        array.each do |value|
+          result      = Kit::Contract::Services::Validation.valid?(contract: contract, args: [value])
+          status, ctx = result
           return result if status == :error
         end
         [:ok]
@@ -55,7 +56,7 @@ module Kit::Contract::Types
 
   class Array < InstanciableType
 
-    def initialize(index_contracts = nil)
+    def initialize(*index_contracts)
       @contracts_list = []
 
       instance(IsA[::Array])
@@ -76,12 +77,12 @@ module Kit::Contract::Types
     end
 
     # Convenience methods. They provide a slighly terser external API.
-    def self.at(contracts);    self.new.at(contracts);    end;
-    def self.of(contracts);    self.new.of(contracts);    end;
-    def self.with(contracts);  self.new.with(contracts);  end;
-    def self.every(contracts); self.new.every(contracts); end;
-    def self.instance(size);   self.new.instance(size);   end;
-    def self.size(size);       self.new.size(size);       end;
+    def self.at(*contracts);       self.new.at(*contracts);       end;
+    def self.of(*contracts);       self.new.of(*contracts);       end;
+    def self.with(*contracts);     self.new.with(*contracts);     end;
+    def self.every(*contracts);    self.new.every(*contracts);    end;
+    def self.instance(*contracts); self.new.instance(*contracts); end;
+    def self.size(size);           self.new.size(size);           end;
 
 
     # contract Array.of(Contract).size(1)
@@ -92,11 +93,11 @@ module Kit::Contract::Types
     # contract Hash.of(And[Integer, Gt[0]] => Contract)
     def at(contracts)
       contracts.each do |index, contract|
-        if index.is_a?(Integer) || index < 0
-          raise "Invalid contract usage: Hash.at keys must be valid array indices (callable)"
+        if !index.is_a?(::Integer) || index < 0
+          raise "Invalid contract usage: Array.at keys must be valid array indices (callable)"
         end
         if !contract.respond_to?(:call)
-          raise "Invalid contract usage: Hash.at values must be contracts (callable)"
+          raise "Invalid contract usage: Array.at values must be contracts (callable)"
         end
 
         add_contract ArrayHelper.get_index_contract(contract: contract, index: index)

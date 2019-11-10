@@ -40,8 +40,8 @@ module Kit::Contract::Types
     end
 
     def self.get_instance_contract(contract:)
-      ->(instance) do
-        Kit::Contract::Services::Validation.valid?(contract: contract, args: [instance])
+      ->(hash) do
+        Kit::Contract::Services::Validation.valid?(contract: contract, args: [hash])
       end
     end
 
@@ -102,13 +102,13 @@ module Kit::Contract::Types
     end
 
     # Convenience methods. They provide a slighly terser external API.
-    def self.of(contracts);          self.new.of(contracts);          end;
-    def self.with(contracts);        self.new.with(contracts);        end;
-    def self.every(contracts);       self.new.every(contracts);       end;
-    def self.every_key(contracts);   self.new.every_key(contracts);   end;
-    def self.every_value(contracts); self.new.every_value(contracts); end;
-    def self.instance(contracts);    self.new.instance(contracts);    end;
-    def self.size(size);             self.new.size(size);             end;
+    def self.of(*contracts);          self.new.of(*contracts);          end;
+    def self.with(*contracts);        self.new.with(*contracts);        end;
+    def self.every(*contracts);       self.new.every(*contracts);       end;
+    def self.every_key(*contracts);   self.new.every_key(*contracts);   end;
+    def self.every_value(*contracts); self.new.every_value(*contracts); end;
+    def self.instance(*contracts);    self.new.instance(*contracts);    end;
+    def self.size(size);              self.new.size(size);              end;
 
 
     # contract Hash.of(Any => Contract)

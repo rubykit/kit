@@ -2,7 +2,7 @@ require_relative '../../rails_helper'
 require_relative '../../shared/types_exemples'
 require_relative '../../../lib/kit/contract'
 
-describe Kit::Contract::Types::Hash do
+describe Kit::Contract::Types::Array do
 
   context 'with instance contracts' do
     contracts = [
@@ -12,15 +12,15 @@ describe Kit::Contract::Types::Hash do
 
     let(:args_valid) do
       [
-        [{ a: :symbol, b: 2, }],
-        [{ c: 2.0, f: ->() {} }],
+        [[:a, :b]],
+        [[1, '2']],
       ]
     end
 
     let(:args_invalid) do
       {
-        [{ a: 2, }]   => 'Invalid result type for contract',
-        [{ c: 2.0, }] => 'Invalid result type for contract',
+        [[:a]] => 'Invalid result type for contract',
+        [[1]]  => 'Invalid result type for contract',
       }
     end
 
