@@ -32,7 +32,7 @@ module Kit::Contract::Services::Validation
         status:      status,
       )
     else
-      raise "UNREACHABLE"
+      raise "UNREACHABLE. If we get here, we are in trouble."
     end
 
     if status == :error
