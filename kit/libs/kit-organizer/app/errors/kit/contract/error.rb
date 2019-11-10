@@ -47,7 +47,9 @@ module Kit::Contract
       str    = "Contract failure #{@type} `#{method}`"
 
       if @errors
-        errors = @errors.select { |error| error[:detail] != 'Invalid result type for contract' }
+        errors = @errors
+          .map    { |e| e[:detail] }
+          .select { |e| e != 'Invalid result type for contract' }
         if errors.size > 0
           str += ": #{errors}"
         end

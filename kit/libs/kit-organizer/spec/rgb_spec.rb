@@ -1,5 +1,6 @@
 require_relative 'rails_helper'
 require_relative '../lib/kit/contract'
+require_relative 'shared/signature_exemples'
 
 module TestClasses
   module RGB
@@ -25,23 +26,16 @@ module TestClasses
   end
 end
 
+describe TestClasses::RGB do
 
-describe "RGB" do
+  subject { described_class.method(:rgb_to_hex) }
 
-  context 'with valid values' do
-    let(:subject) { TestClasses::RGB.method(:rgb_to_hex) }
-
-    let(:args_valid) do
-      {
-        [{ r: 128, g: 32, b: 12, }] => '#80200C',
-      }
-    end
-
-    it 'succeeds' do
-      args_valid.each do |args_in, args_out|
-        expect(subject.call(*args_in)).to eq args_out
-      end
-    end
+  let(:args_valid) do
+    {
+      [{ r: 128, g: 32, b: 12, }] => '#80200C',
+    }
   end
+
+  it_behaves_like 'a signature contract that succeeds on valid values'
 
 end

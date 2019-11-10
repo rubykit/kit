@@ -27,7 +27,9 @@ module Kit::Contract::Types
     def self.run_contracts(list:, args:)
       list.each do |contract|
         status, _ = result = contract.call(*args)
-        return result if status == :error
+        if status == :error
+          return result
+        end
       end
 
       [:ok]
@@ -35,7 +37,14 @@ module Kit::Contract::Types
 
     def self.get_keyword_arg_contract(key:, contract:)
       ->(hash) do
-        Kit::Contract::Services::Validation.valid?(contract: contract, args: [{ key => hash[key] }])
+        result      = Kit::Contract::Services::Validation.valid?(contract: contract, args: [hash[key]])
+        status, ctx = result
+
+        if status == :error
+          ctx[:contract_error]
+        end
+
+        result
       end
     end
 
@@ -77,6 +86,7 @@ module Kit::Contract::Types
         [:ok]
       end
     end
+
   end
 
   class Hash < InstanciableType
@@ -90,6 +100,10 @@ module Kit::Contract::Types
 
     def call(*args)
       HashHelper.run_contracts(list: @contracts_list, args: args)
+    end
+
+    def self.call(*value)
+      IsA[::Hash].call(*value)
     end
 
     def add_contract(contract)

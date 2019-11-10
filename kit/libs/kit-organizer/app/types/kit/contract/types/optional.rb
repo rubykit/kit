@@ -5,10 +5,7 @@ module Kit::Contract::Types
       @contract = contract
     end
 
-    def call(value)
-    end
-
-    def self.call(value = nil)
+    def call(value = nil)
       if value == nil
         [:ok]
       else

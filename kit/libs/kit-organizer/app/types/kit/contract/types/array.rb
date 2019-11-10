@@ -67,6 +67,10 @@ module Kit::Contract::Types
       ArrayHelper.run_contracts(list: @contracts_list, args: args)
     end
 
+    def self.call(*args)
+      IsA[::Array].call(*args)
+    end
+
     def add_contract(contract)
       @contracts_list << contract
     end

@@ -5,7 +5,7 @@ require_relative '../../../lib/kit/contract'
 describe Kit::Contract::Types::Hash do
 
   context 'with targetted keys contracts' do
-    callable  = ->(a:) { a.is_a?(::Symbol) }
+    callable  = ->(v) { v.is_a?(::Symbol) }
     contracts = [
       described_class[a: callable],
       described_class.with(a: callable),

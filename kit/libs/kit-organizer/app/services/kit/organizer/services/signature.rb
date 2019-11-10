@@ -1,7 +1,7 @@
 module Kit::Organizer::Services
   module Signature
 
-    contract Hash[method: Callable, args: Array] => Boolean
+    #contract Hash[method: Callable, args: Array] => Boolean
     def self.can_receive?(callable:, args:)
       parameters = callable.parameters
 
