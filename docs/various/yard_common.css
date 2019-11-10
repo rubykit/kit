@@ -1,0 +1,239 @@
+/* Override this file with custom rules */
+
+#content, #menu { padding: 20px; }
+#content { padding-top: 10px; }
+
+* {
+  box-sizing: border-box;
+  word-wrap: break-word;
+}
+
+html {
+  font-size: 14px;
+}
+
+body {
+  font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Ubuntu,sans-serif;
+}
+
+#search {
+  width: auto;
+  margin-top: 10px;
+}
+
+h1 {
+  font-family: monospace;
+  border: 0px;
+  margin-top: 0px;
+}
+
+h2 {
+  font-weight: 600;
+  padding-bottom: 10px;
+  border-bottom: none;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+p {
+  font-size: 14px;
+  line-height: 22px;
+  color: #4f566b;
+}
+
+p.signature, h3.signature {
+  border: 0px;
+  padding: 10px;
+  font-family: monospace;
+  margin-top: 0px;
+  font-size: 1.0rem;
+  line-height: 1.5rem;
+  margin-bottom: 20px;
+  border-radius: 3px;
+}
+
+p.signature tt, h3.signature tt {
+  margin-top: 0px;
+  font-family: monospace;
+}
+
+
+
+.method_details {
+  border-top: 1px dotted #ccc;
+  margin-top:  30px;
+  padding-top: 30px;
+  margin-left: 20px;
+}
+
+.method_details.first {
+  padding-top: 10px;
+}
+
+.summary_signature {
+  padding: 4px 8px;
+  background: transparent;
+  border: 0px;
+}
+
+.box_info dl dt, .box_info dl dd {
+  background: transparent;
+  border: 0px;
+}
+
+.box_info dl:nth-child(odd) > * {
+  background: transparent;
+  border: 0px;
+}
+
+.box_info dl:nth-child(even) > * {
+  background: transparent;
+  border: 0px;
+}
+
+.box_info dl:last-child > * {
+  border: 0px;
+}
+
+.summary_signature:hover {
+  background: transparent;
+}
+
+.summary_signature:hover a {
+  color: #05a;
+}
+
+h2 small a {
+  background: 0px;
+  border: 0px;
+  text-transform: uppercase;
+  font-size: 9px;
+}
+
+#content a:hover {
+  background: transparent;
+}
+
+h2 small a:hover {
+  color: #000;
+}
+
+.tags .tag_title {
+  font-size: 1rem;
+}
+
+.docstring p > code, .docstring p > tt, .tags p > code, .tags p > tt {
+  padding: 1px 3px 1px 3px;
+  border: 0px;
+  background: #F7F7F9;
+  border-radius: 4px;
+  color: #4f566b;
+}
+
+.note {
+  border: 0px;
+  font-style: italic;
+  padding: 0px;
+  padding-left: 20px;
+  top: -10px;
+  position: relative;
+}
+
+.showSource {
+  font-family: monospace;
+}
+
+#filecontents pre.code, .docstring pre.code, .tags pre.example {
+  border: 0px;
+  font-size: 0.9rem;
+  line-height: 1.6rem;
+}
+
+.examples {
+  padding-left: 30px;
+  margin-top: 20px;
+}
+
+.tags .examples .inline p {
+  font-size: 0.9rem;
+}
+
+#footer {
+  border-top: 0px;
+  font-family: monospace;
+}
+
+.source_code {
+  background: #f8f8f8;
+  border-radius: 3px;
+  width: 100%;
+  border-left: 0px;
+}
+
+.source_code tr > td:first-child {
+  width: 40px;
+}
+
+
+
+#full_list_nav a, #nav a:visited {
+  font-family: monospace;
+}
+
+.fixed_header {
+  background: transparent;
+  position: relative;
+}
+
+#search {
+  display: flex;
+  font-size: 1rem;
+  padding-right: 0px;
+}
+
+#search input {
+  flex: 2;
+  font-size: 1rem;
+  margin-left: 10px;
+}
+
+#full_list {
+  margin-top: 20px;
+  font-family: monospace;
+}
+
+#full_list li.odd, #full_list li.even {
+  background: transparent;
+  overflow: hidden;
+}
+
+li.clicked > .item {
+  border-radius: 3px;
+  background: #f0f0f0;
+  color: black;
+}
+
+li.clicked > .item a, li.clicked > .item a:visited {
+  color: black;
+}
+
+.item:hover {
+  background: #f0f0f0;
+  border-radius: 3px;
+}
+
+#search a {
+  border: 0px;
+  box-shadow: none;
+  background: transparent;
+}
+
+#search a:hover {
+  background: transparent;
+}
+
+#search a.active {
+  background: transparent;
+  fill: #eee;
+  border: 0px;
+}
