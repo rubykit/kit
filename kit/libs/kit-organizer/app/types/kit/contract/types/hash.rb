@@ -2,10 +2,10 @@ module Kit::Contract::Types
 
 =begin
   Contract types:
-    of:          alias of `every`, for types
+    of:          combo of `every_key` and `every_value` as a Hash, more readable for types
     with:        run on the value of specific keys (this is the default when using Hash[data])
 
-    every:       run on every [key, value]
+    every:       run on every [key, value] pair
     every_key:   run on every key
     every_value: run on every value
     instance:    run on the hash instance itself
@@ -35,7 +35,7 @@ module Kit::Contract::Types
 
     def self.get_keyword_arg_contract(key:, contract:)
       ->(hash) do
-        Kit::Contract::Services::Validation.valid?(contract: contract, args: [hash[key]])
+        Kit::Contract::Services::Validation.valid?(contract: contract, args: [{ key => hash[key] }])
       end
     end
 
@@ -48,7 +48,8 @@ module Kit::Contract::Types
     def self.get_every_key_value_contract(contract:)
       ->(hash) do
         hash.each do |key, value|
-          result = status, _ = Kit::Contract::Services::Validation.valid?(contract: contract, args: [{ key: key, value: value }])
+          result    = Kit::Contract::Services::Validation.valid?(contract: contract, args: [key, value])
+          status, _ = result
           return result if status == :error
         end
         [:ok]
@@ -58,7 +59,8 @@ module Kit::Contract::Types
     def self.get_every_key_contract(contract:)
       ->(hash) do
         hash.keys.each do |key|
-          result = status, _ = Kit::Contract::Services::Validation.valid?(contract: contract, args: [{ key: key }])
+          result    = Kit::Contract::Services::Validation.valid?(contract: contract, args: [key])
+          status, _ = result
           return result if status == :error
         end
         [:ok]
@@ -67,8 +69,9 @@ module Kit::Contract::Types
 
     def self.get_every_value_contract(contract:)
       ->(hash) do
-        hash.values.each do |key|
-          result = status, ctx = Kit::Contract::Services::Validation.valid?(contract: contract, args: [{ value: key }])
+        hash.values.each do |value|
+          result    = Kit::Contract::Services::Validation.valid?(contract: contract, args: [value])
+          status, _ = result
           return result if status == :error
         end
         [:ok]

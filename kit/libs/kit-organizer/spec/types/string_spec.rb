@@ -1,5 +1,5 @@
 require_relative '../rails_helper'
-require_relative '../types_helper'
+require_relative '../shared/types_exemples'
 require_relative '../../lib/kit/contract'
 
 describe Kit::Contract::Types::String do

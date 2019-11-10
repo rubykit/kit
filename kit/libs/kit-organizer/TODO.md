@@ -1,12 +1,9 @@
 Kit::Contract
+  - To deal with dynamically generated Class / Modules, the store should generate unique keys so that we don't depend on the Class / Module name, as it might not exist.
 
-  - What can technically be handled:
-    > Keyword args: pattern matching (the name of the keys for the sender / receiver need to match)
-    > KeyRest
-    > Arity
-    Signature matching & transformation code needed.
+  - Move most of the code of the concern into a service
 
-  - Figure out how to handle Kit::Contract::Error display / message / to_s
+  - Delay `before` / `after` / `contract` failure to the method declaration
 
   - Do contracts work with ActiveSupport::Concern ?
 

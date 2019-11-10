@@ -1,6 +1,6 @@
 require_relative 'rails_helper'
 require_relative '../lib/kit/contract'
-require_relative 'signature_helper'
+require_relative 'shared/signature_exemples'
 
 module TestModule
   include Kit::Contract

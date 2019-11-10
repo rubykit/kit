@@ -9,6 +9,7 @@ module Kit
     end
 
     class_methods do
+      # contract Or[Callable, Array.of(Callable)]
       def before(arg)
         return if !Kit::Contract::Services::Store.is_active?
 
@@ -21,6 +22,7 @@ module Kit
         true
       end
 
+      # contract Or[Callable, Array.of(Callable)]
       def after(arg)
         return if !Kit::Contract::Services::Store.is_active?
 
@@ -33,17 +35,21 @@ module Kit
         true
       end
 
+      # TODO: delay the exception to the method definition
+      # contract Or[Hash.every_key(Callable).every_value(Callable).size(1), Callable]
       def contract(arg)
         return if !Kit::Contract::Services::Store.is_active?
 
-        if !arg.is_a?(::Hash) || arg.size != 1
+        if arg.respond_to?(:call)
+          before(arg)
+        elsif arg.is_a?(::Hash) && arg.size == 1
+          data = arg.first
+
+          before(data[0])
+          after(data[1])
+        else
           raise "Invalid use"
         end
-
-        data = arg.first
-
-        before(data[0])
-        after(data[1])
 
         true
       end
@@ -210,9 +216,9 @@ module Kit
         named = parameters
           .map do |type, name|
             if type == :req || name == :opt
-              "#{n}"
+              "#{name}"
             elsif type == :rest
-              "#{n || '_kc_rest'}"
+              "#{name || '_kc_rest'}"
             else
               nil
             end

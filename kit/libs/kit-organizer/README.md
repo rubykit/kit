@@ -1,6 +1,10 @@
 # KitOrganizer
 Short description and motivation.
 
+### Contracts
+
+Signature contracts are stored in a global store.
+
 ### Flow
 2 goals:
 - add contracts around methods
