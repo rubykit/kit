@@ -1,10 +1,9 @@
 class Array
 
-  def organize(ctx = {})
-    Kit::Organizer.call({
-      ctx:  ctx,
-      list: self,
-    })
+  def organize(ctx: {}, **rest)
+    args = { list: self, }.merge({ ctx: ctx, }).merge(rest)
+
+    Kit::Organizer.call(args)
   end
 
 end

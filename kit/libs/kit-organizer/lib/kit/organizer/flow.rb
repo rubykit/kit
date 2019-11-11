@@ -14,15 +14,14 @@ module Kit::Organizer
             list: [
               'Kit::Domain::Controllers::JsonApi.method(:ensure_media_type)',
               'Kit::Auth::Actions::Users::CreateUserWithPassword',
-            ]
+            ],
             ensure: ->() { [:flow, :render] },
-          }
+          },
           render: [
             'self.method(:render)',
           ],
-        }
+        },
       )
-
     end
 
   end

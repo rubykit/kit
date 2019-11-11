@@ -1,2 +1,3 @@
---markup-provider kramdown
+--markup-provider redcarpet
 --markup markdown
+--asset ./../../../docs/various/yard_common.css:doc/css/common.css

@@ -1,5 +1,30 @@
 /* Override this file with custom rules */
 
+:root {
+  --primary-dark: #0050d8;
+  --primary-light: #3f86ff;
+  --secondary-dark: #cdd6e6;
+  --secondary-light: white;
+  --success-dark: #24a06f;
+  --success-light: #52d8a3;
+  --info-dark: #1d9fff;
+  --info-light: #83cbff;
+  --warning-dark: #ffad0a;
+  --warning-light: #ffcf70;
+  --danger-dark: #ff294a;
+  --danger-light: #ff8fa0;
+  --light-dark: #cdd6e6;
+  --light-light: white;
+  --dark-dark: #141b24;
+  --dark-light: #3a4d64;
+  --neutral-dark: #e6e6e6;
+  --neutral-light: white;
+  --white-dark: #e6e6e6;
+  --white-light: white;
+}
+
+
+
 #content, #menu { padding: 20px; }
 #content { padding-top: 10px; }
 
@@ -36,7 +61,7 @@ h2 {
 }
 
 p {
-  font-size: 14px;
+  font-size: 1rem;
   line-height: 22px;
   color: #4f566b;
 }
@@ -131,12 +156,18 @@ h2 small a:hover {
 }
 
 .note {
-  border: 0px;
   font-style: italic;
-  padding: 0px;
+  border: 0px;
+  padding: 6px;
   padding-left: 20px;
-  top: -10px;
+  margin: 10px 0px;
   position: relative;
+}
+
+.note.private {
+  background: #ffbe3d!important;
+  border: 0px;
+  color: white;
 }
 
 .showSource {
@@ -173,8 +204,6 @@ h2 small a:hover {
 .source_code tr > td:first-child {
   width: 40px;
 }
-
-
 
 #full_list_nav a, #nav a:visited {
   font-family: monospace;
