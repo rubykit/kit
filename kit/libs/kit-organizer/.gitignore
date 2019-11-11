@@ -8,3 +8,8 @@ test/dummy/node_modules/
 test/dummy/yarn-error.log
 test/dummy/storage/
 test/dummy/tmp/
+
+/.yardoc/
+/_yardoc/
+/doc/
+/rdoc/
