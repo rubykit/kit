@@ -237,3 +237,8 @@ li.clicked > .item a, li.clicked > .item a:visited {
   fill: #eee;
   border: 0px;
 }
+
+#toc {
+  border: 0px;
+  box-shadow: none;
+}

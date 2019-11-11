@@ -23,14 +23,11 @@ module Kit::Contract::Services::Validation
     elsif !result# Falsey
       status = :error
     elsif result.is_a?(::Array) && result[0].in?([:ok, :error])
+      result      = Kit::Organizer::Services::Organize.sanitize_errors(result: result)
       status, ctx = result
-
-      # NOTE: we go through context_update to sanitize errors
-      ctx = Kit::Organizer::Services::Organize.context_update(
-        ctx_current: {},
-        ctx_out:     ctx,
-        status:      status,
-      )
+      if ctx
+        ctx = Kit::Organizer::Services::Organize.update_context(ctx: {}, local_ctx: ctx)
+      end
     else
       raise "UNREACHABLE. If we get here, we are in trouble."
     end
@@ -41,7 +38,7 @@ module Kit::Contract::Services::Validation
     end
 
     result = [status]
-    result << ctx if !ctx.empty?
+    result << ctx if (ctx && !ctx.empty?)
 
     result
   end

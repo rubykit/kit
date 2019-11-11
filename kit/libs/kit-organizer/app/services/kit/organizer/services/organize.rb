@@ -2,7 +2,7 @@ module Kit::Organizer::Services
   # Based on Railway programming, Interactor.
   module Organize
 
-    Operation = Or[Callable, Symbol, Tupple[Or[String, Symbol], Or[String, Symbol]]]
+    #Operation = Or[Callable, Symbol, Tupple[Or[String, Symbol], Or[String, Symbol]]]
 
     # Run a `list` of `operations` (callable) in order. Each results update the initial `ctx` which is then sent to the next operation.
     # An `operation` needs to be a callable, but it can be resolved from other format (see #to_callable)
@@ -75,10 +75,15 @@ module Kit::Organizer::Services
       if ctx.is_a?(String)
         ctx = { errors: [{ detail: ctx }] }
       elsif ctx.is_a?(Hash)
-        if !ctx[:errors] && ctx[:detail]
-          ctx = { errors: [ctx] }
+        if !ctx[:errors]
+          if ctx[:detail]
+            ctx = { errors: [ctx] }
+          elsif ctx[:error]
+            ctx = { errors: [ctx[:error]] }
+          end
         end
       elsif ctx.is_a?(Array)
+        binding.pry
         ctx = { errors: ctx.map { |el| el.is_a?(String) ? { detail: el } : el } }
       end
 
@@ -157,7 +162,8 @@ module Kit::Organizer::Services
         txt = txt.colorize(color)
       end
 
-      puts color
+      puts txt
+
       nil
     end
 
