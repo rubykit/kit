@@ -1,5 +1,5 @@
-require_relative 'rails_helper'
-require_relative '../lib/kit/store'
+require_relative '../rails_helper'
+require_relative '../../lib/kit/store'
 
 describe "Store" do
   let(:service)       { Kit::Store::Services::Store }

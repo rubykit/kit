@@ -1,4 +1,4 @@
-require_relative '../rails_helper'
+require_relative '../../rails_helper'
 
 describe "Table Selection" do
   let(:service) { Kit::Store::Services::Table }

@@ -1,8 +1,10 @@
-# Organizer passes the result of a callable to another callable, as long as the result was successfull.
+# Organizer passes the result of a callable to another callable (as long as the result is successfull).
 # It is mostly useful when you need to execute a series of operations resembling a pipeline.
+# You might alredy be familiar with some solutions that deal with this (Promises, Railway Programming, Pipe operators).
+# `Kit::Organizer` is a flavor of functional interactor.
 #
 # ### Introduction
-# Describing a list of operations often leads to code that is difficult to follow. For instance:
+# Describing a list of operations often leads to code that is difficult to follow or nested requires a lot of nesting. For instance:
 # ```ruby
 # fire_user_created_event(persist_user(validate_password(validate_email({ email: email, password: password }))))
 #
@@ -45,7 +47,6 @@
 # ```
 
 module Kit::Organizer::Services::Organize
-
   #Operation = Or[Callable, Symbol, Tupple[Or[String, Symbol], Or[String, Symbol]]]
 
   # Run a `list` of `operations` (callable) in order. Each results update the initial `ctx` which is then sent to the next operation.

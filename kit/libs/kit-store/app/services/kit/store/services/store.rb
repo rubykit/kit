@@ -1,11 +1,9 @@
-module Kit::Store::Services
-  module Store
+module Kit::Store::Services::Store
 
-    def self.create
-      {
-        tables: {},
-      }
-    end
-
+  def self.create
+    {
+      tables: {},
+    }
   end
+
 end

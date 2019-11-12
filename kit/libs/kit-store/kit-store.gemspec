@@ -18,8 +18,8 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "rails", "~> 6.0"
 
-  spec.add_development_dependency 'sorbet'
-  spec.add_development_dependency 'sorbet-runtime'
   spec.add_development_dependency 'rspec-rails'
+  spec.add_development_dependency 'yard'
+  spec.add_development_dependency 'redcarpet'
   spec.add_development_dependency 'listen'
 end

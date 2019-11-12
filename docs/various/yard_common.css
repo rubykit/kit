@@ -28,6 +28,10 @@
 #content, #menu { padding: 20px; }
 #content { padding-top: 10px; }
 
+#menu {
+  font-family: monospace;
+}
+
 * {
   box-sizing: border-box;
   word-wrap: break-word;
@@ -106,6 +110,10 @@ p.signature tt, h3.signature tt {
   border: 0px;
 }
 
+.box_info dl dd {
+  max-width: inherit;
+}
+
 .box_info dl:nth-child(odd) > * {
   background: transparent;
   border: 0px;
@@ -120,6 +128,10 @@ p.signature tt, h3.signature tt {
   border: 0px;
 }
 
+.box_info dd {
+  font-family: monospace;
+}
+
 .summary_signature:hover {
   background: transparent;
 }
@@ -129,10 +141,10 @@ p.signature tt, h3.signature tt {
 }
 
 h2 small a {
-  background: 0px;
   border: 0px;
-  text-transform: uppercase;
   font-size: 9px;
+  background: transparent;
+  text-transform: uppercase;
 }
 
 #content a:hover {
@@ -171,7 +183,8 @@ h2 small a:hover {
 }
 
 .showSource {
-  font-family: monospace;
+  font-size: 9px;
+  text-transform: uppercase;
 }
 
 #filecontents pre.code, .docstring pre.code, .tags pre.example {
@@ -255,6 +268,8 @@ li.clicked > .item a, li.clicked > .item a:visited {
   border: 0px;
   box-shadow: none;
   background: transparent;
+  margin-right: 10px;
+  margin-top:   5px;
 }
 
 #search a:hover {
@@ -270,4 +285,24 @@ li.clicked > .item a, li.clicked > .item a:visited {
 #toc {
   border: 0px;
   box-shadow: none;
+}
+
+.fullTree {
+  font-family: monospace;
+}
+
+.inheritance {
+  border: 0px;
+  font-size: 9px;
+}
+
+.inheritanceTree, .toggleDefines {
+  border: 0px;
+  font-size: 9px;
+  background: transparent;
+  text-transform: uppercase;
+}
+
+.children .object_link {
+  font-family: monospace;
 }

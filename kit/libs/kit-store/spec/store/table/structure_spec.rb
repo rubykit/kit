@@ -1,4 +1,4 @@
-require_relative '../rails_helper'
+require_relative '../../rails_helper'
 
 describe "Table Structure" do
   let(:service) { Kit::Store::Services::Table }
@@ -19,7 +19,7 @@ describe "Table Structure" do
   context 'creating columns' do
     let(:table_name)  { :users }
     let(:column_name) { :email }
-    let(:column_type) { String }
+    let(:column_type) { ::String }
 
     before do
       service.create(store: store, table_name: table_name)
