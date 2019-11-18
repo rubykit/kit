@@ -70,13 +70,13 @@ module Kit::Organizer::Services::Organize
           _log("# Calling `#{callable}` with keys |#{local_ctx.keys}|", :yellow)
 
           result = callable.call(local_ctx)
-          result = sanitize_errors(result)
+          result = sanitize_errors(result: result)
 
           status, local_ctx = result
 
           _log("#   Result |#{status}|#{local_ctx}|", :blue)
 
-          ctx = context_update(status: status, ctx: ctx, local_ctx: local_ctx)
+          ctx = update_context(ctx: ctx, local_ctx: local_ctx)
 
           _log("#   Ctx keys post |#{ctx.keys}|", :yellow)
           _log("#   Errors |#{ctx[:errors]}|", :red) if ctx[:errors]
@@ -95,7 +95,7 @@ module Kit::Organizer::Services::Organize
     status = :ok if status == :ok_stop
 
     # TODO: audit usefulness
-    if expose.dig(status)
+    if expose&.dig(status)
       ctx = ctx.slice(*expose[status])
     end
 
@@ -182,17 +182,18 @@ module Kit::Organizer::Services::Organize
   #    generate_callable_ctx(callable: ->(a:, **), { a: 1, b: 2, c: 3 }) => { a: 1, b: 2, c: 3 }
   # contract Hash[callable: Callable, ctx: Hash]
   def self.generate_callable_ctx(callable:, ctx:)
-    parameters = Kit::Contract::Services::SignatureMatcher.get_parameters(callable)
+    parameters = Kit::Contract::Services::SignatureMatcher.get_parameters(callable: callable)
     by_type    = parameters.group_by { |el| el[0] }
 
     if (by_type.keys - [:keyreq, :key, :keyrest]).size > 0
-      raise "Unsupported parameter type in organized callable"
+      raise Kit::Organizer::Error.new("Unsupported parameter type in organized callable")
     end
 
     if by_type[:keyrest]
       ctx.dup
     elsif by_type[:keyreq] || by_type[:key]
-      ctx.slice(*(by_type[:keyreq].map { |el| el[1] } + by_type[:key].map { |el| el[1] }))
+      keys = ((by_type[:keyreq] || []).map { |el| el[1] }) + ((by_type[:key] || []).map { |el| el[1] })
+      ctx.slice(*keys)
     else
       {}
     end

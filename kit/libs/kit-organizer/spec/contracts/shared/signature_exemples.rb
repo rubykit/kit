@@ -16,9 +16,15 @@ RSpec.shared_examples_for 'a signature contract that fails on invalid values' do
     callable ||= subject
 
     args_invalid.each do |args, error_msg|
+      if error_msg.is_a?(Array)
+        exception_class, error_msg = error_msg
+      else
+        exception_class = Kit::Contract::Error
+      end
+
       expect { callable.call(*args) }.to(
         raise_error(
-          an_instance_of(Kit::Contract::Error).and(having_attributes(message: error_msg))
+          an_instance_of(exception_class).and(having_attributes(message: error_msg))
         )
       )
     end

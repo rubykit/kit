@@ -64,10 +64,14 @@ h2 {
   border-top: 1px solid #eee;
 }
 
-p {
+p, li {
   font-size: 1rem;
   line-height: 22px;
   color: #4f566b;
+}
+
+li {
+  line-height: 2rem;
 }
 
 p.signature, h3.signature {

@@ -63,8 +63,8 @@ module Kit::Contract::Types
       with(index_contracts || [])
     end
 
-    def call(*args)
-      ArrayHelper.run_contracts(list: @contracts_list, args: args)
+    def call(args)
+      ArrayHelper.run_contracts(list: @contracts_list, args: [args])
     end
 
     def self.call(*args)
