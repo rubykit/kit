@@ -3,8 +3,8 @@ module Kit
     include Contract
 
     #Contract KeywordArgs[list: ArrayOf[Or[RespondTo[:call], Symbol]], ctx: Optional[Hash]] => [Symbol, Hash]
-    def self.call(list:, ctx: {}, expose: nil)
-      arguments = { list: list, ctx: ctx, expose: expose }
+    def self.call(list:, ctx: {}, filter: nil)
+      arguments = { list: list, ctx: ctx, filter: filter }
 
       Kit::Organizer::Services::Organize.call(arguments)
     end

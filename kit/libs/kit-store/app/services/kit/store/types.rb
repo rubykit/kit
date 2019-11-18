@@ -1,5 +1,15 @@
 module Kit::Store::Types
-  include Kit::Contract::Types
 
-  Store = IsA[::Hash]
+  class Store < ::Hash
+  end
+
+  class Table < ::Hash
+  end
+
+  class InnerRecord < ::Array
+  end
+
+  class Record < ::Hash
+  end
+
 end

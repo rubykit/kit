@@ -7,8 +7,8 @@ module TestClasses
     include Kit::Contract
     include Kit::Contract::Types
 
-    contract Hash[list: Array.of(Or[Callable, Symbol]), ctx: Optional[Hash], expose: Optional[Boolean]] => ResultTupple
-    def self.organize(list:, ctx: nil, result:)
+    contract Hash[list: Array.of(Or[Callable, Symbol]), ctx: Optional[Hash], filter: Optional[Boolean]] => ResultTupple
+    def self.organize(list:, ctx: nil, filter: nil, result:)
       result
     end
 

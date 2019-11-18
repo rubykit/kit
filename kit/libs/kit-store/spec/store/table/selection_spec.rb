@@ -32,7 +32,7 @@ describe "Table Selection" do
     let(:limit) { 1 }
     let(:order) { [[:_id, :desc]] }
 
-    subject { service.select(store: store, from: table_name, order: order, limit: limit) }
+    subject { service::Selection.select(store: store, from: table_name, order: order, limit: limit) }
 
     it 'selects the data from the table' do
       status, ctx = subject

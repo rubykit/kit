@@ -1,32 +1,15 @@
 module Kit::Store::Services::Table::Ordering
+  include Kit::Contract
+  Ct = Kit::Store::Contracts
 
-  def self.order_by(table:, records:, order: [])
-    #:validate_ordering,
-    #:apply_ordering,
-  end
-
-  # `order` has to be in the form of [[:column_name1, (:asc || :desc)], [:column_name2, (:asc || :desc)], ...]
-  def self.validate_ordering(table:, order:)
-    errors = []
-
-    if !order.is_a?(Array)
-      valid = [:error, "Kit::Store | Table `#{table_name}` already exists"]
-    end
-
-=begin
-    if valid.each do |content|
-      column_name, direction = content
-    end
-=end
-  end
-
-  def self.apply_ordering(table:, records:, order: [])
-    ordered_records = records.sort do |el1, el2|
+  contract Ct::Hash[table: Ct::Table, inner_records: Ct::InnerRecords, order: Ct::Orders] => Ct::Tupple[Ct::Eq[:ok], Ct::Hash[inner_records: Ct::InnerRecords]]
+  def self.order_by(table:, inner_records:, order: [])
+    ordered_inner_records = inner_records.sort do |el1, el2|
       result = 0
 
       order.each do |attr_name, direction|
-        _, el1_get = get(table: table, row_data: el1, column: attr_name)
-        _, el2_get = get(table: table, row_data: el2, column: attr_name)
+        _, el1_get = Kit::Store::Services::Table::Selection.get(table: table, inner_record: el1, column: attr_name)
+        _, el2_get = Kit::Store::Services::Table::Selection.get(table: table, inner_record: el2, column: attr_name)
         el1_value  = el1_get[:value]
         el2_value  = el2_get[:value]
 
@@ -41,7 +24,7 @@ module Kit::Store::Services::Table::Ordering
       result
     end
 
-    [:ok, records: ordered_records]
+    [:ok, inner_records: ordered_inner_records]
   end
 
 end

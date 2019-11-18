@@ -1,5 +1,10 @@
 # KitStore
-Short description and motivation.
+
+KitStore helps you define SQL like constraints to in memory data sets.
+This is particularly helpful when you need to represent data that has relationships (think in memory many-to-many).
+
+Some ressources:
+- [RINQ](http://blog.graffie.de/2008/03/rinq-concept-of-a-ruby-integrated-query-language)
 
 ## Usage
 How to use my plugin.

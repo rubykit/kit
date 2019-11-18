@@ -54,10 +54,10 @@ module Kit::Organizer::Services::Organize
   # Note: Every operation is expected to return a tupple of the format `[:ok]` or `[:error]` with an optional context update (`[:ok, { new_ctx_key: 'value' }]`, `[:errors, { errors: [{ detail: 'Error explaination' }], }]`). If an `:error` tupple is returned, the next operations are canceled and `call` will return.
   # @param list An array of operations (callables) that will be called in order
   # @param ctx A hash containing values to send to the operations (callables). It will be updated after every operation.
-  # @param expose Allows to slice
+  # @param filter Allows to slice specific keys on the context
   # @return The updated context.
-  # contract Hash[list: Array.of(Operation), ctx: Optional[Hash], expose: Optional[Or[Hash[ok: Array], Hash[:error, Array]]] => ResultTupple
-  def self.call(list:, ctx: {}, expose: nil)
+  # contract Hash[list: Array.of(Operation), ctx: Optional[Hash], filter: Optional[Or[Hash[ok: Array], Hash[:error, Array]]] => ResultTupple
+  def self.call(list:, ctx: {}, filter: nil)
     ctx    = ctx.dup
     status = :ok
 
@@ -95,8 +95,8 @@ module Kit::Organizer::Services::Organize
     status = :ok if status == :ok_stop
 
     # TODO: audit usefulness
-    if expose&.dig(status)
-      ctx = ctx.slice(*expose[status])
+    if filter&.dig(status)
+      ctx = ctx.slice(*filter[status])
     end
 
     [status, ctx]
@@ -128,7 +128,6 @@ module Kit::Organizer::Services::Organize
         end
       end
     elsif ctx.is_a?(Array)
-      binding.pry
       ctx = { errors: ctx.map { |el| el.is_a?(String) ? { detail: el } : el } }
     end
 
@@ -139,7 +138,8 @@ module Kit::Organizer::Services::Organize
   # @api private
   # @note The content of the `:errors` key is merged manually.
   def self.update_context(ctx:, local_ctx:)
-    ctx_errors = ctx[:errors]
+    local_ctx ||= {}
+    ctx_errors  = ctx[:errors]
 
     # NOTE: should we just do a deep merge?
     ctx = ctx.merge(local_ctx)

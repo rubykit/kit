@@ -16,6 +16,7 @@ describe Kit::Organizer do
     let(:list) do
       [
         ->(a:) { [:ok, a] },
+        ->(**)  { [:ok] },
         TestModules::Organizer.method(:m1),
       ]
     end

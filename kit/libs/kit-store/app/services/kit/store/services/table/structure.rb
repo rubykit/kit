@@ -1,28 +1,32 @@
 module Kit::Store::Services::Table::Structure
+  include Kit::Contract
+  Ct = Kit::Store::Contracts
 
+  contract Ct::Hash[store: Ct::Store, table_name: Ct::TableName]
   def self.create_table(store:, table_name:)
     status, _ = get_table(store: store, table_name: table_name)
     if status == [:ok]
       return [:error, "Kit::Store | Table `#{table_name}` already exists"]
     end
 
-    table = {
-      name:            table_name,
-      columns_hash:    {},
-      data_list:       [],
+    table = Kit::Store::Types::Table[{
+      name:         table_name,
+      columns_hash: {},
+      data_list:    [],
 
-      #constraints:     {},
-      #auto_increments: {},
-    }
+      series:       {},
+      #constraints:  {},
+    }]
 
     add_column(table: table, column_name: :_id,)
-    add_auto_increment(table: table, column_name: :_id)
+    Kit::Store::Services::Table::Series.add_auto_increment(table: table, column_name: :_id)
 
     store[:tables][table_name] ||= table
 
     [:ok, table: table]
   end
 
+  contract Ct::Hash[table: Ct::Table, column_name: Ct::ColumnName]
   def self.add_column(table:, column_name:)
     if table[:columns_hash][column_name]
       return [:error, "Kit::Store | Table `#{table[:name]}` column `#{column_name}` column already exists"]
@@ -34,6 +38,8 @@ module Kit::Store::Services::Table::Structure
     [:ok, column: table[:columns_hash][column_name]]
   end
 
+=begin
+  # TODO: transform this to generic contracts addition
   def self.add_column_type_constraint(table:, column:, column_type:)
     column_name = column[:name]
 
@@ -53,7 +59,9 @@ module Kit::Store::Services::Table::Structure
 
   def self.add_column_type_foreign_key(table:, column_name:, foreign_table_name:, foreign_column_name:)
   end
+=end
 
+  contract Ct::Hash[store: Ct::Store, table_name: Ct::TableName]
   def self.get_table(store:, table_name:)
     table = store[:tables][table_name]
 
@@ -62,25 +70,6 @@ module Kit::Store::Services::Table::Structure
     else
       [:error, "Kit::Store | Table `#{table_name}` does not exist"]
     end
-  end
-
-  def self.validate_foreign_reference
-  end
-
-  def self.add_auto_increment(table:, column_name:)
-    table[:auto_increments][column_name] = {
-      last_value:    0,
-      get_new_value: ->(last_value:) { last_value + 1 },
-    }
-
-    [:ok]
-  end
-
-  def self.add_constraint()
-    [:ok]
-  end
-
-  def self.add_foreign_key()
   end
 
 end

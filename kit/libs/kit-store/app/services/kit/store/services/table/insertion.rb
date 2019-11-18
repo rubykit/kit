@@ -1,51 +1,56 @@
 module Kit::Store::Services::Table::Insertion
+  include Kit::Contract
+  Ct = Kit::Store::Contracts
 
+  contract Ct::Hash[store: Ct::Store, table: Ct::Table, data: Ct::Hash]
   def self.insert(store:, table:, data:)
-    arguments   = { store: store, table: table, data_hash: data }
+    arguments   = { store: store, table: table, record_data: data }
 
-    status, ctx = Kit::Organizer.call({
+    Kit::Organizer.call({
       list: [
-        self.method(:ensure_columns_exist),
-        Kit::Store::Services::Table::Series.method(:apply_to_data),
-        Kit::Store::Services::Table::Constraints.method(:apply_to_data),
-        self.method(:to_data_array),
+        self.method(:record_data_to_record),
+        Kit::Store::Services::Table::Series.method(:apply_to_record),
+        Kit::Store::Services::Table::Constraints.method(:apply_to_record),
+        self.method(:to_inner_record),
         self.method(:persist),
       ],
       ctx: arguments,
+      filter: { ok: [:store], error: [:errors], }
     })
-
-    [status, store: store, errors: ctx[:errors]]
   end
 
-  def self.persist(table:, data_array:)
-    table[:data_list] << data_array
-
-    [:ok]
-  end
-
-  def self.ensure_columns_exist(table:, data_hash:)
+  contract Ct::Hash[table: Ct::Table, record_data: Ct::Hash]
+  def self.record_data_to_record(table:, record_data:)
     errors = []
-    data_hash.keys.each do |column_name|
+    record_data.keys.each do |column_name|
       if !table[:columns_hash][column_name]
         errors << { detail: "Kit::Store | Insertion: column `#{column_name}` does not exist" }
       end
     end
 
     if errors.size == 0
-      [:ok]
+      [:ok, record: Kit::Store::Types::Record[record_data]]
     else
       [:errors, errors]
     end
   end
 
-  def self.to_data_array(table:, data_hash:)
-    data_array = []
+  contract Ct::Hash[table: Ct::Table, record: Ct::Record]
+  def self.to_inner_record(table:, record:)
+    inner_record = Kit::Store::Types::InnerRecord.new
 
     table[:columns_hash].each do |k, v|
-      data_array << data_hash[k]
+      inner_record << record[k]
     end
 
-    [:ok, data_array: data_array]
+    [:ok, inner_record: inner_record]
+  end
+
+  contract Ct::Hash[table: Ct::Table, inner_record: Ct::InnerRecord]
+  def self.persist(table:, inner_record:)
+    table[:data_list] << inner_record
+
+    [:ok]
   end
 
 end

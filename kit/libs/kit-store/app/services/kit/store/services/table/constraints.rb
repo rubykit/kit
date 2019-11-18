@@ -1,6 +1,6 @@
 module Kit::Store::Services::Table::Constraints
 
-  def self.apply_to_data(table:, data_hash:)
+  def self.apply_to_record(table:, record:)
     [:ok]
   end
 
