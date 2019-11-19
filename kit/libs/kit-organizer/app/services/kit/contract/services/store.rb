@@ -2,26 +2,54 @@ module Kit::Contract::Services::Store
 
   # TODO: move this to Kit::Store when available
 
-  def self.add(store: nil, class_name:, method_name:, method_type:, contracts:)
-    store ||= self.local_store
-    key     = [class_name.to_sym, method_name.to_sym, method_type.to_sym]
+  def self.add_and_generate_key(store: nil, value:)
+    store    ||= self.local_store
 
-    store[key] = contracts
+    _, ctx     = get_next_key(store: store, sequence: store[:metadata][:sequences][:keys])
+    key        = ctx[:key]
+
+    store[:data][key] = value
+
+    [:ok, key: key]
   end
 
-  def self.get(store: nil, class_name:, method_name:, method_type:)
+  def self.get_next_key(store: nil, sequence:)
     store ||= self.local_store
-    key     = [class_name.to_sym, method_name.to_sym, method_type.to_sym]
 
-    store[key] || {}
+    new_value = nil
+
+    loop do
+      new_value = sequence[:get_next_value].call(last_value: sequence[:last_value])
+      sequence[:last_value] = new_value
+
+      if !store[:data].has_key?(new_value)
+        break
+      end
+    end
+
+    [:ok, key: new_value]
+  end
+
+  def self.get(store: nil, key:)
+    store ||= self.local_store
+
+    value = store[:data]&.dig(key) || {}
+
+    [:ok, value: value]
   end
 
   def self.local_store
-    @local_store ||= {}
-  end
-
-  def self.is_active?
-    @active ||= (ENV['KIT_CONTRACTS'] != 'false' && ENV['KIT_CONTRACTS'] != false)
+    @local_store ||= {
+      data:    {},
+      metadata: {
+        sequences: {
+          keys: {
+            last_value: 0,
+            get_next_value: ->(last_value:) { last_value + 1 },
+          },
+        },
+      },
+    }
   end
 
 end

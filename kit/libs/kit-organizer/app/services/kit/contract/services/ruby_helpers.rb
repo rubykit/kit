@@ -1,7 +1,8 @@
-module Kit::Contract::Services::SignatureMatcher
+# Helpers methods to manipulate function signatures. This should be part of the language in one form or another.
+module Kit::Contract::Services::RubyHelpers
 
-  # NOTE: a valid order looks like:
-  #   [:req, :opt], :rest, [:req, :opt], [:key, :keyreq], :keyrest, :block
+  # Given a `callable`, attempt to transform `args` to make it compatible with the signature
+  # @note a valid order looks like: `[:req, :opt], :rest, [:req, :opt], [:key, :keyreq], :keyrest, :block`
   def self.generate_args_in(callable:, args:)
     args       = args.dup
     parameters = get_parameters(callable: callable).dup
@@ -32,6 +33,7 @@ module Kit::Contract::Services::SignatureMatcher
     payload
   end
 
+  # Given a callable, get its parameters data
   def self.get_parameters(callable:)
     if callable.is_a?(Proc) || callable.is_a?(Method)
       callable.parameters
@@ -43,6 +45,7 @@ module Kit::Contract::Services::SignatureMatcher
     end
   end
 
+  # Given a hash and some callable parameters, attempts to generate a compatible version of that hash.
   def self.handle_key_args(hash:, parameters:)
     raise "Expected hash" if !hash.is_a?(::Hash)
 
@@ -105,5 +108,78 @@ module Kit::Contract::Services::SignatureMatcher
     payload
   end
 =end
+
+  # Given some callable parameters, generate the a callable definition
+  # @note Default values are not available, so they are lost. Kudos to Ruby.
+  def self.parameters_as_signature_to_s(parameters:)
+    signature = parameters
+      .map do |type, name|
+        case type
+        when :req
+          name
+        when :rest
+          "*#{name || '_kc_rest'}"
+        when :opt
+          # Unknown default argument.
+          "#{name} = nil"
+        when :key
+          # Unknown default argument.
+          "#{name}: nil"
+        when :keyreq
+          "#{name}:"
+        when :keyrest
+          "**#{name || '_kc_keyrest'}"
+        when :block # NOTE: name can not be nil for block
+          "&#{name}"
+        end
+      end
+      .join(', ')
+
+    signature
+  end
+
+  # Given some callable parameters, attempt to generate the array we would have gotten when using a single splat.
+  # @note This is a poor man Ruby equivalent of javascript `arguments`
+  def self.parameters_as_array_to_s(parameters:)
+    block_name   = (parameters.last&.first == :block)   ? parameters.pop[1] : nil
+    keyrest_name = (parameters.last&.first == :keyrest) ? (parameters.pop[1] || '_kc_keyrest') : nil
+
+    named_str = nil
+    keys_str  = nil
+
+    named = parameters
+      .map do |type, name|
+        if type == :req || name == :opt
+          "#{name}"
+        elsif type == :rest
+          "#{name || '_kc_rest'}"
+        else
+          nil
+        end
+      end
+      .compact
+
+    if named.count > 0
+      named_str = named.join(', ')
+    end
+
+    keys = parameters
+      .select { |t, n| t == :key || t == :keyreq }
+      .map    { |t, n| "#{n}: #{n}" }
+
+    if keys.count > 0
+      keys_str = "{ #{keys.join(', ')} }"
+    end
+
+    if keyrest_name
+      if keys_str
+        keys_str = "#{keys_str}.merge(#{keyrest_name})"
+      else
+        keys_str = keyrest_name
+      end
+    end
+
+    "[#{ named_str ? "#{named_str}, " : '' }#{ keys_str ? "#{keys_str}, " : '' }#{ block_name }]"
+  end
 
 end

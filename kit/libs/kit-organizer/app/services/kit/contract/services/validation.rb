@@ -7,7 +7,7 @@ module Kit::Contract::Services::Validation
 
   #contract Hash[contract: Callable, args: Any] => ResultTupple
   def self.valid?(contract:, args:)
-    args_in = Kit::Contract::Services::SignatureMatcher.generate_args_in(callable: contract, args: args)
+    args_in = Kit::Contract::Services::RubyHelpers.generate_args_in(callable: contract, args: args)
 
     if ENV['LOG_ORGANIZER']
       puts "# Calling `#{contract}` with args: `#{args_in}`".colorize(:yellow)

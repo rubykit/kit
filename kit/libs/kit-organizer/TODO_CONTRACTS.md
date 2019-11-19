@@ -8,10 +8,6 @@
 
 * Investigate loop when enabling contract on `Kit::Contract::Services::Validation.valid?`
 
-* To deal with dynamically generated Class / Modules, the store should generate unique keys so that we don't depend on the Class / Module name, as it might not exist.
-
-* Move most of the code of the Contract concern into a service
-
 * Delay `before` / `after` / `contract` failure to the method declaration for clarity
 
 * Do contracts work with ActiveSupport::Concern ?

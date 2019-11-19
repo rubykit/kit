@@ -1,10 +1,10 @@
 require_relative '../rails_helper'
 require_relative '../../lib/kit/contract'
 
-describe "SignatureMatcher" do
+describe "RubyHelpers" do
 
   context 'given some arguments and a callable signature' do
-    let(:service) { Kit::Contract::Services::SignatureMatcher }
+    let(:service) { Kit::Contract::Services::RubyHelpers }
 
     test_block = Proc.new {}
 

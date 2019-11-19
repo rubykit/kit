@@ -57,7 +57,7 @@ module Kit::Organizer::Services::Organize
   # @param ctx A hash containing values to send to the operations (callables). It will be updated after every operation.
   # @param filter Allows to slice specific keys on the context
   # @return The updated context.
-  contract Ct::Hash[list: Ct::Operations, ctx: Ct::Optional[Ct::Hash], filter: Ct::Optional[Ct::Or[Ct::Hash[ok: Ct::Array], Ct::Hash[error: Ct::Array]]]] => Ct::ResultTupple
+  #contract Ct::Hash[list: Ct::Operations, ctx: Ct::Optional[Ct::Hash], filter: Ct::Optional[Ct::Or[Ct::Hash[ok: Ct::Array], Ct::Hash[error: Ct::Array]]]] => Ct::ResultTupple
   def self.call(list:, ctx: {}, filter: nil)
     ctx    = ctx.dup
     status = :ok
@@ -183,7 +183,7 @@ module Kit::Organizer::Services::Organize
   #    generate_callable_ctx(callable: ->(a:, **), { a: 1, b: 2, c: 3 }) => { a: 1, b: 2, c: 3 }
   #contract Ct::Hash[callable: Ct::Callable, ctx: Ct::Hash] => Ct::Hash
   def self.generate_callable_ctx(callable:, ctx:)
-    parameters = Kit::Contract::Services::SignatureMatcher.get_parameters(callable: callable)
+    parameters = Kit::Contract::Services::RubyHelpers.get_parameters(callable: callable)
     by_type    = parameters.group_by { |el| el[0] }
 
     if (by_type.keys - [:keyreq, :key, :keyrest]).size > 0

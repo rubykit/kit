@@ -47,7 +47,7 @@ class Kit::Contract::Error < ::StandardError
   # Generates an error message that can be displayed.
   # @api private
   def message
-    method = "#{@target_class.name}#{(@method_type == :singleton) ? '#' : '.' }#{@method_name}"
+    method = "#{@target_class.name}#{(@method_type == :singleton_method) ? '#' : '.' }#{@method_name}"
     str    = "Contract failure #{@type} `#{method}`"
 
     if @errors
