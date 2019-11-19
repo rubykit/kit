@@ -48,10 +48,7 @@ describe "Table Insertion" do
         inner_record = table[:data_list][idx]
 
         values.each do |column_name, expected_column_value|
-          current_column_value = selection.get(table: table, inner_record: inner_record, column: column_name)[1][:value]
-          if current_column_value != expected_column_value
-            binding.pry
-          end
+          current_column_value = selection.get(table: table, inner_record: inner_record, column_name: column_name)[1][:value]
           expect(current_column_value).to eq expected_column_value
         end
       end

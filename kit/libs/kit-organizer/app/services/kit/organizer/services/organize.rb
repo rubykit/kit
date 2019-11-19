@@ -47,7 +47,8 @@
 # ```
 
 module Kit::Organizer::Services::Organize
-  #Operation = Or[Callable, Symbol, Tupple[Or[String, Symbol], Or[String, Symbol]]]
+  include Kit::Contract
+  Ct = Kit::Organizer::Contracts
 
   # Run a `list` of `operations` (callable) in order. Each results update the initial `ctx` which is then sent to the next operation.
   # An `operation` needs to be a callable, but it can be resolved from other format (see #to_callable)
@@ -56,7 +57,7 @@ module Kit::Organizer::Services::Organize
   # @param ctx A hash containing values to send to the operations (callables). It will be updated after every operation.
   # @param filter Allows to slice specific keys on the context
   # @return The updated context.
-  # contract Hash[list: Array.of(Operation), ctx: Optional[Hash], filter: Optional[Or[Hash[ok: Array], Hash[:error, Array]]] => ResultTupple
+  contract Ct::Hash[list: Ct::Operations, ctx: Ct::Optional[Ct::Hash], filter: Ct::Optional[Ct::Or[Ct::Hash[ok: Ct::Array], Ct::Hash[error: Ct::Array]]]] => Ct::ResultTupple
   def self.call(list:, ctx: {}, filter: nil)
     ctx    = ctx.dup
     status = :ok
@@ -111,7 +112,7 @@ module Kit::Organizer::Services::Organize
   #    sanitize_result([:error, { detail: 'Error details' }]) => [:error, { errors: [{ detail: 'Error details' }] }]
   # @example Returning an array of errors in the two former formats
   #    sanitize_result([:error, ['Error1 detail', { detail: 'Error2 details' }]) => [:error, { errors: [{ detail: 'Error1 details' }, { detail: 'Error2 details' }] }]
-  # contract ResultTupple => ResultTupple
+  #contract Ct::Hash[result: Ct::ResultTupple] => Ct::ResultTupple
   def self.sanitize_errors(result:)
     status, ctx = result
 
@@ -159,7 +160,7 @@ module Kit::Organizer::Services::Organize
   # @example Generating a callable from a tupple
   #    Kit::Organizer::Store.register(id: :login, target: AuthenticationModule.method(:sign_in)) => true
   #    to_callable(callable: :login) => Proc(AuthenticationModule#sign_in)
-  # contract Hash[callable: Or[Callable, Symbol, Array.size(2)]]
+  #contract Ct::Hash[callable: Ct::Or[Ct::Callable, Ct::Symbol, Ct::Array.size(2)]] => Ct::Callable
   def self.to_callable(callable:)
     if callable.is_a?(Array)
       class_object, method_name = callable
@@ -180,7 +181,7 @@ module Kit::Organizer::Services::Organize
   # @example
   #    generate_callable_ctx(callable: ->(a:), { a: 1, b: 2, c: 3 }) => { a: 1 }
   #    generate_callable_ctx(callable: ->(a:, **), { a: 1, b: 2, c: 3 }) => { a: 1, b: 2, c: 3 }
-  # contract Hash[callable: Callable, ctx: Hash]
+  #contract Ct::Hash[callable: Ct::Callable, ctx: Ct::Hash] => Ct::Hash
   def self.generate_callable_ctx(callable:, ctx:)
     parameters = Kit::Contract::Services::SignatureMatcher.get_parameters(callable: callable)
     by_type    = parameters.group_by { |el| el[0] }

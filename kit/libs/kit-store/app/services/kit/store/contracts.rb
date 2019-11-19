@@ -7,6 +7,7 @@ module Kit::Store::Contracts
   Table        = IsA[Kit::Store::Types::Table]
 
   ColumnName   = Symbol
+  ColumnNames  = Array.of(ColumnName)
 
   InnerRecord  = IsA[Kit::Store::Types::InnerRecord]
   InnerRecords = Array.of(InnerRecord)

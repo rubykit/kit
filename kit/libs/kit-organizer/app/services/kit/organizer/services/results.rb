@@ -1,9 +1,9 @@
 module Kit::Organizer::Services::Results
   include Kit::Contract
-  include Kit::Contract::Types
+  Ct = Kit::Contract::BuiltInContracts
 
   # TODO: add indications on how/what to deep merge
-  contract Hash[results: Array.of(ResultTupple)]
+  contract Ct::Hash[results: Ct::Array.of(ResultTupple)]
   def self.merge(results:)
     status = results.map { |el| el[0] }.uniq
 

@@ -10,12 +10,14 @@ module Kit::Store::Services::Table::Structure
     end
 
     table = Kit::Store::Types::Table[{
+      store:        store,
       name:         table_name,
+
       columns_hash: {},
       data_list:    [],
 
       series:       {},
-      #constraints:  {},
+      constraints:  {},
     }]
 
     add_column(table: table, column_name: :_id,)

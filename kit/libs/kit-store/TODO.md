@@ -1,7 +1,8 @@
 ## TODO
 
-* Add constraints
+* Add "constraints" >> Types of contracts
   * Uniqueness
+  * Types
   * Non NULL
   * Foreign Keys
 

@@ -1,16 +1,10 @@
 module Kit::Store::Services::Table::Selection
+  include Kit::Contract
+  Ct = Kit::Store::Contracts
 
-  def self.select(store:, from:, select: nil, where: [], limit: nil, order: nil)
-    if !where.is_a?(Array)
-      where = [where]
-    end
-
-    filters = []
-    where.each do |filter|
-      if filter.respond_to?(:call)
-        filters << filter
-      end
-    end
+  contract Ct::Hash[store: Ct::Store, from: Ct::TableName, select: Ct::Optional[Ct::ColumnNames], filters: Ct::Optional[Ct::Callables], order: Ct::Optional[Ct::Orders]]
+  def self.select(store:, from:, select: nil, filters: nil, limit: nil, order: nil)
+    filters ||= []
 
     if order
       filters << Kit::Store::Services::Table::Ordering.method(:order_by)
@@ -36,38 +30,42 @@ module Kit::Store::Services::Table::Selection
     Kit::Organizer.call({
       list: list,
       ctx: {
-        store:       store,
-        table_name:  from,
-        columns:     select,
-        order:       order,
+        store:        store,
+        table_name:   from,
+        column_names: select,
+        order:        order,
       },
       filter: { ok: [:records], },
     })
   end
 
+  contract Ct::Hash[table: Ct::Table]
   def self.select_all(table:)
     [:ok, inner_records: table[:data_list]]
   end
 
-  def self.get(table:, inner_record:, column:)
-    _, ctx = get_data_array_idx(table: table, column: column)
+  contract Ct::Hash[table: Ct::Table, inner_record: Ct::InnerRecord, column_name: Ct::ColumnName]
+  def self.get(table:, inner_record:, column_name:)
+    _, ctx = get_data_array_idx(table: table, column_name: column_name)
 
     [:ok, value: inner_record[ctx[:data_array_idx]]]
   end
 
-  def self.get_data_array_idx(table:, column:)
-    [:ok, data_array_idx: table[:columns_hash][column][:data_array_idx]]
+  contract Ct::Hash[table: Ct::Table, column_name: Ct::ColumnName]
+  def self.get_data_array_idx(table:, column_name:)
+    [:ok, data_array_idx: table[:columns_hash][column_name][:data_array_idx]]
   end
 
-  def self.deep_clone(table:, inner_records:, columns:)
+  contract Ct::Hash[table: Ct::Table, inner_records: Ct::InnerRecords, column_names: Ct::Optional[Ct::ColumnNames]]
+  def self.deep_clone(table:, inner_records:, column_names: nil)
     keys = table[:columns_hash].keys
 
     records = inner_records
       .map { |record| [keys, record.deep_dup].transpose.to_h }
 
-    if columns
+    if column_names
       records = records
-        .map { |record| record.slice(*columns) }
+        .map { |record| record.slice(*column_names) }
     end
 
     [:ok, records: records]
