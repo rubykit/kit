@@ -30,8 +30,5 @@
 #   * `NotEq`: ensures that the argument does not equal the given value
 #   * `NotIn`: ensures that the argument is not part of a given collection of objects / values
 #   * `RespondTo`: ensures that the object `respond_to?` a specific method
-# * Custom types
-#   * `ResultTupple`:
-#   * `SignatureContract`:
 module Kit::Contract::BuiltInContracts
 end

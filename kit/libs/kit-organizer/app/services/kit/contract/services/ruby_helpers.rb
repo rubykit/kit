@@ -33,7 +33,7 @@ module Kit::Contract::Services::RubyHelpers
     payload
   end
 
-  # Given a callable, get its parameters data
+  # Given a `callable`, get its `parameters` data
   def self.get_parameters(callable:)
     if callable.is_a?(Proc) || callable.is_a?(Method)
       callable.parameters
@@ -45,7 +45,7 @@ module Kit::Contract::Services::RubyHelpers
     end
   end
 
-  # Given a hash and some callable parameters, attempts to generate a compatible version of that hash.
+  # Given a `hash` and some callable `parameters`, attempts to generate a compatible version of that `hash`.
   def self.handle_key_args(hash:, parameters:)
     raise "Expected hash" if !hash.is_a?(::Hash)
 
@@ -109,7 +109,7 @@ module Kit::Contract::Services::RubyHelpers
   end
 =end
 
-  # Given some callable parameters, generate the a callable definition
+  # Given some callable `parameters`, generate the a callable definition
   # @note Default values are not available, so they are lost. Kudos to Ruby.
   def self.parameters_as_signature_to_s(parameters:)
     signature = parameters
@@ -138,7 +138,7 @@ module Kit::Contract::Services::RubyHelpers
     signature
   end
 
-  # Given some callable parameters, attempt to generate the array we would have gotten when using a single splat.
+  # Given some callable `parameters`, attempt to generate the array we would have gotten when using a single splat.
   # @note This is a poor man Ruby equivalent of javascript `arguments`
   def self.parameters_as_array_to_s(parameters:)
     block_name   = (parameters.last&.first == :block)   ? parameters.pop[1] : nil

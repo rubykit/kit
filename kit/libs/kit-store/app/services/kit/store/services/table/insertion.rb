@@ -2,9 +2,11 @@ module Kit::Store::Services::Table::Insertion
   include Kit::Contract
   Ct = Kit::Store::Contracts
 
-  contract Ct::Hash[store: Ct::Store, table: Ct::Table, data: Ct::Hash]
-  def self.insert(store:, table:, data:)
-    arguments   = { store: store, table: table, record_data: data }
+  # Attempt to insert `data` into `table`
+  contract Ct::Hash[table: Ct::Table, data: Ct::Hash]
+  def self.insert(table:, data:)
+    store     = table[:store]
+    arguments = { store: store, table: table, record_data: data }
 
     Kit::Organizer.call({
       list: [
@@ -19,6 +21,7 @@ module Kit::Store::Services::Table::Insertion
     })
   end
 
+  # Validate the `record_data` and convert it to a `record`
   contract Ct::Hash[table: Ct::Table, record_data: Ct::Hash]
   def self.record_data_to_record(table:, record_data:)
     errors = []
@@ -35,6 +38,7 @@ module Kit::Store::Services::Table::Insertion
     end
   end
 
+  # Convert a `Record` (hash access) to a `InnerRecord` (array)
   contract Ct::Hash[table: Ct::Table, record: Ct::Record]
   def self.to_inner_record(table:, record:)
     inner_record = Kit::Store::Types::InnerRecord.new
@@ -46,6 +50,7 @@ module Kit::Store::Services::Table::Insertion
     [:ok, inner_record: inner_record]
   end
 
+  # Append the data to the `table`
   contract Ct::Hash[table: Ct::Table, inner_record: Ct::InnerRecord]
   def self.persist(table:, inner_record:)
     table[:data_list] << inner_record

@@ -1,5 +1,5 @@
 module Kit::Store::Contracts
-  include Kit::Contract::Types
+  include Kit::Contract::BuiltInContracts
 
   Store        = IsA[Kit::Store::Types::Store]
 

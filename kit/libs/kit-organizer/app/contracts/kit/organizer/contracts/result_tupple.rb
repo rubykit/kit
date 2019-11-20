@@ -4,19 +4,19 @@ module Kit::Organizer::Contracts
 
   SuccessResultTupple = Or[
     Tupple[Eq[:ok]],
-    Tupple[Eq[:ok], Kit::Contract::BuiltInContracts::Hash],
+    Tupple[Eq[:ok], Hash],
   ]
 
   ErrorResultTupple = Or[
     Tupple[Eq[:error]],
-    Tupple[Eq[:error], Kit::Contract::BuiltInContracts::Hash],
+    Tupple[Eq[:error], Hash],
   ]
 
   # Accepts laxer Error formats that will need to be sanitized
   TmpErrorResultTupple = Or[
     ErrorResultTupple,
-    Tupple[Eq[:error], Kit::Contract::BuiltInContracts::String],
-    Tupple[Eq[:error], Kit::Contract::BuiltInContracts::Array],
+    Tupple[Eq[:error], String],
+    Tupple[Eq[:error], Array],
   ]
 
   ResultTupple = Or[
