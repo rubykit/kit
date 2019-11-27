@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-# Declare your gem's dependencies in kit_organizer.gemspec.
+# Declare your gem's dependencies in kit_pagination.gemspec.
 # Bundler will treat runtime dependencies like base dependencies, and
 # development dependencies will be added by default to the :development group.
 gemspec
@@ -14,19 +14,4 @@ gemspec
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
 
-gem 'rails'
-
-group :test, :development do
-  gem 'pry'
-  gem 'activesupport'
-  gem 'colorize'
-end
-
-group :test do
-  gem 'rspec-rails'
-end
-
-gem 'kit-app-container',       path: '../../libs/kit-app-container' # DEV MODE
-gem 'kit-dummy-app-container', path: '../../libs/kit-dummy-app-container' # DEV MODE
-
-gem 'yard-kit',                path: '../../libs/yard-kit'
+gem 'rspec'

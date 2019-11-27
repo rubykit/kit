@@ -5,8 +5,8 @@ module Kit::Contract::BuiltInContracts
       @method_name = method_name
     end
 
-    def call(args)
-      if args.respond_to?(@method_name)
+    def call(arg)
+      if arg.respond_to?(@method_name)
         [:ok]
       else
         [:error, "RESPOND_TO failed: object does not respond_to `#{@method_name}`"]

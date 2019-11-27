@@ -19,6 +19,11 @@ PATH
       rails (~> 6.0)
 
 PATH
+  remote: ../yard-kit
+  specs:
+    yard-kit (0.1.0)
+
+PATH
   remote: .
   specs:
     kit-store (0.1.0)
@@ -176,7 +181,6 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.10.0)
       ffi (~> 1.0)
-    redcarpet (3.5.0)
     redis (4.1.3)
     rspec-core (3.8.2)
       rspec-support (~> 3.8.0)
@@ -240,9 +244,9 @@ DEPENDENCIES
   listen
   pry
   rails
-  redcarpet
   rspec-rails
   yard
+  yard-kit!
 
 BUNDLED WITH
    1.17.2

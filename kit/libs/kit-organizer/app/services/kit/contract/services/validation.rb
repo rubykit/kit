@@ -1,6 +1,5 @@
 module Kit::Contract::Services::Validation
   include Kit::Contract
-
   Ct = Kit::Contract::BuiltInContracts
 
   #EXPECTED_CALLABLE_RESULT_TYPE = Or[Boolean, ResultTupple]

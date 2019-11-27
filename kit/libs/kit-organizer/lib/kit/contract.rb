@@ -1,7 +1,8 @@
 module Kit
-  #-- Forward declaration of the namespace, the actual logic lives in `app`
-  module Contract
+  # Forward declaration of the namespace, the actual logic lives in `app`
 
+
+  module Contract
   end
 end
 

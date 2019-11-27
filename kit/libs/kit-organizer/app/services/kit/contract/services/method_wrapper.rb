@@ -62,8 +62,8 @@ module Kit::Contract::Services::MethodWrapper
           method_type:          :#{method_type},
           contracts_before_uid: #{contracts_before_uid},
           contracts_after_uid:  #{contracts_after_uid},
-          target:               #{(method_type == :singleton_method) ? class_name : 'self'},
-          target_class:         #{class_name},
+          target:               self,
+          target_class:         #{(method_type == :singleton_method) ? 'self' : 'self.class'},
           args:                 #{args_str},
         )
       end

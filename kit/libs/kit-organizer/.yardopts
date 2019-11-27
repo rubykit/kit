@@ -1,3 +1,1 @@
---markup-provider redcarpet
---markup markdown
---asset ../../../docs/various/yard_common.css:css/common.css
+--plugin yard-kit

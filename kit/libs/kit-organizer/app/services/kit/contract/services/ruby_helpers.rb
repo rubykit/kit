@@ -1,6 +1,12 @@
 # Helpers methods to manipulate function signatures. This should be part of the language in one form or another.
 module Kit::Contract::Services::RubyHelpers
 
+=begin
+  # Given a `callable`, check if it can receive `args` as a payload
+  def self.can_receive?(callable:, signature:)
+  end
+=end
+
   # Given a `callable`, attempt to transform `args` to make it compatible with the signature
   # @note a valid order looks like: `[:req, :opt], :rest, [:req, :opt], [:key, :keyreq], :keyrest, :block`
   def self.generate_args_in(callable:, args:)

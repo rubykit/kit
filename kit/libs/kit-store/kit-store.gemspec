@@ -19,7 +19,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency "rails", "~> 6.0"
 
   spec.add_development_dependency 'rspec-rails'
-  spec.add_development_dependency 'yard'
-  spec.add_development_dependency 'redcarpet'
   spec.add_development_dependency 'listen'
+
+  spec.add_development_dependency 'yard'
+
 end

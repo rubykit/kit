@@ -20,10 +20,8 @@ group :test, :development do
   gem 'pry'
 end
 
-group :test do
-  gem 'rspec-rails'
-end
-
 gem 'kit-organizer',           path: '../../libs/kit-organizer' # DEV MODE
 gem 'kit-app-container',       path: '../../libs/kit-app-container' # DEV MODE
 gem 'kit-dummy-app-container', path: '../../libs/kit-dummy-app-container' # DEV MODE
+
+gem 'yard-kit',                path: '../../libs/yard-kit'
