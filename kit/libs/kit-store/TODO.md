@@ -1,11 +1,13 @@
-## TODO
+# TODO
 
-* Add "constraints" >> Types of contracts
+* [x] Hygienic
+
+* [ ] Add "constraints" (types of contracts ?)
   * Uniqueness
   * Types
   * Non NULL
   * Foreign Keys
 
-* Add select parameters to request inclusion of relationships up to a certain level ? (or default to sideload ?)
+* [ ] Add select parameters to request inclusion of relationships up to a certain level ? (or default to sideload ?)
 
-* Optimization: add indexes ?
+* [ ] Add indeces

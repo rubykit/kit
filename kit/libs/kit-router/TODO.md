@@ -1,17 +1,37 @@
-2 categories of concepts:
+# TODO
 
-- Endpoints (with aliases that represent the endpoint)
+* Investigate reload behaviour as it relates to get / post routes couple
 
-- Mountpoints
-  [:http, [:get, '/users/sign-in']] || { type: :http, id: { verb: :get, path: '/users/sign-in' } }
+* Research: what are the rules around endpoints / protocols ?
+  * Why did I decide on `one alias` == `one mountpoint` ?
+  * What are reasonable limitations of mouting the same endpoint N times? One per protocol? Being clear on a default one?
 
-  In the same way that alaises need to be explicitely attached to endpoints, we should probably force every alias to be mounted properly to avoid issues.
+* Create store grouping (endpoints / aliases / mountpoints) to do dependency injection properly (like specs)
 
-TODO:
-  - Create store grouping (endpoints / aliases / mountpoints) to do dependency injection properly (like specs)
-  - Create CLI tool to represent:
-    - available endpoints
-    - available aliases
-    - available mountpoints
-    - aliases that needs to be explicitely mounted (and provide default if an endpoint only has one mountpoint)
-    - use types
+* Research: should the formatting happen inside the endpoint or in a `endpoint` <> `protocol` adapter ?
+
+* Research: look at Plug again
+
+* Create CLI tool to represent:
+  * available endpoints
+  * available aliases
+  * available mountpoints
+  * aliases that needs to be explicitely mounted (and provide default if an endpoint only has one mountpoint)
+  * use types
+
+* Add ActiveAdmin support? (or just start with Kit::Admin ?)
+
+* Handle intents (redirect post sign-up / sign-in)
+
+* API async middleware:
+  * Async middleware that reacts to certain parameters (headers for "meta information")
+  * https://jsonapi.org/recommendations/#asynchronous-processing
+
+* RESEARCH: external visibility Web / Api / System (non mountable externally) !
+
+* Add `.safe_delay` if redis is not available
+
+* Add action_cable (what should the PUSH primitives look like ? Right now "return" is the "response")
+  * https://blog.heroku.com/real_time_rails_implementing_websockets_in_rails_5_with_action_cable
+
+* Add action_mailer

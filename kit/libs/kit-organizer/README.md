@@ -1,4 +1,4 @@
-# KitOrganizer
+# Kit::Organizer
 Short description and motivation.
 
 ### Contracts
