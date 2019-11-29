@@ -27,10 +27,12 @@ To avoid collisions between `subsets`, the last (or least important) `ordering p
 
 ### Examples:
 
+| Ordering | Status | Note |
 |-------------------------------------------|-------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `[[:uid, :asc], [:created_at, :desc]]` | **Valid** | But `created_at` will never be used since `uid` is already unique |
 | `[[:created_at, :desc]]` | **Invalid** | You might have `elements` of the `sets` that have similar creation timestamps. This can lead to collisions between `subsets`: the same element can be returned in different pages |
-| ``[[[:created_at, :desc], [:uid, :asc]]`` | **Valid** | Even if you don't care about `:uid` in itself, adding it allows to uniquely identify elements of the set. |
+| ``[[[:created_at, :desc], [:uid, :asc]]`` | **Valid** | Even if you don't care about `:uid` in itself, adding it allows to uniquely identify elements of the set. |                                                                       |
+
 
 ## Usage
 
