@@ -18,8 +18,10 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "rails", "~> 6.0"
 
-  spec.add_dependency "dry-types"
+  spec.add_dependency "oj"
 
   spec.add_development_dependency 'rspec-rails'
   spec.add_development_dependency 'listen'
+
+  spec.add_development_dependency 'yard'
 end

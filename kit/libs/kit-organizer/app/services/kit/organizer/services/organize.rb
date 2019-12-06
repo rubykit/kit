@@ -160,7 +160,7 @@ module Kit::Organizer::Services::Organize
   # @example Generating a callable from a tupple
   #    Kit::Organizer::Store.register(id: :login, target: AuthenticationModule.method(:sign_in)) => true
   #    to_callable(callable: :login) => Proc(AuthenticationModule#sign_in)
-  #contract Ct::Hash[callable: Ct::Or[Ct::Callable, Ct::Symbol, Ct::Array.size(2)]] => Ct::Callable
+  contract Ct::Hash[callable: Ct::Or[Ct::Callable, Ct::Symbol, Ct::Array.size(2)]] => Ct::Callable
   def self.to_callable(callable:)
     if callable.is_a?(Array)
       class_object, method_name = callable
@@ -168,8 +168,8 @@ module Kit::Organizer::Services::Organize
         class_object = class_object.to_s.constantize
       end
       callable = class_object.method(method_name.to_sym)
-    elsif callable.is_a?(Symbol)
-      callable = Kit::Organizer::Services::Store.get(id: callable)
+    elsif callable.is_a?(::Symbol) || callable.is_a?(::String)
+      callable = Kit::Organizer::Services::Store.get(id: callable.to_sym)
     end
 
     callable
@@ -181,7 +181,7 @@ module Kit::Organizer::Services::Organize
   # @example
   #    generate_callable_ctx(callable: ->(a:), { a: 1, b: 2, c: 3 }) => { a: 1 }
   #    generate_callable_ctx(callable: ->(a:, **), { a: 1, b: 2, c: 3 }) => { a: 1, b: 2, c: 3 }
-  #contract Ct::Hash[callable: Ct::Callable, ctx: Ct::Hash] => Ct::Hash
+  contract Ct::Hash[callable: Ct::Callable, ctx: Ct::Hash] => Ct::Hash
   def self.generate_callable_ctx(callable:, ctx:)
     parameters = Kit::Contract::Services::RubyHelpers.get_parameters(callable: callable)
     by_type    = parameters.group_by { |el| el[0] }

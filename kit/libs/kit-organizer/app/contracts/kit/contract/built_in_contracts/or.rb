@@ -8,6 +8,9 @@ module Kit::Contract::BuiltInContracts
     def call(*args)
       passed = @contracts.any? do |contract|
         status, _ = Kit::Contract::Services::Validation.valid?(contract: contract, args: args)
+        if status != :ok
+          puts _
+        end
         status == :ok
       end
 

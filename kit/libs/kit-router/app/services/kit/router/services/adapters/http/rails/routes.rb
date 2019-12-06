@@ -33,7 +33,7 @@ module Kit::Router::Services::Adapters::Http::Rails
 
     def self.mount_rails_targets(rails_router_context:, list:)
       list.each do |attrs|
-        mount_action_controller_target(rails_router_context: rails_router_context, **attrs)
+        mount_rails_target(rails_router_context: rails_router_context, **attrs)
       end
 
       [:ok]
@@ -64,8 +64,9 @@ module Kit::Router::Services::Adapters::Http::Rails
       alias_record    = Kit::Router::Services::Store.get_alias(id: id)
       endpoint_record = Kit::Router::Services::Store.get_endpoint(id: id)
 
-      if !Kit::Router::Services::Router.can_mount?(endpoint_types: endpoint_record[:types], mounter_type: MOUNT_TYPE)
-        raise "Kit::Router | Can't mount `#{endpoint_record[:uid]}` (through: `#{uid}`) | Endpoint mount type: `#{endpoint_record[:types]}` | Current mount type: `#{MOUNT_TYPE}`"
+      endpoint_types  = endpoint_record[:types].keys
+      if !Kit::Router::Services::Router.can_mount?(endpoint_types: endpoint_types, mounter_type: MOUNT_TYPE)
+        raise "Kit::Router | Can't mount `#{endpoint_record[:uid]}` (through: `#{id}`) | Endpoint mount type: `#{endpoint_record[:types]}` | Current mount type: `#{MOUNT_TYPE}`"
       end
 
       [:ok, endpoint_record: endpoint_record, alias_record: alias_record]
@@ -123,7 +124,11 @@ module Kit::Router::Services::Adapters::Http::Rails
     end
 
     def self.add_mountpoint_to_record(alias_record:, rails_mountpoint:)
-      alias_record[:mountpoint] = rails_mountpoint
+      alias_record[:mountpoints][MOUNT_TYPE] ||= []
+      alias_record[:mountpoints][MOUNT_TYPE] << rails_mountpoint
+
+      alias_record[:cached_endpoint][:mountpoints][MOUNT_TYPE] ||= []
+      alias_record[:cached_endpoint][:mountpoints][MOUNT_TYPE] << rails_mountpoint
 
       [:ok]
     end

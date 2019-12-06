@@ -2,7 +2,8 @@
 
 module Kit::Router::Services
   module Router
-    #include Contracts
+    include Kit::Contract
+    Ct = Kit::Router::Contracts
 
     #Contract KeywordArgs[uid: Or[String, Symbol], target: RespondTo[:call], aliases: ArrayOf[String, Symbol], type: ArrayOf[ArrayOf[Symbol, Symbol]]]]
     def self.register(uid:, aliases:, target:, types: { [:any, :any] => nil })
@@ -21,16 +22,19 @@ module Kit::Router::Services
       [:ok]
     end
 
+    EMPTY_TARGET = ->() {}
+
     def self.register_without_target(uid:, aliases:, types:)
       register(
         uid:     uid,
         aliases: aliases,
-        target:  nil,
+        target:  EMPTY_TARGET,
         types:   types,
       )
     end
 
     # [:any, :any] against [:http, :rails]
+    contract Ct::Hash[endpoint_types: Ct::MountTypes, mounter_type: Ct::MountType]
     def self.can_mount?(endpoint_types:, mounter_type:)
       mounter_protocol, mounter_lib = mounter_type
 

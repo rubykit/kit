@@ -1,6 +1,6 @@
 module Kit::Auth::Actions::OauthApplications::LoadApi
 
-  def self.call(*)
+  def self.call(**)
     uid         = 'api'
     application = Kit::Auth::Models::Read::OauthApplication.find_by(uid: uid)
 

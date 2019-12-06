@@ -1,6 +1,14 @@
 # TODO
 TODOs of things that do not have their own gem.
 
+* Should we have PLUGs ?!
+  * The interesting thing is that any callable receiving a `request` object can probably considered a "plug".
+  * Revisit the interface of `endpoints`. A connection `object` is probably a better primitive than `request` / `response`.
+
+* Kit::JsonAPI
+  * https://hexdocs.pm/jsonapi/readme.html
+  * That's where the plug behaviour could be useful.
+
 * Loading:
   * Solve controller eager login at the kit-domain level
   * Solve plugin reloading
@@ -24,6 +32,10 @@ TODOs of things that do not have their own gem.
   * Filtering engine (is this the same than the JSON-API filtering engine ?)
   * Filter component
   * Brainstorm "Tables" implementation (probably split data & presentation)
+
+  * https://vimeo.com/305601486/a1388ac3a9
+  * https://demo.webpixels.io/quick-website-ui-kit-v1.0.0/docs/styleguide/colors.html
+  * https://demo.webpixels.io/quick-website-ui-kit-v1.0.0/docs/index.html
 
 * Kit::Events
   * Add a "store" (like in router & organizer) so that every engine can register specific targets for an event ?

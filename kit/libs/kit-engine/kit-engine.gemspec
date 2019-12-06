@@ -21,4 +21,6 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "activerecord-nulldb-adapter"
 
+  spec.add_development_dependency 'yard'
+
 end

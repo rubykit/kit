@@ -1,8 +1,9 @@
+=begin
+# TODO: figure out why this does not get loaded.
 module Kit
   module Organizer
-    include Contract
+    include Kit::Contract
 
-    #Contract KeywordArgs[list: ArrayOf[Or[RespondTo[:call], Symbol]], ctx: Optional[Hash]] => [Symbol, Hash]
     def self.call(list:, ctx: {}, filter: nil)
       arguments = { list: list, ctx: ctx, filter: filter }
 
@@ -20,7 +21,7 @@ module Kit
         callable = to_callable(callable: callable)
         ->(ctx_in) { [:ok, key: callable.call(ctx_in)] }
       end
-=end
+ =end
 
     def self.register(id:, target:)
       arguments = { id: id, target: target }
@@ -36,3 +37,4 @@ module Kit
 
   end
 end
+=end

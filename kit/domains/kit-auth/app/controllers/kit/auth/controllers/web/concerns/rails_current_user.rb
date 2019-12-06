@@ -10,7 +10,7 @@ module Kit::Auth::Controllers::Web::Concerns
       status, ctx = Kit::Organizer.call({
         # TODO: should there be an explicit or impliticit reference ?
         list: [
-          Kit::Router::Services::Request::Rails::Import.method(:import_request),
+          Kit::Router::Services::Adapters::Http::Rails::Request::Import.method(:import_request),
           :web_resolve_current_user,
         ],
         ctx:  {

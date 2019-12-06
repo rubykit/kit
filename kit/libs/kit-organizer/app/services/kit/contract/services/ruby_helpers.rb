@@ -47,7 +47,8 @@ module Kit::Contract::Services::RubyHelpers
       callable.method(:call).parameters
     else
       # NOTE: not sure what this leaves ?
-      raise "Unsupported callable"
+      # binding.pry
+      raise "Unsupported callable #{callable.class} `#{callable}`"
     end
   end
 

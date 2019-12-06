@@ -1,9 +1,18 @@
 # TODO
 
+* As of now:
+  * The issue is: EP1 has 3 aliases: [AL1, AL2, AL3]. AL1 is mounted through MP1, AL2 through MP2, what is the URI of AL3?
+  * Chaining (the "branch" approach) might not be the right representation. It might make more sense to use "alias grouping" if we can.
+  * Simplest solution:
+    * not care, allow chaining & ask for disambiguiation when MP collisions
+    * provide a way to group endpoints when mounting?
+    * if one of them is overidden latter, apply to the "group" (but explicit trumps implicit, so if second overide on one of the group, ask for disambiguiation ?)
+
 * Investigate reload behaviour as it relates to get / post routes couple
 
 * Research: what are the rules around endpoints / protocols ?
   * Why did I decide on `one alias` == `one mountpoint` ?
+  * 1 alias = 1 mountpoint ? (and not 1 mountpoint per adapter type)
   * What are reasonable limitations of mouting the same endpoint N times? One per protocol? Being clear on a default one?
 
 * Create store grouping (endpoints / aliases / mountpoints) to do dependency injection properly (like specs)
