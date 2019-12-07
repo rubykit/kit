@@ -1,14 +1,6 @@
 # TODO
 TODOs of things that do not have their own gem.
 
-* Should we have PLUGs ?!
-  * The interesting thing is that any callable receiving a `request` object can probably considered a "plug".
-  * Revisit the interface of `endpoints`. A connection `object` is probably a better primitive than `request` / `response`.
-
-* Kit::JsonAPI
-  * https://hexdocs.pm/jsonapi/readme.html
-  * That's where the plug behaviour could be useful.
-
 * Loading:
   * Solve controller eager login at the kit-domain level
   * Solve plugin reloading

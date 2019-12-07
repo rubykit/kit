@@ -1,5 +1,11 @@
 # TODO
 
+* RESEARCH: Should we have PLUGs ?!
+  * The interesting thing is that any callable receiving a `request` object can probably considered a "plug".
+  * Revisit the interface of `endpoints`. A connection `object` is probably a better primitive than `request` / `response`.
+  * https://hexdocs.pm/jsonapi/readme.html
+  * That's where the plug behaviour could be useful.
+
 * WARNING:
   * The mountpoint resolution ARE NOT recomputed on chance
   * The whole logic in the store need to be rewritten properly.
