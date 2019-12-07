@@ -61,7 +61,7 @@ module Kit::Router::Services::Adapters::Http
 
     def self.verb(id:)
       alias_record = Kit::Router::Services::Store.get_alias(id: id)
-      mountpoint   = alias_record[:mountpoint] || alias_record[:inferred_mountpoint]
+      mountpoint   = Kit::Router::Services::Store.get_record_mountpoint(alias_record: alias_record, mountpoint_type: [:http, :rails])
       verb, path   = mountpoint
 
       if verb.blank?

@@ -13,7 +13,7 @@ class ::WebController < ::ActionController::Base
       rails_response:   self.response,
     }
 
-    _, status, ctx = Kit::Organizer.call({
+    _, ctx = Kit::Organizer.call({
       list: [
         Kit::Router::Services::Adapters::Http::Rails::Request::Import.method(:import_request),
         :web_resolve_current_user,

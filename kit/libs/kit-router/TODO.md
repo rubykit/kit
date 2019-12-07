@@ -1,5 +1,9 @@
 # TODO
 
+* WARNING:
+  * The mountpoint resolution ARE NOT recomputed on chance
+  * The whole logic in the store need to be rewritten properly.
+
 * As of now:
   * The issue is: EP1 has 3 aliases: [AL1, AL2, AL3]. AL1 is mounted through MP1, AL2 through MP2, what is the URI of AL3?
   * Chaining (the "branch" approach) might not be the right representation. It might make more sense to use "alias grouping" if we can.
