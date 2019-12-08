@@ -1,18 +1,19 @@
-module Kit::JsonApi::Spec::Resources::Comment
+module Kit::JsonApiSpec::Resources::Post
 
   def self.fields
     {
       id:         nil,
       created_at: nil,
-      text:       nil,
+      url:        nil,
     }
   end
 
   def self.filters
     {
       id:         [:eq, :gt, :gte, :le, :lte],
-      email:      [:eq, :contains, :start_with, :end_with],
       created_at: [:eq, :gt, :gte, :le, :lte],
+      url:        [:eq, :contains],
+      owner_id:   [:eq],
     }
   end
 
@@ -25,18 +26,24 @@ module Kit::JsonApi::Spec::Resources::Comment
 
   def self.relationships
     {
-      post: {
-        resource: Kit::JsonApi::Tests::Resources::Post,
-        inclusion: {
-          top_level: true,
-          nested:    false,
-        },
-      },
       owner: {
+        type:     :has_one,
         resource: Kit::JsonApi::Tests::Resources::User,
         inclusion: {
           top_level: true,
           nested:    true,
+        },
+      },
+      comments: {
+        type:     :has_many,
+        resource: Kit::JsonApi::Tests::Resources::Comment,
+        defaults: {
+          sort:  [[:created_at, :desc], [:id, :desc]],
+          limit: 5,
+        },
+        inclusion: {
+          top_level: true,
+          nested:    false,
         },
       },
     }

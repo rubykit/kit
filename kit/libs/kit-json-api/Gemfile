@@ -20,6 +20,7 @@ gem 'kit-organizer',           path: '../../libs/kit-organizer' # GEMSPEC
 
 group :test, :development do
   gem 'pry'
+
   gem 'kit-dotenv-rails',        path: '../../libs/kit-dotenv', require: "kit/dotenv/rails-now"
 
   gem 'kit-app-container',       path: '../../libs/kit-app-container' # DEV MODE
@@ -27,6 +28,8 @@ group :test, :development do
   gem 'kit-engine',              path: '../../libs/kit-engine' # DEV MODE
   gem 'kit-domain',              path: '../../libs/kit-domain' # DEV MODE
   gem 'kit-router',              path: '../../libs/kit-router' # DEV MODE
+
+  gem 'seedbank'
 end
 
 group :development do

@@ -1,0 +1,15 @@
+class Kit::JsonApiSpec::Models::Write::Serie < Kit::JsonApiSpec::Models::WriteRecord
+  self.table_name = 'kit_json_api_spec_series'
+
+  self.whitelisted_columns = [
+    :id,
+    :created_at,
+    :updated_at,
+    :title,
+  ]
+
+  has_many   :photos,
+             class_name:  'Kit::JsonApiSpec::Models::Write::Photo',
+             as: :imageable
+
+end

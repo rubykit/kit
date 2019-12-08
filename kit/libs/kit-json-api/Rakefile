@@ -11,6 +11,10 @@ require 'kit/dummy-app-container/rails_application'
 
 Rails.application.load_tasks
 
+require 'seedbank'
+Seedbank.seeds_root = File.expand_path('./spec/dummy/db/seeds', __dir__)
+Seedbank.load_tasks if defined?(Seedbank)
+
 begin
   require 'rspec/core/rake_task'
 

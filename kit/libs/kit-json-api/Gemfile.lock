@@ -1,4 +1,12 @@
 PATH
+  remote: ../kit-app-container
+  specs:
+    kit-app-container (0.1.0)
+      activerecord-nulldb-adapter
+      rails_event_store
+      sidekiq
+
+PATH
   remote: ../kit-domain
   specs:
     kit-domain (0.1.0)
@@ -11,14 +19,6 @@ PATH
       rubocop (~> 0.42.0)
       seedbank
       slim-rails
-
-PATH
-  remote: ../kit-app-container
-  specs:
-    kit-app-container (0.1.0)
-      activerecord-nulldb-adapter
-      rails_event_store
-      sidekiq
 
 PATH
   remote: ../kit-dotenv
@@ -321,6 +321,7 @@ DEPENDENCIES
   pry
   rails
   rspec-rails
+  seedbank
   yard
   yard-kit!
 

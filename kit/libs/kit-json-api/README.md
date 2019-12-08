@@ -31,6 +31,12 @@ Current status:
 - Applying `Sparse fieldsets`
 - Serialization
 
+## References
+
+- [jsonapi-grader](https://github.com/beauby/jsonapi-grader)
+- [fantasy-dabatase](https://github.com/endpoints/fantasy-database)
+- [endpoints-example](https://github.com/endpoints/endpoints-example)
+
 ## Contributing
 Contribution directions go here.
 
