@@ -13,7 +13,7 @@ module Kit::Router::Controllers::Rails
 
       status, ctx = Kit::Organizer.call({
         list: [
-          Kit::Router::Services::Request::Rails::Import.method(:import_request),
+          Kit::Router::Services::Adapters::Http::Rails::Request::Import.method(:import_request),
           request.params[:kit_router_target],
         ],
         ctx: controller_ctx,
@@ -22,7 +22,7 @@ module Kit::Router::Controllers::Rails
       # NOTE: we need to run this regardless of the previous status
       Kit::Organizer.call({
         list: [
-          Kit::Router::Services::Request::Rails::Export.method(:export_request),
+          Kit::Router::Services::Adapters::Http::Rails::Request::Export.method(:export_request),
         ],
         ctx: controller_ctx.merge(ctx.slice(:request, :response)),
       })

@@ -14,7 +14,7 @@ Current status:
 
 - [ ] [JSONAPI Document](http://jsonapi.org/format/#document-top-level) encoding
 - [ ] [Links](http://jsonapi.org/format/#document-links)
-- [ ] [Sparse fieldsets](https://jsonapi.org/format/#fetching-sparse-fieldsets)
+- [ ] [Sparse fieldsets](https://jsonapi.org/format/#fetching-sparse-fieldsets) Note that fieldsets are per type and not per relationship.
 - [ ] [Sorting](https://jsonapi.org/format/#fetching-sorting)
 - [ ] [Pagination](https://jsonapi.org/format/#fetching-pagination)
 - [ ] Relationships: links (including nested pagination)

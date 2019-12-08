@@ -1,45 +1,43 @@
-default: &default
+config_default: &config_default
   adapter:  <%= ENV['DATABASE_ADAPTER'] || 'postgresql' %>
   encoding: utf8
   pool:     <%= (ENV['DATABASE_POOL'] || ENV['MAX_THREADS'] || 5) %>
 
-default_readonly: &default_readonly
-  <<:  *default
-  url: <%= ENV['DATABASE_URL'] %>
+# Readonly mode | expected privileges: [CONNECT, SELECT]
+config_default_readonly: &config_default_readonly
+  <<:  *config_default
+  url: <%= ENV['DATABASE_URL_READONLY'] %>
 
-default_write: &default_write
-  <<:  *default
-  url: <%= ENV['DATABASE_URL'] %>
+# Write mode | expected privileges: readonly_mode + [INSERT, UPDATE, DELETE]
+config_default_write: &config_default_write
+  <<:  *config_default
+  url: <%= ENV['DATABASE_URL_WRITE'] %>
+
+# Operation mode | expected privileges: write_mode + [CREATE, REFERENCES, TRUNCATE, USAGE]
+config_default_ops: &config_default_ops
+  <<:  *config_default
+  url: <%= ENV['DATABASE_URL_OPS'] %>
 
 # ------------------------------------------------------------------------------
+
+databases_config: &databases_config
+  primary:
+    adapter: nulldb
+  primary_readonly:
+    <<: *config_default_readonly
+  primary_write:
+    <<: *config_default_write
+  primary_ops:
+    <<: *config_default_ops
+
+# ------------------------------------------------------------------------------
+# All ENVs behave the same way
 
 production:
-  adapter: nulldb
+  <<: *databases_config
 
 development:
-  adapter: nulldb
+  <<: *databases_config
 
 test:
-  adapter: nulldb
-
-# ------------------------------------------------------------------------------
-
-production_readonly:
-  <<: *default_readonly
-
-development_readonly:
-  <<: *default_readonly
-
-test_readonly:
-  <<: *default_readonly
-
-# ------------------------------------------------------------------------------
-
-production_write:
-  <<: *default_write
-
-development_write:
-  <<: *default_write
-
-test_write:
-  <<: *default_write
+  <<: *databases_config

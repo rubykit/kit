@@ -16,12 +16,21 @@ gemspec
 
 gem 'rails'
 
+gem 'kit-organizer',           path: '../../libs/kit-organizer' # GEMSPEC
+
 group :test, :development do
   gem 'pry'
+  gem 'kit-dotenv-rails',        path: '../../libs/kit-dotenv', require: "kit/dotenv/rails-now"
+
+  gem 'kit-app-container',       path: '../../libs/kit-app-container' # DEV MODE
+  gem 'kit-dummy-app-container', path: '../../libs/kit-dummy-app-container' # DEV MODE
+  gem 'kit-engine',              path: '../../libs/kit-engine' # DEV MODE
+  gem 'kit-domain',              path: '../../libs/kit-domain' # DEV MODE
+  gem 'kit-router',              path: '../../libs/kit-router' # DEV MODE
 end
 
-gem 'kit-organizer',           path: '../../libs/kit-organizer' # DEV MODE
-gem 'kit-app-container',       path: '../../libs/kit-app-container' # DEV MODE
-gem 'kit-dummy-app-container', path: '../../libs/kit-dummy-app-container' # DEV MODE
+group :development do
+  gem 'yard-kit',                path: '../../libs/yard-kit'
+end
 
-gem 'yard-kit',                path: '../../libs/yard-kit'
+

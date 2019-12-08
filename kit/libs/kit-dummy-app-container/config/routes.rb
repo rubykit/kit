@@ -1,0 +1,3 @@
+if KIT_APP_PATHS['GEM_SPEC_ROUTES']
+  require_relative KIT_APP_PATHS['GEM_SPEC_ROUTES']
+end

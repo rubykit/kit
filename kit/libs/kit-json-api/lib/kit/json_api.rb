@@ -3,4 +3,8 @@ module Kit
   end
 end
 
-require "kit/json_api/railtie"
+if ENV['ENV'] == 'development' || ENV['ENV'] == 'test'
+  require "kit/json_api/engine"
+else
+  require "kit/json_api/railtie"
+end

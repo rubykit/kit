@@ -11,13 +11,9 @@ gemspec
 # Git. Remember to move these dependencies to your gemspec before releasing
 # your gem to rubygems.org.
 
-# To use a debugger
-# gem 'byebug', group: [:development, :test]
-
 gem 'rails'
 gem 'kit-organizer',     path: '../../libs/kit-organizer'
 gem 'kit-app-container', path: '../../libs/kit-app-container'
-#gem 'contracts', require: 'contracts' # DEV MODE
 
 group :development do
   gem 'annotate', '~> 2.7', '>= 2.7.4'

@@ -68,9 +68,14 @@ module Kit::Organizer::Services::Organize
         .each do |callable|
           local_ctx = generate_callable_ctx(callable: callable, ctx: ctx)
 
-          _log("# Calling `#{callable}` with keys |#{local_ctx.keys}|", :yellow)
+          _log("# Calling `#{callable}` with keys |#{local_ctx&.keys}|", :yellow)
 
-          result = callable.call(local_ctx)
+          if !local_ctx
+            result = callable.call()
+          else
+            result = callable.call(local_ctx)
+          end
+
           result = sanitize_errors(result: result)
 
           status, local_ctx = result
@@ -181,7 +186,7 @@ module Kit::Organizer::Services::Organize
   # @example
   #    generate_callable_ctx(callable: ->(a:), { a: 1, b: 2, c: 3 }) => { a: 1 }
   #    generate_callable_ctx(callable: ->(a:, **), { a: 1, b: 2, c: 3 }) => { a: 1, b: 2, c: 3 }
-  contract Ct::Hash[callable: Ct::Callable, ctx: Ct::Hash] => Ct::Hash
+  contract Ct::Hash[callable: Ct::Callable, ctx: Ct::Hash] => Ct::Or[Ct::Hash, Ct::Eq[nil]]
   def self.generate_callable_ctx(callable:, ctx:)
     parameters = Kit::Contract::Services::RubyHelpers.get_parameters(callable: callable)
     by_type    = parameters.group_by { |el| el[0] }
@@ -196,7 +201,7 @@ module Kit::Organizer::Services::Organize
       keys = ((by_type[:keyreq] || []).map { |el| el[1] }) + ((by_type[:key] || []).map { |el| el[1] })
       ctx.slice(*keys)
     else
-      {}
+      nil
     end
   end
 

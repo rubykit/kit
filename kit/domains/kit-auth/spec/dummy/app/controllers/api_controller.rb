@@ -3,7 +3,7 @@ class ::ApiController < ::ActionController::API # :nodoc:
   def route
     controller_ctx = {
       rails_request:    self.request,
-      rails_cookies:    cookies,
+      rails_cookies:    {},
       rails_controller: self,
       rails_response:   self.response,
     }

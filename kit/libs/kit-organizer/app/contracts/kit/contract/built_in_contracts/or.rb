@@ -6,17 +6,19 @@ module Kit::Contract::BuiltInContracts
     end
 
     def call(*args)
-      passed = @contracts.any? do |contract|
-        status, _ = Kit::Contract::Services::Validation.valid?(contract: contract, args: args)
-        if status != :ok
-          puts _
-        end
+      results = @contracts.map do |contract|
+        Kit::Contract::Services::Validation.valid?(contract: contract, args: args)
+      end
+
+      passed = results.any? do |status, ctx|
         status == :ok
       end
 
       if passed
         [:ok]
       else
+        #puts "--------------------"
+        #puts results
         [:error, "OR failed"]
       end
     end
