@@ -1,6 +1,9 @@
 module Kit::JsonApi::Types
 
-  class Ressource < ::Hash
+  class Resource < ::Hash
+  end
+
+  class Query < ::Hash
   end
 
 end

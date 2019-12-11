@@ -4,8 +4,8 @@
     { "id": 2, "name": "J. K. Rowling", "date_of_birth": "1965-07-31", "date_of_death": null }
   ],
   "series": [
-    { "id": 1, "title": "The Lord of the Rings", "photo_id": 16 },
-    { "id": 2, "title": "Harry Potter", "photo_id": 17 }
+    { "id": 1, "title": "The Lord of the Rings" },
+    { "id": 2, "title": "Harry Potter" }
   ],
   "books": [
     { "id": 1, "series_id": 1, "author_id": 1, "title": "The Fellowship of the Ring", "date_published": "1954-07-29" },
@@ -306,18 +306,18 @@
     { "id": 2, "name": "full store" }
   ],
   "books_stores": [
-    { "store_id": 2, "book_id": 1 },
-    { "store_id": 2, "book_id": 2 },
-    { "store_id": 2, "book_id": 3 },
-    { "store_id": 2, "book_id": 4 },
-    { "store_id": 2, "book_id": 5 },
-    { "store_id": 2, "book_id": 5 },
-    { "store_id": 2, "book_id": 6 },
-    { "store_id": 2, "book_id": 7 },
-    { "store_id": 2, "book_id": 8 },
-    { "store_id": 2, "book_id": 9 },
-    { "store_id": 2, "book_id": 10 },
-    { "store_id": 2, "book_id": 11 }
+    { "store_id": 2, "book_id": 1, "in_stock": true },
+    { "store_id": 2, "book_id": 2, "in_stock": true },
+    { "store_id": 2, "book_id": 3, "in_stock": false },
+    { "store_id": 2, "book_id": 4, "in_stock": true },
+    { "store_id": 2, "book_id": 5, "in_stock": true },
+    { "store_id": 2, "book_id": 5, "in_stock": false },
+    { "store_id": 2, "book_id": 6, "in_stock": true },
+    { "store_id": 2, "book_id": 7, "in_stock": true },
+    { "store_id": 2, "book_id": 8, "in_stock": true },
+    { "store_id": 2, "book_id": 9, "in_stock": true },
+    { "store_id": 2, "book_id": 10, "in_stock": false },
+    { "store_id": 2, "book_id": 11, "in_stock": true }
   ],
   "photos": [
     { "id": 1, "imageable_id": 1, "imageable_type": "authors", "title": "J. R. R. Tolkein", "uri": "http://upload.wikimedia.org/wikipedia/commons/b/b4/Tolkien_1916.jpg" },

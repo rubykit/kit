@@ -41,7 +41,7 @@ class CreateFantasyTables < ActiveRecord::Migration[6.0]
 
       t.references :kit_json_api_spec_book, foreign_key: true, index: true
       t.text       :title,                  null: false
-      # The name is not the same as the one exposed on purpose
+      # Note: The name is not the same as the one exposed on purpose
       t.integer    :index,                  null: false
     end
 
@@ -52,8 +52,13 @@ class CreateFantasyTables < ActiveRecord::Migration[6.0]
     end
 
     create_table   :kit_json_api_spec_books_stores do |t|
+      t.timestamps
+
       t.references :kit_json_api_spec_book,  null: false, foreign_key: true, index: { name: :index_kjas_books_stores_on_kjas_book_id }
       t.references :kit_json_api_spec_store, null: false, foreign_key: true, index: { name: :index_kjas_books_stores_on_kjas_store_id }
+
+      # Note: this here to illustrate many_to_many when the join table holds actionable data
+      t.boolean    :in_store
     end
 
   end
