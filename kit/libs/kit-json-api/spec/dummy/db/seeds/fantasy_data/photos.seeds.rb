@@ -16,6 +16,5 @@ data[:photos].each do |el_data|
 
   Kit::JsonApiSpec::Models::Write::Photo.create!(el_data)
 rescue Exception => e
-  binding.pry
   puts e
 end

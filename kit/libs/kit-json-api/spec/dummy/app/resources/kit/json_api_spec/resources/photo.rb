@@ -1,12 +1,13 @@
 module Kit::JsonApiSpec::Resources::Photo
+=begin
 
   def self.available_fields
     {
-      id:            JsonApi::TypeHints::id_numeric,
-      created_at:    JsonApi::TypeHints::date,
-      updated_at:    JsonApi::TypeHints::date,
-      title:         JsonApi::TypeHints::string,
-      uri:           JsonApi::TypeHints::string,
+      id:            Kit::JsonApi::TypesHint::id_numeric,
+      created_at:    Kit::JsonApi::TypesHint::date,
+      updated_at:    Kit::JsonApi::TypesHint::date,
+      title:         Kit::JsonApi::TypesHint::string,
+      uri:           Kit::JsonApi::TypesHint::string,
     }
   end
 
@@ -60,10 +61,10 @@ module Kit::JsonApiSpec::Resources::Photo
     }
   end
 
-  before Ct::Hash[query_layer: Ct::QueryLayer],
+  before Ct::Hash[query_layer: Ct::QueryNode],
          ->(query_layer:) { query_layer[:resource][:name] == Resource[:name] }
   def self.load_data(query_layer:)
 
   end
-
+=end
 end

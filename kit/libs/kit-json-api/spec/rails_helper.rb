@@ -1,10 +1,6 @@
 ENV['RAILS_ENV'] ||= 'test'
 
-KIT_APP_PATHS ||= {}
-KIT_APP_PATHS['GEM_ROOT'] = File.expand_path('..', __dir__)
-KIT_APP_PATHS['GEM_APP']  = File.expand_path('../app', __dir__)
-KIT_APP_PATHS['GEM_LIB']  = File.expand_path('../lib', __dir__)
-KIT_APP_PATHS['GEMFILE']  = File.expand_path('../Gemfile', __dir__)
+require_relative '../config/kit_runtime_config'
 
 # Set up gems listed in the Gemfile.
 ENV['BUNDLE_GEMFILE'] ||= KIT_APP_PATHS['GEMFILE']

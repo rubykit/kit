@@ -1,17 +1,21 @@
 module Kit::JsonApi::Contracts
   include Kit::Contract::BuiltInContracts
 
-  ResourceName = Symbol
-  Resource     = IsA[::Kit::JsonApi::Types::Resource]
+  ResourceName  = Symbol
+  Resource      = IsA[::Kit::JsonApi::Types::Resource]
 
-  FieldName  = Symbol
-  FieldNames = Array.of(Field)
+  FieldName     = Symbol
+  FieldNames    = Array.of(FieldName)
 
-  OrderType  = In[:asc, :desc]
-  OrderTypes = Array.of(OrderType)
+  ColumnName    = Symbol
 
-  ConditionType  = Symbol
-  ConditionTypes = Array.of(ConditionType)
+  ConditionOp   = In[:eq, :gt, :gte, :le, :lte, :in, :contain, :start_with, :end_with]
+  Condition     = Hash[op: ConditionOp, field: ColumnName, values: Array]
+  Conditions    = Array.of(Condition)
+
+  SortOrderType = In[:asc, :desc]
+  SortOrder     = Tupple[Symbol, SortOrderType]
+  SortOrders    = Array.of(SortOrder)
 
   RelationshipName = Symbol
 
@@ -25,25 +29,25 @@ module Kit::JsonApi::Contracts
   Resource = Hash[
     name:                    ResourceName,
     available_fields:        FieldNames,
-    available_sorters:       Hash.of(FieldName => OrderTypes),
-    available_filters:       Hash.of(FieldName => ConditionTypes),
+    available_sorters:       Hash.of(FieldName => Array.of(SortOrderType)),
+    available_filters:       Hash.of(FieldName => Array.of(ConditionOp)),
     available_relationships: Relationships,
     data_loader:             Callable,
   ]
 
-  QueryLayer = Hash[
-    resource:      Resource,
-    relationships: Hash.of(RelationshipName => QueryLayer),
-    where:         Conditions,
-    order_by:      Orders,
-    # data: nil if not loaded, array otherwise
-    data:          Optional[Array],
-    meta:          Hash,
+  QueryNode = Hash[
+    #resource:           Resource,
+    filters:            Conditions,
+    sorting:            SortOrders,
+    data:               Optional[Array], # data: nil if not loaded, array otherwise
+    meta:               Optional[Hash],
   ]
+  QueryNode.with(:parent        => Optional[QueryNode])
+  QueryNode.with(:relationships => Hash.of(RelationshipName => QueryNode))
 
   Query = Hash[
-    fields: Hash.of(Resource => Fields),
-    layer:  QueryLayer,
+    fields:     Hash.of(Resource => FieldNames),
+    entry_node: QueryNode,
   ]
 
   #Resource = ?

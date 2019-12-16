@@ -1,14 +1,22 @@
 module Kit::JsonApi::TypesHint
 
-  def self.defaults_filters
+  Boolean   = :boolean
+  Date      = :date
+  Id        = :id
+  IdString  = :id_string
+  IdNumeric = :id_numeric
+  Numeric   = :numeric
+  String    = :string
+
+  def self.defaults
     {
-      JsonApi::TypeHints::boolean    => [:eq],
-      JsonApi::TypeHints::id         => [:eq],
-      JsonApi::TypeHints::id_string  => [:eq],
-      JsonApi::TypeHints::id_numeric => [:eq],
-      JsonApi::TypeHints::date       => [:eq, :gt, :gte, :le, :lte],
-      JsonApi::TypeHints::numeric    => [:eq, :contain, :start_with, :end_with],
-      JsonApi::TypeHints::date       => [:eq, :gt, :gte, :le, :lte],
+      Kit::JsonApi::TypesHint::Boolean   => [:eq],
+      Kit::JsonApi::TypesHint::Date      => [:eq, :gt, :gte, :le, :lte],
+      Kit::JsonApi::TypesHint::Id        => [:eq],
+      Kit::JsonApi::TypesHint::IdString  => [:eq],
+      Kit::JsonApi::TypesHint::IdNumeric => [:eq],
+      Kit::JsonApi::TypesHint::Numeric   => [:eq, :gt, :gte, :le, :lte],
+      Kit::JsonApi::TypesHint::String    => [:eq, :contain, :start_with, :end_with],
     }
   end
 

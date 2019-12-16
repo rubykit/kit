@@ -3,7 +3,7 @@ module Kit
   end
 end
 
-if ENV['ENV'] == 'development' || ENV['ENV'] == 'test'
+if ENV['RAILS_ENV'] == 'development' || ENV['RAILS_ENV'] == 'test'
   require "kit/json_api/engine"
 else
   require "kit/json_api/railtie"

@@ -7,6 +7,7 @@ class Kit::JsonApiSpec::Models::Write::BookStore < Kit::JsonApiSpec::Models::Wri
     :updated_at,
     :kit_json_api_spec_book_id,
     :kit_json_api_spec_store_id,
+    :in_stock,
   ]
 
   belongs_to :book,

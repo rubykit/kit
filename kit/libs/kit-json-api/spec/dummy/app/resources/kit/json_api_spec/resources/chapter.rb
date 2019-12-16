@@ -1,10 +1,11 @@
 module Kit::JsonApiSpec::Resources::Chapter
+=begin
 
   def self.available_fields
     {
-      id:       JsonApi::TypeHints::id_numeric,
-      title:    JsonApi::TypeHints::string,
-      ordering: JsonApi::TypeHints::numeric,
+      id:       Kit::JsonApi::TypesHint::id_numeric,
+      title:    Kit::JsonApi::TypesHint::string,
+      ordering: Kit::JsonApi::TypesHint::numeric,
     }
   end
 
@@ -45,10 +46,11 @@ module Kit::JsonApiSpec::Resources::Chapter
     }
   end
 
-  before Ct::Hash[query_layer: Ct::QueryLayer],
+  before Ct::Hash[query_layer: Ct::QueryNode],
          ->(query_layer:) { query_layer[:resource][:name] == Resource[:name] }
   def self.load_data(query_layer:)
 
   end
 
+=end
 end

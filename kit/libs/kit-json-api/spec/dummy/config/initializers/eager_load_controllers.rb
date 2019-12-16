@@ -1,6 +1,6 @@
 list = [
   'api_controller',
-  'kit/json_api_specs/controllers/users/index',
+  'kit/json_api_spec/controllers/authors/index',
 ]
 
 autoloader   = Rails.autoloaders.main

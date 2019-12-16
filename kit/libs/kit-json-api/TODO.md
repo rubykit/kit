@@ -16,3 +16,17 @@
   * Knows how to generate links
 
 * We get a "request" that is validated against the Resources. This creates the real "query".
+
+* RESEARCH: how to load paginated subsets
+  * https://stackoverflow.com/questions/2129693/using-limit-within-group-by-to-get-n-results-per-group
+  * http://sqlfiddle.com/#!17/378a3/6
+
+```sql
+SELECT *
+FROM (
+    SELECT *, RANK() OVER (PARTITION BY user_id ORDER BY created_at ASC) AS rank
+    FROM  comments
+    WHERE user_id IN (1, 3) 
+) AS data
+WHERE data.rank <= 2
+```

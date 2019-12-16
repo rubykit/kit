@@ -6,4 +6,7 @@ module Kit::JsonApi::Types
   class Query < ::Hash
   end
 
+  class Condition < ::Hash
+  end
+
 end
