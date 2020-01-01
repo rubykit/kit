@@ -14,17 +14,31 @@ module Kit::Contract::BuiltInContracts
 
       passed = expected_values.any? do |expected_value|
         if expected_value.is_a?(::Range)
-          status = expected_value.include?(value)
+          expected_value.include?(value)
+        elsif expected_value.is_a?(self.class)
+          expected_value.call(value)[0] == :ok
         else
-          status = expected_value == value
+          expected_value == value
         end
       end
 
       if passed
         [:ok]
       else
-        [:error, "IN failed: `#{value}` is not in `#{expected_values}`"]
+        [:error, "IN failed: `#{value}` is not in `#{beautified_values}`"]
       end
+    end
+
+    def beautified_values
+      values = @expected_values.map do |expected_value|
+        if expected_value.is_a?(self.class)
+          "In#{expected_value.beautified_values}"
+        else
+          expected_value.inspect
+        end
+      end
+
+      "[#{values.join(', ')}]"
     end
 
   end
