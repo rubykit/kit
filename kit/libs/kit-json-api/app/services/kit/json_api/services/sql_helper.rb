@@ -105,8 +105,8 @@ module Kit::JsonApi::Services::SqlHelper
         self.method(:filter_to_presanitized_sql),
         [:wrap,
           callable: Kit::JsonApi::Services::SqlSanitization.method(:sanitize_sql),
-          in:  { :presanitized_sql => :statement,  }
-          out: { }
+          in:  { :presanitized_sql => :statement, }
+          out: { },
         ],
       ],
       ctx: args,
