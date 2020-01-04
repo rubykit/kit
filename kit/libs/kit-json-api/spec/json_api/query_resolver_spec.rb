@@ -9,7 +9,7 @@ describe Kit::JsonApi::Services::QueryResolver do
       resource:      author_resource,
       relationships: {},
       filters:       [[]],
-      sorting:       [[:id, :desc]],
+      sorting:       [[:created_at, :asc], [:id, :asc]],
       limit:         5,
       data:          nil,
       meta:          {},

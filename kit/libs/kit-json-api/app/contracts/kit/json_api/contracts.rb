@@ -1,16 +1,13 @@
 module Kit::JsonApi::Contracts
   include Kit::Contract::BuiltInContracts
 
-  ResourceName  = Symbol
-  Resource      = IsA[::Kit::JsonApi::Types::Resource]
-
   FieldName     = Symbol
   FieldNames    = Array.of(FieldName)
 
   ColumnName    = Symbol
 
   ConditionOp   = In[:eq, :gt, :gte, :le, :lte, :in, :contain, :start_with, :end_with]
-  Condition     = Hash[op: ConditionOp, field: ColumnName, values: Array]
+  Condition     = Hash[op: In[:and, :or, ConditionOp], column: Optional[ColumnName], values: Any]
   Conditions    = Array.of(Condition)
 
   SortOrderType = In[:asc, :desc]
@@ -21,11 +18,12 @@ module Kit::JsonApi::Contracts
 
   Relationship = Hash[
     name:     RelationshipName,
-    resource: Resource,
     defaults: Hash,
   ]
   Relationships = Array.of(Relationship)
 
+  ResourceName  = Symbol
+  #Resource      = IsA[::Kit::JsonApi::Types::Resource]
   Resource = Hash[
     name:                    ResourceName,
     available_fields:        FieldNames,
@@ -35,12 +33,15 @@ module Kit::JsonApi::Contracts
     data_loader:             Callable,
   ]
 
+  Relationship.with(:resource => Resource)
+
   QueryNode = Hash[
-    #resource:           Resource,
-    filters:            Conditions,
-    sorting:            SortOrders,
-    data:               Optional[Array], # data: nil if not loaded, array otherwise
-    meta:               Optional[Hash],
+    #resource: Resource,
+    filters:   Conditions,
+    sorting:   SortOrders,
+    data:      Optional[Array], # data: nil if not loaded, array otherwise
+    limit:     Optional[Numeric],
+    meta:      Optional[Hash],
   ]
   QueryNode.with(:parent        => Optional[QueryNode])
   QueryNode.with(:relationships => Hash.of(RelationshipName => QueryNode))

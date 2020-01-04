@@ -2,21 +2,39 @@ module Kit::JsonApiSpec::Resources::Author
   include Kit::Contract
   Ct = Kit::JsonApi::Contracts
 
+  def self.resource
+    @resource ||= Kit::JsonApi::Types::Resource[{
+      name:                       :author,
+      available_fields:           available_fields,
+      available_sort_fields:      available_sort_fields,
+      available_filters:          available_filters,
+      available_relationships:    available_relationships,
+      relationship_meta_defaults: {
+        inclusion_top_level: true,
+        inclusion_nested:    false,
+      },
+      data_loader:             self.method(:load_data),
+    }]
+  end
+
   def self.available_fields
     {
-      id:            Kit::JsonApi::TypesHint.defaults[Kit::JsonApi::TypesHint::IdNumeric],
-      created_at:    Kit::JsonApi::TypesHint.defaults[Kit::JsonApi::TypesHint::Date],
-      updated_at:    Kit::JsonApi::TypesHint.defaults[Kit::JsonApi::TypesHint::Date],
-      name:          Kit::JsonApi::TypesHint.defaults[Kit::JsonApi::TypesHint::String],
-      date_of_birth: Kit::JsonApi::TypesHint.defaults[Kit::JsonApi::TypesHint::Date],
-      date_of_death: Kit::JsonApi::TypesHint.defaults[Kit::JsonApi::TypesHint::Date],
+      id:            Kit::JsonApi::TypesHint::IdNumeric,
+      created_at:    Kit::JsonApi::TypesHint::Date,
+      updated_at:    Kit::JsonApi::TypesHint::Date,
+      name:          Kit::JsonApi::TypesHint::String,
+      date_of_birth: Kit::JsonApi::TypesHint::Date,
+      date_of_death: Kit::JsonApi::TypesHint::Date,
     }
   end
 
   def self.available_sort_fields
-    available_fields
-      .map { |name, _| [name, [:asc, :desc]] }
-      .to_h
+    {
+      id:         [[:id,         :asc]],
+      created_at: [[:created_at, :asc], [:id, :asc]],
+      updated_at: [[:updated_at, :asc], [:id, :asc]],
+      name:       [[:name,       :asc], [:id, :asc]],
+    }
   end
 
   def self.available_filters
@@ -62,21 +80,6 @@ module Kit::JsonApiSpec::Resources::Author
     }
   end
 
-  def self.resource
-    @resource ||= Kit::JsonApi::Types::Resource[{
-      name:                       :author,
-      available_fields:           available_fields,
-      available_sort_fields:      available_sort_fields,
-      available_filters:          available_filters,
-      upper_layer_relationship:   nil,
-      available_relationships:    available_relationships,
-      relationship_meta_defaults: {
-        inclusion_top_level: true,
-        inclusion_nested:    false,
-      },
-      data_loader:             self.method(:load_data),
-    }]
-  end
 
   before [
     #Ct::Hash[query_node: Ct::QueryNode],
@@ -84,11 +87,17 @@ module Kit::JsonApiSpec::Resources::Author
   ]
   def self.load_data(query_node:)
     model = Kit::JsonApiSpec::Models::Write::Author
-    sql   = Kit::JsonApi::Services::QueryResolver.generate_sql_query(
-      table_name: model.table_name,
+    sql   = Kit::JsonApi::Services::SqlHelper.generate_sql_query(
+      ar_model:   model,
+      filtering:  query_node[:filtering],
+      sorting:    query_node[:sorting],
+      limit:      query_node[:limit],
     )
 
-    [:ok, data: model.find_by_sql(sql)]
+    puts sql
+    data = model.find_by_sql(sql)
+
+    [:ok, data: data]
   end
 
 end

@@ -109,45 +109,4 @@ module Kit::JsonApi::Services::QueryResolver
   end
 =end
 
-
-  # @note The SQL is generated for Postgres. Probably needs to be tuned for other DBs.
-  def self.generate_sql_query(table_name:, filtering: [], sorting: [], limit: nil)
-    sanitized_limit     = limit || 100
-    sanitized_filtering = true
-    sanitized_sorting   = true
-
-    relationship_column = nil
-
-    if relationship_column
-      # @note We use a nested query to avoid naming collisions with the added attribute (rank)
-      # @ref https://blog.jooq.org/2018/05/14/selecting-all-columns-except-one-in-postgresql/
-      # @ref http://sqlfiddle.com/#!17/378a3/10
-
-      sql = %{
-        SELECT (data).*
-          FROM (
-            SELECT data,
-                   RANK() OVER (PARTITION BY #{relationship_column} ORDER BY #{sanitized_sorting}) AS rank
-              FROM #{table_name} data
-              WHERE #{sanitized_filtering}
-               /* AND {query_conditions}
-                  AND ({relationship_column_name} IN ({relationship_values.join(', ')}))
-               */
-               ) AS ranked_data
-         WHERE ranked_data.rank <= #{sanitized_limit}
-      }
-    else
-    # @note Avoid the window function (RANK) when not needed
-      sql = %{
-          SELECT *
-            FROM #{table_name}
-           WHERE #{sanitized_filtering}
-        ORDER BY #{sanitized_sorting}
-           LIMIT #{sanitized_limit}
-      }
-    end
-
-    sql
-  end
-
 end
