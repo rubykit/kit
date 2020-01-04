@@ -24,10 +24,10 @@
 # ```ruby
 # Kit::Organize::Services::Organize.call(
 #   list: [
-#     :validate_email,
-#     :validate_password,
-#     :persist_user,
-#     :fire_user_created_event,
+#     [:alias, :validate_email],
+#     [:alias, :validate_password],
+#     [:alias, :persist_user],
+#     [:alias, :fire_user_created_event],
 #   ],
 #   ctx: {
 #     email: '',

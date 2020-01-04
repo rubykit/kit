@@ -6,6 +6,8 @@
 
 * Investigate loop when enabling contract on `Kit::Contract::Services::Validation.valid?`
 
+* Default `value` inside `InstanciableType` initializer to `Eq[value]`
+
 * Delay `before` / `after` / `contract` failure to the method declaration for clarity
 
 * Do contracts work with `ActiveSupport::Concern` ?

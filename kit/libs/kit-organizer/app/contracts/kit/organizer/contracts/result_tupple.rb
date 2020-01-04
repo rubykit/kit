@@ -1,7 +1,10 @@
 module Kit::Organizer::Contracts
 
-  Status = In[:ok, :error]
+  SuccessStatus = Eq[:ok]
+  ErrorStatus   = Eq[:error]
+  Status        = Or[SuccessStatus, ErrorStatus]
 
+  # TODO: provide smarter `SuccessResultTupple` to express expected ctx values
   SuccessResultTupple = Or[
     Tupple[Eq[:ok]],
     Tupple[Eq[:ok], Hash],
