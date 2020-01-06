@@ -26,7 +26,7 @@ module Kit::Contract::Services::Validation
       result      = Kit::Organizer::Services::Organize.sanitize_errors(result: result)
       status, ctx = result
       if ctx
-        ctx = Kit::Organizer::Services::Organize.update_context(ctx: {}, local_ctx: ctx)
+        ctx = Kit::Organizer::Services::Context.update_context(ctx: {}, local_ctx: ctx)
       end
     else
       raise "UNREACHABLE. If we get here, we are in trouble."

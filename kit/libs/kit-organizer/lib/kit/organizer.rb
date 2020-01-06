@@ -7,13 +7,13 @@ module Kit
     def self.call(list:, ctx: {}, filter: nil)
       arguments = { list: list, ctx: ctx, filter: filter }
 
-      Kit::Organizer::Services::Organize.call(arguments)
+      Kit::Organizer::Services::Organize.call(**arguments)
     end
 
     def self.call_for_contract(list:, ctx: {})
       arguments = { list: list, ctx: ctx }
 
-      Kit::Organizer::Services::Organize.call_for_contract(arguments)
+      Kit::Organizer::Services::Organize.call_for_contract(**arguments)
     end
 
 =begin
@@ -26,13 +26,13 @@ module Kit
     def self.register(id:, target:)
       arguments = { id: id, target: target }
 
-      Kit::Organizer::Services::Store.register(arguments)
+      Kit::Organizer::Services::Store.register(**arguments)
     end
 
     def self.merge(results:)
       arguments = { results: results }
 
-      Kit::Organizer::Services::Results.merge(arguments)
+      Kit::Organizer::Services::Results.merge(**arguments)
     end
 
   end

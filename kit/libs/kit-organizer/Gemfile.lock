@@ -1,9 +1,4 @@
 PATH
-  remote: ../yard-kit
-  specs:
-    yard-kit (0.1.0)
-
-PATH
   remote: ../kit-app-container
   specs:
     kit-app-container (0.1.0)
@@ -16,6 +11,11 @@ PATH
   specs:
     kit-dummy-app-container (0.1.0)
       rails
+
+PATH
+  remote: ../yard-kit
+  specs:
+    yard-kit (0.1.0)
 
 PATH
   remote: .
@@ -247,4 +247,4 @@ DEPENDENCIES
   yard-kit!
 
 BUNDLED WITH
-   1.17.2
+   2.1.3

@@ -44,8 +44,8 @@ describe Kit::Organizer do
     context 'and an invalid flow' do
 
       tests = {
-        { a: { c: 2 }, } => [ArgumentError, 'missing keyword: b'],
-        { b: { c: 2 }, } => [ArgumentError, 'missing keyword: a'],
+        { a: { c: 2 }, } => [ArgumentError, 'missing keyword: :b'],
+        { b: { c: 2 }, } => [ArgumentError, 'missing keyword: :a'],
       }
 
       tests.each do |ctx_in, expected_exception|

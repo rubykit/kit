@@ -64,16 +64,20 @@ module Kit::Organizer::Services::Organize
 
     begin
       list
-        .map { |el| to_callable(callable: el) }
+        .map do |el|
+          local_callable_status, local_callable_ctx = Kit::Organizer::Services::Callable.resolve(target: el)
+          # TODO: handle :error status
+          local_callable_ctx[:callable]
+        end
         .each do |callable|
-          local_ctx = generate_callable_ctx(callable: callable, ctx: ctx)
+          local_ctx = Kit::Organizer::Services::Context.generate_callable_ctx(callable: callable, ctx: ctx)
 
           _log("# Calling `#{callable}` with keys |#{local_ctx&.keys}|", :yellow)
 
           if !local_ctx
             result = callable.call()
           else
-            result = callable.call(local_ctx)
+            result = callable.call(**local_ctx)
           end
 
           result = sanitize_errors(result: result)
@@ -82,7 +86,7 @@ module Kit::Organizer::Services::Organize
 
           _log("#   Result |#{status}|#{local_ctx}|", :blue)
 
-          ctx = update_context(ctx: ctx, local_ctx: local_ctx)
+          ctx = Kit::Organizer::Services::Context.update_context(ctx: ctx, local_ctx: local_ctx)
 
           _log("#   Ctx keys post |#{ctx.keys}|", :yellow)
           _log("#   Errors |#{ctx[:errors]}|", :red) if ctx[:errors]
@@ -138,71 +142,6 @@ module Kit::Organizer::Services::Organize
     end
 
     [status, ctx]
-  end
-
-  # Performs a 1 level deep merge on the organizer context.
-  # @api private
-  # @note The content of the `:errors` key is merged manually.
-  def self.update_context(ctx:, local_ctx:)
-    local_ctx ||= {}
-    ctx_errors  = ctx[:errors]
-
-    # NOTE: should we just do a deep merge?
-    ctx = ctx.merge(local_ctx)
-
-    if ctx_errors
-      ctx[:errors] = ctx_errors + (local_ctx[:errors] || [])
-    end
-
-    ctx
-  end
-
-  # Ensures every action is a callable.
-  # @api private
-  # @note Accepted format are `['Module', 'singleton_method_name']` or `:method_identifier` (in this case `Kit::Organizer::Store` is used to get the real callable)
-  # @example Generating a callable from a tupple
-  #    to_callable(callable: ['AuthenticationModule', 'sign_in']) => Proc(AuthenticationModule#sign_in)
-  # @example Generating a callable from a tupple
-  #    Kit::Organizer::Store.register(id: :login, target: AuthenticationModule.method(:sign_in)) => true
-  #    to_callable(callable: :login) => Proc(AuthenticationModule#sign_in)
-  contract Ct::Hash[callable: Ct::Or[Ct::Callable, Ct::Symbol, Ct::Array.size(2)]] => Ct::Callable
-  def self.to_callable(callable:)
-    if callable.is_a?(Array)
-      class_object, method_name = callable
-      if class_object.is_a?(::String) || class_object.is_a?(::Symbol)
-        class_object = class_object.to_s.constantize
-      end
-      callable = class_object.method(method_name.to_sym)
-    elsif callable.is_a?(::Symbol) || callable.is_a?(::String)
-      callable = Kit::Organizer::Services::Store.get(id: callable.to_sym)
-    end
-
-    callable
-  end
-
-  # Extract needed key from the organizer context to send them to the callable.
-  # @api private
-  # @note This id done by using introspection on the callable.
-  # @example
-  #    generate_callable_ctx(callable: ->(a:), { a: 1, b: 2, c: 3 }) => { a: 1 }
-  #    generate_callable_ctx(callable: ->(a:, **), { a: 1, b: 2, c: 3 }) => { a: 1, b: 2, c: 3 }
-  contract Ct::Hash[callable: Ct::Callable, ctx: Ct::Hash] => Ct::Or[Ct::Hash, Ct::Eq[nil]]
-  def self.generate_callable_ctx(callable:, ctx:)
-    parameters = Kit::Contract::Services::RubyHelpers.get_parameters(callable: callable)
-    by_type    = parameters.group_by { |el| el[0] }
-
-    if (by_type.keys - [:keyreq, :key, :keyrest]).size > 0
-      raise Kit::Organizer::Error.new("Unsupported parameter type in organized callable")
-    end
-
-    if by_type[:keyrest]
-      ctx.dup
-    elsif by_type[:keyreq] || by_type[:key]
-      keys = ((by_type[:keyreq] || []).map { |el| el[1] }) + ((by_type[:key] || []).map { |el| el[1] })
-      ctx.slice(*keys)
-    else
-      nil
-    end
   end
 
   # Display debug information when `ENV['LOG_ORGANIZER']` is set
