@@ -2,18 +2,15 @@ module Kit::JsonApiSpec::Resources::Author
   include Kit::Contract
   Ct = Kit::JsonApi::Contracts
 
+  after Ct::Resource
   def self.resource
     @resource ||= Kit::JsonApi::Types::Resource[{
-      name:                       :author,
-      available_fields:           available_fields,
-      available_sort_fields:      available_sort_fields,
-      available_filters:          available_filters,
-      available_relationships:    available_relationships,
-      relationship_meta_defaults: {
-        inclusion_top_level: true,
-        inclusion_nested:    false,
-      },
-      data_loader:             self.method(:load_data),
+      name:          :author,
+      fields:        available_fields.keys,
+      relationships: available_relationships,
+      sort_fields:   available_sort_fields,
+      filters:       available_filters,
+      data_loader:   self.method(:load_data),
     }]
   end
 
@@ -30,10 +27,10 @@ module Kit::JsonApiSpec::Resources::Author
 
   def self.available_sort_fields
     {
-      id:         [[:id,         :asc]],
-      created_at: [[:created_at, :asc], [:id, :asc]],
-      updated_at: [[:updated_at, :asc], [:id, :asc]],
-      name:       [[:name,       :asc], [:id, :asc]],
+      id:         { order: [[:id,         :asc]],              default: true },
+      created_at: { order: [[:created_at, :asc], [:id, :asc]], },
+      updated_at: { order: [[:updated_at, :asc], [:id, :asc]], },
+      name:       { order: [[:name,       :asc], [:id, :asc]], },
     }
   end
 
@@ -51,10 +48,9 @@ module Kit::JsonApiSpec::Resources::Author
   end
 
   def self.available_relationships
-    # @note Here the filter is the same for the 3 relationships
-    filter = ->(query_node:) do
-      if (parent_data = query_node&.dig(:parent, :data) && parent_data.size > 0)
-        Kit::JsonApi::Types::Condition[op: :in, column: :author_id, values: parent_data.map { |e| e[:id] }, upper_relationship: true]
+    belongs_to_filter = ->(query_node:) do
+      if ((parent_data = query_node&.dig(:parent, :data)) && parent_data.size > 0)
+        Kit::JsonApi::Types::Condition[op: :in, column: :kit_json_api_spec_author_id, values: parent_data.map { |e| e[:id] }, upper_relationship: true]
       else
         nil
       end
@@ -62,40 +58,62 @@ module Kit::JsonApiSpec::Resources::Author
 
     {
       books: {
-        #type:     [Kit::JsonApiSpec::Resources::Author, [:books, Kit::JsonApiSpec::Resources::Book]],
-        resource:          Kit::JsonApiSpec::Resources::Book,
-        type:              :many,
-        inherited_filters: [filter],
+        resource:         Kit::JsonApiSpec::Resources::Book.resource,
+        type:             :many,
+        inherited_filter: belongs_to_filter,
+        inclusion: {
+          top_level:      true,
+          nested:         false,
+        },
       },
+=begin
       series: {
-        resource:          Kit::JsonApiSpec::Resources::Serie,
-        type:              :many,
-        inherited_filters: [filter],
+        resource:         Kit::JsonApiSpec::Resources::Serie.resource,
+        type:             :many,
+        inherited_filter: belongs_to_filter,
+        inclusion: {
+          top_level:      true,
+          nested:         false,
+        },
       },
       photos: {
-        resource:          Kit::JsonApiSpec::Resources::Photo,
-        type:              :many,
-        inherited_filters: [filter],
+        resource:         Kit::JsonApiSpec::Resources::Photo.resource,
+        type:             :many,
+        inherited_filter: ->(query_node:) do
+          if ((parent_data = query_node&.dig(:parent, :data)) && parent_data.size > 0)
+            Kit::JsonApi::Types::Condition[op: :and, values: [
+              Kit::JsonApi::Types::Condition[op: :in, column: :imageable_id,   values: parent_data.map { |e| e[:id] }, upper_relationship: true],
+              Kit::JsonApi::Types::Condition[op: :eq, column: :imageable_type, values: ['Kit::JsonApiSpec::Models::Write::Author'], upper_relationship: true],
+            ],]
+          else
+            nil
+          end
+        end,
+        inclusion: {
+          top_level:      true,
+          nested:         false,
+        },
       },
+=end
     }
   end
 
 
   before [
-    #Ct::Hash[query_node: Ct::QueryNode],
     ->(query_node:) { query_node[:resource][:name] == :author },
   ]
   def self.load_data(query_node:)
-    model = Kit::JsonApiSpec::Models::Write::Author
-    sql   = Kit::JsonApi::Services::SqlHelper.generate_sql_query(
-      ar_model:   model,
-      filtering:  query_node[:filtering],
-      sorting:    query_node[:sorting],
-      limit:      query_node[:limit],
+    model       = Kit::JsonApiSpec::Models::Write::Author
+    status, ctx = Kit::JsonApi::Services::Sql.sql_query(
+      ar_model:  model,
+      filtering: query_node[:condition],
+      sorting:   query_node[:sorting],
+      limit:     query_node[:limit],
     )
 
-    puts sql
-    data = model.find_by_sql(sql)
+    puts ctx[:sql_str]
+    data = model.find_by_sql(ctx[:sql_str])
+    puts "LOAD DATA AUTHOR: #{data.size}"
 
     [:ok, data: data]
   end

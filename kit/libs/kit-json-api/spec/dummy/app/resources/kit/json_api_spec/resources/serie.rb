@@ -1,20 +1,31 @@
 module Kit::JsonApiSpec::Resources::Serie
-=begin
+  include Kit::Contract
+  Ct = Kit::JsonApi::Contracts
+
+  after Ct::Resource
+  def self.resource
+    @resource ||= Kit::JsonApi::Types::Resource[{
+      name:          :author,
+      fields:        available_fields.keys,
+      relationships: available_relationships,
+      sort_fields:   available_sort_fields,
+      filters:       available_filters,
+      data_loader:   self.method(:load_data),
+    }]
+  end
 
   def self.available_fields
     {
-      id:            Kit::JsonApi::TypesHint::id_numeric,
-      created_at:    Kit::JsonApi::TypesHint::date,
-      updated_at:    Kit::JsonApi::TypesHint::date,
-      name:          Kit::JsonApi::TypesHint::string,
-      date_of_birth: Kit::JsonApi::TypesHint::date,
-      date_of_death: Kit::JsonApi::TypesHint::date,
+      id:            Kit::JsonApi::TypesHint::IdNumeric,
+      created_at:    Kit::JsonApi::TypesHint::Date,
+      updated_at:    Kit::JsonApi::TypesHint::Date,
+      title:         Kit::JsonApi::TypesHint::String,
     }
   end
 
   def self.available_sort_fields
     available_fields
-      .map { |name, _| [name, [:asc, :desc]] }
+      .map { |name, _| [name, { order: [[name, :asc]], default: (name == :id), }] }
       .to_h
   end
 
@@ -22,55 +33,63 @@ module Kit::JsonApiSpec::Resources::Serie
     fields_filters = available_fields
       .map { |name, type| [name, Kit::JsonApi::TypesHint.default_filters[type]] }
       .to_h
-
-    # NOTE: dummy one, just to test
-    filters = {
-      alive: Kit::JsonApi::TypesHint.default_filters[:boolean],
-    }
-
-    filters.merge(fields_filters)
   end
 
   def self.available_relationships
     {
       books: {
-        #type:     [Kit::JsonApiSpec::Resources::Author, [:books, Kit::JsonApiSpec::Resources::Book]],
-        resource: Kit::JsonApiSpec::Resources::Book,
-        filters:  ->(data:, **) { [[:eq, :author_id, data[:id]]] },
-        type:     :many,
-      },
-      series: {
-        resource: Kit::JsonApiSpec::Resources::Serie,
-        filters:  ->(data:, **) { [[:eq, :author_id, data[:id]]] },
-        type:     :many,
+        resource:         Kit::JsonApiSpec::Resources::Book.resource,
+        type:             :many,
+        inherited_filter: ->(query_node:) do
+          if ((parent_data = query_node&.dig(:parent, :data)) && parent_data.size > 0)
+            Kit::JsonApi::Types::Condition[op: :in, column: :kit_json_api_spec_serie_id, values: parent_data.map { |e| e[:id] }, upper_relationship: true]
+          else
+            nil
+          end
+        end,
+        inclusion: {
+          top_level:      true,
+          nested:         false,
+        },
       },
       photos: {
-        resource: Kit::JsonApiSpec::Resources::Photo,
-        filters:  ->(data:, **) { [[:eq, :author_id, data[:id]]] },
-        type:     :many,
+        resource:         Kit::JsonApiSpec::Resources::Photo.resource,
+        type:             :many,
+        inherited_filter: ->(query_node:) do
+          if ((parent_data = query_node&.dig(:parent, :data)) && parent_data.size > 0)
+            Kit::JsonApi::Types::Condition[op: :and, values: [
+              Kit::JsonApi::Types::Condition[op: :in, column: :imageable_id,   values: parent_data.map { |e| e[:id] }, upper_relationship: true],
+              Kit::JsonApi::Types::Condition[op: :eq, column: :imageable_type, values: ['Kit::JsonApiSpec::Models::Write::Serie'], upper_relationship: true],
+            ],]
+          else
+            nil
+          end
+        end,
+        inclusion: {
+          top_level:      true,
+          nested:         false,
+        },
       },
     }
   end
 
-  def self.resource
-    @resource ||= {
-      name:                    :author,
-      available_fields:        available_fields,
-      available_sort_fields:   available_sort_fields,
-      available_filters:       available_filters,
-      available_relationships: available_relationships,
-      relationship_meta_defaults: {
-        inclusion_top_level: true,
-        inclusion_nested:    false,
-      }
-      data_loader:             self.method(:load_data),
-    }
+  before [
+    ->(query_node:) { query_node[:resource][:name] == :serie },
+  ]
+  def self.load_data(query_node:)
+    model       = Kit::JsonApiSpec::Models::Write::Serie
+    status, ctx = Kit::JsonApi::Services::Sql.sql_query(
+      ar_model:  model,
+      filtering: query_node[:condition],
+      sorting:   query_node[:sorting],
+      limit:     query_node[:limit],
+    )
+
+    puts ctx[:sql_str]
+    data = model.find_by_sql(ctx[:sql_str])
+    puts "LOAD DATA SERIE: #{data.size}"
+
+    [:ok, data: data]
   end
 
-  before Ct::Hash[query_layer: Ct::QueryNode],
-         ->(query_layer:) { query_layer[:resource][:name] == Resource[:name] }
-  def self.load_data(query_layer:)
-
-  end
-=end
 end

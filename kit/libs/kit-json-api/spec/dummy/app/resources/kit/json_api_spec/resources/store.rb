@@ -1,5 +1,4 @@
 module Kit::JsonApiSpec::Resources::Store
-=begin
 
   def self.available_fields
     {
@@ -52,5 +51,5 @@ module Kit::JsonApiSpec::Resources::Store
   def self.load_data(query_layer:)
 
   end
-=end
+
 end

@@ -1,5 +1,4 @@
 module Kit::JsonApiSpec::Resources::Photo
-=begin
 
   def self.available_fields
     {
@@ -66,5 +65,5 @@ module Kit::JsonApiSpec::Resources::Photo
   def self.load_data(query_layer:)
 
   end
-=end
+
 end

@@ -1,5 +1,4 @@
 module Kit::JsonApiSpec::Resources::Chapter
-=begin
 
   def self.available_fields
     {
@@ -52,5 +51,4 @@ module Kit::JsonApiSpec::Resources::Chapter
 
   end
 
-=end
 end

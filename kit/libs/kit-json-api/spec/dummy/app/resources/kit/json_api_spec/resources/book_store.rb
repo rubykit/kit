@@ -1,5 +1,4 @@
 module Kit::JsonApiSpec::Resources::Author
-=begin
 
   def self.available_fields
     {
@@ -58,5 +57,4 @@ module Kit::JsonApiSpec::Resources::Author
 
   end
 
-=end
 end

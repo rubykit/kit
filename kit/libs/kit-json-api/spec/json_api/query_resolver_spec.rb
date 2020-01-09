@@ -1,32 +1,12 @@
 require_relative '../rails_helper'
 
 describe Kit::JsonApi::Services::QueryResolver do
-  let(:service)       { described_class }
-
-  let(:json_api_query) do
-    author_resource = Kit::JsonApiSpec::Resources::Author.resource
-    query_node       = {
-      resource:      author_resource,
-      relationships: {},
-      filters:       [[]],
-      sorting:       [[:created_at, :asc], [:id, :asc]],
-      limit:         5,
-      data:          nil,
-      meta:          {},
-      data_loader:   author_resource[:data_loader],
-    }
-
-    json_api_query  = {
-      fields: {
-        Kit::JsonApiSpec::Resources::Author => author_resource[:available_fields].map(&:first),
-      },
-      entry_node: query_node
-    }
-  end
-
+  let(:service)        { described_class }
+  let(:resource)       { Kit::JsonApiSpec::Resources::Author.resource }
+  let(:top_query_node) { Kit::JsonApi::Services::QueryBuilder.build_query(resource: resource)[1][:query_node] }
 
   context 'Resolve query' do
-    subject { service.resolve_query(json_api_query: json_api_query) }
+    subject { service.resolve_query(query_node: top_query_node) }
 
     it 'works' do
       status, ctx = subject

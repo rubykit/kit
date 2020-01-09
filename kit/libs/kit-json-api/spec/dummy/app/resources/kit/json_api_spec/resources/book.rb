@@ -1,79 +1,92 @@
 module Kit::JsonApiSpec::Resources::Book
-=begin
+  include Kit::Contract
+  Ct = Kit::JsonApi::Contracts
+
+  after Ct::Resource
+  def self.resource
+    @resource ||= Kit::JsonApi::Types::Resource[{
+      name:          :book,
+      fields:        available_fields.keys,
+      relationships: available_relationships,
+      sort_fields:   available_sort_fields,
+      filters:       available_filters,
+      data_loader:   self.method(:load_data),
+    }]
+  end
 
   def self.available_fields
     {
-      id:         Kit::JsonApi::TypesHint::id_numeric,
-      created_at: Kit::JsonApi::TypesHint::date,
-      updated_at: Kit::JsonApi::TypesHint::date,
-      title:      Kit::JsonApi::TypesHint::string,
-      ordering:   Kit::JsonApi::TypesHint::numeric,
+      id:         Kit::JsonApi::TypesHint::IdNumeric,
+      created_at: Kit::JsonApi::TypesHint::Date,
+      updated_at: Kit::JsonApi::TypesHint::Date,
+      title:      Kit::JsonApi::TypesHint::String,
+      ordering:   Kit::JsonApi::TypesHint::Numeric,
     }
   end
 
   def self.available_sort_fields
     available_fields
-      .map { |name, _| [name, [:asc, :desc]] }
+      .map { |name, _| [name, { order: [[name, :asc]], default: (name == :id), }] }
       .to_h
   end
 
-  def self.available_filter_fields
+  def self.available_filters
     available_fields
-      .map { |name, type| [name, Kit::JsonApi::TypesHint.default_filters[type]] }
+      .map { |name, type| [name, Kit::JsonApi::TypesHint.defaults[type]] }
       .to_h
   end
 
   def self.available_relationships
+    return {}
+
     {
       author: {
         resource: Kit::JsonApiSpec::Resources::Author,
-        filters:  ->(data:, **) { [[:eq, :id, data[:author_id]] },
+        filter:  ->(data:, **) { [[:eq, :id, data[:author_id]]] },
         type:     :one,
       },
       chapters: {
         #type:     [Kit::JsonApiSpec::Resources::Author, [:books, Kit::JsonApiSpec::Resources::Book]],
         resource: Kit::JsonApiSpec::Resources::Chapter,
-        filters:  ->(data:, **) { [[:eq, :book_id, data[:id]] },
+        filter:  ->(data:, **) { [[:eq, :book_id, data[:id]]] },
         type:     :many,
       },
       first_chapter: {
         resource: Kit::JsonApiSpec::Resources::Chapter,
-        filters:  ->(data:, **) { [[:eq, :book_id, data[:id]], [:eq, :ordering, 1]] },
+        filter:  ->(data:, **) { [[:eq, :book_id, data[:id]], [:eq, :ordering, 1]] },
         type:     :one,
       },
       serie: {
         resource: Kit::JsonApiSpec::Resources::Serie,
-        filters:  ->(data:, **) { [[:eq, :id, data[:serie_id]] },
+        filter:  ->(data:, **) { [[:eq, :id, data[:serie_id]]] },
         type:     :one,
       },
       book_store: {
         resource: Kit::JsonApiSpec::Resources::BookStore,
-        filters:  ->(data:, **) { [[:eq, :book_id, data[:id]]] },
+        filter:  ->(data:, **) { [[:eq, :book_id, data[:id]]] },
         type:     :many,
       },
     }
   end
 
-  def self.resource
-    @resource ||= {
-      name:                    :book,
-      available_fields:        available_fields,
-      available_sort_fields:   available_sort_fields,
-      available_filters:       available_filters,
-      available_relationships: available_relationships,
-      relationship_meta_defaults: {
-        inclusion_top_level: true,
-        inclusion_nested:    false,
-      }
-      data_loader:             self.method(:load_data),
-    }
+  before [
+    ->(query_node:) { query_node[:resource][:name] == resource[:name] }
+  ]
+  def self.load_data(query_node:)
+    model       = Kit::JsonApiSpec::Models::Write::Book
+    status, ctx = Kit::JsonApi::Services::Sql.sql_query(
+      ar_model:  model,
+      filtering: query_node[:condition],
+      sorting:   query_node[:sorting],
+      limit:     query_node[:limit],
+    )
+
+    puts ctx[:sql_str]
+    data = model.find_by_sql(ctx[:sql_str])
+    puts "LOAD DATA BOOK: #{data.size}"
+
+    [:ok, data: data]
   end
 
-  before Ct::Hash[query_layer: Ct::QueryNode],
-         ->(query_layer:) { query_layer[:resource][:name] == Resource[:name] }
-  def self.load_data(query_layer:)
 
-  end
-
-=end
 end

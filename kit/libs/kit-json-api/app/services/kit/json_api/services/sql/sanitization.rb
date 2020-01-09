@@ -1,5 +1,7 @@
 # @see https://github.com/rails/rails/blob/6-0-stable/activerecord/lib/active_record/sanitization.rb
-module Kit::JsonApi::Services::SqlSanitization
+module Kit::JsonApi::Services::Sql::Sanitization
+  include Kit::Contract
+  Ct = Kit::JsonApi::Contracts
 
 =begin
   # Sanitizes a +string+ so that it is safe to use within an SQL LIKE statement.
@@ -16,6 +18,7 @@ module Kit::JsonApi::Services::SqlSanitization
 
   # Sanitize and interpolate each value into the SQL statement.
   # @example sanitize_sql(statement: "name=:name and group_id=:group_id", values: { name: "foo'bar", group_id: 4 }) #=> "name='foo''bar' and group_id=4"
+  before Ct::Hash[statement: Ct::String, values: Ct::Hash]
   def self.sanitize_sql(statement:, values:, ar_connection:)
     return statement if statement.blank?
 
@@ -29,7 +32,7 @@ module Kit::JsonApi::Services::SqlSanitization
       end
     end
 
-    [:ok, sanitized_sql: sanitized_sql]
+    [:ok, sanitized_sql_str: sanitized_sql]
   end
 
   def self.quote_bound_value(value:, ar_connection:)

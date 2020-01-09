@@ -1,11 +1,11 @@
 module Kit::JsonApi::Services::QueryResolver
 
-  def self.resolve_query(json_api_query:)
-    result      = resolve_node(query_node: json_api_query[:entry_node])
+  def self.resolve_query(query_node:)
+    result      = resolve_node(query_node: query_node)
     status, ctx = result
 
     if status == :ok
-      [:ok, json_api_query: json_api_query]
+      [:ok, query_node: query_node]
     else
       result
     end
@@ -14,7 +14,7 @@ module Kit::JsonApi::Services::QueryResolver
   def self.resolve_node(query_node:)
     Kit::Organizer.call({
       list: [
-        self.method(:resolve_filters),
+        self.method(:resolve_query_node_condition),
         self.method(:load_data),
         self.method(:resolve_relationships),
       ],
@@ -22,22 +22,31 @@ module Kit::JsonApi::Services::QueryResolver
     })
   end
 
-  def self.resolve_filters(query_node:)
-    filters = query_node[:filters].map do |filter|
-      if filter.respond_to?(:call)
-        filter.call(query_node: query_node)
-      else
-        filter
-      end
-    end
-
-    query_node[:filters] = filters
+  def self.resolve_query_node_condition(query_node:)
+    query_node[:condition] = resolve_condition(
+      condition:  query_node[:condition],
+      query_node: query_node,
+    )
 
     [:ok, query_node: query_node]
   end
 
+  def self.resolve_condition(condition:, query_node:)
+    if condition.is_a?(Kit::JsonApi::Types::Condition)
+      if condition[:op].in?([:or, :and])
+        condition[:values] = condition[:values].map do |value|
+          resolve_condition(condition: value, query_node: query_node)
+        end
+      end
+    elsif condition.respond_to?(:call)
+      condition = condition.call(query_node: query_node)
+    end
+
+    condition
+  end
+
   def self.load_data(query_node:)
-    result      = query_node[:data_loader].call(query_node: query_node)
+    result      = query_node[:resource][:data_loader].call(query_node: query_node)
     status, ctx = result
 
     if status == :ok

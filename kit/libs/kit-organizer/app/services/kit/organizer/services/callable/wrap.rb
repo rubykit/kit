@@ -3,15 +3,15 @@ module Kit::Organizer::Services::Callable::Wrap
   include Kit::Contract
   Ct = Kit::Organizer::Contracts
 
-  contract Ct::Hash[args: Ct::Array[Ct::Eq[:wrap], Ct::Callable, Ct::Hash[in: Ct::Optional[Ct::Hash], out: Ct::Optional[Ct::Hash]]]]
+  before Ct::Hash[args: Ct::Array[Ct::Eq[:wrap], Ct::Callable, Ct::Hash[in: Ct::Optional[Ct::Hash], out: Ct::Optional[Ct::Hash]]]]
   def self.resolve(args:)
     _, callable, opts = args
 
     opts_in  = opts[:in]  || {}
     opts_out = opts[:out] || {}
 
-    wrapped_callable = ->(*arguments) do
-      ctx_in = arguments[0] || {}
+    wrapped_callable = ->(**arguments) do
+      ctx_in = arguments || {}
       if opts_in
         ctx_in = Kit::Organizer::Services::Callable::Wrap.slice(ctx: ctx_in, transform: opts_in)
       end

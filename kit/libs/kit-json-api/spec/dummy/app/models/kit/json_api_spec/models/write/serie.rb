@@ -12,4 +12,7 @@ class Kit::JsonApiSpec::Models::Write::Serie < Kit::JsonApiSpec::Models::WriteRe
              class_name:  'Kit::JsonApiSpec::Models::Write::Photo',
              as: :imageable
 
+  has_many   :books,
+             class_name:  'Kit::JsonApiSpec::Models::Write::Books'
+
 end
