@@ -36,7 +36,25 @@ module Kit::JsonApiSpec::Resources::Store
   end
 
   def self.available_relationships
-    {}
+    {
+      book_stores: {
+        resource_resolver: ->() { Kit::JsonApiSpec::Resources::BookStore.resource },
+        type:              :many,
+        inherited_filter: ->(query_node:) do
+          values = (query_node&.dig(:parent, :data) || [])
+            .map { |e| e[:id] }
+          if values.size > 0
+            Kit::JsonApi::Types::Condition[op: :in, column: :kit_json_api_spec_store_id, values: values, upper_relationship: true]
+          else
+            nil
+          end
+        end,
+        inclusion: {
+          top_level:       false,
+          nested:          false,
+        },
+      },
+    }
   end
 
   before [

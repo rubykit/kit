@@ -41,8 +41,10 @@ module Kit::JsonApiSpec::Resources::BookStore
         resource_resolver: ->() { Kit::JsonApiSpec::Resources::Book.resource },
         type:              :many,
         inherited_filter:  ->(query_node:) do
-          if ((parent_data = query_node&.dig(:parent, :data)) && parent_data.size > 0)
-            Kit::JsonApi::Types::Condition[op: :in, column: :kit_json_api_spec_book_id, values: parent_data.map { |e| e[:id] }, upper_relationship: true]
+          values = (query_node&.dig(:parent, :data) || [])
+            .map { |e| e[:kit_json_api_spec_book_id] }
+          if values.size > 0
+            Kit::JsonApi::Types::Condition[op: :in, column: :id, values: values, upper_relationship: true]
           else
             nil
           end
@@ -56,8 +58,10 @@ module Kit::JsonApiSpec::Resources::BookStore
         resource_resolver: ->() { Kit::JsonApiSpec::Resources::Store.resource },
         type:              :many,
         inherited_filter:  ->(query_node:) do
-          if ((parent_data = query_node&.dig(:parent, :data)) && parent_data.size > 0)
-            Kit::JsonApi::Types::Condition[op: :in, column: :kit_json_api_spec_store_id, values: parent_data.map { |e| e[:id] }, upper_relationship: true]
+          values = (query_node&.dig(:parent, :data) || [])
+            .map { |e| e[:kit_json_api_spec_store_id] }
+          if values.size > 0
+            Kit::JsonApi::Types::Condition[op: :in, column: :id, values: values, upper_relationship: true]
           else
             nil
           end

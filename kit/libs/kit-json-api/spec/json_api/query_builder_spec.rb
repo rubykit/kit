@@ -9,8 +9,8 @@ describe Kit::JsonApi::Services::QueryBuilder do
       { resource: Kit::JsonApiSpec::Resources::Book.resource,      included_relationships_count: 3, },
       { resource: Kit::JsonApiSpec::Resources::BookStore.resource, included_relationships_count: 2, },
       { resource: Kit::JsonApiSpec::Resources::Chapter.resource,   included_relationships_count: 1, },
-      { resource: Kit::JsonApiSpec::Resources::Photo.resource,     included_relationships_count: 0, },
-      { resource: Kit::JsonApiSpec::Resources::Serie.resource,     included_relationships_count: 2, },
+      { resource: Kit::JsonApiSpec::Resources::Photo.resource,     included_relationships_count: 3, },
+      { resource: Kit::JsonApiSpec::Resources::Serie.resource,     included_relationships_count: 3, },
       { resource: Kit::JsonApiSpec::Resources::Store.resource,     included_relationships_count: 0, },
     ]
 

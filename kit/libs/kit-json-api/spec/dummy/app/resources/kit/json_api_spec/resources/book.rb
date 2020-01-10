@@ -42,8 +42,10 @@ module Kit::JsonApiSpec::Resources::Book
         resource_resolver: ->() { Kit::JsonApiSpec::Resources::Author.resource },
         type:              :one,
         inherited_filter:  ->(query_node:) do
-          if ((parent_data = query_node&.dig(:parent, :data)) && parent_data.size > 0)
-            Kit::JsonApi::Types::Condition[op: :in, column: :id, values: parent_data.map { |e| e[:kit_json_api_spec_author_id] }, upper_relationship: true]
+          values = (query_node&.dig(:parent, :data) || [])
+            .map { |e| e[:kit_json_api_spec_author_id] }
+          if values.size > 0
+            Kit::JsonApi::Types::Condition[op: :in, column: :id, values: values, upper_relationship: true]
           else
             nil
           end
@@ -57,8 +59,10 @@ module Kit::JsonApiSpec::Resources::Book
         resource_resolver: ->() { Kit::JsonApiSpec::Resources::Serie.resource },
         type:              :one,
         inherited_filter:  ->(query_node:) do
-          if ((parent_data = query_node&.dig(:parent, :data)) && parent_data.size > 0)
-            Kit::JsonApi::Types::Condition[op: :in, column: :id, values: parent_data.map { |e| e[:kit_json_api_spec_serie_id] }, upper_relationship: true]
+          values = (query_node&.dig(:parent, :data) || [])
+            .map { |e| e[:kit_json_api_spec_serie_id] }
+          if values.size > 0
+            Kit::JsonApi::Types::Condition[op: :in, column: :id, values: values, upper_relationship: true]
           else
             nil
           end
@@ -73,9 +77,11 @@ module Kit::JsonApiSpec::Resources::Book
         resource_resolver: ->() { Kit::JsonApiSpec::Resources::Chapter.resource },
         type:              :one,
         inherited_filter:  ->(query_node:) do
-          if ((parent_data = query_node&.dig(:parent, :data)) && parent_data.size > 0)
+          values = (query_node&.dig(:parent, :data) || [])
+            .map { |e| e[:id] }
+          if values.size > 0
             Kit::JsonApi::Types::Condition[op: :and, values: [
-              Kit::JsonApi::Types::Condition[op: :in, column: :kit_json_api_spec_book_id, values: parent_data.map { |e| e[:id] }, upper_relationship: true],
+              Kit::JsonApi::Types::Condition[op: :in, column: :kit_json_api_spec_book_id, values: values, upper_relationship: true],
               Kit::JsonApi::Types::Condition[op: :eq, column: :ordering, values: 1],
             ],]
           else
@@ -92,8 +98,10 @@ module Kit::JsonApiSpec::Resources::Book
         resource_resolver: ->() { Kit::JsonApiSpec::Resources::Chapter.resource },
         type:              :many,
         inherited_filter:  ->(query_node:) do
-          if ((parent_data = query_node&.dig(:parent, :data)) && parent_data.size > 0)
-            Kit::JsonApi::Types::Condition[op: :in, column: :kit_json_api_spec_book_id, values: parent_data.map { |e| e[:id] }, upper_relationship: true]
+          values = (query_node&.dig(:parent, :data) || [])
+            .map { |e| e[:id] }
+          if values.size > 0
+            Kit::JsonApi::Types::Condition[op: :in, column: :kit_json_api_spec_book_id, values: values, upper_relationship: true]
           else
             nil
           end
@@ -108,8 +116,10 @@ module Kit::JsonApiSpec::Resources::Book
         resource_resolver: ->() { Kit::JsonApiSpec::Resources::BookStore.resource },
         type:              :many,
         inherited_filter: ->(query_node:) do
-          if ((parent_data = query_node&.dig(:parent, :data)) && parent_data.size > 0)
-            Kit::JsonApi::Types::Condition[op: :in, column: :kit_json_api_spec_book_id, values: parent_data.map { |e| e[:id] }, upper_relationship: true]
+          values = (query_node&.dig(:parent, :data) || [])
+            .map { |e| e[:id] }
+          if values.size > 0
+            Kit::JsonApi::Types::Condition[op: :in, column: :kit_json_api_spec_book_id, values: values, upper_relationship: true]
           else
             nil
           end
@@ -140,6 +150,5 @@ module Kit::JsonApiSpec::Resources::Book
 
     [:ok, data: data]
   end
-
 
 end

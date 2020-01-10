@@ -38,7 +38,62 @@ module Kit::JsonApiSpec::Resources::Photo
   end
 
   def self.available_relationships
-    {}
+    {
+      author: {
+        resource_resolver: ->() { Kit::JsonApiSpec::Resources::Author.resource },
+        type:              :many,
+        inherited_filter:  ->(query_node:) do
+          values = (query_node&.dig(:parent, :data) || [])
+            .select { |el| e[:imageable_type] == 'Kit::JsonApiSpec::Models::Write::Author' }
+            .map    { |el| e[:imageable_id] }
+          if values.size > 0
+            Kit::JsonApi::Types::Condition[op: :in, column: :id, values: values, upper_relationship: true]
+          else
+            nil
+          end
+        end,
+        inclusion: {
+          top_level:       true,
+          nested:          false,
+        },
+      },
+      book: {
+        resource_resolver: ->() { Kit::JsonApiSpec::Resources::Book.resource },
+        type:              :many,
+        inherited_filter:  ->(query_node:) do
+          values = (query_node&.dig(:parent, :data) || [])
+            .select { |el| e[:imageable_type] == 'Kit::JsonApiSpec::Models::Write::Book' }
+            .map    { |el| e[:imageable_id] }
+          if values.size > 0
+            Kit::JsonApi::Types::Condition[op: :in, column: :id, values: values, upper_relationship: true]
+          else
+            nil
+          end
+        end,
+        inclusion: {
+          top_level:       true,
+          nested:          false,
+        },
+      },
+      serie: {
+        resource_resolver: ->() { Kit::JsonApiSpec::Resources::Serie.resource },
+        type:              :many,
+        inherited_filter:  ->(query_node:) do
+          values = (query_node&.dig(:parent, :data) || [])
+            .select { |el| e[:imageable_type] == 'Kit::JsonApiSpec::Models::Write::Serie' }
+            .map    { |el| e[:imageable_id] }
+          if values.size > 0
+            Kit::JsonApi::Types::Condition[op: :in, column: :id, values: values, upper_relationship: true]
+          else
+            nil
+          end
+        end,
+        inclusion: {
+          top_level:       true,
+          nested:          false,
+        },
+      },
+    }
   end
 
   before [
