@@ -3,7 +3,7 @@ module Kit::JsonApi::Services::Sql
   Ct = Kit::JsonApi::Contracts
 
   # @note The SQL is generated for Postgres. Probably needs to be tuned for other DBs.
-  def self.sql_query(ar_model:, filtering: [], sorting: [], limit: nil)
+  def self.sql_query(ar_model:, filtering: nil, sorting: [], limit: nil)
     args = { ar_model: ar_model, filtering: filtering, sorting: sorting, limit: limit, }
 
     status, ctx = Kit::Organizer.call({
@@ -33,7 +33,7 @@ module Kit::JsonApi::Services::Sql
 
       if condition[:op].in?([:and, :or])
         condition[:values].each do |value|
-          detect.call(value)
+          detect.call(condition: value)
         end
       end
     end
@@ -50,11 +50,11 @@ module Kit::JsonApi::Services::Sql
       # @ref https://blog.jooq.org/2018/05/14/selecting-all-columns-except-one-in-postgresql/
       # @ref http://sqlfiddle.com/#!17/378a3/10
       sql = %{
-          SELECT (data).*
+          SELECT (#{table_name}).*
             FROM (
-              SELECT data,
+              SELECT #{table_name},
                      RANK() OVER (PARTITION BY #{foreign_key_column_name} ORDER BY #{sanitized_sorting_sql}) AS rank
-                FROM #{table_name} data
+                FROM #{table_name}
                WHERE #{sanitized_filtering_sql}
                  ) AS ranked_data
            WHERE ranked_data.rank <= #{sanitized_limit_sql}

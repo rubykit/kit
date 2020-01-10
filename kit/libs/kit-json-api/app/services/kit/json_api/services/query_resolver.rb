@@ -46,7 +46,7 @@ module Kit::JsonApi::Services::QueryResolver
   end
 
   def self.load_data(query_node:)
-    result      = query_node[:resource][:data_loader].call(query_node: query_node)
+    result      = query_node[:data_loader].call(query_node: query_node)
     status, ctx = result
 
     if status == :ok

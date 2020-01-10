@@ -5,7 +5,8 @@
   ],
   "series": [
     { "id": 1, "title": "The Lord of the Rings" },
-    { "id": 2, "title": "Harry Potter" }
+    { "id": 2, "title": "Harry Potter" },
+    { "id": 3, "title": "Harry Potter Companion Books" }
   ],
   "books": [
     { "id": 1, "series_id": 1, "author_id": 1, "title": "The Fellowship of the Ring", "date_published": "1954-07-29" },
@@ -18,7 +19,10 @@
     { "id": 8, "series_id": 2, "author_id": 2, "title": "Harry Potter and the Order of the Phoenix", "date_published": "2003-06-21" },
     { "id": 9, "series_id": 2, "author_id": 2, "title": "Harry Potter and the Half-Blood Prince", "date_published": "2005-07-16" },
     { "id": 10, "series_id": 2, "author_id": 2, "title": "Harry Potter and the Deathly Hallows", "date_published": "2007-07-21" },
-    { "id": 11, "series_id": null, "author_id": 1, "title": "The Hobbit", "date_published": "1937-09-21" }
+    { "id": 11, "series_id": null, "author_id": 1, "title": "The Hobbit", "date_published": "1937-09-21" },
+    { "id": 12, "series_id": 3, "author_id": 2, "title": "Fantastic Beasts and Where to Find Them", "date_published": "2001-03-01" },
+    { "id": 13, "series_id": 3, "author_id": 2, "title": "Quidditch Through the Ages", "date_published": "2001-03-01" },
+    { "id": 14, "series_id": 3, "author_id": 2, "title": "The Tales of Beedle the Bard", "date_published": "2008-12-04" }
   ],
   "chapters": [
     { "id": 1, "title": "A Long-expected Party", "book_id": 1, "ordering": 1 },

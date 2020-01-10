@@ -1,69 +1,63 @@
 module Kit::JsonApiSpec::Resources::Photo
+  include Kit::Contract
+  Ct = Kit::JsonApi::Contracts
+
+  after Ct::Resource
+  def self.resource
+    @resource ||= Kit::JsonApi::Types::Resource[{
+      name:          :photo,
+      fields:        available_fields.keys,
+      relationships: available_relationships,
+      sort_fields:   available_sort_fields,
+      filters:       available_filters,
+      data_loader:   self.method(:load_data),
+    }]
+  end
+
 
   def self.available_fields
     {
-      id:            Kit::JsonApi::TypesHint::id_numeric,
-      created_at:    Kit::JsonApi::TypesHint::date,
-      updated_at:    Kit::JsonApi::TypesHint::date,
-      title:         Kit::JsonApi::TypesHint::string,
-      uri:           Kit::JsonApi::TypesHint::string,
+      id:            Kit::JsonApi::TypesHint::IdNumeric,
+      created_at:    Kit::JsonApi::TypesHint::Date,
+      updated_at:    Kit::JsonApi::TypesHint::Date,
+      title:         Kit::JsonApi::TypesHint::String,
+      uri:           Kit::JsonApi::TypesHint::String,
     }
   end
 
   def self.available_sort_fields
     available_fields
-      .map { |name, _| [name, [:asc, :desc]] }
+      .map { |name, _| [name, { order: [[name, :asc]], default: (name == :id), }] }
       .to_h
   end
 
   def self.available_filters
-    fields_filters = available_fields
-      .map { |name, type| [name, Kit::JsonApi::TypesHint.default_filters[type]] }
+    available_fields
+      .map { |name, type| [name, Kit::JsonApi::TypesHint.defaults[type]] }
       .to_h
   end
 
   def self.available_relationships
-    {
-      book: {
-        resource: Kit::JsonApiSpec::Resources::Book,
-        filters:  ->(data:, **) { [[:eq, :id, data[:imageable_id]]] },
-        type:     :one,
-        has_relationship: ->(data:) { data[:imageable_type] == 'Kit::JsonApiSpec::Models::Write::Book' },
-      },
-      serie: {
-        resource: Kit::JsonApiSpec::Resources::Serie,
-        filters:  ->(data:, **) { [[:eq, :id, data[:imageable_id]]] },
-        type:     :one,
-        has_relationship: ->(data:) { data[:imageable_type] == 'Kit::JsonApiSpec::Models::Write::Serie' },
-      },
-      author: {
-        resource: Kit::JsonApiSpec::Resources::Author,
-        filters:  ->(data:, **) { [[:eq, :id, data[:imageable_id]]] },
-        type:     :one,
-        has_relationship: ->(data:) { data[:imageable_type] == 'Kit::JsonApiSpec::Models::Write::Author' },
-      },
-    }
+    {}
   end
 
-  def self.resource
-    @resource ||= {
-      name:                    :author,
-      available_fields:        available_fields,
-      available_sort_fields:   available_sort_fields,
-      available_filters:       available_filters,
-      available_relationships: available_relationships,
-      relationship_meta_defaults: {
-        inclusion_top_level: true,
-        inclusion_nested:    false,
-      }
-      data_loader:             self.method(:load_data),
-    }
-  end
+  before [
+    ->(query_node:) { query_node[:resource][:name] == :photo },
+  ]
+  def self.load_data(query_node:)
+    model       = Kit::JsonApiSpec::Models::Write::Photo
+    status, ctx = Kit::JsonApi::Services::Sql.sql_query(
+      ar_model:  model,
+      filtering: query_node[:condition],
+      sorting:   query_node[:sorting],
+      limit:     query_node[:limit],
+    )
 
-  before Ct::Hash[query_layer: Ct::QueryNode],
-         ->(query_layer:) { query_layer[:resource][:name] == Resource[:name] }
-  def self.load_data(query_layer:)
+    puts ctx[:sql_str]
+    data = model.find_by_sql(ctx[:sql_str])
+    puts "LOAD DATA PHOTO: #{data.size}"
 
+    [:ok, data: data]
   end
 
 end

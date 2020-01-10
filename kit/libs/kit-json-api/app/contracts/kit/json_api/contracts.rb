@@ -18,6 +18,7 @@ module Kit::JsonApi::Contracts
   RelationshipName = Symbol
 
   Relationship = Hash[
+    resource_resolver: Callable,
   ]
 
   ResourceName  = Symbol
@@ -31,8 +32,6 @@ module Kit::JsonApi::Contracts
     data_loader:   Callable,
   ]
 
-  Relationship.with(:resource => Resource)
-
   QueryNode = Hash[
     resource:    Resource,
     condition:   Optional[Or[Condition, Callable]],
@@ -40,9 +39,10 @@ module Kit::JsonApi::Contracts
     data:        Optional[Array], # data: nil if not loaded, array otherwise
     limit:       Numeric,
     meta:        Optional[Hash],
+    data_loader: Callable,
   ]
   #QueryNode.with(:parent        => Optional[QueryNode])
-  QueryNode.with(:relationships => Hash.of(RelationshipName => QueryNode))
+  #QueryNode.with(:relationships => Hash.of(RelationshipName => QueryNode))
 
   Query = Hash[
     #fields:     Hash.of(Resource => FieldNames), # For sparse fieldset ?

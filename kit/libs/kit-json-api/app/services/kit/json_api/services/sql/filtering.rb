@@ -3,6 +3,7 @@ module Kit::JsonApi::Services::Sql::Filtering
   Ct = Kit::JsonApi::Contracts
 
   OperatorsStr = {
+    eq:  '=',
     lt:  '<',
     lte: '<=',
     gt:  '>',
@@ -50,7 +51,7 @@ module Kit::JsonApi::Services::Sql::Filtering
           #hash_values[column] = value
           value
         else
-          status, ctx = filter_to_presanitized_sql(filter: value)
+          status, ctx = filter_to_presanitized_sql(filtering: value)
           hash_values.merge!(ctx[:hash_values])
           ctx[:presanitized_sql]
         end
@@ -58,8 +59,10 @@ module Kit::JsonApi::Services::Sql::Filtering
 
       presanitized_sql = "(#{ str_values.join(" #{sql_operator} ") })"
     else
-      hash_values[column] = values
-      presanitized_sql = "(#{ column } #{ sql_operator } (:#{column}))"
+      real_column_name = column
+      safe_column_name = column.to_s.gsub('.', '__')
+      hash_values[safe_column_name.to_sym] = values
+      presanitized_sql = "(#{ real_column_name } #{ sql_operator } (:#{safe_column_name}))"
     end
 
     [:ok, presanitized_sql: presanitized_sql, hash_values: hash_values]

@@ -37,34 +37,87 @@ module Kit::JsonApiSpec::Resources::Book
   end
 
   def self.available_relationships
-    return {}
-
     {
       author: {
-        resource: Kit::JsonApiSpec::Resources::Author,
-        filter:  ->(data:, **) { [[:eq, :id, data[:author_id]]] },
-        type:     :one,
-      },
-      chapters: {
-        #type:     [Kit::JsonApiSpec::Resources::Author, [:books, Kit::JsonApiSpec::Resources::Book]],
-        resource: Kit::JsonApiSpec::Resources::Chapter,
-        filter:  ->(data:, **) { [[:eq, :book_id, data[:id]]] },
-        type:     :many,
-      },
-      first_chapter: {
-        resource: Kit::JsonApiSpec::Resources::Chapter,
-        filter:  ->(data:, **) { [[:eq, :book_id, data[:id]], [:eq, :ordering, 1]] },
-        type:     :one,
+        resource_resolver: ->() { Kit::JsonApiSpec::Resources::Author.resource },
+        type:              :one,
+        inherited_filter:  ->(query_node:) do
+          if ((parent_data = query_node&.dig(:parent, :data)) && parent_data.size > 0)
+            Kit::JsonApi::Types::Condition[op: :in, column: :id, values: parent_data.map { |e| e[:kit_json_api_spec_author_id] }, upper_relationship: true]
+          else
+            nil
+          end
+        end,
+        inclusion: {
+          top_level:       true,
+          nested:          false,
+        },
       },
       serie: {
-        resource: Kit::JsonApiSpec::Resources::Serie,
-        filter:  ->(data:, **) { [[:eq, :id, data[:serie_id]]] },
-        type:     :one,
+        resource_resolver: ->() { Kit::JsonApiSpec::Resources::Serie.resource },
+        type:              :one,
+        inherited_filter:  ->(query_node:) do
+          if ((parent_data = query_node&.dig(:parent, :data)) && parent_data.size > 0)
+            Kit::JsonApi::Types::Condition[op: :in, column: :id, values: parent_data.map { |e| e[:kit_json_api_spec_serie_id] }, upper_relationship: true]
+          else
+            nil
+          end
+        end,
+        inclusion: {
+          top_level:       true,
+          nested:          false,
+        },
       },
-      book_store: {
-        resource: Kit::JsonApiSpec::Resources::BookStore,
-        filter:  ->(data:, **) { [[:eq, :book_id, data[:id]]] },
-        type:     :many,
+
+      first_chapter: {
+        resource_resolver: ->() { Kit::JsonApiSpec::Resources::Chapter.resource },
+        type:              :one,
+        inherited_filter:  ->(query_node:) do
+          if ((parent_data = query_node&.dig(:parent, :data)) && parent_data.size > 0)
+            Kit::JsonApi::Types::Condition[op: :and, values: [
+              Kit::JsonApi::Types::Condition[op: :in, column: :kit_json_api_spec_book_id, values: parent_data.map { |e| e[:id] }, upper_relationship: true],
+              Kit::JsonApi::Types::Condition[op: :eq, column: :ordering, values: 1],
+            ],]
+          else
+            nil
+          end
+        end,
+        inclusion: {
+          top_level:      true,
+          nested:         false,
+        },
+      },
+
+      chapters: {
+        resource_resolver: ->() { Kit::JsonApiSpec::Resources::Chapter.resource },
+        type:              :many,
+        inherited_filter:  ->(query_node:) do
+          if ((parent_data = query_node&.dig(:parent, :data)) && parent_data.size > 0)
+            Kit::JsonApi::Types::Condition[op: :in, column: :kit_json_api_spec_book_id, values: parent_data.map { |e| e[:id] }, upper_relationship: true]
+          else
+            nil
+          end
+        end,
+        inclusion: {
+          top_level:       false,
+          nested:          false,
+        },
+      },
+
+      book_stores: {
+        resource_resolver: ->() { Kit::JsonApiSpec::Resources::BookStore.resource },
+        type:              :many,
+        inherited_filter: ->(query_node:) do
+          if ((parent_data = query_node&.dig(:parent, :data)) && parent_data.size > 0)
+            Kit::JsonApi::Types::Condition[op: :in, column: :kit_json_api_spec_book_id, values: parent_data.map { |e| e[:id] }, upper_relationship: true]
+          else
+            nil
+          end
+        end,
+        inclusion: {
+          top_level:       false,
+          nested:          false,
+        },
       },
     }
   end

@@ -48,59 +48,61 @@ module Kit::JsonApiSpec::Resources::Author
   end
 
   def self.available_relationships
-    belongs_to_filter = ->(query_node:) do
-      if ((parent_data = query_node&.dig(:parent, :data)) && parent_data.size > 0)
-        Kit::JsonApi::Types::Condition[op: :in, column: :kit_json_api_spec_author_id, values: parent_data.map { |e| e[:id] }, upper_relationship: true]
-      else
-        nil
-      end
-    end
-
     {
       books: {
-        resource:         Kit::JsonApiSpec::Resources::Book.resource,
-        type:             :many,
-        inherited_filter: belongs_to_filter,
+        resource_resolver: ->() { Kit::JsonApiSpec::Resources::Book.resource },
+        type:              :many,
+        inherited_filter:  ->(query_node:) do
+          if ((parent_data = query_node&.dig(:parent, :data)) && parent_data.size > 0)
+            Kit::JsonApi::Types::Condition[op: :in, column: :kit_json_api_spec_author_id, values: parent_data.map { |e| e[:id] }, upper_relationship: true]
+          else
+            nil
+          end
+        end,
         inclusion: {
-          top_level:      true,
-          nested:         false,
+          top_level:       true,
+          nested:          false,
         },
       },
-=begin
       series: {
-        resource:         Kit::JsonApiSpec::Resources::Serie.resource,
-        type:             :many,
-        inherited_filter: belongs_to_filter,
+        resource_resolver: ->() { Kit::JsonApiSpec::Resources::Serie.resource },
+        type:              :many,
+        inherited_filter:  ->(query_node:) do
+          if ((parent_data = query_node&.dig(:parent, :data)) && parent_data.size > 0)
+            Kit::JsonApi::Types::Condition[op: :in, column: :'kit_json_api_spec_books.kit_json_api_spec_author_id', values: parent_data.map { |e| e[:id] }, upper_relationship: true]
+          else
+            nil
+          end
+        end,
         inclusion: {
-          top_level:      true,
-          nested:         false,
+          top_level:       true,
+          nested:          false,
         },
+        data_loader:       self.method(:load_series_relationship_data),
       },
       photos: {
-        resource:         Kit::JsonApiSpec::Resources::Photo.resource,
-        type:             :many,
-        inherited_filter: ->(query_node:) do
+        resource_resolver: ->() { Kit::JsonApiSpec::Resources::Photo.resource },
+        type:              :many,
+        inherited_filter:  ->(query_node:) do
           if ((parent_data = query_node&.dig(:parent, :data)) && parent_data.size > 0)
             Kit::JsonApi::Types::Condition[op: :and, values: [
               Kit::JsonApi::Types::Condition[op: :in, column: :imageable_id,   values: parent_data.map { |e| e[:id] }, upper_relationship: true],
-              Kit::JsonApi::Types::Condition[op: :eq, column: :imageable_type, values: ['Kit::JsonApiSpec::Models::Write::Author'], upper_relationship: true],
+              Kit::JsonApi::Types::Condition[op: :eq, column: :imageable_type, values: ['Kit::JsonApiSpec::Models::Write::Author']],
             ],]
           else
             nil
           end
         end,
         inclusion: {
-          top_level:      true,
-          nested:         false,
+          top_level:       true,
+          nested:          false,
         },
       },
-=end
     }
   end
 
-
   before [
-    ->(query_node:) { query_node[:resource][:name] == :author },
+    ->(query_node:) { query_node[:resource][:name] == resource[:name] }
   ]
   def self.load_data(query_node:)
     model       = Kit::JsonApiSpec::Models::Write::Author
@@ -116,6 +118,53 @@ module Kit::JsonApiSpec::Resources::Author
     puts "LOAD DATA AUTHOR: #{data.size}"
 
     [:ok, data: data]
+  end
+
+  before [
+    ->(query_node:) { query_node[:resource][:name] == :serie },
+  ]
+  def self.load_series_relationship_data(query_node:)
+    ar_model    = Kit::JsonApiSpec::Models::Write::Serie
+
+    status, ctx = Kit::Organizer.call({
+      list: [
+        Kit::JsonApi::Services::Sql::Filtering.method(:filtering_to_sql_str),
+        Kit::JsonApi::Services::Sql::Sorting.method(:sorting_to_sql_str),
+        Kit::JsonApi::Services::Sql.method(:detect_relationship),
+        self.method(:generate_series_relationship_sql_query),
+      ],
+      ctx: {
+        filtering:           query_node[:condition],
+        sorting:             query_node[:sorting],
+        ar_connection:       ar_model.connection,
+        table_name:          ar_model.table_name,
+        sanitized_limit_sql: query_node[:limit].to_i.to_s,
+      },
+    })
+
+    puts ctx[:sql_str]
+    data = ar_model.find_by_sql(ctx[:sql_str])
+    puts "LOAD DATA RS SERIE: #{data.size}"
+
+    [:ok, data: data]
+  end
+
+  def self.generate_series_relationship_sql_query(table_name:, sanitized_filtering_sql:, sanitized_sorting_sql:, sanitized_limit_sql:, foreign_key_column_name: nil)
+    joined_table = "kit_json_api_spec_books"
+    sql = %{
+      SELECT (#{table_name}).*
+        FROM (
+          SELECT #{table_name},
+                 RANK() OVER (PARTITION BY #{foreign_key_column_name} ORDER BY #{sanitized_sorting_sql}) AS rank
+            FROM #{table_name}
+            JOIN #{joined_table} ON #{joined_table}.kit_json_api_spec_serie_id = #{table_name}.id
+           WHERE #{sanitized_filtering_sql}
+        GROUP BY #{table_name}.id, #{foreign_key_column_name}
+             ) AS ranked_data
+       WHERE ranked_data.rank <= #{sanitized_limit_sql}
+    }
+
+    [:ok, sql_str: sql]
   end
 
 end

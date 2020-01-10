@@ -5,7 +5,7 @@ module Kit::JsonApiSpec::Resources::Serie
   after Ct::Resource
   def self.resource
     @resource ||= Kit::JsonApi::Types::Resource[{
-      name:          :author,
+      name:          :serie,
       fields:        available_fields.keys,
       relationships: available_relationships,
       sort_fields:   available_sort_fields,
@@ -16,10 +16,10 @@ module Kit::JsonApiSpec::Resources::Serie
 
   def self.available_fields
     {
-      id:            Kit::JsonApi::TypesHint::IdNumeric,
-      created_at:    Kit::JsonApi::TypesHint::Date,
-      updated_at:    Kit::JsonApi::TypesHint::Date,
-      title:         Kit::JsonApi::TypesHint::String,
+      id:         Kit::JsonApi::TypesHint::IdNumeric,
+      created_at: Kit::JsonApi::TypesHint::Date,
+      updated_at: Kit::JsonApi::TypesHint::Date,
+      title:      Kit::JsonApi::TypesHint::String,
     }
   end
 
@@ -30,17 +30,21 @@ module Kit::JsonApiSpec::Resources::Serie
   end
 
   def self.available_filters
-    fields_filters = available_fields
-      .map { |name, type| [name, Kit::JsonApi::TypesHint.default_filters[type]] }
+    available_fields
+      .map { |name, type| [name, Kit::JsonApi::TypesHint.defaults[type]] }
       .to_h
   end
 
   def self.available_relationships
     {
+=begin
+      authors: {
+      },
+=end
       books: {
-        resource:         Kit::JsonApiSpec::Resources::Book.resource,
-        type:             :many,
-        inherited_filter: ->(query_node:) do
+        resource_resolver: ->() { Kit::JsonApiSpec::Resources::Book.resource },
+        type:              :many,
+        inherited_filter:  ->(query_node:) do
           if ((parent_data = query_node&.dig(:parent, :data)) && parent_data.size > 0)
             Kit::JsonApi::Types::Condition[op: :in, column: :kit_json_api_spec_serie_id, values: parent_data.map { |e| e[:id] }, upper_relationship: true]
           else
@@ -48,26 +52,26 @@ module Kit::JsonApiSpec::Resources::Serie
           end
         end,
         inclusion: {
-          top_level:      true,
-          nested:         false,
+          top_level:       true,
+          nested:          false,
         },
       },
       photos: {
-        resource:         Kit::JsonApiSpec::Resources::Photo.resource,
-        type:             :many,
-        inherited_filter: ->(query_node:) do
+        resource_resolver: ->() { Kit::JsonApiSpec::Resources::Photo.resource },
+        type:              :many,
+        inherited_filter:  ->(query_node:) do
           if ((parent_data = query_node&.dig(:parent, :data)) && parent_data.size > 0)
             Kit::JsonApi::Types::Condition[op: :and, values: [
               Kit::JsonApi::Types::Condition[op: :in, column: :imageable_id,   values: parent_data.map { |e| e[:id] }, upper_relationship: true],
-              Kit::JsonApi::Types::Condition[op: :eq, column: :imageable_type, values: ['Kit::JsonApiSpec::Models::Write::Serie'], upper_relationship: true],
+              Kit::JsonApi::Types::Condition[op: :eq, column: :imageable_type, values: ['Kit::JsonApiSpec::Models::Write::Serie']],
             ],]
           else
             nil
           end
         end,
         inclusion: {
-          top_level:      true,
-          nested:         false,
+          top_level:       true,
+          nested:          false,
         },
       },
     }
