@@ -44,8 +44,8 @@ module Kit::JsonApiSpec::Resources::Photo
         type:              :many,
         inherited_filter:  ->(query_node:) do
           values = (query_node&.dig(:parent, :data) || [])
-            .select { |el| e[:imageable_type] == 'Kit::JsonApiSpec::Models::Write::Author' }
-            .map    { |el| e[:imageable_id] }
+            .select { |el| el[:imageable_type] == 'Kit::JsonApiSpec::Models::Write::Author' }
+            .map    { |el| el[:imageable_id] }
           if values.size > 0
             Kit::JsonApi::Types::Condition[op: :in, column: :id, values: values, upper_relationship: true]
           else
@@ -62,8 +62,8 @@ module Kit::JsonApiSpec::Resources::Photo
         type:              :many,
         inherited_filter:  ->(query_node:) do
           values = (query_node&.dig(:parent, :data) || [])
-            .select { |el| e[:imageable_type] == 'Kit::JsonApiSpec::Models::Write::Book' }
-            .map    { |el| e[:imageable_id] }
+            .select { |el| el[:imageable_type] == 'Kit::JsonApiSpec::Models::Write::Book' }
+            .map    { |el| el[:imageable_id] }
           if values.size > 0
             Kit::JsonApi::Types::Condition[op: :in, column: :id, values: values, upper_relationship: true]
           else
@@ -80,8 +80,8 @@ module Kit::JsonApiSpec::Resources::Photo
         type:              :many,
         inherited_filter:  ->(query_node:) do
           values = (query_node&.dig(:parent, :data) || [])
-            .select { |el| e[:imageable_type] == 'Kit::JsonApiSpec::Models::Write::Serie' }
-            .map    { |el| e[:imageable_id] }
+            .select { |el| el[:imageable_type] == 'Kit::JsonApiSpec::Models::Write::Serie' }
+            .map    { |el| el[:imageable_id] }
           if values.size > 0
             Kit::JsonApi::Types::Condition[op: :in, column: :id, values: values, upper_relationship: true]
           else

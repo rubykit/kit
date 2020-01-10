@@ -43,7 +43,7 @@ module Kit::JsonApiSpec::Resources::Book
         type:              :one,
         inherited_filter:  ->(query_node:) do
           values = (query_node&.dig(:parent, :data) || [])
-            .map { |e| e[:kit_json_api_spec_author_id] }
+            .map { |el| el[:kit_json_api_spec_author_id] }
           if values.size > 0
             Kit::JsonApi::Types::Condition[op: :in, column: :id, values: values, upper_relationship: true]
           else
@@ -60,7 +60,7 @@ module Kit::JsonApiSpec::Resources::Book
         type:              :one,
         inherited_filter:  ->(query_node:) do
           values = (query_node&.dig(:parent, :data) || [])
-            .map { |e| e[:kit_json_api_spec_serie_id] }
+            .map { |el| el[:kit_json_api_spec_serie_id] }
           if values.size > 0
             Kit::JsonApi::Types::Condition[op: :in, column: :id, values: values, upper_relationship: true]
           else
@@ -78,11 +78,11 @@ module Kit::JsonApiSpec::Resources::Book
         type:              :one,
         inherited_filter:  ->(query_node:) do
           values = (query_node&.dig(:parent, :data) || [])
-            .map { |e| e[:id] }
+            .map { |el| el[:id] }
           if values.size > 0
             Kit::JsonApi::Types::Condition[op: :and, values: [
               Kit::JsonApi::Types::Condition[op: :in, column: :kit_json_api_spec_book_id, values: values, upper_relationship: true],
-              Kit::JsonApi::Types::Condition[op: :eq, column: :ordering, values: 1],
+              Kit::JsonApi::Types::Condition[op: :eq, column: :index, values: 1],
             ],]
           else
             nil
@@ -99,7 +99,7 @@ module Kit::JsonApiSpec::Resources::Book
         type:              :many,
         inherited_filter:  ->(query_node:) do
           values = (query_node&.dig(:parent, :data) || [])
-            .map { |e| e[:id] }
+            .map { |el| el[:id] }
           if values.size > 0
             Kit::JsonApi::Types::Condition[op: :in, column: :kit_json_api_spec_book_id, values: values, upper_relationship: true]
           else
@@ -117,7 +117,7 @@ module Kit::JsonApiSpec::Resources::Book
         type:              :many,
         inherited_filter: ->(query_node:) do
           values = (query_node&.dig(:parent, :data) || [])
-            .map { |e| e[:id] }
+            .map { |el| el[:id] }
           if values.size > 0
             Kit::JsonApi::Types::Condition[op: :in, column: :kit_json_api_spec_book_id, values: values, upper_relationship: true]
           else

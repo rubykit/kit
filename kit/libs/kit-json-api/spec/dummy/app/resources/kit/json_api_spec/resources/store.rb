@@ -42,7 +42,7 @@ module Kit::JsonApiSpec::Resources::Store
         type:              :many,
         inherited_filter: ->(query_node:) do
           values = (query_node&.dig(:parent, :data) || [])
-            .map { |e| e[:id] }
+            .map { |el| el[:id] }
           if values.size > 0
             Kit::JsonApi::Types::Condition[op: :in, column: :kit_json_api_spec_store_id, values: values, upper_relationship: true]
           else

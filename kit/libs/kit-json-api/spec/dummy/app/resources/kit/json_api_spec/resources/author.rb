@@ -54,7 +54,7 @@ module Kit::JsonApiSpec::Resources::Author
         type:              :many,
         inherited_filter:  ->(query_node:) do
           values = (query_node&.dig(:parent, :data) || [])
-            .map { |e| e[:id] }
+            .map { |el| el[:id] }
           if values.size > 0
             Kit::JsonApi::Types::Condition[op: :in, column: :kit_json_api_spec_author_id, values: values, upper_relationship: true]
           else
@@ -71,7 +71,7 @@ module Kit::JsonApiSpec::Resources::Author
         type:              :many,
         inherited_filter:  ->(query_node:) do
           values = (query_node&.dig(:parent, :data) || [])
-            .map { |e| e[:id] }
+            .map { |el| el[:id] }
           if values.size > 0
             Kit::JsonApi::Types::Condition[op: :in, column: :'kit_json_api_spec_books.kit_json_api_spec_author_id', values: values, upper_relationship: true]
           else
@@ -89,7 +89,7 @@ module Kit::JsonApiSpec::Resources::Author
         type:              :many,
         inherited_filter:  ->(query_node:) do
           values = (query_node&.dig(:parent, :data) || [])
-            .map { |e| e[:id] }
+            .map { |el| el[:id] }
           if values.size > 0
             Kit::JsonApi::Types::Condition[op: :and, values: [
               Kit::JsonApi::Types::Condition[op: :in, column: :imageable_id,   values: values, upper_relationship: true],
