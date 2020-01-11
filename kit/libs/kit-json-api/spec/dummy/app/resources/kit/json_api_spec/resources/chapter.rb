@@ -11,6 +11,7 @@ module Kit::JsonApiSpec::Resources::Chapter
       sort_fields:   available_sort_fields,
       filters:       available_filters,
       data_loader:   self.method(:load_data),
+      serializer:    self.method(:serialize),
     }]
   end
 
@@ -51,6 +52,8 @@ module Kit::JsonApiSpec::Resources::Chapter
         inclusion: {
           top_level:       true,
           nested:          false,
+          # `resolve_child` receives the top level resource the relationship (chapter)
+          resolve_child:   ->(data_element:) { [resource[:name], data_element.kit_json_api_spec_book_id] },
         },
       },
     }
@@ -73,6 +76,17 @@ module Kit::JsonApiSpec::Resources::Chapter
     puts "LOAD DATA CHAPTER: #{data.size}"
 
     [:ok, data: data]
+  end
+
+  # `element` is whatever was added to data. This is opaque.
+  def self.serialize(data_element:, query_node:)
+    resource = query_node[:resource]
+
+    output = {
+      type:       resource[:name],
+      id:         data_element.id.to_s,
+      attributes: data_element.slice(resource[:fields] - [:id, :ordering]).merge(ordering: data_element.index),
+    }
   end
 
 end

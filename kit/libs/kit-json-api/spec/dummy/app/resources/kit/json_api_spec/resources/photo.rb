@@ -11,17 +11,17 @@ module Kit::JsonApiSpec::Resources::Photo
       sort_fields:   available_sort_fields,
       filters:       available_filters,
       data_loader:   self.method(:load_data),
+      serializer:    self.method(:serialize),
     }]
   end
 
-
   def self.available_fields
     {
-      id:            Kit::JsonApi::TypesHint::IdNumeric,
-      created_at:    Kit::JsonApi::TypesHint::Date,
-      updated_at:    Kit::JsonApi::TypesHint::Date,
-      title:         Kit::JsonApi::TypesHint::String,
-      uri:           Kit::JsonApi::TypesHint::String,
+      id:         Kit::JsonApi::TypesHint::IdNumeric,
+      created_at: Kit::JsonApi::TypesHint::Date,
+      updated_at: Kit::JsonApi::TypesHint::Date,
+      title:      Kit::JsonApi::TypesHint::String,
+      uri:        Kit::JsonApi::TypesHint::String,
     }
   end
 
@@ -55,6 +55,8 @@ module Kit::JsonApiSpec::Resources::Photo
         inclusion: {
           top_level:       true,
           nested:          false,
+          # `resolve_child` receives the top level resource the relationship (chapter)
+          resolve_child:   ->(data_element:) { [resource[:name], data_element.imageable_id] },
         },
       },
       book: {
@@ -73,6 +75,8 @@ module Kit::JsonApiSpec::Resources::Photo
         inclusion: {
           top_level:       true,
           nested:          false,
+          # `resolve_child` receives the top level resource the relationship (chapter)
+          resolve_child:   ->(data_element:) { [resource[:name], data_element.imageable_id] },
         },
       },
       serie: {
@@ -91,6 +95,8 @@ module Kit::JsonApiSpec::Resources::Photo
         inclusion: {
           top_level:       true,
           nested:          false,
+          # `resolve_child` receives the top level resource the relationship (chapter)
+          resolve_child:   ->(data_element:) { [resource[:name], data_element.imageable_id] },
         },
       },
     }
@@ -113,6 +119,17 @@ module Kit::JsonApiSpec::Resources::Photo
     puts "LOAD DATA PHOTO: #{data.size}"
 
     [:ok, data: data]
+  end
+
+  # `element` is whatever was added to data. This is opaque.
+  def self.serialize(data_element:, query_node:)
+    resource = query_node[:resource]
+
+    output = {
+      type:          resource[:name],
+      id:            data_element.id.to_s,
+      attributes:    data_element.slice(resource[:fields] - [:id]),
+    }
   end
 
 end

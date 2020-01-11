@@ -11,16 +11,17 @@ module Kit::JsonApiSpec::Resources::Book
       sort_fields:   available_sort_fields,
       filters:       available_filters,
       data_loader:   self.method(:load_data),
+      serializer:    self.method(:serialize),
     }]
   end
 
   def self.available_fields
     {
-      id:         Kit::JsonApi::TypesHint::IdNumeric,
-      created_at: Kit::JsonApi::TypesHint::Date,
-      updated_at: Kit::JsonApi::TypesHint::Date,
-      title:      Kit::JsonApi::TypesHint::String,
-      ordering:   Kit::JsonApi::TypesHint::Numeric,
+      id:             Kit::JsonApi::TypesHint::IdNumeric,
+      created_at:     Kit::JsonApi::TypesHint::Date,
+      updated_at:     Kit::JsonApi::TypesHint::Date,
+      title:          Kit::JsonApi::TypesHint::String,
+      date_published: Kit::JsonApi::TypesHint::Date,
     }
   end
 
@@ -53,6 +54,8 @@ module Kit::JsonApiSpec::Resources::Book
         inclusion: {
           top_level:       true,
           nested:          false,
+          # `resolve_child` receives the top level resource the relationship (book)
+          resolve_child:   ->(data_element:) { [resource[:name], data_element.kit_json_api_spec_author_id] },
         },
       },
       serie: {
@@ -70,6 +73,8 @@ module Kit::JsonApiSpec::Resources::Book
         inclusion: {
           top_level:       true,
           nested:          false,
+          # `resolve_child` receives the top level resource the relationship (book)
+          resolve_child:   ->(data_element:) { [resource[:name], data_element.kit_json_api_spec_serie_id] },
         },
       },
 
@@ -89,8 +94,10 @@ module Kit::JsonApiSpec::Resources::Book
           end
         end,
         inclusion: {
-          top_level:      true,
-          nested:         false,
+          top_level:       true,
+          nested:          false,
+          # `resolve_parent` receives the resource inside the relationship (chapter)
+          resolve_parent:  ->(data_element:) { [resource[:name], data_element.kit_json_api_spec_book_id] },
         },
       },
 
@@ -109,6 +116,8 @@ module Kit::JsonApiSpec::Resources::Book
         inclusion: {
           top_level:       false,
           nested:          false,
+          # `resolve_parent` receives the resource inside the relationship (chapter)
+          resolve_parent:  ->(data_element:) { [resource[:name], data_element.kit_json_api_spec_book_id] },
         },
       },
 
@@ -127,6 +136,8 @@ module Kit::JsonApiSpec::Resources::Book
         inclusion: {
           top_level:       false,
           nested:          false,
+          # `resolve_parent` receives the resource inside the relationship (book_store)
+          resolve_parent:  ->(data_element:) { [resource[:name], data_element.kit_json_api_spec_book_id] },
         },
       },
     }
@@ -149,6 +160,17 @@ module Kit::JsonApiSpec::Resources::Book
     puts "LOAD DATA BOOK: #{data.size}"
 
     [:ok, data: data]
+  end
+
+  # `element` is whatever was added to data. This is opaque.
+  def self.serialize(data_element:, query_node:)
+    resource = query_node[:resource]
+
+    output = {
+      type:          resource[:name],
+      id:            data_element.id.to_s,
+      attributes:    data_element.slice(resource[:fields] - [:id]),
+    }
   end
 
 end

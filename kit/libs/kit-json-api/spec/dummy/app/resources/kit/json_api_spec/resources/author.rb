@@ -11,6 +11,7 @@ module Kit::JsonApiSpec::Resources::Author
       sort_fields:   available_sort_fields,
       filters:       available_filters,
       data_loader:   self.method(:load_data),
+      serializer:    self.method(:serialize),
     }]
   end
 
@@ -64,6 +65,8 @@ module Kit::JsonApiSpec::Resources::Author
         inclusion: {
           top_level:       true,
           nested:          false,
+          # `resolve_parent` receives the resource inside the relationship (book)
+          resolve_parent:  ->(data_element:) { [resource[:name], data_element.kit_json_api_spec_author_id] },
         },
       },
       series: {
@@ -81,6 +84,8 @@ module Kit::JsonApiSpec::Resources::Author
         inclusion: {
           top_level:       true,
           nested:          false,
+          # `resolve_parent` receives the resource inside the relationship (serie)
+          resolve_parent: ->(data_element:) { [resource[:name], data_element.read_attribute(:kit_json_api_spec_author_id)] },
         },
         data_loader:       self.method(:load_series_relationship_data),
       },
@@ -102,6 +107,8 @@ module Kit::JsonApiSpec::Resources::Author
         inclusion: {
           top_level:       true,
           nested:          false,
+          # `resolve_parent` receives the resource inside the relationship (image)
+          resolve_parent: ->(data_element:) { [resource[:name], data_element.imageable_id] },
         },
       },
     }
@@ -158,9 +165,10 @@ module Kit::JsonApiSpec::Resources::Author
   def self.generate_series_relationship_sql_query(table_name:, sanitized_filtering_sql:, sanitized_sorting_sql:, sanitized_limit_sql:, foreign_key_column_name: nil)
     joined_table = "kit_json_api_spec_books"
     sql = %{
-      SELECT (#{table_name}).*
+      SELECT (#{table_name}).*, kit_json_api_spec_author_id
         FROM (
           SELECT #{table_name},
+                 #{foreign_key_column_name} AS kit_json_api_spec_author_id,
                  RANK() OVER (PARTITION BY #{foreign_key_column_name} ORDER BY #{sanitized_sorting_sql}) AS rank
             FROM #{table_name}
             JOIN #{joined_table} ON #{joined_table}.kit_json_api_spec_serie_id = #{table_name}.id
@@ -171,6 +179,17 @@ module Kit::JsonApiSpec::Resources::Author
     }
 
     [:ok, sql_str: sql]
+  end
+
+  # `element` is whatever was added to data. This is opaque.
+  def self.serialize(data_element:, query_node:)
+    resource = query_node[:resource]
+
+    output = {
+      type:          resource[:name],
+      id:            data_element.id.to_s,
+      attributes:    data_element.slice(resource[:fields] - [:id]),
+    }
   end
 
 end

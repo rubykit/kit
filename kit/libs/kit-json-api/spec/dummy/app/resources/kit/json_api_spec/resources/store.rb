@@ -11,6 +11,7 @@ module Kit::JsonApiSpec::Resources::Store
       sort_fields:   available_sort_fields,
       filters:       available_filters,
       data_loader:   self.method(:load_data),
+      serializer:    self.method(:serialize),
     }]
   end
 
@@ -52,6 +53,8 @@ module Kit::JsonApiSpec::Resources::Store
         inclusion: {
           top_level:       false,
           nested:          false,
+          # `resolve_parent` receives the resource inside the relationship (book_store)
+          resolve_parent:  ->(data_element:) { [resource[:name], data_element.kit_json_api_spec_store_id] },
         },
       },
     }
@@ -74,6 +77,17 @@ module Kit::JsonApiSpec::Resources::Store
     puts "LOAD DATA STORE: #{data.size}"
 
     [:ok, data: data]
+  end
+
+  # `element` is whatever was added to data. This is opaque.
+  def self.serialize(data_element:, query_node:)
+    resource = query_node[:resource]
+
+    output = {
+      type:          resource[:name],
+      id:            data_element.id.to_s,
+      attributes:    data_element.slice(resource[:fields] - [:id]),
+    }
   end
 
 end
