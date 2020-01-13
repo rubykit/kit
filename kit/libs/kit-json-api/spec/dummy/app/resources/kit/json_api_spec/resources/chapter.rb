@@ -41,7 +41,7 @@ module Kit::JsonApiSpec::Resources::Chapter
         resource_resolver: ->() { Kit::JsonApiSpec::Resources::Book.resource },
         type:              :one,
         inherited_filter:  ->(query_node:) do
-          values = (query_node&.dig(:parent, :data) || [])
+          values = (query_node&.dig(:parent_query_node, :data) || [])
             .map { |el| el[:kit_json_api_spec_book_id] }
           if values.size > 0
             Kit::JsonApi::Types::Condition[op: :in, column: :id, values: values, upper_relationship: true]

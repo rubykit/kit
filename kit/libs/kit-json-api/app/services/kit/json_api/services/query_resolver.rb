@@ -58,7 +58,7 @@ module Kit::JsonApi::Services::QueryResolver
   end
 
   def self.resolve_relationships(query_node:)
-    query_node[:relationships].each do |_relationship_name, nested_query_node|
+    query_node[:relationship_query_nodes].each do |_relationship_name, nested_query_node|
       status, ctx = result = resolve_node(query_node: nested_query_node)
 
       if status == [:error]

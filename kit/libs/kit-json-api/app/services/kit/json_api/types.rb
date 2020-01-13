@@ -12,4 +12,7 @@ module Kit::JsonApi::Types
   class Condition < ::Hash
   end
 
+  class Document < ::Hash
+  end
+
 end

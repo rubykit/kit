@@ -4,7 +4,12 @@
   * Should we add a notion of tag / "types" for contracts so that we can tune what gets disabled ? (Useful if a contract performs checks that is actually part of the operations, like "check that the user is not in the DB")
   * Add `dev_contract` ?
 
-* Investigate loop when enabling contract on `Kit::Contract::Services::Validation.valid?`
+* Improve error messages when nesting (attempt to hydrate error message)
+  * Look at contract ruby
+
+* Add accumulator when nesting contracts. This would prevent infinite loops when there is a circular reference.
+  * Keep track of the result of contracts for every tupple `[ContractInstance, Value]`
+  * Probably the cause of infinite loop on `Kit::Contract::Services::Validation.valid?`
 
 * Default `value` inside `InstanciableType` initializer to `Eq[value]`
 
@@ -12,7 +17,6 @@
 
 * Do contracts work with `ActiveSupport::Concern` ?
 
-* Improve error messages when nesting (attempt to hydrate error message)
 
 * Add types
   * None

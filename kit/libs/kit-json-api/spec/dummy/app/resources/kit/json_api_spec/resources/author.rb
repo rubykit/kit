@@ -54,7 +54,7 @@ module Kit::JsonApiSpec::Resources::Author
         resource_resolver: ->() { Kit::JsonApiSpec::Resources::Book.resource },
         type:              :many,
         inherited_filter:  ->(query_node:) do
-          values = (query_node&.dig(:parent, :data) || [])
+          values = (query_node&.dig(:parent_query_node, :data) || [])
             .map { |el| el[:id] }
           if values.size > 0
             Kit::JsonApi::Types::Condition[op: :in, column: :kit_json_api_spec_author_id, values: values, upper_relationship: true]
@@ -73,7 +73,7 @@ module Kit::JsonApiSpec::Resources::Author
         resource_resolver: ->() { Kit::JsonApiSpec::Resources::Serie.resource },
         type:              :many,
         inherited_filter:  ->(query_node:) do
-          values = (query_node&.dig(:parent, :data) || [])
+          values = (query_node&.dig(:parent_query_node, :data) || [])
             .map { |el| el[:id] }
           if values.size > 0
             Kit::JsonApi::Types::Condition[op: :in, column: :'kit_json_api_spec_books.kit_json_api_spec_author_id', values: values, upper_relationship: true]
@@ -93,7 +93,7 @@ module Kit::JsonApiSpec::Resources::Author
         resource_resolver: ->() { Kit::JsonApiSpec::Resources::Photo.resource },
         type:              :many,
         inherited_filter:  ->(query_node:) do
-          values = (query_node&.dig(:parent, :data) || [])
+          values = (query_node&.dig(:parent_query_node, :data) || [])
             .map { |el| el[:id] }
           if values.size > 0
             Kit::JsonApi::Types::Condition[op: :and, values: [
@@ -177,6 +177,8 @@ module Kit::JsonApiSpec::Resources::Author
              ) AS ranked_data
        WHERE ranked_data.rank <= #{sanitized_limit_sql}
     }
+
+    puts sql
 
     [:ok, sql_str: sql]
   end

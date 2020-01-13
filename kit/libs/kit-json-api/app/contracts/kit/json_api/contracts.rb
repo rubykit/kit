@@ -32,23 +32,37 @@ module Kit::JsonApi::Contracts
     data_loader:   Callable,
   ]
 
-  QueryNode = Hash[
-    resource:    Resource,
-    condition:   Optional[Or[Condition, Callable]],
-    sorting:     Optional[SortOrders],
-    data:        Optional[Array], # data: nil if not loaded, array otherwise
-    limit:       Numeric,
-    meta:        Optional[Hash],
-    data_loader: Callable,
-  ]
-  #QueryNode.with(:parent        => Optional[QueryNode])
-  #QueryNode.with(:relationships => Hash.of(RelationshipName => QueryNode))
+  QueryNodeType = IsA[::Kit::JsonApi::Types::QueryNode]
 
-  Query = Hash[
-    #fields:     Hash.of(Resource => FieldNames), # For sparse fieldset ?
-    entry_node: QueryNode,
+  # @note QueryNodeType is used on purpose in order to avoid creating circular checks in contracts
+  QueryNode     = And[
+    QueryNodeType,
+    Hash[
+      resource:                 Resource,
+      condition:                Optional[Or[Condition, Callable]],
+      sorting:                  Optional[SortOrders],
+      data:                     Optional[Array], # data: nil if not loaded, array otherwise
+      limit:                    Numeric,
+      meta:                     Optional[Hash],
+      data_loader:              Callable,
+      parent_query_node:        Optional[QueryNodeType],
+      parent_relationship_name: Optional[Symbol],
+      relationship_query_nodes: Hash.of(RelationshipName => QueryNodeType),
+    ]
   ]
 
-  #Resource = ?
+  DocumentType = IsA[::Kit::JsonApi::Types::Document]
+
+  Document = And[
+    DocumentType,
+    Hash[
+      cache:    Hash,
+      included: Hash,
+      response: Hash[
+        data:     Array,
+        included: Array,
+      ],
+    ],
+  ]
 
 end

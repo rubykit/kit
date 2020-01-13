@@ -20,12 +20,12 @@ describe Kit::JsonApi::Services::QueryBuilder do
         query_node  = ctx[:query_node]
 
         expect(status).to eq :ok
-        expect(query_node[:relationships].count).to eq(included_relationships_count)
+        expect(query_node[:relationship_query_nodes].count).to eq(included_relationships_count)
 
         resource[:relationships].each do |rs_name, rs_data|
           next if !rs_data[:inclusion][:top_level]
 
-          expect(query_node[:relationships][rs_name]).to be_a(Kit::JsonApi::Types::QueryNode)
+          expect(query_node[:relationship_query_nodes][rs_name]).to be_a(Kit::JsonApi::Types::QueryNode)
         end
       end
     end

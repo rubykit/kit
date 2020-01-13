@@ -43,7 +43,7 @@ module Kit::JsonApiSpec::Resources::Photo
         resource_resolver: ->() { Kit::JsonApiSpec::Resources::Author.resource },
         type:              :many,
         inherited_filter:  ->(query_node:) do
-          values = (query_node&.dig(:parent, :data) || [])
+          values = (query_node&.dig(:parent_query_node, :data) || [])
             .select { |el| el[:imageable_type] == 'Kit::JsonApiSpec::Models::Write::Author' }
             .map    { |el| el[:imageable_id] }
           if values.size > 0
@@ -63,7 +63,7 @@ module Kit::JsonApiSpec::Resources::Photo
         resource_resolver: ->() { Kit::JsonApiSpec::Resources::Book.resource },
         type:              :many,
         inherited_filter:  ->(query_node:) do
-          values = (query_node&.dig(:parent, :data) || [])
+          values = (query_node&.dig(:parent_query_node, :data) || [])
             .select { |el| el[:imageable_type] == 'Kit::JsonApiSpec::Models::Write::Book' }
             .map    { |el| el[:imageable_id] }
           if values.size > 0
@@ -83,7 +83,7 @@ module Kit::JsonApiSpec::Resources::Photo
         resource_resolver: ->() { Kit::JsonApiSpec::Resources::Serie.resource },
         type:              :many,
         inherited_filter:  ->(query_node:) do
-          values = (query_node&.dig(:parent, :data) || [])
+          values = (query_node&.dig(:parent_query_node, :data) || [])
             .select { |el| el[:imageable_type] == 'Kit::JsonApiSpec::Models::Write::Serie' }
             .map    { |el| el[:imageable_id] }
           if values.size > 0

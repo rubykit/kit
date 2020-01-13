@@ -42,7 +42,7 @@ module Kit::JsonApiSpec::Resources::BookStore
         resource_resolver: ->() { Kit::JsonApiSpec::Resources::Book.resource },
         type:              :many,
         inherited_filter:  ->(query_node:) do
-          values = (query_node&.dig(:parent, :data) || [])
+          values = (query_node&.dig(:parent_query_node, :data) || [])
             .map { |el| el[:kit_json_api_spec_book_id] }
           if values.size > 0
             Kit::JsonApi::Types::Condition[op: :in, column: :id, values: values, upper_relationship: true]
@@ -61,7 +61,7 @@ module Kit::JsonApiSpec::Resources::BookStore
         resource_resolver: ->() { Kit::JsonApiSpec::Resources::Store.resource },
         type:              :many,
         inherited_filter:  ->(query_node:) do
-          values = (query_node&.dig(:parent, :data) || [])
+          values = (query_node&.dig(:parent_query_node, :data) || [])
             .map { |el| el[:kit_json_api_spec_store_id] }
           if values.size > 0
             Kit::JsonApi::Types::Condition[op: :in, column: :id, values: values, upper_relationship: true]
