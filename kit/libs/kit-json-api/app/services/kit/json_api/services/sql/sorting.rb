@@ -3,7 +3,7 @@ module Kit::JsonApi::Services::Sql::Sorting
   Ct = Kit::JsonApi::Contracts
 
   before Ct::Hash[sorting: Ct::Optional[Ct::SortOrders], table_name: Ct::String]
-  #after  Ct::Hash[sanitized_sorting_sql: Ct::String]
+  after  Ct::Result[sanitized_sorting_sql: Ct::String]
   def self.sorting_to_sql_str(sorting:, table_name:)
     return true if !sorting || sorting.size == 0
 

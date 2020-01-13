@@ -1,17 +1,10 @@
 module Kit::JsonApi::Services::QueryResolver
+  include Kit::Contract
+  Ct = Kit::JsonApi::Contracts
 
-  def self.resolve_query(query_node:)
-    result      = resolve_node(query_node: query_node)
-    status, ctx = result
-
-    if status == :ok
-      [:ok, query_node: query_node]
-    else
-      result
-    end
-  end
-
-  def self.resolve_node(query_node:)
+  before Ct::Hash[query_node: Ct::QueryNode]
+  after  Ct::Result[query_node: Ct::QueryNode]
+  def self.resolve_query_node(query_node:)
     Kit::Organizer.call({
       list: [
         self.method(:resolve_query_node_condition),
@@ -22,6 +15,8 @@ module Kit::JsonApi::Services::QueryResolver
     })
   end
 
+  before Ct::Hash[query_node: Ct::QueryNode]
+  after  Ct::Result[query_node: Ct::QueryNode]
   def self.resolve_query_node_condition(query_node:)
     query_node[:condition] = resolve_condition(
       condition:  query_node[:condition],
@@ -45,6 +40,8 @@ module Kit::JsonApi::Services::QueryResolver
     condition
   end
 
+  before Ct::Hash[query_node: Ct::QueryNode]
+  after  Ct::Result[query_node: Ct::QueryNode]
   def self.load_data(query_node:)
     result      = query_node[:data_loader].call(query_node: query_node)
     status, ctx = result
@@ -57,9 +54,11 @@ module Kit::JsonApi::Services::QueryResolver
     end
   end
 
+  before Ct::Hash[query_node: Ct::QueryNode]
+  after  Ct::Result[query_node: Ct::QueryNode]
   def self.resolve_relationships(query_node:)
     query_node[:relationship_query_nodes].each do |_relationship_name, nested_query_node|
-      status, ctx = result = resolve_node(query_node: nested_query_node)
+      status, ctx = result = resolve_query_node(query_node: nested_query_node)
 
       if status == [:error]
         return result

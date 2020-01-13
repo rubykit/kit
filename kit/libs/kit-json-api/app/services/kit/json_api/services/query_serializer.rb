@@ -3,7 +3,7 @@ module Kit::JsonApi::Services::QuerySerializer
   Ct = Kit::JsonApi::Contracts
 
   before Ct::Hash[query_node: Ct::QueryNode]
-  after  Ct::Tupple[Ct::Eq[:ok], Ct::Hash[document: Ct::Document]]
+  after  Ct::Result[document: Ct::Document]
   def self.serialize_query(query_node:)
     Kit::Organizer.call({
       list: [
@@ -14,7 +14,7 @@ module Kit::JsonApi::Services::QuerySerializer
     })
   end
 
-  after  Ct::Tupple[Ct::Eq[:ok], Ct::Hash[document: Ct::Document]]
+  after  Ct::Result[document: Ct::Document]
   def self.create_document
     document = Kit::JsonApi::Types::Document[{
       cache:    {},
@@ -29,7 +29,7 @@ module Kit::JsonApi::Services::QuerySerializer
   end
 
   before Ct::Hash[query_node: Ct::QueryNode, document: Ct::Document]
-  after  Ct::Tupple[Ct::Eq[:ok], Ct::Hash[document: Ct::Document]]
+  after  Ct::Result[document: Ct::Document]
   def self.serialize_query_node(query_node:, document:)
     resource = query_node[:resource]
     type     = resource[:name]
@@ -52,6 +52,7 @@ module Kit::JsonApi::Services::QuerySerializer
   end
 
   before Ct::Hash[query_node: Ct::QueryNode, document: Ct::Document, raw_data_element: Ct::Any]
+  after  Ct::Result[document: Ct::Document]
   def self.serialize_resource_object(query_node:, raw_data_element:, document:)
     resource        = query_node[:resource]
     type            = resource[:name]
@@ -140,6 +141,8 @@ module Kit::JsonApi::Services::QuerySerializer
     [:ok]
   end
 
+  before Ct::Hash[query_node: Ct::QueryNode, document: Ct::Document]
+  after  Ct::Result[document: Ct::Document]
   def self.serialize_relationships_query_nodes(query_node:, document:)
     query_node[:relationship_query_nodes].each do |_relationship_name, nested_query_node|
       status, ctx = result = serialize_query_node(
@@ -150,27 +153,5 @@ module Kit::JsonApi::Services::QuerySerializer
 
     [:ok, document: document]
   end
-
-=begin
-  def self.serialize_response(document:)
-    [:ok, json_str: Oj.dump(document, mode: :compat)]
-  end
-
-  def self.json_api_result_to_response(json_api_result_hash:, status: 200)
-    string_content = Oj.dump(json_api_result_hash, mode: :compat)
-
-    [:ok, {
-      response: {
-        mime:     :json_api,
-        content:  json_api_result_hash,
-        metadata: {
-          http: {
-            status: status,
-          },
-        },
-      },
-    }]
-  end
-=end
 
 end

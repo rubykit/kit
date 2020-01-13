@@ -14,7 +14,7 @@ module Kit::JsonApi::Services::Sql::Filtering
   }
 
   before Ct::Hash[ar_connection: Ct::Any, filtering: Ct::Optional[Ct::Condition]]
-  #after  Ct::Success[sanitized_filtering_sql: Ct::String]
+  after  Ct::Result[sanitized_filtering_sql: Ct::String]
   def self.filtering_to_sql_str(filtering:, ar_connection:)
     args = { filtering: filtering, ar_connection: ar_connection, }
     if filtering == nil
@@ -36,6 +36,7 @@ module Kit::JsonApi::Services::Sql::Filtering
   # Reduce `Ct::Conditions` to a pre-sanitized string and corresponding hash values
   # @todo Sanitize `column` names (not sure if useful)
   before Ct::Hash[filtering: Ct::Condition]
+  after  Ct::Result[presanitized_sql: Ct::String, hash_values: Ct::Hash]
   def self.filter_to_presanitized_sql(filtering:)
     filter   = filtering.dup
     operator = filter[:op]

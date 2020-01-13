@@ -19,6 +19,7 @@ module Kit::JsonApi::Services::Sql::Sanitization
   # Sanitize and interpolate each value into the SQL statement.
   # @example sanitize_sql(statement: "name=:name and group_id=:group_id", values: { name: "foo'bar", group_id: 4 }) #=> "name='foo''bar' and group_id=4"
   before Ct::Hash[statement: Ct::String, values: Ct::Hash]
+  after  Ct::Result[sanitized_sql_str: Ct::String]
   def self.sanitize_sql(statement:, values:, ar_connection:)
     return statement if statement.blank?
 

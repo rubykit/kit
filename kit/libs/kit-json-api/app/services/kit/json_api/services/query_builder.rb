@@ -2,8 +2,19 @@ module Kit::JsonApi::Services::QueryBuilder
   include Kit::Contract
   Ct = Kit::JsonApi::Contracts
 
-  before Ct::Hash[resource: Ct::Resource, parent_query_node: Ct::Optional[Ct::QueryNode], parent_relationship_name: Ct::Optional[Ct::Symbol]]
-  after  Ct::Tupple[Ct::Eq[:ok], Ct::Hash[query_node: Ct::QueryNode, data_loader: Ct::Optional[Ct::Callable]]]
+  before [
+    Ct::Hash[{
+      resource:                 Ct::Resource,
+      parent_query_node:        Ct::Optional[Ct::QueryNode],
+      parent_relationship_name: Ct::Optional[Ct::Symbol],
+    }],
+  ]
+  after [
+    Ct::Result[
+      query_node:  Ct::QueryNode,
+      data_loader: Ct::Optional[Ct::Callable],
+    ],
+  ]
   def self.build_query(resource:, parent_query_node: nil, parent_relationship_name: nil, condition: nil, data_loader: nil)
     sorting    = resource[:sort_fields].select { |k, v| v[:default] == true }.first[1][:order]
 

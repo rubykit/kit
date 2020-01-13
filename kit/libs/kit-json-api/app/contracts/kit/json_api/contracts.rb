@@ -1,5 +1,6 @@
 module Kit::JsonApi::Contracts
-  include Kit::Contract::BuiltInContracts
+  #include Kit::Contract::BuiltInContracts
+  include Kit::Organizer::Contracts
 
   FieldName     = Symbol
   FieldNames    = Array.of(FieldName)
