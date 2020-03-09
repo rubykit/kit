@@ -2,17 +2,18 @@ module Kit::JsonApiSpec::Resources::Book
   include Kit::Contract
   Ct = Kit::JsonApi::Contracts
 
-  after Ct::Resource
-  def self.resource
-    @resource ||= Kit::JsonApi::Types::Resource[{
-      name:          :book,
-      fields:        available_fields.keys,
-      relationships: available_relationships,
-      sort_fields:   available_sort_fields,
-      filters:       available_filters,
-      data_loader:   self.method(:load_data),
-      serializer:    self.method(:serialize),
-    }]
+  include Kit::JsonApi::Resources::Resource
+
+  def self.resource_name
+    :book
+  end
+
+  def self.resource_url(resource_id:)
+    "#{}/books/#{resource_id}"
+  end
+
+  def self.relationship_url(resource_id:, relationship_id:)
+    "#{}/books/#{resource_id}/relationships/#{relationship_id}"
   end
 
   def self.available_fields
@@ -160,17 +161,6 @@ module Kit::JsonApiSpec::Resources::Book
     puts "LOAD DATA BOOK: #{data.size}"
 
     [:ok, data: data]
-  end
-
-  # `element` is whatever was added to data. This is opaque.
-  def self.serialize(data_element:, query_node:)
-    resource = query_node[:resource]
-
-    output = {
-      type:          resource[:name],
-      id:            data_element.id.to_s,
-      attributes:    data_element.slice(resource[:fields] - [:id]),
-    }
   end
 
 end

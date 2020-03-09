@@ -1,5 +1,25 @@
 # TODO
 
+* [ ] Add handling of singular for top level && relationships (behaviour in `data`)
+* [ ] Add relationships links
+* [ ] Add paginations to links
+* [ ] Add filters to links
+
+---
+
+* Add pagination logic && figure out how it should work per resource
+  > IN:  pagination data is extracted from the payload and added to the query
+  > OUT: link generation from content
+
+* Links:
+  ** The ResourceObj contains the logic to generate all types of link for the resource
+  ** Self: One level
+  ** Relationship: Does it need to be defined on every relationship ? Or just external modifiers ? (Would they live in the query ?)
+
+  ** Collection:
+    - Top level: https://jsonapi.org/examples/#pagination
+    - Relationship: https://jsonapi.org/recommendations/#including-links
+
 * App setup:
   * Add spec models
   * Figure out how to make migrations work in dummy app?

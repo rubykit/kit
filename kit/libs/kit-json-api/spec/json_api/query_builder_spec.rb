@@ -2,6 +2,7 @@ require_relative '../rails_helper'
 
 describe Kit::JsonApi::Services::QueryBuilder do
   let(:service)  { described_class }
+  let(:singular) { false }
 
   context 'for a top level resource' do
     list = [
@@ -16,7 +17,7 @@ describe Kit::JsonApi::Services::QueryBuilder do
 
     list.each do |resource:, included_relationships_count:|
       it "generates a valid query plan for #{resource[:name]}" do
-        status, ctx = service.build_query(resource: resource)
+        status, ctx = service.build_query(resource: resource, singular: singular)
         query_node  = ctx[:query_node]
 
         expect(status).to eq :ok

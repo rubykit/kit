@@ -18,8 +18,8 @@ describe Kit::JsonApi::Services::QuerySerializer do
     ]
 
     list.each do |resource:|
-      it "serializes #{resource[:name]}" do
-        top_query_node = Kit::JsonApi::Services::QueryBuilder.build_query(resource: resource)[1][:query_node]
+      it "serializes a collection of #{resource[:name]}" do
+        top_query_node = Kit::JsonApi::Services::QueryBuilder.build_query(resource: resource, singular: false)[1][:query_node]
         top_query_node = Kit::JsonApi::Services::QueryResolver.resolve_query_node(query_node: top_query_node)[1][:query_node]
 
         status, ctx = service.serialize_query(query_node: top_query_node)
@@ -28,6 +28,19 @@ describe Kit::JsonApi::Services::QuerySerializer do
 
         expect(status).to eq :ok
       end
+
+      it "serializes a single #{resource[:name]}" do
+        top_query_node = Kit::JsonApi::Services::QueryBuilder.build_query(resource: resource, singular: true)[1][:query_node]
+        top_query_node[:limit] = 1
+        top_query_node = Kit::JsonApi::Services::QueryResolver.resolve_query_node(query_node: top_query_node)[1][:query_node]
+
+        status, ctx = service.serialize_query(query_node: top_query_node)
+
+        puts JSON.pretty_generate(ctx[:document][:response])
+
+        expect(status).to eq :ok
+      end
+
     end
   end
 

@@ -60,7 +60,7 @@ module Kit::JsonApi::Contracts
       cache:    Hash,
       included: Hash,
       response: Hash[
-        data:     Array,
+        data:     Or[Array, Hash],
         included: Array,
       ],
     ],

@@ -1,5 +1,7 @@
 ## Kit::Contract
 
+* Make contracts work with `ActiveSupport::Concern`!
+
 * Spec contract deactivation
   * Should we add a notion of tag / "types" for contracts so that we can tune what gets disabled ? (Useful if a contract performs checks that is actually part of the operations, like "check that the user is not in the DB")
   * Add `dev_contract` ?
@@ -14,9 +16,6 @@
 * Default `value` inside `InstanciableType` initializer to `Eq[value]`
 
 * Delay `before` / `after` / `contract` failure to the method declaration for clarity
-
-* Do contracts work with `ActiveSupport::Concern` ?
-
 
 * Add types
   * None

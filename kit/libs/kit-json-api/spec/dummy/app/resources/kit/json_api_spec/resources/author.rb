@@ -2,17 +2,18 @@ module Kit::JsonApiSpec::Resources::Author
   include Kit::Contract
   Ct = Kit::JsonApi::Contracts
 
-  after Ct::Resource
-  def self.resource
-    @resource ||= Kit::JsonApi::Types::Resource[{
-      name:          :author,
-      fields:        available_fields.keys,
-      relationships: available_relationships,
-      sort_fields:   available_sort_fields,
-      filters:       available_filters,
-      data_loader:   self.method(:load_data),
-      serializer:    self.method(:serialize),
-    }]
+  include Kit::JsonApi::Resources::Resource
+
+  def self.resource_name
+    :author
+  end
+
+  def self.resource_url(resource_id:)
+    "#{}/authors/#{resource_id}"
+  end
+
+  def self.relationship_url(resource_id:, relationship_id:)
+    "#{}/articles/#{resource_id}/relationships/#{relationship_id}"
   end
 
   def self.available_fields
@@ -33,19 +34,6 @@ module Kit::JsonApiSpec::Resources::Author
       updated_at: { order: [[:updated_at, :asc], [:id, :asc]], },
       name:       { order: [[:name,       :asc], [:id, :asc]], },
     }
-  end
-
-  def self.available_filters
-    fields_filters = available_fields
-      .map { |name, type| [name, Kit::JsonApi::TypesHint.defaults[type]] }
-      .to_h
-
-    # @note Dummy filter, acts as an exemple
-    filters = {
-      alive: Kit::JsonApi::TypesHint.defaults[Kit::JsonApi::TypesHint::Boolean],
-    }
-
-    filters.merge(fields_filters)
   end
 
   def self.available_relationships
@@ -137,6 +125,7 @@ module Kit::JsonApiSpec::Resources::Author
     ->(query_node:) { query_node[:resource][:name] == :serie },
   ]
   def self.load_series_relationship_data(query_node:)
+    binding.pry if query_node[:resource][:name] != :serie
     ar_model    = Kit::JsonApiSpec::Models::Write::Serie
 
     status, ctx = Kit::Organizer.call({
@@ -181,17 +170,6 @@ module Kit::JsonApiSpec::Resources::Author
     puts sql
 
     [:ok, sql_str: sql]
-  end
-
-  # `element` is whatever was added to data. This is opaque.
-  def self.serialize(data_element:, query_node:)
-    resource = query_node[:resource]
-
-    output = {
-      type:          resource[:name],
-      id:            data_element.id.to_s,
-      attributes:    data_element.slice(resource[:fields] - [:id]),
-    }
   end
 
 end

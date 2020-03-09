@@ -30,6 +30,8 @@ module Kit::JsonApi::Services::QuerySerializer
 
   before Ct::Hash[query_node: Ct::QueryNode, document: Ct::Document]
   after  Ct::Result[document: Ct::Document]
+  # Serialize "every data" element in a QueryNode.
+  # @note Handling the relationships is delegated to `serialize_resource_object`.
   def self.serialize_query_node(query_node:, document:)
     resource = query_node[:resource]
     type     = resource[:name]
@@ -37,16 +39,36 @@ module Kit::JsonApi::Services::QuerySerializer
     document[:cache][type]    ||= {}
     document[:included][type] ||= {}
 
+    resource_collection = []
+
     query_node[:data].each do |raw_data_element|
-      serialize_resource_object(
+      _, ctx = serialize_resource_object(
         query_node:       query_node,
         raw_data_element: raw_data_element,
         document:         document,
       )
+
+      resource_collection << ctx[:resource_object]
+    end
+
+    if !query_node[:parent_query_node]
+      if query_node[:singular]
+        links = resource_collection[0].dig(:links)
+      else
+        _, links = resource[:links][:resource_collection].call(resource_collection: resource_collection, sorting: query_node[:sorting],)
+      end
+      document[:response][:links] = links
+    #else
+    #  generate_relationships_links(resource_collection: resource_collection, sorting: query_node[:sorting],)
     end
 
     # Resolve the relationships query_nodes recursively
     serialize_relationships_query_nodes(query_node: query_node, document: document)
+
+    # Flatten top level `data` if it's a singular resource
+    if !query_node[:parent_query_node] && query_node[:singular]
+      document[:response][:data] = document[:response][:data][0]
+    end
 
     [:ok, document: document]
   end
@@ -90,7 +112,7 @@ module Kit::JsonApi::Services::QuerySerializer
       raw_data_element: raw_data_element,
     )
 
-    [:ok, document: document]
+    [:ok, document: document, resource_object: resource_object]
   end
 
   # The relationship is defined on the current resource.
@@ -101,14 +123,14 @@ module Kit::JsonApi::Services::QuerySerializer
       next if !relationship[:inclusion][:resolve_child]
 
       resource_object[:relationships] ||= {}
-      container = resource_object[:relationships][relationship_name] ||= []
+      resource_object[:relationships][relationship_name] ||= {}
+      container = resource_object[:relationships][relationship_name][:data] ||= []
+
       child_element_type, child_element_id = relationship[:inclusion][:resolve_child].call(data_element: raw_data_element)
 
       container << {
-        data: {
-          type: child_element_type,
-          id:   child_element_id,
-        }
+        type: child_element_type,
+        id:   child_element_id,
       }
     end
 
@@ -129,13 +151,12 @@ module Kit::JsonApi::Services::QuerySerializer
     parent_element = document[:cache][parent_element_type][parent_element_id.to_s]
 
     parent_element[:relationships] ||= {}
-    container = parent_element[:relationships][parent_relationship_name] ||= []
+    parent_element[:relationships][parent_relationship_name] ||= {}
+    container = parent_element[:relationships][parent_relationship_name][:data] ||= []
 
     container << {
-      data: {
-        type: query_node[:resource][:name],
-        id:   resource_object[:id],
-      }
+      type: query_node[:resource][:name],
+      id:   resource_object[:id],
     }
 
     [:ok]
