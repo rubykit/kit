@@ -80,13 +80,15 @@ module Kit::JsonApiSpec::Resources::Chapter
   end
 
   def self.serialize(data_element:, query_node:)
-    resource = query_node[:resource]
+    resource        = query_node[:resource]
 
-    output = {
+    resource_object = {
       type:       resource[:name],
       id:         data_element.id.to_s,
       attributes: data_element.slice(resource[:fields] - [:id, :ordering]).merge(ordering: data_element.index),
     }
+
+    [:ok, resource_object: resource_object]
   end
 
 end

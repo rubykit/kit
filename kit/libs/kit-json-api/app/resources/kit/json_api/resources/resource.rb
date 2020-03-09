@@ -100,7 +100,7 @@ module Kit::JsonApi::Resources::Resource
 
       serialized_element[:links] = generate_resource_link(serialized_element: serialized_element)[1]
 
-      serialized_element
+      [:ok, resource_object: serialized_element]
     end
 
   end

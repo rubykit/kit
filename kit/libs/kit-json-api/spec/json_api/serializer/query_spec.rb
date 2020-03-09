@@ -1,9 +1,9 @@
-require_relative '../rails_helper'
+require_relative '../../rails_helper'
 
 require 'oj'
 require 'json'
 
-describe Kit::JsonApi::Services::QuerySerializer do
+describe Kit::JsonApi::Services::Serializer::Query do
   let(:service)  { described_class }
 
   context 'for a top level resource' do
