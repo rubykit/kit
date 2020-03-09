@@ -36,6 +36,19 @@ module Kit::JsonApiSpec::Resources::Author
     }
   end
 
+  def self.available_filters
+    fields_filters = available_fields
+      .map { |name, type| [name, Kit::JsonApi::TypesHint.defaults[type]] }
+      .to_h
+
+    # @note Dummy filter, acts as an exemple of a custom filter.
+    filters = {
+      alive: Kit::JsonApi::TypesHint.defaults[Kit::JsonApi::TypesHint::Boolean],
+    }
+
+    filters.merge(fields_filters)
+  end
+
   def self.available_relationships
     {
       books: {

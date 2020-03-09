@@ -37,20 +37,15 @@ module Kit::JsonApi::Resources::Resource
     end
 
     def available_sort_fields
-      raise 'Implement me.'
+      available_fields
+        .map { |name, _| [name, { order: [[name, :asc]], default: (name == :id), }] }
+        .to_h
     end
 
     def available_filters
-      fields_filters = available_fields
+      available_fields
         .map { |name, type| [name, Kit::JsonApi::TypesHint.defaults[type]] }
         .to_h
-
-      # @note Dummy filter, acts as an exemple
-      filters = {
-        alive: Kit::JsonApi::TypesHint.defaults[Kit::JsonApi::TypesHint::Boolean],
-      }
-
-      filters.merge(fields_filters)
     end
 
     def available_relationships

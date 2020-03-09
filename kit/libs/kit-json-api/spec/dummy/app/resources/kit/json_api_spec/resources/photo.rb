@@ -26,18 +26,6 @@ module Kit::JsonApiSpec::Resources::Photo
     }
   end
 
-  def self.available_sort_fields
-    available_fields
-      .map { |name, _| [name, { order: [[name, :asc]], default: (name == :id), }] }
-      .to_h
-  end
-
-  def self.available_filters
-    available_fields
-      .map { |name, type| [name, Kit::JsonApi::TypesHint.defaults[type]] }
-      .to_h
-  end
-
   def self.available_relationships
     {
       author: {
