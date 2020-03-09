@@ -12,6 +12,7 @@ module Kit::JsonApi::Services::Serializer::ResourceObject
         query_node[:resource][:serializer],
         self.method(:add_to_document_cache),
         self.method(:ensure_uniqueness),
+
         self.method(:add_resource_object_relationships_data),
         self.method(:add_parent_resource_object_relationships_data),
       ],
@@ -60,18 +61,20 @@ module Kit::JsonApi::Services::Serializer::ResourceObject
   def self.add_resource_object_relationships_data(query_node:, document:, resource_object:, data_element:)
     query_node[:relationship_query_nodes].each do |relationship_name, relationship_query_node|
       relationship = query_node[:resource][:relationships][relationship_name]
-      next if !relationship[:inclusion][:resolve_child]
 
       resource_object[:relationships] ||= {}
-      resource_object[:relationships][relationship_name] ||= {}
-      container = resource_object[:relationships][relationship_name][:data] ||= []
+      container = resource_object[:relationships][relationship_name] ||= {}
 
-      child_element_type, child_element_id = relationship[:inclusion][:resolve_child].call(data_element: data_element)
+      next if !relationship[:inclusion][:resolve_child]
 
-      container << {
-        type: child_element_type,
-        id:   child_element_id,
-      }
+      _, linkage_data = relationship[:inclusion][:resolve_child].call(data_element: data_element)
+
+      if relationship[:type] == :one
+        container[:data] = linkage_data
+      else
+        container[:data] ||= []
+        container[:data] << linkage_data
+      end
     end
 
     [:ok, resource_object: resource_object]
@@ -88,18 +91,24 @@ module Kit::JsonApi::Services::Serializer::ResourceObject
     relationship = parent_query_node[:resource][:relationships][parent_relationship_name]
     return [:ok] if !relationship[:inclusion][:resolve_parent]
 
-    parent_element_type, parent_element_id = relationship[:inclusion][:resolve_parent].call(data_element: data_element)
-
-    parent_element = document[:cache][parent_element_type][parent_element_id.to_s]
-
-    parent_element[:relationships] ||= {}
-    parent_element[:relationships][parent_relationship_name] ||= {}
-    container = parent_element[:relationships][parent_relationship_name][:data] ||= []
-
-    container << {
+    linkage_data = {
       type: query_node[:resource][:name],
       id:   resource_object[:id],
     }
+
+    _, parent_linkage_data = relationship[:inclusion][:resolve_parent].call(data_element: data_element)
+
+    parent_resource_object = document[:cache][parent_linkage_data[:type].to_sym][parent_linkage_data[:id].to_s]
+
+    parent_resource_object[:relationships] ||= {}
+    container = parent_resource_object[:relationships][parent_relationship_name] ||= {}
+
+    if relationship[:type] == :one
+      container[:data] = linkage_data
+    else
+      container[:data] ||= []
+      container[:data] << linkage_data
+    end
 
     [:ok, document: document]
   end

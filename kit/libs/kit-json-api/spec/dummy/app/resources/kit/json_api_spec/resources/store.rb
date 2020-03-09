@@ -43,7 +43,7 @@ module Kit::JsonApiSpec::Resources::Store
           top_level:       false,
           nested:          false,
           # `resolve_parent` receives the resource inside the relationship (book_store)
-          resolve_parent:  ->(data_element:) { [resource[:name], data_element.kit_json_api_spec_store_id] },
+          resolve_parent:  ->(data_element:) { [:ok, type: resource[:name], id: data_element.kit_json_api_spec_store_id] },
         },
       },
     }

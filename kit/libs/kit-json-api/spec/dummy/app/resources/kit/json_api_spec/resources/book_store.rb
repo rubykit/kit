@@ -55,7 +55,7 @@ module Kit::JsonApiSpec::Resources::BookStore
           top_level:       true,
           nested:          false,
           # `resolve_child` receives the top level resource the relationship (book_store)
-          resolve_child:   ->(data_element:) { [resource[:name], data_element.kit_json_api_spec_book_id] },
+          resolve_child:   ->(data_element:) { [:ok, type: resource[:name], id: data_element.kit_json_api_spec_book_id] },
         },
       },
       stores: {
@@ -74,7 +74,7 @@ module Kit::JsonApiSpec::Resources::BookStore
           top_level:       true,
           nested:          false,
           # `resolve_child` receives the top level resource the relationship (book_store)
-          resolve_child:   ->(data_element:) { [resource[:name], data_element.kit_json_api_spec_store_id] },
+          resolve_child:   ->(data_element:) { [:ok, type: resource[:name], id: data_element.kit_json_api_spec_store_id] },
         },
       },
     }

@@ -45,7 +45,7 @@ module Kit::JsonApiSpec::Resources::Photo
           top_level:       true,
           nested:          false,
           # `resolve_child` receives the top level resource the relationship (chapter)
-          resolve_child:   ->(data_element:) { [resource[:name], data_element.imageable_id] },
+          resolve_child:   ->(data_element:) { [:ok, type: resource[:name], id: data_element.imageable_id] },
         },
       },
       book: {
@@ -65,7 +65,7 @@ module Kit::JsonApiSpec::Resources::Photo
           top_level:       true,
           nested:          false,
           # `resolve_child` receives the top level resource the relationship (chapter)
-          resolve_child:   ->(data_element:) { [resource[:name], data_element.imageable_id] },
+          resolve_child:   ->(data_element:) { [:ok, type: resource[:name], id: data_element.imageable_id] },
         },
       },
       serie: {
@@ -85,7 +85,7 @@ module Kit::JsonApiSpec::Resources::Photo
           top_level:       true,
           nested:          false,
           # `resolve_child` receives the top level resource the relationship (chapter)
-          resolve_child:   ->(data_element:) { [resource[:name], data_element.imageable_id] },
+          resolve_child:   ->(data_element:) { [:ok, type: resource[:name], id: data_element.imageable_id] },
         },
       },
     }

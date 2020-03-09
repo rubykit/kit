@@ -1,7 +1,8 @@
 # TODO
 
-* [ ] Add handling of singular for top level && relationships (behaviour in `data`)
+* [x] Add handling of singular for top level && relationships (behaviour in `data`)
 * [ ] Add relationships links
+
 * [ ] Add paginations to links
 * [ ] Add filters to links
 

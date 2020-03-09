@@ -42,7 +42,7 @@ module Kit::JsonApiSpec::Resources::Chapter
           top_level:       true,
           nested:          false,
           # `resolve_child` receives the top level resource the relationship (chapter)
-          resolve_child:   ->(data_element:) { [resource[:name], data_element.kit_json_api_spec_book_id] },
+          resolve_child:   ->(data_element:) { [:ok, type: resource[:name], id: data_element.kit_json_api_spec_book_id] },
         },
       },
     }

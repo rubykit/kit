@@ -67,7 +67,7 @@ module Kit::JsonApiSpec::Resources::Author
           top_level:       true,
           nested:          false,
           # `resolve_parent` receives the resource inside the relationship (book)
-          resolve_parent:  ->(data_element:) { [resource[:name], data_element.kit_json_api_spec_author_id] },
+          resolve_parent:  ->(data_element:) { [:ok, type: resource[:name], id: data_element.kit_json_api_spec_author_id] },
         },
       },
       series: {
@@ -86,7 +86,7 @@ module Kit::JsonApiSpec::Resources::Author
           top_level:       true,
           nested:          false,
           # `resolve_parent` receives the resource inside the relationship (serie)
-          resolve_parent: ->(data_element:) { [resource[:name], data_element.read_attribute(:kit_json_api_spec_author_id)] },
+          resolve_parent: ->(data_element:) { [:ok, type: resource[:name], id: data_element.read_attribute(:kit_json_api_spec_author_id)] },
         },
         data_loader:       self.method(:load_series_relationship_data),
       },
@@ -109,7 +109,7 @@ module Kit::JsonApiSpec::Resources::Author
           top_level:       true,
           nested:          false,
           # `resolve_parent` receives the resource inside the relationship (image)
-          resolve_parent: ->(data_element:) { [resource[:name], data_element.imageable_id] },
+          resolve_parent: ->(data_element:) { [:ok, type: resource[:name], id: data_element.imageable_id] },
         },
       },
     }

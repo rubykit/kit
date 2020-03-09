@@ -44,7 +44,7 @@ module Kit::JsonApiSpec::Resources::Book
           top_level:       true,
           nested:          false,
           # `resolve_child` receives the top level resource the relationship (book)
-          resolve_child:   ->(data_element:) { [resource[:name], data_element.kit_json_api_spec_author_id] },
+          resolve_child:   ->(data_element:) { [:ok, type: resource[:name], id: data_element.kit_json_api_spec_author_id] },
         },
       },
       serie: {
@@ -63,7 +63,7 @@ module Kit::JsonApiSpec::Resources::Book
           top_level:       true,
           nested:          false,
           # `resolve_child` receives the top level resource the relationship (book)
-          resolve_child:   ->(data_element:) { [resource[:name], data_element.kit_json_api_spec_serie_id] },
+          resolve_child:   ->(data_element:) { [:ok, type: resource[:name], id: data_element.kit_json_api_spec_serie_id] },
         },
       },
 
@@ -86,7 +86,7 @@ module Kit::JsonApiSpec::Resources::Book
           top_level:       true,
           nested:          false,
           # `resolve_parent` receives the resource inside the relationship (chapter)
-          resolve_parent:  ->(data_element:) { [resource[:name], data_element.kit_json_api_spec_book_id] },
+          resolve_parent:  ->(data_element:) { [:ok, type: resource[:name], id: data_element.kit_json_api_spec_book_id] },
         },
       },
 
@@ -106,7 +106,7 @@ module Kit::JsonApiSpec::Resources::Book
           top_level:       false,
           nested:          false,
           # `resolve_parent` receives the resource inside the relationship (chapter)
-          resolve_parent:  ->(data_element:) { [resource[:name], data_element.kit_json_api_spec_book_id] },
+          resolve_parent:  ->(data_element:) { [:ok, type: resource[:name], id: data_element.kit_json_api_spec_book_id] },
         },
       },
 
@@ -126,7 +126,7 @@ module Kit::JsonApiSpec::Resources::Book
           top_level:       false,
           nested:          false,
           # `resolve_parent` receives the resource inside the relationship (book_store)
-          resolve_parent:  ->(data_element:) { [resource[:name], data_element.kit_json_api_spec_book_id] },
+          resolve_parent:  ->(data_element:) { [:ok, type: resource[:name], id: data_element.kit_json_api_spec_book_id] },
         },
       },
     }
