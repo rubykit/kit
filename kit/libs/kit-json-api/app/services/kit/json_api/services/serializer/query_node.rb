@@ -14,6 +14,7 @@ module Kit::JsonApi::Services::Serializer::QueryNode
         self.method(:if_top_level_add_links),
         self.method(:if_top_level_and_singular_flatten),
         self.method(:serialize_relationships_query_nodes),
+        self.method(:add_relationship_links),
       ],
       ctx: {
         query_node: query_node,
@@ -35,7 +36,7 @@ module Kit::JsonApi::Services::Serializer::QueryNode
 
   # Serializes every `data element` in a query_node. Handles relationship resource linkage.
   def self.serialize_query_node_data_elements(query_node:, document:)
-    resource_collection = []
+    collection = []
 
     query_node[:data].each do |data_element|
       _, ctx = Kit::JsonApi::Services::Serializer::ResourceObject.serialize_resource_object(
@@ -44,10 +45,23 @@ module Kit::JsonApi::Services::Serializer::QueryNode
         document:     document,
       )
 
-      resource_collection << ctx[:resource_object]
+      collection << { resource_object: ctx[:resource_object], data_element: data_element }
     end
 
-    [:ok, document: document, resource_collection: resource_collection]
+    [:ok, document: document, collection: collection]
+  end
+
+  # ?
+  def self.add_relationship_links(query_node:, document:)
+    query_node[:data].each do |data_element|
+      _, ctx = Kit::JsonApi::Services::Serializer::ResourceObject.add_relationship_links(
+        query_node:   query_node,
+        data_element: data_element,
+        document:     document,
+      )
+    end
+
+    [:ok, document: document]
   end
 
   before Ct::Hash[query_node: Ct::QueryNode, document: Ct::Document]
@@ -55,7 +69,7 @@ module Kit::JsonApi::Services::Serializer::QueryNode
   # Calls `serialize_query_node` on every relationship (nested) query node.
   # @note This contains the recursion that traverses the whole query AST.
   def self.serialize_relationships_query_nodes(query_node:, document:)
-    query_node[:relationship_query_nodes].each do |_relationship_name, nested_query_node|
+    query_node[:relationship_query_nodes].each do |relationship_name, nested_query_node|
       status, ctx = result = serialize_query_node(
         query_node: nested_query_node,
         document:   document,
@@ -65,16 +79,16 @@ module Kit::JsonApi::Services::Serializer::QueryNode
     [:ok, document: document]
   end
 
-  # When dealing with the top level node, adds the top level `data` `links`
-  def self.if_top_level_add_links(query_node:, document:, resource_collection:)
+  # Add the top level `data` `links` if this is the top level QueryNode
+  def self.if_top_level_add_links(query_node:, document:, collection:)
     return [:ok] if query_node[:parent_query_node]
 
     if query_node[:singular]
-      links = resource_collection[0].dig(:links)
+      links = collection[0].dig(:links)
     else
       _, links = query_node[:resource][:links][:resource_collection].call(
-        resource_collection: resource_collection,
-        sorting:             query_node[:sorting],
+        collection: collection,
+        sorting:    query_node[:sorting],
       )
     end
     document[:response][:links] = links
@@ -82,7 +96,7 @@ module Kit::JsonApi::Services::Serializer::QueryNode
     [:ok, document: document]
   end
 
-  # When dealing with the top level node and a singular `resource object` requesy, transforms `data` from an array of a single `resource objects` to the `resource object` directly.
+  # Flatten `data` from an array to a single `resource object` if this is the top level QueryNode and it is tagged as `singular`
   def self.if_top_level_and_singular_flatten(query_node:, document:)
     if !query_node[:parent_query_node] && query_node[:singular]
       document[:response][:data] = document[:response][:data][0]

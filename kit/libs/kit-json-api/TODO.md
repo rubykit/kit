@@ -1,8 +1,9 @@
 # TODO
 
 * [x] Add handling of singular for top level && relationships (behaviour in `data`)
-* [ ] Add relationships links
+* [x] Can there be collisions for relationship linkage when object is loaded N times? Probably only on limit, but this need to be accounted for.
 
+* [ ] Add relationships links (need to re-identify the collection?)
 * [ ] Add paginations to links
 * [ ] Add filters to links
 

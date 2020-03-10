@@ -10,11 +10,11 @@ module Kit::JsonApi::Services::Serializer::ResourceObject
     status, ctx = Kit::Organizer.call({
       list: [
         query_node[:resource][:serializer],
-        self.method(:add_to_document_cache),
+        self.method(:add_resource_object_to_cache),
         self.method(:ensure_uniqueness),
-
         self.method(:add_resource_object_relationships_data),
         self.method(:add_parent_resource_object_relationships_data),
+        self.method(:add_relationship_links),
       ],
       ctx: {
         query_node:   query_node,
@@ -28,14 +28,16 @@ module Kit::JsonApi::Services::Serializer::ResourceObject
 
   # Add the resource_object to document cache.
   # Extend the resource_object if it already exists (loaded through different relationships).
-  def self.add_to_document_cache(document:, query_node:, resource_object:)
+  def self.add_resource_object_to_cache(document:, query_node:, resource_object:)
     type = query_node[:resource][:name]
     id   = resource_object[:id].to_s
 
-    if (cached_document = document[:cache][type][id])
-      resource_object = cached_document.deep_merge(resource_object)
+    document[:cache][type][id] ||= { resource_object: nil, relationships: {} }
+
+    if (cached_resourced_object = document[:cache][type][id][:resource_object])
+      resource_object = cached_resourced_object.deep_merge(resource_object)
     end
-    document[:cache][type][id] = resource_object
+    document[:cache][type][id][:resource_object] = resource_object
 
     [:ok, document: document]
   end
@@ -56,25 +58,25 @@ module Kit::JsonApi::Services::Serializer::ResourceObject
     [:ok, document: document]
   end
 
+  def self.add_relationship_links(document:, query_node:)
+  end
+
   # Adds relationship linkage when the knowledge of the relationship is defined on the current `data_element` (the "foreign key" is known directly on the current `data_element`, "belongs to" scenario).
   # @note The relationship `resource_object` might not yet be in the response, but all that is needed is the `id` anyway.
   def self.add_resource_object_relationships_data(query_node:, document:, resource_object:, data_element:)
     query_node[:relationship_query_nodes].each do |relationship_name, relationship_query_node|
       relationship = query_node[:resource][:relationships][relationship_name]
 
-      resource_object[:relationships] ||= {}
-      container = resource_object[:relationships][relationship_name] ||= {}
-
       next if !relationship[:inclusion][:resolve_child]
 
       _, linkage_data = relationship[:inclusion][:resolve_child].call(data_element: data_element)
 
-      if relationship[:type] == :one
-        container[:data] = linkage_data
-      else
-        container[:data] ||= []
-        container[:data] << linkage_data
-      end
+      add_relationship_linkage(
+        document:        document,
+        relationship:    relationship,
+        resource_object: resource_object,
+        linkage_data:    linkage_data,
+      )
     end
 
     [:ok, resource_object: resource_object]
@@ -97,17 +99,57 @@ module Kit::JsonApi::Services::Serializer::ResourceObject
     }
 
     _, parent_linkage_data = relationship[:inclusion][:resolve_parent].call(data_element: data_element)
+    parent_resource_object = document[:cache][parent_linkage_data[:type].to_sym][parent_linkage_data[:id].to_s][:resource_object]
 
-    parent_resource_object = document[:cache][parent_linkage_data[:type].to_sym][parent_linkage_data[:id].to_s]
+    add_relationship_linkage(
+      document:        document,
+      relationship:    relationship,
+      resource_object: parent_resource_object,
+      linkage_data:    linkage_data,
+    )
 
-    parent_resource_object[:relationships] ||= {}
-    container = parent_resource_object[:relationships][parent_relationship_name] ||= {}
+    [:ok, document: document]
+  end
 
-    if relationship[:type] == :one
-      container[:data] = linkage_data
+  def self.add_relationship_linkage(document:, relationship:, resource_object:, linkage_data:)
+    resource_object[:relationships] ||= {}
+
+    relationship_name = relationship[:name]
+    ro_type           = resource_object[:type].to_sym
+    ro_id             = resource_object[:id].to_s
+    rs_type           = linkage_data[:type].to_sym
+    rs_id             = linkage_data[:id].to_s
+
+    relationship_cache = document[:cache][ro_type][ro_id][:relationships]
+    relationship_cache[relationship_name] ||= {}
+    relationship_cache[relationship_name][rs_type] ||= {}
+
+
+    # Protects against duplicates in a relationship list if a resource object has been loaded through different paths.
+    if !relationship_cache[relationship_name][rs_type][rs_id]
+      container = resource_object[:relationships][relationship_name] ||= {}
+
+      if relationship[:type] == :one
+        container[:data] = linkage_data
+      else
+        container[:data] ||= []
+        container[:data] << linkage_data
+      end
+
+      relationship_cache[relationship_name][rs_type][rs_id] = linkage_data
     else
-      container[:data] ||= []
-      container[:data] << linkage_data
+      # TODO: assess if we can have extended linkage data (more info than was previously available)
+      #   If so, we need to merge.
+    end
+
+    [:ok, document: document]
+  end
+
+  def self.add_relationship_links(query_node:, document:, data_element:)
+    query_node[:relationship_query_nodes].each do |relationship_name, nested_query_node|
+      # Can we trust the ordering?
+      # Can there be conflicts if the resource object was loaded twice?
+
     end
 
     [:ok, document: document]

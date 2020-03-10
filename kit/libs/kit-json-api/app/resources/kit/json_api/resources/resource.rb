@@ -43,9 +43,16 @@ module Kit::JsonApi::Resources::Resource
     end
 
     def available_filters
-      available_fields
+      fields = available_fields
         .map { |name, type| [name, Kit::JsonApi::TypesHint.defaults[type]] }
         .to_h
+
+      relationships = available_relationships
+        .select { |_, rs| rs[:type] == :many }
+        .map    { |name, _| [name, Kit::JsonApi::TypesHint.defaults[Kit::JsonApi::TypesHint::IdNumeric]] }
+        .to_h
+
+      fields.merge(relationships)
     end
 
     def available_relationships
@@ -64,7 +71,7 @@ module Kit::JsonApi::Resources::Resource
     #      For a relationship, they describe the foreign key.
     #  - Sorting. Always exist, but can be implicit.
     #  - Pagination. Depends on `sorting`. Contains the data that allows to select elements in a set. This needs to know the collection.
-    def generate_collection_links(resource_collection:, filters: nil, sorting:)
+    def generate_collection_links(collection:, filters: nil, sorting:)
       [:ok, {
         self: '',
         prev: '', # RO
@@ -74,7 +81,7 @@ module Kit::JsonApi::Resources::Resource
       }]
     end
 
-    def generate_relationships_links(resource_collection:, filters: nil, sorting:)
+    def generate_relationships_links(collection:, filters: nil, sorting:)
       [:ok, {
         self:    '', # RS
         related: '', # RO
