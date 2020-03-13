@@ -66,4 +66,12 @@ module Kit::JsonApi::Contracts
     ],
   ]
 
+  # TODO: make this correct
+  ResourceObject = Any
+
+  DataElement = Hash[
+    raw_data: Any,
+    resource_object: ResourceObject,
+  ]
+
 end

@@ -2,10 +2,19 @@
 
 * [x] Add handling of singular for top level && relationships (behaviour in `data`)
 * [x] Can there be collisions for relationship linkage when object is loaded N times? Probably only on limit, but this need to be accounted for.
+* [ ] Reassess the previous question. I now don't think this can happen.
 
 * [ ] Add relationships links (need to re-identify the collection?)
 * [ ] Add paginations to links
 * [ ] Add filters to links
+
+* One issue currently is: how do you prevent collision in relationship links when the same relation can be accessed through different path, with different set size? It seems we need a way to identify a 2 level tupple in a unique way, but the naming of a relationship != to the object types.
+
+* Maybe there should be NO FILTERING for relationships (reserved for attributes). Instead one need to use the relationship link. The downside is: no possible multiple selection on foreign key, like `/books?filters[authors]=1,2`
+
+* Is there ANY expectation from something like Ember Data to be able to identify a nested collection VS top level? Sideloading might be ONLY for the store, and not a valid way to create app level `collections`
+
+* FOR A STORE: relationship BY FEATURE, not TYPE OF OBJECT! Post > LatestComments VS Post > Comments
 
 ---
 

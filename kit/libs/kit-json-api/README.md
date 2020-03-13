@@ -31,6 +31,35 @@ Current status:
 - Applying `Sparse fieldsets`
 - Serialization
 
+## Client
+
+```
+query = Query[
+  data: [Post1, Post2, Post3],
+  relationships: [
+    { # Relationships for Post1
+      comments: {
+        data: [Comment1A, Comment2B],
+        relationships: [...], 
+    },
+    { # Relationships for Post2
+      comments: [Comment2A],
+      relationships: [...],
+    },
+  ],
+  included: {
+    comments: {
+      data: [...],
+    },
+  },
+}]
+
+# Access to relationship of Post1 (might trigger a call since we traverse trough Post1)
+query.data[1].comments
+# Access to the ordered collection of Post1:
+query.relationships[1].comments.data
+```
+
 ## References
 
 - [jsonapi-grader](https://github.com/beauby/jsonapi-grader)

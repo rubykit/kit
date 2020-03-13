@@ -19,7 +19,10 @@ module Kit::JsonApi::Services::Serializer::Query
   # Create a Document object that contains the json response and various caches
   def self.create_document
     document = Kit::JsonApi::Types::Document[{
-      cache:    {},
+      cache:    {
+        resource_objects: {},
+        data_elements: {}
+      },
       included: {},
       response: {
         data:     [],

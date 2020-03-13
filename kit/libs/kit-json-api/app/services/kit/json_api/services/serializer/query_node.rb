@@ -28,7 +28,7 @@ module Kit::JsonApi::Services::Serializer::QueryNode
   def self.add_resource_type_to_document(document:, query_node:)
     type = query_node[:resource][:name]
 
-    document[:cache][type]    ||= {}
+    document[:cache][:resource_objects][type] ||= {}
     document[:included][type] ||= {}
 
     [:ok, document: document]

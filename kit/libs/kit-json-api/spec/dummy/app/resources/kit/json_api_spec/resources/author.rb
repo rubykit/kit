@@ -69,6 +69,10 @@ module Kit::JsonApiSpec::Resources::Author
           # `resolve_parent` receives the resource inside the relationship (book)
           resolve_parent:  ->(data_element:) { [:ok, type: resource[:name], id: data_element.kit_json_api_spec_author_id] },
         },
+        collect:  ->(parent_data_element:, query_node:) do
+          query[:node][:data]
+            .select { |data_element| data_element.kit_json_api_spec_author_id == parent_data_element.id }
+        end,
       },
       series: {
         resource_resolver: ->() { Kit::JsonApiSpec::Resources::Serie.resource },
@@ -89,6 +93,10 @@ module Kit::JsonApiSpec::Resources::Author
           resolve_parent: ->(data_element:) { [:ok, type: resource[:name], id: data_element.read_attribute(:kit_json_api_spec_author_id)] },
         },
         data_loader:       self.method(:load_series_relationship_data),
+        collect:  ->(parent_data_element:, query_node:) do
+          query[:node][:data]
+            .select { |data_element| data_element.kit_json_api_spec_author_id == parent_data_element.id }
+        end,
       },
       photos: {
         resource_resolver: ->() { Kit::JsonApiSpec::Resources::Photo.resource },
@@ -111,6 +119,10 @@ module Kit::JsonApiSpec::Resources::Author
           # `resolve_parent` receives the resource inside the relationship (image)
           resolve_parent: ->(data_element:) { [:ok, type: resource[:name], id: data_element.imageable_id] },
         },
+        collect:  ->(parent_data_element:, query_node:) do
+          query[:node][:data]
+            .select { |data_element| data_element.imageable_id == parent_data_element.id }
+        end,
       },
     }
   end
@@ -138,7 +150,6 @@ module Kit::JsonApiSpec::Resources::Author
     ->(query_node:) { query_node[:resource][:name] == :serie },
   ]
   def self.load_series_relationship_data(query_node:)
-    binding.pry if query_node[:resource][:name] != :serie
     ar_model    = Kit::JsonApiSpec::Models::Write::Serie
 
     status, ctx = Kit::Organizer.call({
