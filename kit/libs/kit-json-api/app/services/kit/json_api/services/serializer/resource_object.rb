@@ -82,10 +82,12 @@ module Kit::JsonApi::Services::Serializer::ResourceObject
       _, linkage_data = relationship[:inclusion][:resolve_child].call(data_element: data_element)
 
       add_relationship_linkage(
-        document:        document,
-        relationship:    relationship,
-        resource_object: resource_object,
-        linkage_data:    linkage_data,
+        #relationship:    relationship,
+        query_node:        query_node,
+        relationship_name: relationship_name,
+        document:          document,
+        resource_object:   resource_object,
+        linkage_data:      linkage_data,
       )
     end
 
@@ -112,33 +114,46 @@ module Kit::JsonApi::Services::Serializer::ResourceObject
     parent_resource_object = document[:cache][:resource_objects][parent_linkage_data[:type].to_sym][parent_linkage_data[:id].to_s][:resource_object]
 
     add_relationship_linkage(
-      document:        document,
-      relationship:    relationship,
-      resource_object: parent_resource_object,
-      linkage_data:    linkage_data,
+      #relationship:    relationship,
+      query_node:        parent_query_node,
+      relationship_name: parent_relationship_name,
+      document:          document,
+      resource_object:   parent_resource_object,
+      linkage_data:      linkage_data,
     )
 
     [:ok, document: document]
   end
 
-  def self.add_relationship_linkage(document:, relationship:, resource_object:, linkage_data:)
+  def self.add_relationship_linkage(query_node:, relationship_name:, document:, resource_object:, linkage_data:)
+    relationship = query_node[:resource][:relationships][relationship_name]
+
     resource_object[:relationships] ||= {}
 
-    relationship_name = relationship[:name]
+    relationship_pathname = relationship_name
+    # Get full relationship pathname to avoid collisions on collections.
+    if relationship[:type] == :many
+      tmp_qn                = query_node
+      loop do
+        break if !tmp_qn[:parent_query_node]
+        relationship_pathname = "#{tmp_qn[:parent_relationship_name]}.#{relationship_pathname}"
+        tmp_qn = tmp_qn[:parent_query_node]
+      end
+    end
+
     ro_type           = resource_object[:type].to_sym
     ro_id             = resource_object[:id].to_s
     rs_type           = linkage_data[:type].to_sym
     rs_id             = linkage_data[:id].to_s
 
-    relationship_cache = document[:cache][:resource_objects][ro_type][ro_id][:relationships]
-    relationship_cache[relationship_name] ||= {}
-    relationship_cache[relationship_name][rs_type] ||= {}
-
+    #relationship_cache = document[:cache][:resource_objects][ro_type][ro_id][:relationships]
+    #relationship_cache[relationship_name] ||= {}
+    #relationship_cache[relationship_name][rs_type] ||= {}
 
     # Protects against duplicates in a relationship list if a resource object has been loaded through different paths.
     # TODO: ASSESS! This might be impossible / entirely unecessary. Can THE SAME relationship have a different number of elements loaded through different paths?
-    if !relationship_cache[relationship_name][rs_type][rs_id]
-      container = resource_object[:relationships][relationship_name] ||= {}
+    #if !relationship_cache[relationship_name][rs_type][rs_id]
+      container = resource_object[:relationships][relationship_pathname] ||= {}
 
       if relationship[:type] == :one
         container[:data] = linkage_data
@@ -147,11 +162,11 @@ module Kit::JsonApi::Services::Serializer::ResourceObject
         container[:data] << linkage_data
       end
 
-      relationship_cache[relationship_name][rs_type][rs_id] = linkage_data
-    else
+      #relationship_cache[relationship_name][rs_type][rs_id] = linkage_data
+    #else
       # TODO: assess if we can have extended linkage data (more info than was previously available)
       #   If so, we need to merge.
-    end
+    #end
 
     [:ok, document: document]
   end

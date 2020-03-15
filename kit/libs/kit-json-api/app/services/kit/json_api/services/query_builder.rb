@@ -22,6 +22,12 @@ module Kit::JsonApi::Services::QueryBuilder
   def self.build_query(resource:, singular:, parent_query_node: nil, parent_relationship_name: nil, condition: nil, data_loader: nil)
     sorting    = resource[:sort_fields].select { |k, v| v[:default] == true }.first[1][:order]
 
+    if singular == true
+      limit = 1
+    elsif limit == nil
+      limit = 10
+    end
+
     query_node = Kit::JsonApi::Types::QueryNode[
       resource:                 resource,
       singular:                 singular,
@@ -30,7 +36,7 @@ module Kit::JsonApi::Services::QueryBuilder
       condition:                condition,
       sorting:                  sorting,
       data:                     nil,
-      limit:                    10,
+      limit:                    limit,
       relationship_query_nodes: {},
       data_loader:              data_loader || resource[:data_loader],
     ]

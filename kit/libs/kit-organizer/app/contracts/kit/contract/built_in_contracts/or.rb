@@ -10,16 +10,20 @@ module Kit::Contract::BuiltInContracts
         Kit::Contract::Services::Validation.valid?(contract: contract, args: args)
       end
 
-      passed = results.any? do |status, ctx|
-        status == :ok
-      end
+      failed = results.select { |status, _| status == :error }
 
-      if passed
+      if failed.size != @contracts.size
         [:ok]
       else
-        #puts "--------------------"
-        #puts results
-        [:error, "OR failed"]
+        errors = [{detail: 'OR failed'},]
+        failed.each do |status, ctx|
+          errors += ctx[:errors]
+        end
+
+        [:error, {
+          errors:         errors,
+          contract_error: failed[0][1][:contract_error],
+        }]
       end
     end
   end
