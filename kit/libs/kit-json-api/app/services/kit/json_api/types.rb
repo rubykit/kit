@@ -1,5 +1,8 @@
 module Kit::JsonApi::Types
 
+  class Record < ::Hash
+  end
+
   class Resource < ::Hash
   end
 

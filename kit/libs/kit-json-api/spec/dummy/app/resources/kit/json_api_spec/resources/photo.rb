@@ -27,68 +27,16 @@ module Kit::JsonApiSpec::Resources::Photo
   end
 
   def self.available_relationships
-    {
-      author: {
-        resource_resolver: ->() { Kit::JsonApiSpec::Resources::Author.resource },
-        type:              :many,
-        inherited_filter:  ->(query_node:) do
-          values = (query_node&.dig(:parent_query_node, :data) || [])
-            .select { |el| el[:imageable_type] == 'Kit::JsonApiSpec::Models::Write::Author' }
-            .map    { |el| el[:imageable_id] }
-          if values.size > 0
-            Kit::JsonApi::Types::Condition[op: :in, column: :id, values: values, upper_relationship: true]
-          else
-            nil
-          end
-        end,
-        inclusion: {
-          top_level:       true,
-          nested:          false,
-          # `resolve_child` receives the top level resource the relationship (chapter)
-          resolve_child:   ->(data_element:) { [:ok, type: resource[:name], id: data_element.imageable_id] },
-        },
-      },
-      book: {
-        resource_resolver: ->() { Kit::JsonApiSpec::Resources::Book.resource },
-        type:              :many,
-        inherited_filter:  ->(query_node:) do
-          values = (query_node&.dig(:parent_query_node, :data) || [])
-            .select { |el| el[:imageable_type] == 'Kit::JsonApiSpec::Models::Write::Book' }
-            .map    { |el| el[:imageable_id] }
-          if values.size > 0
-            Kit::JsonApi::Types::Condition[op: :in, column: :id, values: values, upper_relationship: true]
-          else
-            nil
-          end
-        end,
-        inclusion: {
-          top_level:       true,
-          nested:          false,
-          # `resolve_child` receives the top level resource the relationship (chapter)
-          resolve_child:   ->(data_element:) { [:ok, type: resource[:name], id: data_element.imageable_id] },
-        },
-      },
-      serie: {
-        resource_resolver: ->() { Kit::JsonApiSpec::Resources::Serie.resource },
-        type:              :many,
-        inherited_filter:  ->(query_node:) do
-          values = (query_node&.dig(:parent_query_node, :data) || [])
-            .select { |el| el[:imageable_type] == 'Kit::JsonApiSpec::Models::Write::Serie' }
-            .map    { |el| el[:imageable_id] }
-          if values.size > 0
-            Kit::JsonApi::Types::Condition[op: :in, column: :id, values: values, upper_relationship: true]
-          else
-            nil
-          end
-        end,
-        inclusion: {
-          top_level:       true,
-          nested:          false,
-          # `resolve_child` receives the top level resource the relationship (chapter)
-          resolve_child:   ->(data_element:) { [:ok, type: resource[:name], id: data_element.imageable_id] },
-        },
-      },
-    }
+    list = [
+      Kit::JsonApiSpec::Resources::Photo::Relationships::Author,
+      Kit::JsonApiSpec::Resources::Photo::Relationships::Book,
+      Kit::JsonApiSpec::Resources::Photo::Relationships::Chapter,
+      Kit::JsonApiSpec::Resources::Photo::Relationships::Serie,
+    ]
+
+    list
+      .map { |el| rs = el.relationship; [rs[:name], rs] }
+      .to_h
   end
 
   before [

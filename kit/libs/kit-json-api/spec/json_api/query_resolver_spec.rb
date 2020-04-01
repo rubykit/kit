@@ -17,9 +17,9 @@ describe Kit::JsonApi::Services::QueryResolver do
 
     list.each do |resource:|
       it "generates a valid query plan for #{resource[:name]}" do
-        top_query_node = Kit::JsonApi::Services::QueryBuilder.build_query(resource: resource, singular: singular)[1][:query_node]
+        query_node = Kit::JsonApi::Services::QueryBuilder.build_query(resource: resource, singular: singular)[1][:query][:entry_query_node]
 
-        status, ctx    = service.resolve_query_node(query_node: top_query_node)
+        status, ctx    = service.resolve_query_node(query_node: query_node)
 
         expect(status).to eq :ok
       end

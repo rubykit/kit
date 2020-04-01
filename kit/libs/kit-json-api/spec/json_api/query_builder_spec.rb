@@ -6,27 +6,32 @@ describe Kit::JsonApi::Services::QueryBuilder do
 
   context 'for a top level resource' do
     list = [
-      { resource: Kit::JsonApiSpec::Resources::Author.resource,    included_relationships_count: 3, },
-      { resource: Kit::JsonApiSpec::Resources::Book.resource,      included_relationships_count: 3, },
-      { resource: Kit::JsonApiSpec::Resources::BookStore.resource, included_relationships_count: 2, },
-      { resource: Kit::JsonApiSpec::Resources::Chapter.resource,   included_relationships_count: 1, },
-      { resource: Kit::JsonApiSpec::Resources::Photo.resource,     included_relationships_count: 3, },
-      { resource: Kit::JsonApiSpec::Resources::Serie.resource,     included_relationships_count: 3, },
-      { resource: Kit::JsonApiSpec::Resources::Store.resource,     included_relationships_count: 0, },
+      { resource: Kit::JsonApiSpec::Resources::Author.resource,    },
+      { resource: Kit::JsonApiSpec::Resources::Book.resource,      },
+      { resource: Kit::JsonApiSpec::Resources::BookStore.resource, },
+      { resource: Kit::JsonApiSpec::Resources::Chapter.resource,   },
+      { resource: Kit::JsonApiSpec::Resources::Photo.resource,     },
+      { resource: Kit::JsonApiSpec::Resources::Serie.resource,     },
+      { resource: Kit::JsonApiSpec::Resources::Store.resource,     },
     ]
 
-    list.each do |resource:, included_relationships_count:|
+    list.each do |resource:|
       it "generates a valid query plan for #{resource[:name]}" do
         status, ctx = service.build_query(resource: resource, singular: singular)
-        query_node  = ctx[:query_node]
+        query       = ctx[:query]
+        query_node  = query[:entry_query_node]
 
         expect(status).to eq :ok
-        expect(query_node[:relationship_query_nodes].count).to eq(included_relationships_count)
+        expect(query_node[:relationships].count).to eq(resource[:relationships].count)
 
-        resource[:relationships].each do |rs_name, rs_data|
-          next if !rs_data[:inclusion][:top_level]
+        resource[:relationships].each do |relationship_name, relationship|
+          next if relationship[:inclusion_level] < 1
 
-          expect(query_node[:relationship_query_nodes][rs_name]).to be_a(Kit::JsonApi::Types::QueryNode)
+          qn_relationship = query_node[:relationships][relationship_name]
+
+          expect(qn_relationship[:name]).to eq(relationship_name)
+          expect(qn_relationship[:parent_query_node]).to eq(query_node)
+          expect(qn_relationship[:child_query_node]).to be_a(Kit::JsonApi::Types::QueryNode)
         end
       end
     end

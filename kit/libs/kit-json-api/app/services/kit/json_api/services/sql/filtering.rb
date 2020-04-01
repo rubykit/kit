@@ -46,6 +46,10 @@ module Kit::JsonApi::Services::Sql::Filtering
     hash_values  = {}
     sql_operator = OperatorsStr[operator]
 
+    if operator == :in
+      values = values.uniq
+    end
+
     if operator.in?([:and, :or])
       str_values = values.map do |value|
         if value.is_a?(String)

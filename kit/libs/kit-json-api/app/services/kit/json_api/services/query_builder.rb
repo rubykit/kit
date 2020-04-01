@@ -2,6 +2,17 @@ module Kit::JsonApi::Services::QueryBuilder
   include Kit::Contract
   Ct = Kit::JsonApi::Contracts
 
+  def self.build_query(resource:, singular:, condition: nil)
+    _, ctx = build_query_node(
+      resource:        resource,
+      singular:        singular,
+      inclusion_level: 0,
+      condition:       condition,
+    )
+
+    [:ok, query: { entry_query_node: ctx[:query_node] }]
+  end
+
   before [
     Ct::Hash[{
       resource:                 Ct::Resource,
@@ -12,14 +23,14 @@ module Kit::JsonApi::Services::QueryBuilder
   after [
     Ct::Result[
       query_node:  Ct::QueryNode,
-      data_loader: Ct::Optional[Ct::Callable],
+      #data_loader: Ct::Optional[Ct::Callable],
     ],
   ]
   # Creates the AST of the query. Each `level` is a query node, even when there are 1:N or N:N scenarios.
   # For instance "Author -> Books -> Chapters" will be resolved as 3 corresponding query nodes total, eventhough there are many books, with many chapters.
   # Each type of relationship generates a query node even if they target the same resource.
   # For instance "Author -> [Chapter | FirstChapter]" will generate 3 corresponding query nodes total, eventhough the two relationships "Chapter" and "FirstChapter" target the same Resource (Chapter)
-  def self.build_query(resource:, singular:, parent_query_node: nil, parent_relationship_name: nil, condition: nil, data_loader: nil)
+  def self.build_query_node(resource:, singular:, inclusion_level:, condition: nil, data_loader: nil)
     sorting    = resource[:sort_fields].select { |k, v| v[:default] == true }.first[1][:order]
 
     if singular == true
@@ -31,32 +42,75 @@ module Kit::JsonApi::Services::QueryBuilder
     query_node = Kit::JsonApi::Types::QueryNode[
       resource:                 resource,
       singular:                 singular,
-      parent_query_node:        parent_query_node,
-      parent_relationship_name: parent_relationship_name,
       condition:                condition,
       sorting:                  sorting,
       data:                     nil,
       limit:                    limit,
-      relationship_query_nodes: {},
+      relationships:            {},
       data_loader:              data_loader || resource[:data_loader],
     ]
 
-    resource[:relationships].each do |relationship_name, relationship_data|
-      next if !relationship_data[:inclusion][!parent_query_node ? :top_level : :nested]
+    build_nested_relationships(
+      query_node:      query_node,
+      inclusion_level: inclusion_level,
+    )
+
+=begin
+    inclusion_level += 1
+
+    resource[:relationships].each do |nested_relationship_name, nested_relationship|
+      next if relationship[:inclusion_level] < inclusion_level
 
       _, ctx = build_query(
-        resource:                 relationship_data[:resource_resolver].call(),
+        resource:                 nested_relationship[:resource_resolver].call(),
+        inclusion_level:          inclusion_level,
+
         parent_relationship_name: relationship_name,
         parent_query_node:        query_node,
-        condition:                relationship_data[:inherited_filter],
-        data_loader:              relationship_data[:data_loader],
-        singular:                 relationship_data[:type] == :one,
+        condition:                nested_relationship[:inherited_filter],
+        data_loader:              nested_relationship[:data_loader],
+        singular:                 nested_relationship[:type] == :one,
       )
 
-      query_node[:relationship_query_nodes][relationship_name] = ctx[:query_node]
+      nested_relationship = nested_relationship.dup
+      nested_relationship[:parent_query_node] = query_node
+      nested_relationship[:child_query_node]  = ctx[:query_node]
+
+      query_node[:relationships][nested_relationship_name] = nested_relationship
+    end
+=end
+
+    [:ok, query_node: query_node]
+  end
+
+  def self.build_nested_relationships(query_node:, inclusion_level:)
+    resource = query_node[:resource]
+
+    inclusion_level += 1
+
+    resource[:relationships].each do |relationship_name, relationship|
+      next if relationship[:inclusion_level] < inclusion_level
+
+      _, ctx = build_query_node(
+        resource:                 relationship[:child_resource].call(),
+        inclusion_level:          inclusion_level,
+        condition:                relationship[:inherited_filter],
+        data_loader:              relationship[:data_loader],
+        singular:                 relationship[:type] == :to_one,
+      )
+
+      child_query_node = ctx[:query_node]
+
+      relationship = relationship.dup
+      relationship[:parent_query_node] = query_node
+      relationship[:child_query_node]  = child_query_node
+
+      query_node[:relationships][relationship_name] = relationship
+      child_query_node[:parent_relationship] = relationship
     end
 
     [:ok, query_node: query_node]
   end
+
 
 end

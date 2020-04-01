@@ -27,109 +27,17 @@ module Kit::JsonApiSpec::Resources::Book
   end
 
   def self.available_relationships
-    {
-      author: {
-        resource_resolver: ->() { Kit::JsonApiSpec::Resources::Author.resource },
-        type:              :one,
-        inherited_filter:  ->(query_node:) do
-          values = (query_node&.dig(:parent_query_node, :data) || [])
-            .map { |el| el[:kit_json_api_spec_author_id] }
-          if values.size > 0
-            Kit::JsonApi::Types::Condition[op: :in, column: :id, values: values, upper_relationship: true]
-          else
-            nil
-          end
-        end,
-        inclusion: {
-          top_level:       true,
-          nested:          false,
-          # `resolve_child` receives the top level resource the relationship (book)
-          resolve_child:   ->(data_element:) { [:ok, type: resource[:name], id: data_element.kit_json_api_spec_author_id] },
-        },
-      },
-      serie: {
-        resource_resolver: ->() { Kit::JsonApiSpec::Resources::Serie.resource },
-        type:              :one,
-        inherited_filter:  ->(query_node:) do
-          values = (query_node&.dig(:parent_query_node, :data) || [])
-            .map { |el| el[:kit_json_api_spec_serie_id] }
-          if values.size > 0
-            Kit::JsonApi::Types::Condition[op: :in, column: :id, values: values, upper_relationship: true]
-          else
-            nil
-          end
-        end,
-        inclusion: {
-          top_level:       true,
-          nested:          false,
-          # `resolve_child` receives the top level resource the relationship (book)
-          resolve_child:   ->(data_element:) { [:ok, type: resource[:name], id: data_element.kit_json_api_spec_serie_id] },
-        },
-      },
+    list = [
+      Kit::JsonApiSpec::Resources::Book::Relationships::Author,
+      #Kit::JsonApiSpec::Resources::Book::Relationships::BookStores,
+      #Kit::JsonApiSpec::Resources::Book::Relationships::Chapters,
+      #Kit::JsonApiSpec::Resources::Book::Relationships::FirstChapter,
+      #Kit::JsonApiSpec::Resources::Book::Relationships::Serie,
+    ]
 
-      first_chapter: {
-        resource_resolver: ->() { Kit::JsonApiSpec::Resources::Chapter.resource },
-        type:              :one,
-        inherited_filter:  ->(query_node:) do
-          values = (query_node&.dig(:parent_query_node, :data) || [])
-            .map { |el| el[:id] }
-          if values.size > 0
-            Kit::JsonApi::Types::Condition[op: :and, values: [
-              Kit::JsonApi::Types::Condition[op: :in, column: :kit_json_api_spec_book_id, values: values, upper_relationship: true],
-              Kit::JsonApi::Types::Condition[op: :eq, column: :index, values: 1],
-            ],]
-          else
-            nil
-          end
-        end,
-        inclusion: {
-          top_level:       true,
-          nested:          false,
-          # `resolve_parent` receives the resource inside the relationship (chapter)
-          resolve_parent:  ->(data_element:) { [:ok, type: resource[:name], id: data_element.kit_json_api_spec_book_id] },
-        },
-      },
-
-      chapters: {
-        resource_resolver: ->() { Kit::JsonApiSpec::Resources::Chapter.resource },
-        type:              :many,
-        inherited_filter:  ->(query_node:) do
-          values = (query_node&.dig(:parent_query_node, :data) || [])
-            .map { |el| el[:id] }
-          if values.size > 0
-            Kit::JsonApi::Types::Condition[op: :in, column: :kit_json_api_spec_book_id, values: values, upper_relationship: true]
-          else
-            nil
-          end
-        end,
-        inclusion: {
-          top_level:       false,
-          nested:          false,
-          # `resolve_parent` receives the resource inside the relationship (chapter)
-          resolve_parent:  ->(data_element:) { [:ok, type: resource[:name], id: data_element.kit_json_api_spec_book_id] },
-        },
-      },
-
-      book_stores: {
-        resource_resolver: ->() { Kit::JsonApiSpec::Resources::BookStore.resource },
-        type:              :many,
-        inherited_filter: ->(query_node:) do
-          values = (query_node&.dig(:parent_query_node, :data) || [])
-            .map { |el| el[:id] }
-          if values.size > 0
-            Kit::JsonApi::Types::Condition[op: :in, column: :kit_json_api_spec_book_id, values: values, upper_relationship: true]
-          else
-            nil
-          end
-        end,
-        inclusion: {
-          top_level:       false,
-          nested:          false,
-          # `resolve_parent` receives the resource inside the relationship (book_store)
-          resolve_parent:  ->(data_element:) { [:ok, type: resource[:name], id: data_element.kit_json_api_spec_book_id] },
-        },
-      },
-    }
+    list
+      .map { |el| rs = el.relationship; [rs[:name], rs] }
+      .to_h
   end
 
   before [

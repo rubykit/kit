@@ -19,7 +19,22 @@ module Kit::JsonApi::Contracts
   RelationshipName = Symbol
 
   Relationship = Hash[
-    resource_resolver: Callable,
+    name:              Symbol,
+    type:              In[:to_one, :to_many],
+    inclusion_level:   Integer,
+
+    parent_resource:   Callable,
+    child_resource:    Callable,
+
+    inherited_filter:  Callable,
+    #resolve_element:
+  ]
+
+  Record = Hash[
+    query_node:      Delayed[->{ QueryNode }],
+    raw_data:        Any,
+    #resource_object: Delayed[->{ ResourceObject }],
+    relationships:   Hash.of(RelationshipName => Array.of(Delayed[->{ Record }])),
   ]
 
   ResourceName  = Symbol
@@ -42,13 +57,14 @@ module Kit::JsonApi::Contracts
       resource:                 Resource,
       condition:                Optional[Or[Condition, Callable]],
       sorting:                  Optional[SortOrders],
-      data:                     Optional[Array], # data: nil if not loaded, array otherwise
+      #data:                     Optional[Array], # data: nil if not loaded, array otherwise
+      records:                  Optional[Array],
       limit:                    Numeric,
       meta:                     Optional[Hash],
       data_loader:              Callable,
-      parent_query_node:        Optional[QueryNodeType],
-      parent_relationship_name: Optional[Symbol],
-      relationship_query_nodes: Hash.of(RelationshipName => QueryNodeType),
+      #parent_query_node:        Optional[QueryNodeType],
+      #parent_relationship_name: Optional[Symbol],
+      relationships: Hash.of(RelationshipName => Relationship),
     ]
   ]
 

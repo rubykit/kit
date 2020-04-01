@@ -65,6 +65,20 @@ module Kit::JsonApi::Services::Serializer::ResourceObject
 
   def self.add_relationship_links(document:, query_node:, data_element:)
     query_node[:relationship_query_nodes].each do |relationship_name, nested_query_node|
+      relationship = query_node[:resource][:relationships][relationship_name]
+      resource     = relationship[:resource].call(:resource_resolver)
+
+      if relationship[:type] == :one
+        resource[:relationship_links].call()
+
+      else
+        #collection            = relationship[:collect].call(current_data_element: data_element, nested_query_node: nested_query_node)
+
+        #relationship_pathname = get_relationship_pathname(query_node: nested_query_node, relationship_name: relationship_name)[1][:relationship_pathname]
+        #relationship_links
+
+        #relationship[:relationship_collection_links]
+      end
 
     end
 
@@ -130,6 +144,28 @@ module Kit::JsonApi::Services::Serializer::ResourceObject
 
     resource_object[:relationships] ||= {}
 
+    relationship_pathname = get_relationship_pathname(query_node: query_node, relationship_name: relationship_name)[1][:relationship_pathname]
+
+    ro_type = resource_object[:type].to_sym
+    ro_id   = resource_object[:id].to_s
+    rs_type = linkage_data[:type].to_sym
+    rs_id   = linkage_data[:id].to_s
+
+    container = resource_object[:relationships][relationship_pathname] ||= {}
+
+    if relationship[:type] == :one
+      container[:data] = linkage_data
+    else
+      container[:data] ||= []
+      container[:data] << linkage_data
+    end
+
+    [:ok, document: document]
+  end
+
+  def self.get_relationship_pathname(relationship_name:, query_node:)
+    relationship = query_node[:resource][:relationships][relationship_name]
+
     relationship_pathname = relationship_name
     # Get full relationship pathname to avoid collisions on collections.
     if relationship[:type] == :many
@@ -141,44 +177,7 @@ module Kit::JsonApi::Services::Serializer::ResourceObject
       end
     end
 
-    ro_type           = resource_object[:type].to_sym
-    ro_id             = resource_object[:id].to_s
-    rs_type           = linkage_data[:type].to_sym
-    rs_id             = linkage_data[:id].to_s
-
-    #relationship_cache = document[:cache][:resource_objects][ro_type][ro_id][:relationships]
-    #relationship_cache[relationship_name] ||= {}
-    #relationship_cache[relationship_name][rs_type] ||= {}
-
-    # Protects against duplicates in a relationship list if a resource object has been loaded through different paths.
-    # TODO: ASSESS! This might be impossible / entirely unecessary. Can THE SAME relationship have a different number of elements loaded through different paths?
-    #if !relationship_cache[relationship_name][rs_type][rs_id]
-      container = resource_object[:relationships][relationship_pathname] ||= {}
-
-      if relationship[:type] == :one
-        container[:data] = linkage_data
-      else
-        container[:data] ||= []
-        container[:data] << linkage_data
-      end
-
-      #relationship_cache[relationship_name][rs_type][rs_id] = linkage_data
-    #else
-      # TODO: assess if we can have extended linkage data (more info than was previously available)
-      #   If so, we need to merge.
-    #end
-
-    [:ok, document: document]
-  end
-
-  def self.add_relationship_links(query_node:, document:, data_element:)
-    query_node[:relationship_query_nodes].each do |relationship_name, nested_query_node|
-      # Can we trust the ordering?
-      # Can there be conflicts if the resource object was loaded twice?
-
-    end
-
-    [:ok, document: document]
+    [:ok, relationship_pathname: relationship_pathname]
   end
 
 end

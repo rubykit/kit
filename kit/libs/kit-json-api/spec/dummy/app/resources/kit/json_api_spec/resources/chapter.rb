@@ -25,27 +25,23 @@ module Kit::JsonApiSpec::Resources::Chapter
   end
 
   def self.available_relationships
-    {
-      book: {
-        resource_resolver: ->() { Kit::JsonApiSpec::Resources::Book.resource },
-        type:              :one,
-        inherited_filter:  ->(query_node:) do
-          values = (query_node&.dig(:parent_query_node, :data) || [])
-            .map { |el| el[:kit_json_api_spec_book_id] }
-          if values.size > 0
-            Kit::JsonApi::Types::Condition[op: :in, column: :id, values: values, upper_relationship: true]
-          else
-            nil
-          end
-        end,
-        inclusion: {
-          top_level:       true,
-          nested:          false,
-          # `resolve_child` receives the top level resource the relationship (chapter)
-          resolve_child:   ->(data_element:) { [:ok, type: resource[:name], id: data_element.kit_json_api_spec_book_id] },
-        },
-      },
-    }
+    list = [
+      Kit::JsonApiSpec::Resources::Chapter::Relationships::Book,
+    ]
+
+    list
+      .map { |el| rs = el.relationship; [rs[:name], rs] }
+      .to_h
+  end
+
+  def self.available_relationships
+    list = [
+      Kit::JsonApiSpec::Resources::Chapter::Relationships::Book,
+    ]
+
+    list
+      .map { |el| rs = el.relationship; [rs[:name], rs] }
+      .to_h
   end
 
   before [

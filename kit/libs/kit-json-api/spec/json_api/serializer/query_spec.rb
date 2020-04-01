@@ -9,12 +9,12 @@ describe Kit::JsonApi::Services::Serializer::Query do
   context 'for a top level resource' do
     list = [
       { resource: Kit::JsonApiSpec::Resources::Author.resource,    },
-      { resource: Kit::JsonApiSpec::Resources::Book.resource,      },
-      { resource: Kit::JsonApiSpec::Resources::BookStore.resource, },
-      { resource: Kit::JsonApiSpec::Resources::Chapter.resource,   },
-      { resource: Kit::JsonApiSpec::Resources::Photo.resource,     },
-      { resource: Kit::JsonApiSpec::Resources::Serie.resource,     },
-      { resource: Kit::JsonApiSpec::Resources::Store.resource,     },
+      #{ resource: Kit::JsonApiSpec::Resources::Book.resource,      },
+      #{ resource: Kit::JsonApiSpec::Resources::BookStore.resource, },
+      #{ resource: Kit::JsonApiSpec::Resources::Chapter.resource,   },
+      #{ resource: Kit::JsonApiSpec::Resources::Photo.resource,     },
+      #{ resource: Kit::JsonApiSpec::Resources::Serie.resource,     },
+      #{ resource: Kit::JsonApiSpec::Resources::Store.resource,     },
     ]
 
     list.each do |resource:|
@@ -29,6 +29,7 @@ describe Kit::JsonApi::Services::Serializer::Query do
         expect(status).to eq :ok
       end
 
+=begin
       it "serializes a single #{resource[:name]}" do
         top_query_node = Kit::JsonApi::Services::QueryBuilder.build_query(resource: resource, singular: true)[1][:query_node]
         top_query_node[:limit] = 1
@@ -40,6 +41,7 @@ describe Kit::JsonApi::Services::Serializer::Query do
 
         expect(status).to eq :ok
       end
+=end
 
     end
   end

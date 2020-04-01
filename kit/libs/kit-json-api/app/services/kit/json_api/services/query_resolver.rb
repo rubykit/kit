@@ -8,8 +8,9 @@ module Kit::JsonApi::Services::QueryResolver
     Kit::Organizer.call({
       list: [
         self.method(:resolve_query_node_condition),
-        self.method(:load_data),
-        self.method(:resolve_relationships),
+        self.method(:load_records),
+        self.method(:resolve_relationships_query_nodes),
+        self.method(:resolve_relationships_records),
       ],
       ctx: { query_node: query_node, },
     })
@@ -42,12 +43,21 @@ module Kit::JsonApi::Services::QueryResolver
 
   before Ct::Hash[query_node: Ct::QueryNode]
   after  Ct::Result[query_node: Ct::QueryNode]
-  def self.load_data(query_node:)
+  def self.load_records(query_node:)
     result      = query_node[:data_loader].call(query_node: query_node)
+
     status, ctx = result
 
     if status == :ok
-      query_node[:data] = ctx[:data]
+      query_node[:records] = ctx[:data].map do |raw_data|
+        Kit::JsonApi::Types::Record[
+          query_node:      query_node,
+          raw_data:        raw_data,
+          meta:            {},
+          relationships:   {},
+        ]
+      end
+
       [:ok, query_node: query_node]
     else
       result
@@ -56,12 +66,27 @@ module Kit::JsonApi::Services::QueryResolver
 
   before Ct::Hash[query_node: Ct::QueryNode]
   after  Ct::Result[query_node: Ct::QueryNode]
-  def self.resolve_relationships(query_node:)
-    query_node[:relationship_query_nodes].each do |_relationship_name, nested_query_node|
+  def self.resolve_relationships_query_nodes(query_node:)
+    query_node[:relationships].each do |_relationship_name, relationship|
+      nested_query_node = relationship[:child_query_node]
       status, ctx = result = resolve_query_node(query_node: nested_query_node)
 
       if status == [:error]
         return result
+      end
+    end
+
+    [:ok, query_node: query_node]
+  end
+
+  def self.resolve_relationships_records(query_node:)
+    query_node[:relationships].each do |_relationship_name, relationship|
+      child_query_node = relationship[:child_query_node]
+      child_records    = child_query_node[:records]
+
+      query_node[:records].each do |parent_record|
+        selector = relationship[:select_relationship_record].call(parent_record: parent_record)
+        parent_record[:relationships][_relationship_name] = child_records.select(&selector)
       end
     end
 

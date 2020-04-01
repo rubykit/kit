@@ -38,46 +38,14 @@ module Kit::JsonApiSpec::Resources::BookStore
   end
 
   def self.available_relationships
-    {
-      books: {
-        resource_resolver: ->() { Kit::JsonApiSpec::Resources::Book.resource },
-        type:              :many,
-        inherited_filter:  ->(query_node:) do
-          values = (query_node&.dig(:parent_query_node, :data) || [])
-            .map { |el| el[:kit_json_api_spec_book_id] }
-          if values.size > 0
-            Kit::JsonApi::Types::Condition[op: :in, column: :id, values: values, upper_relationship: true]
-          else
-            nil
-          end
-        end,
-        inclusion: {
-          top_level:       true,
-          nested:          false,
-          # `resolve_child` receives the top level resource the relationship (book_store)
-          resolve_child:   ->(data_element:) { [:ok, type: resource[:name], id: data_element.kit_json_api_spec_book_id] },
-        },
-      },
-      stores: {
-        resource_resolver: ->() { Kit::JsonApiSpec::Resources::Store.resource },
-        type:              :many,
-        inherited_filter:  ->(query_node:) do
-          values = (query_node&.dig(:parent_query_node, :data) || [])
-            .map { |el| el[:kit_json_api_spec_store_id] }
-          if values.size > 0
-            Kit::JsonApi::Types::Condition[op: :in, column: :id, values: values, upper_relationship: true]
-          else
-            nil
-          end
-        end,
-        inclusion: {
-          top_level:       true,
-          nested:          false,
-          # `resolve_child` receives the top level resource the relationship (book_store)
-          resolve_child:   ->(data_element:) { [:ok, type: resource[:name], id: data_element.kit_json_api_spec_store_id] },
-        },
-      },
-    }
+    list = [
+      Kit::JsonApiSpec::Resources::BookStore::Relationships::Book,
+      Kit::JsonApiSpec::Resources::BookStore::Relationships::Store,
+    ]
+
+    list
+      .map { |el| rs = el.relationship; [rs[:name], rs] }
+      .to_h
   end
 
   before [

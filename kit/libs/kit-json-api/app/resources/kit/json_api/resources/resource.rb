@@ -10,25 +10,28 @@ module Kit::JsonApi::Resources::Resource
       raise 'Implement me.'
     end
 
-    def relationship_url(resource_id:, relationship_id:)
+    def relationship_url(resource_id:, relationship_name:)
       raise 'Implement me.'
     end
 
     #after Ct::Resource
     def resource
       @resource ||= Kit::JsonApi::Types::Resource[{
-        name:          resource_name,
-        fields:        available_fields.keys,
-        relationships: available_relationships,
-        sort_fields:   available_sort_fields,
-        filters:       available_filters,
-        data_loader:   self.method(:load_data),
-        serializer:    self.method(:serialize),
-        links: {
-          resource_object:     self.method(:generate_resource_link),
-          resource_collection: self.method(:generate_collection_links),
-          relationship:        self.method(:generate_relationships_links),
-        },
+        name:                          resource_name,
+
+        fields:                        available_fields.keys,
+        sort_fields:                   available_sort_fields,
+        filters:                       available_filters,
+
+        relationships:                 available_relationships,
+
+        data_loader:                   self.method(:load_data),
+        serializer:                    self.method(:serialize),
+
+        resource_links:                self.method(:resource_links),
+        resource_collection_links:     self.method(:resource_collection_links),
+        relationship_links:            self.method(:relationship_links),
+        relationship_collection_links: self.method(:relationship_collection_links),
       }]
     end
 
@@ -59,7 +62,7 @@ module Kit::JsonApi::Resources::Resource
       raise 'Implement me.'
    end
 
-    def generate_resource_link(serialized_element:)
+    def resource_links(serialized_element:)
       [:ok, {
         self: resource_url(resource_id: serialized_element[:id]),
       }]
@@ -71,7 +74,7 @@ module Kit::JsonApi::Resources::Resource
     #      For a relationship, they describe the foreign key.
     #  - Sorting. Always exist, but can be implicit.
     #  - Pagination. Depends on `sorting`. Contains the data that allows to select elements in a set. This needs to know the collection.
-    def generate_collection_links(collection:, filters: nil, sorting:)
+    def resource_collection_links(collection:, filters: nil, sorting:)
       [:ok, {
         self: '',
         prev: '', # RO
@@ -81,7 +84,17 @@ module Kit::JsonApi::Resources::Resource
       }]
     end
 
-    def generate_relationships_links(collection:, filters: nil, sorting:)
+    def relationship_links(data_element:, relationship:, filters: nil, sorting:)
+      rs_resource = relationship[:resolve_resource].call()
+      
+      [:ok, {
+        self:    relationship_url(resource_id: data_element[:id], relationship_name: relationship[:name]), # RS
+        related: rs_resource[:resource_url].call(resource_id: data_element[:id]), # RO
+      }]
+    end
+
+    def relationship_collection_links(data_element_collection:, relationship:, filters: nil, sorting:)
+      relationship_url(relationship_name: relationship[:name])
       [:ok, {
         self:    '', # RS
         related: '', # RO
