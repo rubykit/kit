@@ -62,9 +62,9 @@ module Kit::JsonApi::Resources::Resource
       raise 'Implement me.'
    end
 
-    def resource_links(serialized_element:)
+    def resource_links(resource_object:)
       [:ok, {
-        self: resource_url(resource_id: serialized_element[:id]),
+        self: resource_url(resource_id: resource_object[:id]),
       }]
     end
 
@@ -86,7 +86,7 @@ module Kit::JsonApi::Resources::Resource
 
     def relationship_links(data_element:, relationship:, filters: nil, sorting:)
       rs_resource = relationship[:resolve_resource].call()
-      
+
       [:ok, {
         self:    relationship_url(resource_id: data_element[:id], relationship_name: relationship[:name]), # RS
         related: rs_resource[:resource_url].call(resource_id: data_element[:id]), # RO
@@ -104,18 +104,20 @@ module Kit::JsonApi::Resources::Resource
     end
 
     # `data_element` is whatever was added to data. This is opaque.
-    def serialize(data_element:, query_node:)
-      resource = query_node[:resource]
+    def serialize(record:)
+      raw_data   = record[:raw_data]
+      query_node = record[:query_node]
+      resource   = query_node[:resource]
 
-      serialized_element = {
+      resource_object = {
         type:       resource[:name],
-        id:         data_element.id.to_s,
-        attributes: data_element.slice(resource[:fields] - [:id]),
+        id:         raw_data.id.to_s,
+        attributes: raw_data.slice(resource[:fields] - [:id]),
       }
 
-      serialized_element[:links] = generate_resource_link(serialized_element: serialized_element)[1]
+      resource_object[:links] = resource_links(resource_object: resource_object)[1]
 
-      [:ok, resource_object: serialized_element]
+      [:ok, resource_object: resource_object]
     end
 
   end

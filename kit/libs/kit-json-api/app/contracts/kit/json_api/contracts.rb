@@ -27,14 +27,15 @@ module Kit::JsonApi::Contracts
     child_resource:    Callable,
 
     inherited_filter:  Callable,
-    #resolve_element:
+
+    #parent_query_node: Optional[QueryNode],
+    #child_query_node:  Optional[QueryNode],
   ]
 
   Record = Hash[
-    query_node:      Delayed[->{ QueryNode }],
-    raw_data:        Any,
-    #resource_object: Delayed[->{ ResourceObject }],
-    relationships:   Hash.of(RelationshipName => Array.of(Delayed[->{ Record }])),
+    query_node:    Delayed[->{ QueryNode }],
+    raw_data:      Any,
+    relationships: Hash.of(RelationshipName => Array.of(Delayed[->{ Record }])),
   ]
 
   ResourceName  = Symbol
@@ -54,17 +55,15 @@ module Kit::JsonApi::Contracts
   QueryNode     = And[
     QueryNodeType,
     Hash[
-      resource:                 Resource,
-      condition:                Optional[Or[Condition, Callable]],
-      sorting:                  Optional[SortOrders],
-      #data:                     Optional[Array], # data: nil if not loaded, array otherwise
-      records:                  Optional[Array],
-      limit:                    Numeric,
-      meta:                     Optional[Hash],
-      data_loader:              Callable,
-      #parent_query_node:        Optional[QueryNodeType],
-      #parent_relationship_name: Optional[Symbol],
-      relationships: Hash.of(RelationshipName => Relationship),
+      resource:            Resource,
+      condition:           Optional[Or[Condition, Callable]],
+      sorting:             Optional[SortOrders],
+      records:             Optional[Array],
+      limit:               Numeric,
+      meta:                Optional[Hash],
+      data_loader:         Callable,
+      relationships:       Hash.of(RelationshipName => Relationship),
+      parent_relationship: Optional[Relationship],
     ]
   ]
 

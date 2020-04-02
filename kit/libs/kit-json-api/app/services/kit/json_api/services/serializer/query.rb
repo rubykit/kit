@@ -21,7 +21,7 @@ module Kit::JsonApi::Services::Serializer::Query
     document = Kit::JsonApi::Types::Document[{
       cache:    {
         resource_objects: {},
-        data_elements: {}
+        records: {},
       },
       included: {},
       response: {

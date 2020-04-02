@@ -28,6 +28,9 @@ module Kit::JsonApiSpec::Resources::Author::Relationships::Books
       select_relationship_record: ->(parent_record:) do
         ->(child_record) { parent_record[:raw_data].id == child_record[:raw_data].kit_json_api_spec_author_id }
       end,
+
+      self_link:    ->(relationship:) { Kit::JsonApi::Services::Links.rs_self_link(relationship: relationship)[1][:link] },
+      related_link: ->(relationship:) { Kit::JsonApi::Services::Links.rs_related_link(relationship: relationship)[1][:link] },
     }
   end
 
