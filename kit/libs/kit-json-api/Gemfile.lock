@@ -46,6 +46,7 @@ PATH
   remote: ../kit-organizer
   specs:
     kit-organizer (0.1.0)
+      awesome_print
       rails (~> 6.0)
 
 PATH
@@ -134,6 +135,7 @@ GEM
     arkency-command_bus (0.4.0)
       thread_safe
     ast (2.4.0)
+    awesome_print (1.8.0)
     bounded_context (0.42.0)
     builder (3.2.3)
     coderay (1.1.2)

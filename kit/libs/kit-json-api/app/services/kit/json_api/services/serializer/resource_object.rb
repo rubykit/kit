@@ -11,6 +11,7 @@ module Kit::JsonApi::Services::Serializer::ResourceObject
         record[:query_node][:resource][:serializer],
         self.method(:add_record_to_cache),
         self.method(:ensure_uniqueness_in_document),
+        self.method(:add_resource_object_links),
       ],
       ctx: {
         document: document,
@@ -30,7 +31,7 @@ module Kit::JsonApi::Services::Serializer::ResourceObject
     type       = query_node[:resource][:name]
     id         = resource_object[:id].to_s
 
-    ro_cache   = document[:cache][:resource_objects][type][id] ||= { resource_object: nil, records: [], relationships: {} }
+    ro_cache   = document[:cache][:resource_objects][type][id] ||= { resource_object: nil, records: {}, relationships: {} }
 
     if (cached_resourced_object = ro_cache[:resource_object])
       resource_object = cached_resourced_object.deep_merge(resource_object)
@@ -39,9 +40,7 @@ module Kit::JsonApi::Services::Serializer::ResourceObject
 
     record[:resource_object]   = resource_object
 
-    if !ro_cache[:records].include?(record)
-      ro_cache[:records] << record
-    end
+    #ro_cache[:records][record.object_id] = record
 
     [:ok, document: document, record: record, resource_object: resource_object]
   end
@@ -63,6 +62,14 @@ module Kit::JsonApi::Services::Serializer::ResourceObject
     end
 
     [:ok, document: document]
+  end
+
+  def self.add_resource_object_links(record:)
+    resource = record[:query_node][:resource]
+
+    record[:resource_object][:links] = resource[:links_single].call(record: record)[1][:links]
+
+    [:ok, record: record]
   end
 
 end

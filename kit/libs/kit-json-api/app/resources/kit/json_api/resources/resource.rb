@@ -14,6 +14,48 @@ module Kit::JsonApi::Resources::Resource
       raise 'Implement me.'
     end
 
+    def links_single(record:)
+      links = {
+        self: resource_url(resource_id: record[:resource_object][:id]),
+      }
+
+      [:ok, links: links]
+    end
+
+    def links_collection(query_node:, records:)
+      records_list = records
+
+      links = {
+        self: "https://top_level_collection-self_link?first=#{records_list.first&.dig(:resource_object, :id)}&last=#{records_list.last&.dig(:resource_object, :id)}",
+        prev: '...',
+        next: '...',
+      }
+
+      [:ok, links: links]
+    end
+
+    def links_relationship_single(record:, relationship:)
+      records_list = record[:relationships][relationship[:name]]
+
+      links = {
+        self:    "https://to_one_rel-self_link?el=#{records_list.first&.dig(:resource_object, :id)}",
+        related: "https://to_one-relrelated_link?el=#{records_list.first&.dig(:resource_object, :id)}",
+      }
+
+      [:ok, links: links]
+    end
+
+    def links_relationship_collection(record:, relationship:)
+      records_list = record[:relationships][relationship[:name]]
+
+      links = {
+        self:    "https://to_many_rel-self_link?first=#{records_list.first&.dig(:resource_object, :id)}&last=#{records_list.last&.dig(:resource_object, :id)}",
+        related: "https://to_many_rel-related_link?first=#{records_list.first&.dig(:resource_object, :id)}&last=#{records_list.last&.dig(:resource_object, :id)}",
+      }
+
+      [:ok, links: links]
+    end
+
     #after Ct::Resource
     def resource
       @resource ||= Kit::JsonApi::Types::Resource[{
@@ -28,10 +70,10 @@ module Kit::JsonApi::Resources::Resource
         data_loader:                   self.method(:load_data),
         serializer:                    self.method(:serialize),
 
-        resource_links:                self.method(:resource_links),
-        resource_collection_links:     self.method(:resource_collection_links),
-        relationship_links:            self.method(:relationship_links),
-        relationship_collection_links: self.method(:relationship_collection_links),
+        links_single:                  self.method(:links_single),
+        links_collection:              self.method(:links_collection),
+        links_relationship_single:     self.method(:links_relationship_single),
+        links_relationship_collection: self.method(:links_relationship_collection),
       }]
     end
 
@@ -62,47 +104,6 @@ module Kit::JsonApi::Resources::Resource
       raise 'Implement me.'
    end
 
-    def resource_links(resource_object:)
-      [:ok, {
-        self: resource_url(resource_id: resource_object[:id]),
-      }]
-    end
-
-    # For collections there are 3 context elements:
-    #  - Filters. They do not interact with the collection.
-    #      For a top level collection, they are received in the request.
-    #      For a relationship, they describe the foreign key.
-    #  - Sorting. Always exist, but can be implicit.
-    #  - Pagination. Depends on `sorting`. Contains the data that allows to select elements in a set. This needs to know the collection.
-    def resource_collection_links(collection:, filters: nil, sorting:)
-      [:ok, {
-        self: '',
-        prev: '', # RO
-        next: '', # RO
-        #first: '', # RO - Can be obtained for free
-        #last:  '', # RO - Can we get this one? reversed sorting for the query + reversed data set
-      }]
-    end
-
-    def relationship_links(data_element:, relationship:, filters: nil, sorting:)
-      rs_resource = relationship[:resolve_resource].call()
-
-      [:ok, {
-        self:    relationship_url(resource_id: data_element[:id], relationship_name: relationship[:name]), # RS
-        related: rs_resource[:resource_url].call(resource_id: data_element[:id]), # RO
-      }]
-    end
-
-    def relationship_collection_links(data_element_collection:, relationship:, filters: nil, sorting:)
-      relationship_url(relationship_name: relationship[:name])
-      [:ok, {
-        self:    '', # RS
-        related: '', # RO
-        #prev:    '', # RS not that interesting
-        #next:    '', # RS not that interesting
-      }]
-    end
-
     # `data_element` is whatever was added to data. This is opaque.
     def serialize(record:)
       raw_data   = record[:raw_data]
@@ -114,8 +115,6 @@ module Kit::JsonApi::Resources::Resource
         id:         raw_data.id.to_s,
         attributes: raw_data.slice(resource[:fields] - [:id]),
       }
-
-      resource_object[:links] = resource_links(resource_object: resource_object)[1]
 
       [:ok, resource_object: resource_object]
     end

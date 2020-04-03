@@ -50,26 +50,21 @@ module Kit::JsonApi::Services::Serializer::QueryNode
 
   # Add the top level `data` `links` if this is the top level QueryNode
   def self.if_top_level_add_links(query_node:, document:)
-=begin
-    return [:ok] if query_node[:parent_query_node]
+    return [:ok] if query_node[:parent_relationship]
 
     if query_node[:singular]
-      links = collection[0].dig(:links)
+      links = query_node[:records][0][:resource_object].dig(:links)
     else
-      _, links = query_node[:resource][:links][:resource_collection].call(
-        collection: collection,
-        sorting:    query_node[:sorting],
-      )
+      links = query_node[:resource][:links_collection].call(query_node: query_node, records: query_node[:records])[1][:links]
     end
     document[:response][:links] = links
-=end
 
     [:ok, document: document]
   end
 
   # Flatten `data` from an array to a single `resource object` if this is the top level QueryNode and it is tagged as `singular`
   def self.if_top_level_and_singular_flatten(query_node:, document:)
-    if !query_node[:parent_query_node] && query_node[:singular]
+    if !query_node[:parent_relationship] && query_node[:singular]
       document[:response][:data] = document[:response][:data][0]
     end
 

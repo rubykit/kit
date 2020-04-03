@@ -22,26 +22,27 @@ describe Kit::JsonApi::Services::Serializer::Query do
         entry_query_node = Kit::JsonApi::Services::QueryBuilder.build_query(resource: resource, singular: false)[1][:query][:entry_query_node]
         Kit::JsonApi::Services::QueryResolver.resolve_query_node(query_node: entry_query_node)
 
-        status, ctx = service.serialize_query(query_node: entry_query_node)
+        status, ctx   = service.serialize_query(query_node: entry_query_node)
+        json_response = ctx[:document][:response]
 
-        puts JSON.pretty_generate(ctx[:document][:response])
+        puts JSON.pretty_generate(json_response)
 
         expect(status).to eq :ok
+        expect(json_response[:data]).to be_a(Array)
       end
 
-=begin
       it "serializes a single #{resource[:name]}" do
-        top_query_node = Kit::JsonApi::Services::QueryBuilder.build_query(resource: resource, singular: true)[1][:query_node]
-        top_query_node[:limit] = 1
-        top_query_node = Kit::JsonApi::Services::QueryResolver.resolve_query_node(query_node: top_query_node)[1][:query_node]
+        entry_query_node = Kit::JsonApi::Services::QueryBuilder.build_query(resource: resource, singular: true)[1][:query][:entry_query_node]
+        Kit::JsonApi::Services::QueryResolver.resolve_query_node(query_node: entry_query_node)
 
-        status, ctx = service.serialize_query(query_node: top_query_node)
+        status, ctx   = service.serialize_query(query_node: entry_query_node)
+        json_response = ctx[:document][:response]
 
-        puts JSON.pretty_generate(ctx[:document][:response])
+        puts JSON.pretty_generate(json_response)
 
         expect(status).to eq :ok
+        expect(json_response[:data]).to be_a(Hash)
       end
-=end
 
     end
   end

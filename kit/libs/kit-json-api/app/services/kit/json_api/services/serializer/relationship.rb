@@ -64,14 +64,13 @@ module Kit::JsonApi::Services::Serializer::Relationship
   end
 
   def self.add_record_relationship_links(document:, record:, relationship:, relationship_container:)
-    relationship_records = record[:relationships][relationship[:name]]
+    resource = record[:query_node][:resource]
 
-    #if relationship[:type] == :one
-    #else
-    #end
-
-    relationship_container[:links][:self] = "https://self_link?first=#{relationship_records.first&.dig(:resource_object, :id)}&last=#{relationship_records.last&.dig(:resource_object, :id)}"
-    relationship_container[:links][:related] = 'https://related_link'
+    if relationship[:type] == :to_one
+      relationship_container[:links] = resource[:links_relationship_single].call(record: record, relationship: relationship,)[1][:links]
+    else
+      relationship_container[:links] = resource[:links_relationship_collection].call(record: record, relationship: relationship,)[1][:links]
+    end
 
     [:ok, document: document]
   end
