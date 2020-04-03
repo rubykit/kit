@@ -11,12 +11,13 @@ describe Kit::Contract::BuiltInContracts::Symbol do
       [:"1"],
     ]
   end
+  let(:expected_type) { Symbol }
   let(:args_invalid) do
     {
-      [nil]  => 'IS_A failed: expected `` to be a `Symbol`',
-      ['a']  => 'IS_A failed: expected `a` to be a `Symbol`',
-      [1]    => 'IS_A failed: expected `1` to be a `Symbol`',
-      ['1']  => 'IS_A failed: expected `1` to be a `Symbol`',
+      [nil]  => nil,
+      ['a']  => nil,
+      [1]    => nil,
+      ['1']  => nil,
     }
   end
 

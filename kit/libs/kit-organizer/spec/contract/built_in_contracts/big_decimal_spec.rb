@@ -10,12 +10,13 @@ describe Kit::Contract::BuiltInContracts::BigDecimal do
       [BigDecimal(1)],
     ]
   end
+  let(:expected_type) { BigDecimal }
   let(:args_invalid) do
     {
-      [nil]                   => 'IS_A failed: expected `` to be a `BigDecimal`',
-      [1]                     => 'IS_A failed: expected `1` to be a `BigDecimal`',
-      [1.0]                   => 'IS_A failed: expected `1.0` to be a `BigDecimal`',
-      [::Kernel::Rational(1)] => 'IS_A failed: expected `1/1` to be a `BigDecimal`',
+      [nil]                   => nil,
+      [1]                     => nil,
+      [1.0]                   => nil,
+      [::Kernel::Rational(1)] => nil,
     }
   end
 

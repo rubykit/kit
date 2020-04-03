@@ -11,11 +11,12 @@ describe Kit::Contract::BuiltInContracts::Integer do
       [9000000000000000000000000000],
     ]
   end
+  let(:expected_type) { Integer }
   let(:args_invalid) do
     {
-      [nil]                   => 'IS_A failed: expected `` to be a `Integer`',
-      [1.0]                   => 'IS_A failed: expected `1.0` to be a `Integer`',
-      [::Kernel::Rational(1)] => 'IS_A failed: expected `1/1` to be a `Integer`',
+      [nil]                   => nil,
+      [1.0]                   => nil,
+      [::Kernel::Rational(1)] => nil,
     }
   end
 

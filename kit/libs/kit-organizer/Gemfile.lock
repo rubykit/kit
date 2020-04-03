@@ -21,6 +21,7 @@ PATH
   remote: .
   specs:
     kit-organizer (0.1.0)
+      awesome_print
       rails (~> 6.0)
 
 GEM
@@ -89,6 +90,7 @@ GEM
       ruby_event_store (= 0.42.0)
     arkency-command_bus (0.4.0)
       thread_safe
+    awesome_print (1.8.0)
     bounded_context (0.42.0)
     builder (3.2.3)
     coderay (1.1.2)
@@ -234,6 +236,7 @@ PLATFORMS
 
 DEPENDENCIES
   activesupport
+  awesome_print
   colorize
   kit-app-container!
   kit-dummy-app-container!

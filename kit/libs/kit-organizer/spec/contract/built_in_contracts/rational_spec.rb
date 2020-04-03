@@ -10,12 +10,13 @@ describe Kit::Contract::BuiltInContracts::Rational do
       [::Kernel::Rational(1)],
     ]
   end
+  let(:expected_type) { 'Rational' }
   let(:args_invalid) do
     {
-      [nil]                  => 'IS_A failed: expected `` to be a `Rational`',
-      [1]                    => 'IS_A failed: expected `1` to be a `Rational`',
-      [1.0]                  => 'IS_A failed: expected `1.0` to be a `Rational`',
-      [::Kernel::Complex(1)] => 'IS_A failed: expected `1+0i` to be a `Rational`',
+      [nil]                  => nil,
+      [1]                    => nil,
+      [1.0]                  => nil,
+      [::Kernel::Complex(1)] => nil,
     }
   end
 

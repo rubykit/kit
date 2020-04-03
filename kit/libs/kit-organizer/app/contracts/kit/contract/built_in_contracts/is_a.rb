@@ -9,7 +9,7 @@ module Kit::Contract::BuiltInContracts
       if value.is_a?(@type)
         [:ok]
       else
-        [:error, "IS_A failed: expected `#{value}` to be a `#{@type}`"]
+        [:error, "IS_A failed: expected `#{value.inspect}` of type `#{value.class}` to be of type `#{@type}`"]
       end
     end
   end

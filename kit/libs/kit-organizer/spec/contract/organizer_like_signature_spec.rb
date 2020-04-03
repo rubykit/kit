@@ -33,13 +33,13 @@ describe TestClasses::Organizer do
 
   let(:args_invalid) do
     {
-      [{ list: [(->() {}), :callable_symbol], ctx: [], result: nil }] => 'Contract failure before `TestClasses::Organizer#organize`: ["IS_A failed: expected `[]` to be a `Hash`"]',
-      [{ list: [(->() {}), 'a'], ctx: { user_id: 1 } , result: nil }] => 'Contract failure before `TestClasses::Organizer#organize`: ["OR failed"]',
-      [{ list: :symbol, ctx: { user_id: 1 },           result: nil }] => 'Contract failure before `TestClasses::Organizer#organize`: ["IS_A failed: expected `symbol` to be a `Array`"]',
+      [{ list: [(->() {}), :callable_symbol], ctx: [], result: nil }] => 'Contract failure before `TestClasses::Organizer#organize`: ["IS_A failed:',
+      [{ list: [(->() {}), 'a'], ctx: { user_id: 1 } , result: nil }] => 'Contract failure before `TestClasses::Organizer#organize`: ["OR failed',
+      [{ list: :symbol, ctx: { user_id: 1 },           result: nil }] => 'Contract failure before `TestClasses::Organizer#organize`: ["IS_A failed:',
 
-      [{ list: [], result: [:errors],    }] => 'Contract failure after `TestClasses::Organizer#organize`: ["OR failed"]',
-      [{ list: [], result: [:error, []], }] => 'Contract failure after `TestClasses::Organizer#organize`: ["OR failed"]',
-      [{ list: [], result: 2,            }] => 'Contract failure after `TestClasses::Organizer#organize`: ["OR failed"]',
+      [{ list: [], result: [:errors],    }] => 'Contract failure after `TestClasses::Organizer#organize`: ["OR failed',
+      [{ list: [], result: [:error, []], }] => 'Contract failure after `TestClasses::Organizer#organize`: ["OR failed',
+      [{ list: [], result: 2,            }] => 'Contract failure after `TestClasses::Organizer#organize`: ["OR failed',
     }
   end
 

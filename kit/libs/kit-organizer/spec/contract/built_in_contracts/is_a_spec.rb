@@ -10,11 +10,12 @@ describe Kit::Contract::BuiltInContracts::IsA do
       ['a'],
     ]
   end
+  let(:expected_type) { String }
   let(:args_invalid) do
     {
-      [nil]         => 'IS_A failed: expected `` to be a `String`',
-      [1]           => 'IS_A failed: expected `1` to be a `String`',
-      [{ c: :ok, }] => 'IS_A failed: expected `{:c=>:ok}` to be a `String`',
+      [nil]         => nil,
+      [1]           => nil,
+      [{ c: :ok, }] => nil,
     }
   end
 
