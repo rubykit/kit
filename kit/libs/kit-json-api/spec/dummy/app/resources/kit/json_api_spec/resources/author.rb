@@ -52,8 +52,8 @@ module Kit::JsonApiSpec::Resources::Author
   def self.available_relationships
     list = [
       Kit::JsonApiSpec::Resources::Author::Relationships::Books,
-      #Kit::JsonApiSpec::Resources::Author::Relationships::Photos,
-      #Kit::JsonApiSpec::Resources::Author::Relationships::Series,
+      Kit::JsonApiSpec::Resources::Author::Relationships::Photos,
+      Kit::JsonApiSpec::Resources::Author::Relationships::Series,
     ]
 
     list

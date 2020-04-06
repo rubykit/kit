@@ -3,46 +3,50 @@ require_relative '../../rails_helper'
 require 'oj'
 require 'json'
 
-=begin
 describe Kit::JsonApi::Services::Serializer::Query do
   let(:service)  { described_class }
+
+  let(:top_level_resource) { Kit::JsonApiSpec::Resources::Author.resource }
+
+  let(:request) do
+    {
+      top_level_resource: top_level_resource,
+      singular:           true,
+      related_resources: {
+        'books'              => true,
+        'books.author'       => true,
+        'books.author.books' => true,
+      },
+      sparse_fieldsets: {},
+      sorting:          {},
+      filtering:        {},
+      pagination:       {},
+      limit:            {
+        'books'              => 2,
+        'books.author.books' => 3,
+      },
+    }
+  end
 
   context 'for a top level resource' do
 
     it "serializes a Query with nested collections with different modifiers" do
       # Author > Books > Author > Books
-      resource    = Kit::JsonApiSpec::Resources::Author.resource
-      query_node1 = Kit::JsonApi::Services::QueryBuilder.build_query(resource: resource, singular: true)[1][:query][:entry_query_node]
+      query_node = Kit::JsonApi::Services::QueryBuilder.build_query(request: request)[1][:query][:entry_query_node]
 
-      query_node2 = query_node1[:relationships][:books][:child_query_node]
-      query_node3 = query_node1.dup
-      query_node4 = query_node2.dup
+      Kit::JsonApi::Services::QueryResolver.resolve_query_node(query_node: query_node)
 
-      query_node2[:limit] = 2
-
-      query_node2[:relationship_query_nodes][:author] = query_node3
-      query_node3[:parent_query_node] = query_node2
-      query_node3[:parent_relationship_name] = :author
-
-      query_node3[:condition] = query_node2[:resource][:relationships][:author][:inherited_filter]
-      query_node3[:singular]  = false
-
-      query_node3[:relationship_query_nodes] = { books: query_node4 }
-      query_node4[:parent_query_node] = query_node3
-      query_node4[:parent_relationship_name] = :books
-
-      query_node4[:relationship_query_nodes] = {}
-
-      Kit::JsonApi::Services::QueryResolver.resolve_query_node(query_node: query_node1)
-
-      status, ctx = service.serialize_query(query_node: query_node1)
+      status, ctx = service.serialize_query(query_node: query_node)
+      response    = ctx[:document][:response]
 
       puts JSON.pretty_generate(ctx[:document][:response])
 
       expect(status).to eq :ok
+
+      expect(response[:data][:relationships]['books'][:data].size).to eq 2
+      expect(response[:data][:relationships]['books.author.books'][:data].size).to eq 3
     end
 
   end
 
 end
-=end

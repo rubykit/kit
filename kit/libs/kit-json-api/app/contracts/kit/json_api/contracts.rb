@@ -48,6 +48,7 @@ module Kit::JsonApi::Contracts
     filters:       Hash.of(FilterName       => ConditionOps),
     data_loader:   Callable,
   ]
+  Resources = Array.of(Resource)
 
   QueryNodeType = IsA[::Kit::JsonApi::Types::QueryNode]
 
@@ -87,6 +88,26 @@ module Kit::JsonApi::Contracts
   DataElement = Hash[
     raw_data: Any,
     resource_object: ResourceObject,
+  ]
+
+  PositiveInt = And[Integer, ->(page_size) { page_size > 0 }]
+
+  Config = Hash[
+    resources:         Array.of(Resources),
+    default_page_size: PositiveInt,
+    max_page_size:     PositiveInt,
+  ]
+
+  Request = Hash[
+    #top_level_resource: Resource,
+    top_level_resource: Any,
+    singular:           Boolean,
+    related_resources:  Optional[Hash.of(String => Boolean)],
+    sparse_fieldsets:   Optional[FieldNames],
+    limits:             Optional[Hash],
+    #sorting:          {},
+    #filtering:        {},
+    #pagination:       {},
   ]
 
 end

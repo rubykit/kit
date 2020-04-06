@@ -34,13 +34,14 @@ module Kit::JsonApi::Services::Serializer::ResourceObject
     ro_cache   = document[:cache][:resource_objects][type][id] ||= { resource_object: nil, records: {}, relationships: {} }
 
     if (cached_resourced_object = ro_cache[:resource_object])
-      resource_object = cached_resourced_object.deep_merge(resource_object)
+      # NOTE: careful to keep the same reference / object_id
+      resource_object = cached_resourced_object.deep_merge!(resource_object)
     end
     ro_cache[:resource_object] = resource_object
 
     record[:resource_object]   = resource_object
 
-    #ro_cache[:records][record.object_id] = record
+    ro_cache[:records][record.object_id] = true
 
     [:ok, document: document, record: record, resource_object: resource_object]
   end

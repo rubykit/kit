@@ -18,7 +18,10 @@ module Kit::JsonApi::Types
   class Document < ::Hash
   end
 
-  class DataElement < ::Hash
+  class Request < ::Hash
+  end
+
+  class Config < ::Hash
   end
 
 end

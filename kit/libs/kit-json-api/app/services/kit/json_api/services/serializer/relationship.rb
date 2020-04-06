@@ -24,19 +24,22 @@ module Kit::JsonApi::Services::Serializer::Relationship
 
   # Get full relationship pathname to avoid collisions on collections that are loaded through different paths.
   def self.get_relationship_pathname(relationship:)
-    relationship_pathname = relationship[:name]
+    relationship_pathname = relationship[:name].to_s
 
-    if relationship[:type] == :many
-      while (relationship = relationship[:parent_query_node][:parent_relationship]) do
-        relationship_pathname = "#{relationship[:name]}.#{relationship_pathname}"
-      end
+    while (relationship = relationship[:parent_query_node][:parent_relationship]) do
+      relationship_pathname = "#{relationship[:name]}.#{relationship_pathname}"
     end
 
     [:ok, relationship_pathname: relationship_pathname]
   end
 
-  def self.get_document_relationship_container(document:, record:, relationship_pathname:)
-    resource_object        = record[:resource_object]
+  def self.get_document_relationship_container(document:, record:, relationship:, relationship_pathname:)
+    resource_object = record[:resource_object]
+
+    # to_one relationships can not generate collision so no need for the full pathname
+    if relationship[:type] == :to_one
+      relationship_pathname = relationship[:name].to_s
+    end
 
     resource_object[:relationships] ||= {}
 
@@ -67,10 +70,13 @@ module Kit::JsonApi::Services::Serializer::Relationship
     resource = record[:query_node][:resource]
 
     if relationship[:type] == :to_one
-      relationship_container[:links] = resource[:links_relationship_single].call(record: record, relationship: relationship,)[1][:links]
+      links = resource[:links_relationship_single].call(record: record, relationship: relationship,)[1][:links]
     else
-      relationship_container[:links] = resource[:links_relationship_collection].call(record: record, relationship: relationship,)[1][:links]
+      links = resource[:links_relationship_collection].call(record: record, relationship: relationship,)[1][:links]
     end
+
+    # NOTE: not sure this is needed / links can change anyway
+    relationship_container[:links].deep_merge!(links)
 
     [:ok, document: document]
   end
