@@ -32,9 +32,11 @@ module Kit::JsonApi::Services::Request::RelatedResources
           break
         end
 
-        related_resources[current_path.dup] = true
+        child_resource = relationship[:child_resource].call()
 
-        resource = relationship[:child_resource].call()
+        related_resources[current_path.dup] = child_resource
+
+        resource = child_resource
       end
     end
 

@@ -1,5 +1,5 @@
 require 'uri'
-require 'Rack'
+#require 'Rack'
 
 module Kit::JsonApi::Services::Parser
   include Kit::Contract
@@ -60,14 +60,16 @@ module Kit::JsonApi::Services::Parser
         sign = '+'
       end
 
+      direction = (sign == '+') ? :asc : :desc
+
       if sid.include?('.')
         path, sid = sid.reverse.split(".", 2).map(&:reverse).reverse
       else
-        path = :toplevel
+        path = :top_level
       end
 
       list[path] ||= []
-      list[path] << [sign, sid.to_sym]
+      list[path] << { direction: direction, sort_name: sid.to_sym, }
     end
 
     query_params_out[:sort] = list

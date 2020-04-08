@@ -29,10 +29,11 @@ module Kit::JsonApiSpec::Resources::Author
 
   def self.available_sort_fields
     {
-      id:         { order: [[:id,         :asc]],              default: true },
-      created_at: { order: [[:created_at, :asc], [:id, :asc]], },
-      updated_at: { order: [[:updated_at, :asc], [:id, :asc]], },
-      name:       { order: [[:name,       :asc], [:id, :asc]], },
+      id:            { order: [[:id,            :asc]],              default: true },
+      created_at:    { order: [[:created_at,    :asc], [:id, :asc]], },
+      updated_at:    { order: [[:updated_at,    :asc], [:id, :asc]], },
+      name:          { order: [[:name,          :asc], [:id, :asc]], },
+      date_of_birth: { order: [[:date_of_birth, :asc], [:id, :asc]], },
     }
   end
 

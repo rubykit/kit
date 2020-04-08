@@ -36,13 +36,13 @@ describe Kit::JsonApi::Services::Request::RelatedResources do
       it 'add the expected data to the request' do
         status, ctx = subject
         expect(status).to eq :ok
-        expect(ctx[:request][:related_resources]).to eq({
-          'books'              => true,
-          'books.author'       => true,
-          'books.author.books' => true,
-          'series'             => true,
-          'series.books'       => true,
-        })
+        expect(ctx[:request][:related_resources].keys).to eq [
+          'books',
+          'books.author',
+          'books.author.books',
+          'series',
+          'series.books',
+        ]
       end
     end
 
