@@ -106,12 +106,13 @@ module Kit::JsonApi::Services::Parser
 
     data.each do |path, val|
       filter = { name: nil, op: nil, value: nil }
+      path   = path.to_s
 
       if path.include?('.')
         path, name = path.reverse.split(".", 2).map(&:reverse).reverse
       else
-        path = :top_level
         name = path
+        path = :top_level
       end
       filter[:name] = name.to_sym
 
@@ -123,7 +124,7 @@ module Kit::JsonApi::Services::Parser
       end
       filter[:value] = filter[:value].split(',')
 
-      if !filter[:op]
+      if !filter[:op] || filter[:op].in?([:eq, :in])
         filter[:op] = (filter[:value].size == 1) ? :eq : :in
       end
 
