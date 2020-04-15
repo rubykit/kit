@@ -9,7 +9,7 @@ module Kit::JsonApi::Services::Serializer::QueryNode
   # Serialize "every data" element in a QueryNode.
   # @note Handling the relationships is delegated to `serialize_resource_object`.
   def self.serialize_query_node(query_node:, document:)
-    Kit::Organizer.call({
+    _, ctx = Kit::Organizer.call({
       list: [
         self.method(:add_resource_type_to_document),
         self.method(:generate_records_resource_objects),

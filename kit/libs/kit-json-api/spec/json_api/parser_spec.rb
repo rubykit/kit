@@ -4,7 +4,7 @@ require 'uri'
 require 'Rack'
 
 =begin
-describe Kit::JsonApi::Services::Parser do
+describe Kit::JsonApi::Services::Url::Parser do
   let(:service)  { described_class }
   let(:singular) { false }
 

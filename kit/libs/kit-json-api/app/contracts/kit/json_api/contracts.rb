@@ -9,7 +9,7 @@ module Kit::JsonApi::Contracts
 
   ColumnName    = Symbol
 
-  ConditionOp   = In[:eq, :gt, :gte, :le, :lte, :in, :contain, :start_with, :end_with]
+  ConditionOp   = In[:eq, :gt, :gte, :lt, :lte, :in, :contain, :start_with, :end_with]
   ConditionOps  = Array.of(ConditionOp)
   Condition     = Hash[op: In[:and, :or, ConditionOp], column: Optional[ColumnName], values: Any]
   FilterName    = Symbol
@@ -105,7 +105,7 @@ module Kit::JsonApi::Contracts
     top_level_resource: Any,
     singular:           Boolean,
     related_resources:  Optional[Hash.of(String => Boolean)],
-    sparse_fieldsets:   Optional[FieldNames],
+    sparse_fieldsets:   Optional[Hash.of(ResourceName => FieldNames)],
     limits:             Optional[Hash],
     #sorting:          {},
     #filtering:        {},

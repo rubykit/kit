@@ -13,7 +13,7 @@ describe Kit::JsonApi::Services::Request::RelatedResources do
     ]
   end
 
-  let(:query_params) { Kit::JsonApi::Services::Parser.parse_url(url: url)[1][:query_params] }
+  let(:query_params) { Kit::JsonApi::Services::Url::Parser.parse_url(url: url)[1][:query_params] }
   let(:request) do
     Kit::JsonApi::Types::Request[
       top_level_resource: Kit::JsonApiSpec::Resources::Author.resource,
