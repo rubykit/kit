@@ -1,20 +1,21 @@
 module Kit::JsonApiSpec::Resources::Book::Relationships::Chapters
+
   include Kit::Contract
   Ct = Kit::JsonApi::Contracts
 
   after Ct::Relationship
   def self.relationship
     {
-      name:              :chapters,
+      name:                       :chapters,
 
-      parent_resource:   ->() { Kit::JsonApiSpec::Resources::Book.resource },
-      child_resource:    ->() { Kit::JsonApiSpec::Resources::Chapter.resource },
+      parent_resource:            -> { Kit::JsonApiSpec::Resources::Book.resource },
+      child_resource:             -> { Kit::JsonApiSpec::Resources::Chapter.resource },
 
-      type:              :to_many,
+      type:                       :to_many,
 
-      inclusion_level:   1,
+      inclusion_level:            1,
 
-      inherited_filter:  ->(query_node:) do
+      inherited_filter:           ->(query_node:) do
         values = (query_node.dig(:parent_relationship, :parent_query_node, :records) || [])
           .map { |el| el[:raw_data] }
           .map { |el| el[:id] }

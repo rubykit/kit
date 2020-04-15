@@ -1,4 +1,6 @@
+# Transform the `page` query parameter into something usable.
 module Kit::JsonApi::Services::Url::Parser::Page
+
   include Kit::Contract
   Ct = Kit::JsonApi::Contracts
 
@@ -8,11 +10,11 @@ module Kit::JsonApi::Services::Url::Parser::Page
     data = query_params_in[:page] || {}
     list = {}
 
-    data.each do |path, val|
+    data.each do |path, _val|
       path = path.to_s
 
       if path.include?('.')
-        path, type = path.reverse.split(".", 2).map(&:reverse).reverse
+        path, type = path.reverse.split('.', 2).map(&:reverse).reverse
       else
         type = path
         path = :top_level

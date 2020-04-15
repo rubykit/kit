@@ -1,4 +1,6 @@
+# Transform the `sort` query parameter into something usable.
 module Kit::JsonApi::Services::Url::Parser::Sort
+
   include Kit::Contract
   Ct = Kit::JsonApi::Contracts
 
@@ -20,13 +22,13 @@ module Kit::JsonApi::Services::Url::Parser::Sort
       direction = (sign == '+') ? :asc : :desc
 
       if sid.include?('.')
-        path, sid = sid.reverse.split(".", 2).map(&:reverse).reverse
+        path, sid = sid.reverse.split('.', 2).map(&:reverse).reverse
       else
         path = :top_level
       end
 
       list[path] ||= []
-      list[path] << { direction: direction, sort_name: sid.to_sym, }
+      list[path] << { direction: direction, sort_name: sid.to_sym }
     end
 
     query_params_out[:sort] = list

@@ -1,4 +1,6 @@
+# @todo: KILL THIS.
 module Kit::JsonApi::Services::Links
+
   include Kit::Contract
   Ct = Kit::JsonApi::Contracts
 

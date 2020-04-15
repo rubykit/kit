@@ -1,4 +1,6 @@
+# Transform query_params data to an actionable Request
 module Kit::JsonApi::Services::Request
+
   include Kit::Contract
   Ct = Kit::JsonApi::Contracts
 
@@ -13,7 +15,7 @@ module Kit::JsonApi::Services::Request
         Kit::JsonApi::Services::Request::Filering.method(:handle_filtering),
         Kit::JsonApi::Services::Request::Pagination.method(:handle_pagination),
       ],
-      ctx: { query_params: query_params, request: request },
+      ctx:  { query_params: query_params, request: request },
     })
   end
 

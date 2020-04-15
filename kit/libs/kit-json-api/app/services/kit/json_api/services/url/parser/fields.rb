@@ -1,4 +1,6 @@
+# Transform the `fields` query parameter into something usable.
 module Kit::JsonApi::Services::Url::Parser::Fields
+
   include Kit::Contract
   Ct = Kit::JsonApi::Contracts
 

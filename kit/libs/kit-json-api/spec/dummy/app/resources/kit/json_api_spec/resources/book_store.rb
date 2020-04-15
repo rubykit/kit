@@ -1,4 +1,5 @@
 module Kit::JsonApiSpec::Resources::BookStore
+
   include Kit::Contract
   Ct = Kit::JsonApi::Contracts
 
@@ -9,11 +10,11 @@ module Kit::JsonApiSpec::Resources::BookStore
   end
 
   def self.resource_url(resource_id:)
-    "#{}/book_stores/#{resource_id}"
+    "/book_stores/#{ resource_id }"
   end
 
   def self.relationship_url(resource_id:, relationship_id:)
-    "#{}/book_stores/#{resource_id}/relationships/#{relationship_id}"
+    "/book_stores/#{ resource_id }/relationships/#{ relationship_id }"
   end
 
   def self.available_fields
@@ -27,7 +28,7 @@ module Kit::JsonApiSpec::Resources::BookStore
 
   def self.available_sort_fields
     available_fields
-      .map { |name, _| [name, { order: [[name, :asc]], default: (name == :id), }] }
+      .map { |name, _| [name, { order: [[name, :asc]], default: (name == :id) }] }
       .to_h
   end
 
@@ -44,7 +45,7 @@ module Kit::JsonApiSpec::Resources::BookStore
     ]
 
     list
-      .map { |el| rs = el.relationship; [rs[:name], rs] }
+      .map { |el| [el.relationship[:name],  el.relationship] }
       .to_h
   end
 
@@ -52,8 +53,8 @@ module Kit::JsonApiSpec::Resources::BookStore
     ->(query_node:) { query_node[:resource][:name] == :book_store },
   ]
   def self.load_data(query_node:)
-    model       = Kit::JsonApiSpec::Models::Write::BookStore
-    status, ctx = Kit::JsonApi::Services::Sql.sql_query(
+    model  = Kit::JsonApiSpec::Models::Write::BookStore
+    _, ctx = Kit::JsonApi::Services::Sql.sql_query(
       ar_model:  model,
       filtering: query_node[:condition],
       sorting:   query_node[:sorting],
@@ -62,7 +63,7 @@ module Kit::JsonApiSpec::Resources::BookStore
 
     puts ctx[:sql_str]
     data = model.find_by_sql(ctx[:sql_str])
-    puts "LOAD DATA BOOK_STORE: #{data.size}"
+    puts "LOAD DATA BOOK_STORE: #{ data.size }"
 
     [:ok, data: data]
   end

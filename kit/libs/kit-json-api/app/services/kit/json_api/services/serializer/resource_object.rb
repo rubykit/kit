@@ -1,4 +1,6 @@
+# Serialization logic for ResourceObjects
 module Kit::JsonApi::Services::Serializer::ResourceObject
+
   include Kit::Contract
   Ct = Kit::JsonApi::Contracts
 
@@ -6,14 +8,14 @@ module Kit::JsonApi::Services::Serializer::ResourceObject
   after  Ct::Result[document: Ct::Document]
   # Serializes a single `resource_object`. Handles relationship resource linkage.
   def self.serialize_resource_object(document:, record:)
-    status, ctx = Kit::Organizer.call({
+    _, ctx = Kit::Organizer.call({
       list: [
         record[:query_node][:resource][:serializer],
         self.method(:add_record_to_cache),
         self.method(:ensure_uniqueness_in_document),
         self.method(:add_resource_object_links),
       ],
-      ctx: {
+      ctx:  {
         document: document,
         record:   record,
       },
@@ -30,7 +32,6 @@ module Kit::JsonApi::Services::Serializer::ResourceObject
 
     type       = query_node[:resource][:name]
     id         = resource_object[:id].to_s
-
     ro_cache   = document[:cache][:resource_objects][type][id] ||= { resource_object: nil, records: {}, relationships: {} }
 
     if (cached_resourced_object = ro_cache[:resource_object])

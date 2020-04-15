@@ -1,4 +1,6 @@
+# Contracts for the project
 module Kit::JsonApi::Contracts
+
   #include Kit::Contract::BuiltInContracts
   include Kit::Organizer::Contracts
 
@@ -19,28 +21,28 @@ module Kit::JsonApi::Contracts
   RelationshipName = Symbol
 
   Relationship = Hash[
-    name:              Symbol,
-    type:              In[:to_one, :to_many],
-    inclusion_level:   Integer,
+    name:             Symbol,
+    type:             In[:to_one, :to_many],
+    inclusion_level:  Integer,
 
-    parent_resource:   Callable,
-    child_resource:    Callable,
+    parent_resource:  Callable,
+    child_resource:   Callable,
 
-    inherited_filter:  Callable,
+    inherited_filter: Callable,
 
     #parent_query_node: Optional[QueryNode],
     #child_query_node:  Optional[QueryNode],
   ]
 
   Record = Hash[
-    query_node:    Delayed[->{ QueryNode }],
+    query_node:    Delayed[-> { QueryNode }],
     raw_data:      Any,
-    relationships: Hash.of(RelationshipName => Array.of(Delayed[->{ Record }])),
+    relationships: Hash.of(RelationshipName => Array.of(Delayed[-> { Record }])),
   ]
 
-  ResourceName  = Symbol
+  ResourceName = Symbol
   #Resource      = IsA[::Kit::JsonApi::Types::Resource]
-  Resource = Hash[
+  Resource     = Hash[
     name:          ResourceName,
     fields:        FieldNames,
     relationships: Hash.of(RelationshipName => Relationship),
@@ -86,7 +88,7 @@ module Kit::JsonApi::Contracts
   ResourceObject = Any
 
   DataElement = Hash[
-    raw_data: Any,
+    raw_data:        Any,
     resource_object: ResourceObject,
   ]
 

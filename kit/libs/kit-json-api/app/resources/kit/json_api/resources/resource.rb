@@ -1,4 +1,7 @@
+# Exemple of how to organize the code that describes Resource.
+# @note: only the Resource contract truly matters.
 module Kit::JsonApi::Resources::Resource
+
   extend ActiveSupport::Concern
 
   class_methods do
@@ -26,7 +29,7 @@ module Kit::JsonApi::Resources::Resource
       records_list = records
 
       links = {
-        self: "https://top_level_collection-self_link?first=#{records_list.first&.dig(:resource_object, :id)}&last=#{records_list.last&.dig(:resource_object, :id)}",
+        self: "https://top_level_collection-self_link?first=#{ records_list.first&.dig(:resource_object, :id) }&last=#{ records_list.last&.dig(:resource_object, :id) }",
         prev: '...',
         next: '...',
       }
@@ -38,8 +41,8 @@ module Kit::JsonApi::Resources::Resource
       records_list = record[:relationships][relationship[:name]]
 
       links = {
-        self:    "https://to_one_rel-self_link?el=#{records_list.first&.dig(:resource_object, :id)}",
-        related: "https://to_one-relrelated_link?el=#{records_list.first&.dig(:resource_object, :id)}",
+        self:    "https://to_one_rel-self_link?el=#{ records_list.first&.dig(:resource_object, :id) }",
+        related: "https://to_one-relrelated_link?el=#{ records_list.first&.dig(:resource_object, :id) }",
       }
 
       [:ok, links: links]
@@ -49,8 +52,8 @@ module Kit::JsonApi::Resources::Resource
       records_list = record[:relationships][relationship[:name]]
 
       links = {
-        self:    "https://to_many_rel-self_link?first=#{records_list.first&.dig(:resource_object, :id)}&last=#{records_list.last&.dig(:resource_object, :id)}",
-        related: "https://to_many_rel-related_link?first=#{records_list.first&.dig(:resource_object, :id)}&last=#{records_list.last&.dig(:resource_object, :id)}",
+        self:    "https://to_many_rel-self_link?first=#{ records_list.first&.dig(:resource_object, :id) }&last=#{ records_list.last&.dig(:resource_object, :id) }",
+        related: "https://to_many_rel-related_link?first=#{ records_list.first&.dig(:resource_object, :id) }&last=#{ records_list.last&.dig(:resource_object, :id) }",
       }
 
       [:ok, links: links]
@@ -83,26 +86,19 @@ module Kit::JsonApi::Resources::Resource
 
     def available_sort_fields
       available_fields
-        .map { |name, _| [name, { order: [[name, :asc]], default: (name == :id), }] }
+        .map { |name, _| [name, { order: [[name, :asc]], default: (name == :id) }] }
         .to_h
     end
 
     def available_filters
-      fields = available_fields
+      available_fields
         .map { |name, type| [name, Kit::JsonApi::TypesHint.defaults[type]] }
         .to_h
-
-      relationships = available_relationships
-        .select { |_, rs| rs[:type] == :many }
-        .map    { |name, _| [name, Kit::JsonApi::TypesHint.defaults[Kit::JsonApi::TypesHint::IdNumeric]] }
-        .to_h
-
-      fields.merge(relationships)
     end
 
     def available_relationships
       raise 'Implement me.'
-   end
+    end
 
     # `data_element` is whatever was added to data. This is opaque.
     def serialize(record:)
@@ -120,4 +116,5 @@ module Kit::JsonApi::Resources::Resource
     end
 
   end
+
 end

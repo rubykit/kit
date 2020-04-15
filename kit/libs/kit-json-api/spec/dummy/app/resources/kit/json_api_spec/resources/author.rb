@@ -1,4 +1,5 @@
 module Kit::JsonApiSpec::Resources::Author
+
   include Kit::Contract
   Ct = Kit::JsonApi::Contracts
 
@@ -9,11 +10,11 @@ module Kit::JsonApiSpec::Resources::Author
   end
 
   def self.resource_url(resource_id:)
-    "#{}/authors/#{resource_id}"
+    "/authors/#{ resource_id }"
   end
 
   def self.relationship_url(resource_id:, relationship_name:)
-    "#{}/articles/#{resource_id}/relationships/#{relationship_name}"
+    "/articles/#{ resource_id }/relationships/#{ relationship_name }"
   end
 
   def self.available_fields
@@ -30,10 +31,10 @@ module Kit::JsonApiSpec::Resources::Author
   def self.available_sort_fields
     {
       id:            { order: [[:id,            :asc]],              default: true },
-      created_at:    { order: [[:created_at,    :asc], [:id, :asc]], },
-      updated_at:    { order: [[:updated_at,    :asc], [:id, :asc]], },
-      name:          { order: [[:name,          :asc], [:id, :asc]], },
-      date_of_birth: { order: [[:date_of_birth, :asc], [:id, :asc]], },
+      created_at:    { order: [[:created_at,    :asc], [:id, :asc]] },
+      updated_at:    { order: [[:updated_at,    :asc], [:id, :asc]] },
+      name:          { order: [[:name,          :asc], [:id, :asc]] },
+      date_of_birth: { order: [[:date_of_birth, :asc], [:id, :asc]] },
     }
   end
 
@@ -58,16 +59,16 @@ module Kit::JsonApiSpec::Resources::Author
     ]
 
     list
-      .map { |el| rs = el.relationship; [rs[:name], rs] }
+      .map { |el| [el.relationship[:name], el.relationship] }
       .to_h
   end
 
   before [
-    ->(query_node:) { query_node[:resource][:name] == resource[:name] }
+    ->(query_node:) { query_node[:resource][:name] == resource[:name] },
   ]
   def self.load_data(query_node:)
-    model       = Kit::JsonApiSpec::Models::Write::Author
-    status, ctx = Kit::JsonApi::Services::Sql.sql_query(
+    model  = Kit::JsonApiSpec::Models::Write::Author
+    _, ctx = Kit::JsonApi::Services::Sql.sql_query(
       ar_model:  model,
       filtering: query_node[:condition],
       sorting:   query_node[:sorting],
@@ -76,11 +77,9 @@ module Kit::JsonApiSpec::Resources::Author
 
     puts ctx[:sql_str]
     data = model.find_by_sql(ctx[:sql_str])
-    puts "LOAD DATA AUTHOR: #{data.size}"
+    puts "LOAD DATA AUTHOR: #{ data.size }"
 
     [:ok, data: data]
   end
-
-
 
 end

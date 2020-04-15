@@ -1,3 +1,4 @@
+# Declaration of custom Types
 module Kit::JsonApi::Types
 
   class Record < ::Hash

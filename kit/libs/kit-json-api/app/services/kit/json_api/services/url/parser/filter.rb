@@ -1,4 +1,6 @@
+# Transform the `filter` query parameter into something usable.
 module Kit::JsonApi::Services::Url::Parser::Filter
+
   include Kit::Contract
   Ct = Kit::JsonApi::Contracts
 
@@ -24,7 +26,7 @@ module Kit::JsonApi::Services::Url::Parser::Filter
       path   = path.to_s
 
       if path.include?('.')
-        path, name = path.reverse.split(".", 2).map(&:reverse).reverse
+        path, name = path.reverse.split('.', 2).map(&:reverse).reverse
       else
         name = path
         path = :top_level

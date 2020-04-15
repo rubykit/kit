@@ -1,4 +1,5 @@
 module Kit::JsonApiSpec::Resources::Chapter
+
   include Kit::Contract
   Ct = Kit::JsonApi::Contracts
 
@@ -9,11 +10,11 @@ module Kit::JsonApiSpec::Resources::Chapter
   end
 
   def self.resource_url(resource_id:)
-    "#{}/chapters/#{resource_id}"
+    "/chapters/#{ resource_id }"
   end
 
   def self.relationship_url(resource_id:, relationship_id:)
-    "#{}/chapters/#{resource_id}/relationships/#{relationship_id}"
+    "/chapters/#{ resource_id }/relationships/#{ relationship_id }"
   end
 
   def self.available_fields
@@ -30,17 +31,7 @@ module Kit::JsonApiSpec::Resources::Chapter
     ]
 
     list
-      .map { |el| rs = el.relationship; [rs[:name], rs] }
-      .to_h
-  end
-
-  def self.available_relationships
-    list = [
-      Kit::JsonApiSpec::Resources::Chapter::Relationships::Book,
-    ]
-
-    list
-      .map { |el| rs = el.relationship; [rs[:name], rs] }
+      .map { |el| [el.relationship[:name], el.relationship] }
       .to_h
   end
 
@@ -48,8 +39,8 @@ module Kit::JsonApiSpec::Resources::Chapter
     ->(query_node:) { query_node[:resource][:name] == :chapter },
   ]
   def self.load_data(query_node:)
-    model       = Kit::JsonApiSpec::Models::Write::Chapter
-    status, ctx = Kit::JsonApi::Services::Sql.sql_query(
+    model  = Kit::JsonApiSpec::Models::Write::Chapter
+    _, ctx = Kit::JsonApi::Services::Sql.sql_query(
       ar_model:  model,
       filtering: query_node[:condition],
       sorting:   query_node[:sorting],
@@ -58,7 +49,7 @@ module Kit::JsonApiSpec::Resources::Chapter
 
     puts ctx[:sql_str]
     data = model.find_by_sql(ctx[:sql_str])
-    puts "LOAD DATA CHAPTER: #{data.size}"
+    puts "LOAD DATA CHAPTER: #{ data.size }"
 
     [:ok, data: data]
   end

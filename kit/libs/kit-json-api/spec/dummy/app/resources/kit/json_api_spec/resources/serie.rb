@@ -1,4 +1,5 @@
 module Kit::JsonApiSpec::Resources::Serie
+
   include Kit::Contract
   Ct = Kit::JsonApi::Contracts
 
@@ -9,11 +10,11 @@ module Kit::JsonApiSpec::Resources::Serie
   end
 
   def self.resource_url(resource_id:)
-    "#{}/series/#{resource_id}"
+    "/series/#{ resource_id }"
   end
 
   def self.relationship_url(resource_id:, relationship_id:)
-    "#{}/series/#{resource_id}/relationships/#{relationship_id}"
+    "/series/#{ resource_id }/relationships/#{ relationship_id }"
   end
 
   def self.available_fields
@@ -33,7 +34,7 @@ module Kit::JsonApiSpec::Resources::Serie
     ]
 
     list
-      .map { |el| rs = el.relationship; [rs[:name], rs] }
+      .map { |el| [el.relationship[:name], el.relationship] }
       .to_h
   end
 
@@ -41,8 +42,8 @@ module Kit::JsonApiSpec::Resources::Serie
     ->(query_node:) { query_node[:resource][:name] == :serie },
   ]
   def self.load_data(query_node:)
-    model       = Kit::JsonApiSpec::Models::Write::Serie
-    status, ctx = Kit::JsonApi::Services::Sql.sql_query(
+    model  = Kit::JsonApiSpec::Models::Write::Serie
+    _, ctx = Kit::JsonApi::Services::Sql.sql_query(
       ar_model:  model,
       filtering: query_node[:condition],
       sorting:   query_node[:sorting],
@@ -51,7 +52,7 @@ module Kit::JsonApiSpec::Resources::Serie
 
     puts ctx[:sql_str]
     data = model.find_by_sql(ctx[:sql_str])
-    puts "LOAD DATA SERIE: #{data.size}"
+    puts "LOAD DATA SERIE: #{ data.size }"
 
     [:ok, data: data]
   end

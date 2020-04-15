@@ -1,4 +1,7 @@
+# Hold config data.
+# @todo DEPRECATE, as this should be per API instances.
 module Kit::JsonApi::Services::Config
+
   include Kit::Contract
   Ct = Kit::JsonApi::Contracts
 
@@ -8,7 +11,7 @@ module Kit::JsonApi::Services::Config
   DEFAULT_PAGE_SIZE     = 100
 
   before Ct::Hash[page_size: Ct::PositiveInt]
-  def self.set_max_page_size(page_size:)
+  def self.max_page_size=(page_size:)
     @max_page_size = page_size
   end
 
@@ -23,7 +26,7 @@ module Kit::JsonApi::Services::Config
   end
 
   before Ct::Hash[page_size: Ct::PositiveInt]
-  def self.set_default_page_size(page_size:)
+  def self.default_page_size=(page_size:)
     @default_page_size = page_size
   end
 

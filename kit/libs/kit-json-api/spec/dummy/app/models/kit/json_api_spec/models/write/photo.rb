@@ -1,4 +1,5 @@
 class Kit::JsonApiSpec::Models::Write::Photo < Kit::JsonApiSpec::Models::WriteRecord
+
   self.table_name = 'kit_json_api_spec_photos'
 
   self.whitelisted_columns = [
@@ -11,6 +12,8 @@ class Kit::JsonApiSpec::Models::Write::Photo < Kit::JsonApiSpec::Models::WriteRe
     :uri,
   ]
 
-  belongs_to :imageable, polymorphic: true
+  belongs_to :imageable, {
+    polymorphic: true,
+  }
 
 end

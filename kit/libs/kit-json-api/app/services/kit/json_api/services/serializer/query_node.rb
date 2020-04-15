@@ -1,4 +1,6 @@
+# Serialization logic for an entire QueryNode
 module Kit::JsonApi::Services::Serializer::QueryNode
+
   include Kit::Contract
   Ct = Kit::JsonApi::Contracts
 
@@ -7,7 +9,7 @@ module Kit::JsonApi::Services::Serializer::QueryNode
   # Serialize "every data" element in a QueryNode.
   # @note Handling the relationships is delegated to `serialize_resource_object`.
   def self.serialize_query_node(query_node:, document:)
-    status, ctx = Kit::Organizer.call({
+    Kit::Organizer.call({
       list: [
         self.method(:add_resource_type_to_document),
         self.method(:generate_records_resource_objects),
@@ -16,7 +18,7 @@ module Kit::JsonApi::Services::Serializer::QueryNode
         self.method(:serialize_relationships_query_nodes),
         self.method(:generate_records_relationships),
       ],
-      ctx: {
+      ctx:  {
         query_node: query_node,
         document:   document,
       },
@@ -36,10 +38,8 @@ module Kit::JsonApi::Services::Serializer::QueryNode
 
   # Serializes every `data element` in a query_node. Handles relationship resource linkage.
   def self.generate_records_resource_objects(query_node:, document:)
-    collection = []
-
     query_node[:records].each do |record|
-      _, ctx = Kit::JsonApi::Services::Serializer::ResourceObject.serialize_resource_object(
+      Kit::JsonApi::Services::Serializer::ResourceObject.serialize_resource_object(
         document: document,
         record:   record,
       )
@@ -76,10 +76,10 @@ module Kit::JsonApi::Services::Serializer::QueryNode
   # Calls `serialize_query_node` on every relationship (nested) query node.
   # @note This contains the recursion that traverses the whole query AST.
   def self.serialize_relationships_query_nodes(query_node:, document:)
-    query_node[:relationships].each do |relationship_name, relationship|
+    query_node[:relationships].each do |_relationship_name, relationship|
       child_query_node = relationship[:child_query_node]
 
-      status, ctx = result = serialize_query_node(
+      serialize_query_node(
         query_node: child_query_node,
         document:   document,
       )
@@ -91,7 +91,7 @@ module Kit::JsonApi::Services::Serializer::QueryNode
   def self.generate_records_relationships(document:, query_node:)
     query_node[:records].each do |record|
       query_node[:relationships].each do |_relationship_name, relationship|
-        _, ctx = Kit::JsonApi::Services::Serializer::Relationship.serialize_record_relationship(
+        Kit::JsonApi::Services::Serializer::Relationship.serialize_record_relationship(
           document:     document,
           relationship: relationship,
           record:       record,

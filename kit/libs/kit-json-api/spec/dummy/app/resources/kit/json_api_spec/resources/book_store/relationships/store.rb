@@ -1,20 +1,21 @@
 module Kit::JsonApiSpec::Resources::BookStore::Relationships::Store
+
   include Kit::Contract
   Ct = Kit::JsonApi::Contracts
 
   after Ct::Relationship
   def self.relationship
     {
-      name:              :store,
+      name:                       :store,
 
-      parent_resource:   ->() { Kit::JsonApiSpec::Resources::BookStore.resource },
-      child_resource:    ->() { Kit::JsonApiSpec::Resources::Store.resource },
+      parent_resource:            -> { Kit::JsonApiSpec::Resources::BookStore.resource },
+      child_resource:             -> { Kit::JsonApiSpec::Resources::Store.resource },
 
-      type:              :to_one,
+      type:                       :to_one,
 
-      inclusion_level:   1,
+      inclusion_level:            1,
 
-      inherited_filter:  ->(query_node:) do
+      inherited_filter:           ->(query_node:) do
         values = (query_node.dig(:parent_relationship, :parent_query_node, :records) || [])
           .map { |el| el[:raw_data] }
           .map { |el| el[:kit_json_api_spec_store_id] }

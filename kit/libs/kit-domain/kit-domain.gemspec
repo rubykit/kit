@@ -28,7 +28,7 @@ Gem::Specification.new do |spec|
 
   #spec.add_dependency "dotenv-rails", "~> 2.1", ">= 2.1.1"
 
-  spec.add_dependency "rubocop", "~> 0.42.0"
+  spec.add_dependency "rubocop"
 
   spec.add_dependency "rails_event_store"
 

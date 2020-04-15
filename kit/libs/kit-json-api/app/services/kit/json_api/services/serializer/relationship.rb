@@ -1,18 +1,20 @@
+# Serialization logic for Relatiobships
 module Kit::JsonApi::Services::Serializer::Relationship
+
   include Kit::Contract
   Ct = Kit::JsonApi::Contracts
 
   before Ct::Hash[document: Ct::Document, record: Ct::Record, relationship: Ct::Relationship]
   after  Ct::Result[document: Ct::Document]
   def self.serialize_record_relationship(document:, record:, relationship:)
-    status, ctx = Kit::Organizer.call({
+    Kit::Organizer.call({
       list: [
         self.method(:get_relationship_pathname),
         self.method(:get_document_relationship_container),
         self.method(:add_record_relationship_linkage),
         self.method(:add_record_relationship_links),
       ],
-      ctx: {
+      ctx:  {
         document:     document,
         record:       record,
         relationship: relationship,
@@ -27,7 +29,7 @@ module Kit::JsonApi::Services::Serializer::Relationship
     relationship_pathname = relationship[:name].to_s
 
     while (relationship = relationship[:parent_query_node][:parent_relationship]) do
-      relationship_pathname = "#{relationship[:name]}.#{relationship_pathname}"
+      relationship_pathname = "#{ relationship[:name] }.#{ relationship_pathname }"
     end
 
     [:ok, relationship_pathname: relationship_pathname]
@@ -70,9 +72,9 @@ module Kit::JsonApi::Services::Serializer::Relationship
     resource = record[:query_node][:resource]
 
     if relationship[:type] == :to_one
-      links = resource[:links_relationship_single].call(record: record, relationship: relationship,)[1][:links]
+      links = resource[:links_relationship_single].call(record: record, relationship: relationship)[1][:links]
     else
-      links = resource[:links_relationship_collection].call(record: record, relationship: relationship,)[1][:links]
+      links = resource[:links_relationship_collection].call(record: record, relationship: relationship)[1][:links]
     end
 
     # NOTE: not sure this is needed / links can change anyway

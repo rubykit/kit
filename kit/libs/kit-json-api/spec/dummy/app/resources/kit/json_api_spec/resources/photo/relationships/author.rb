@@ -1,20 +1,21 @@
 module Kit::JsonApiSpec::Resources::Photo::Relationships::Author
+
   include Kit::Contract
   Ct = Kit::JsonApi::Contracts
 
   after Ct::Relationship
   def self.relationship
     {
-      name:              :author,
+      name:                       :author,
 
-      parent_resource:   ->() { Kit::JsonApiSpec::Resources::Photo.resource },
-      child_resource:    ->() { Kit::JsonApiSpec::Resources::Author.resource },
+      parent_resource:            -> { Kit::JsonApiSpec::Resources::Photo.resource },
+      child_resource:             -> { Kit::JsonApiSpec::Resources::Author.resource },
 
-      type:              :to_one,
+      type:                       :to_one,
 
-      inclusion_level:   1,
+      inclusion_level:            1,
 
-      inherited_filter:  ->(query_node:) do
+      inherited_filter:           ->(query_node:) do
         values = (query_node.dig(:parent_relationship, :parent_query_node, :records) || [])
           .map    { |el| el[:raw_data] }
           .select { |el| el[:imageable_type] == 'Kit::JsonApiSpec::Models::Write::Author' }

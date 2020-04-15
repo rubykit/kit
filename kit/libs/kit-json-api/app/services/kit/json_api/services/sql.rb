@@ -1,10 +1,12 @@
+# Transform AST to a SQL query string
 module Kit::JsonApi::Services::Sql
+
   include Kit::Contract
   Ct = Kit::JsonApi::Contracts
 
   # @note The SQL is generated for Postgres. Probably needs to be tuned for other DBs.
   def self.sql_query(ar_model:, filtering: nil, sorting: [], limit: nil)
-    args = { ar_model: ar_model, filtering: filtering, sorting: sorting, limit: limit, }
+    args = { ar_model: ar_model, filtering: filtering, sorting: sorting, limit: limit }
 
     status, ctx = Kit::Organizer.call({
       list: [
@@ -13,7 +15,7 @@ module Kit::JsonApi::Services::Sql
         self.method(:detect_relationship),
         self.method(:generate_sql_query),
       ],
-      ctx: args.merge({
+      ctx:  args.merge({
         ar_connection:       ar_model.connection,
         table_name:          ar_model.table_name,
         sanitized_limit_sql: limit.to_i.to_s,
@@ -24,7 +26,7 @@ module Kit::JsonApi::Services::Sql
   end
 
   def self.detect_relationship(filtering:)
-    detect = Proc.new do |condition:|
+    detect = proc do |condition:|
       next if !condition
 
       if condition[:upper_relationship]
@@ -49,25 +51,25 @@ module Kit::JsonApi::Services::Sql
       # @note We use a nested query to avoid naming collisions with the added attribute (rank)
       # @ref https://blog.jooq.org/2018/05/14/selecting-all-columns-except-one-in-postgresql/
       # @ref http://sqlfiddle.com/#!17/378a3/10
-      sql = %{
-          SELECT (#{table_name}).*
+      sql = %(
+          SELECT (#{ table_name }).*
             FROM (
-              SELECT #{table_name},
-                     RANK() OVER (PARTITION BY #{foreign_key_column_name} ORDER BY #{sanitized_sorting_sql}) AS rank
-                FROM #{table_name}
-               WHERE #{sanitized_filtering_sql}
+              SELECT #{ table_name },
+                     RANK() OVER (PARTITION BY #{ foreign_key_column_name } ORDER BY #{ sanitized_sorting_sql }) AS rank
+                FROM #{ table_name }
+               WHERE #{ sanitized_filtering_sql }
                  ) AS ranked_data
-           WHERE ranked_data.rank <= #{sanitized_limit_sql}
-        }
+           WHERE ranked_data.rank <= #{ sanitized_limit_sql }
+        )
     else
       # @note Avoid the window function (RANK) when not needed.
-      sql = %{
+      sql = %(
           SELECT *
-            FROM #{table_name}
-           WHERE #{sanitized_filtering_sql}
-        ORDER BY #{sanitized_sorting_sql}
-           LIMIT #{sanitized_limit_sql}
-      }
+            FROM #{ table_name }
+           WHERE #{ sanitized_filtering_sql }
+        ORDER BY #{ sanitized_sorting_sql }
+           LIMIT #{ sanitized_limit_sql }
+      )
     end
 
     [:ok, sql_str: sql]

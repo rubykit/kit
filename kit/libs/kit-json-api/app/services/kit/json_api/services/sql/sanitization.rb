@@ -1,5 +1,6 @@
 # @see https://github.com/rails/rails/blob/6-0-stable/activerecord/lib/active_record/sanitization.rb
 module Kit::JsonApi::Services::Sql::Sanitization
+
   include Kit::Contract
   Ct = Kit::JsonApi::Contracts
 
@@ -24,12 +25,12 @@ module Kit::JsonApi::Services::Sql::Sanitization
     return statement if statement.blank?
 
     sanitized_sql = statement.gsub(/(:?):([a-zA-Z]\w*)/) do |match|
-      if $1 == ":" # skip postgresql casts
+      if $1 == ':' # skip postgresql casts
         match # return the whole match
       elsif values.include?(match = $2.to_sym)
         quote_bound_value(value: values[match], ar_connection: ar_connection)
       else
-        return [:error, "SqlSanitization: missing value for :#{match} in #{statement}"]
+        return [:error, "SqlSanitization: missing value for :#{ match } in #{ statement }"]
       end
     end
 
@@ -42,7 +43,7 @@ module Kit::JsonApi::Services::Sql::Sanitization
       if quoted.empty?
         ar_connection.quote(nil)
       else
-        quoted.join(",")
+        quoted.join(',')
       end
     else
       ar_connection.quote(value)

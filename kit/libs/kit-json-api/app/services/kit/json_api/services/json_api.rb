@@ -1,3 +1,4 @@
+# Namespace for the API engine.
 module Kit::JsonApi::Services::JsonApi
 
 =begin

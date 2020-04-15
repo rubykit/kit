@@ -1,4 +1,6 @@
+# Resolve a Query: load data & map it
 module Kit::JsonApi::Services::QueryResolver
+
   include Kit::Contract
   Ct = Kit::JsonApi::Contracts
 
@@ -12,7 +14,7 @@ module Kit::JsonApi::Services::QueryResolver
         self.method(:resolve_relationships_query_nodes),
         self.method(:resolve_relationships_records),
       ],
-      ctx: { query_node: query_node, },
+      ctx:  { query_node: query_node },
     })
   end
 
@@ -45,16 +47,15 @@ module Kit::JsonApi::Services::QueryResolver
   after  Ct::Result[query_node: Ct::QueryNode]
   def self.load_records(query_node:)
     result      = query_node[:data_loader].call(query_node: query_node)
-
     status, ctx = result
 
     if status == :ok
       query_node[:records] = ctx[:data].map do |raw_data|
         Kit::JsonApi::Types::Record[
-          query_node:      query_node,
-          raw_data:        raw_data,
-          meta:            {},
-          relationships:   {},
+          query_node:    query_node,
+          raw_data:      raw_data,
+          meta:          {},
+          relationships: {},
         ]
       end
 
@@ -69,7 +70,8 @@ module Kit::JsonApi::Services::QueryResolver
   def self.resolve_relationships_query_nodes(query_node:)
     query_node[:relationships].each do |_relationship_name, relationship|
       nested_query_node = relationship[:child_query_node]
-      status, ctx = result = resolve_query_node(query_node: nested_query_node)
+      result            = resolve_query_node(query_node: nested_query_node)
+      status, _ctx      = result
 
       if status == [:error]
         return result
@@ -80,13 +82,13 @@ module Kit::JsonApi::Services::QueryResolver
   end
 
   def self.resolve_relationships_records(query_node:)
-    query_node[:relationships].each do |_relationship_name, relationship|
+    query_node[:relationships].each do |relationship_name, relationship|
       child_query_node = relationship[:child_query_node]
       child_records    = child_query_node[:records]
 
       query_node[:records].each do |parent_record|
         selector = relationship[:select_relationship_record].call(parent_record: parent_record)
-        parent_record[:relationships][_relationship_name] = child_records.select(&selector)
+        parent_record[:relationships][relationship_name] = child_records.select(&selector)
       end
     end
 

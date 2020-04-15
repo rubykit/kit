@@ -1,3 +1,4 @@
+# Define defaults operators available per type.
 module Kit::JsonApi::TypesHint
 
   Boolean   = :boolean

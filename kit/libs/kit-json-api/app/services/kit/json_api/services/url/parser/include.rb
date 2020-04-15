@@ -1,4 +1,6 @@
+# Transform the `include` query parameter into something usable.
 module Kit::JsonApi::Services::Url::Parser::Include
+
   include Kit::Contract
   Ct = Kit::JsonApi::Contracts
 

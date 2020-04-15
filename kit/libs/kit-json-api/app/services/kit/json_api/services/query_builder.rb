@@ -1,4 +1,6 @@
+# Transform a request into a fully actionable AST
 module Kit::JsonApi::Services::QueryBuilder
+
   include Kit::Contract
   Ct = Kit::JsonApi::Contracts
 
@@ -19,15 +21,15 @@ module Kit::JsonApi::Services::QueryBuilder
   end
 
   before [
-    Ct::Hash[{
+    Ct::Hash[
       resource:                 Ct::Resource,
       parent_query_node:        Ct::Optional[Ct::QueryNode],
       parent_relationship_name: Ct::Optional[Ct::Symbol],
-    }],
+    ],
   ]
   after [
     Ct::Result[
-      query_node:  Ct::QueryNode,
+      query_node: Ct::QueryNode,
       #data_loader: Ct::Optional[Ct::Callable],
     ],
   ]
@@ -36,7 +38,7 @@ module Kit::JsonApi::Services::QueryBuilder
   # Each type of relationship generates a query node even if they target the same resource.
   # For instance "Author -> [Chapter | FirstChapter]" will generate 3 corresponding query nodes total, eventhough the two relationships "Chapter" and "FirstChapter" target the same Resource (Chapter)
   def self.build_query_node(resource:, singular:, inclusion_level:, path:, request:, condition: nil, data_loader: nil)
-    sorting    = resource[:sort_fields].select { |k, v| v[:default] == true }.first[1][:order]
+    sorting = resource[:sort_fields].select { |_k, v| v[:default] == true }.first[1][:order]
 
     if singular == true
       limit = 1
@@ -66,7 +68,7 @@ module Kit::JsonApi::Services::QueryBuilder
     build_nested_relationships(
       query_node:      query_node,
       inclusion_level: inclusion_level,
-      request:           request,
+      request:         request,
       path:            path,
     )
 
@@ -80,7 +82,7 @@ module Kit::JsonApi::Services::QueryBuilder
 
     resource[:relationships].each do |relationship_name, relationship|
       nested_resource = relationship[:child_resource].call()
-      nested_path     = "#{ path }#{ path.empty? ? '' : '.' }#{ relationship[:name] }"
+      nested_path = "#{ path }#{ path.empty? ? '' : '.' }#{ relationship[:name] }"
 
       if !request[:related_resources][nested_path] && ((request[:related_resources].size > 0) || relationship[:inclusion_level] < inclusion_level)
         next
@@ -108,6 +110,5 @@ module Kit::JsonApi::Services::QueryBuilder
 
     [:ok, query_node: query_node]
   end
-
 
 end

@@ -1,16 +1,17 @@
 # @ref https://jsonapi.org/format/1.1/#fetching-includes
 module Kit::JsonApi::Services::Request::RelatedResources
+
   include Kit::Contract
   Ct = Kit::JsonApi::Contracts
 
   def self.handle_related_resources(config:, query_params:, request:)
-    args = { config: config, query_params: query_params, request: request, }
+    args = { config: config, query_params: query_params, request: request }
 
     Kit::Organizer.call({
       list: [
         self.method(:validate_params),
       ],
-      ctx: args,
+      ctx:  args,
     })
   end
 
@@ -28,7 +29,7 @@ module Kit::JsonApi::Services::Request::RelatedResources
         current_path = "#{ current_path }#{ current_path.size > 0 ? '.' : '' }#{ relationship_name }"
 
         if !relationship
-          errors << { detail: "Related resource: `#{current_path}` is not a valid relationship" }
+          errors << { detail: "Related resource: `#{ current_path }` is not a valid relationship" }
           break
         end
 
