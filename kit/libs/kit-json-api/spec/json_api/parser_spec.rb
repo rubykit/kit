@@ -1,7 +1,7 @@
-require_relative '../rails_helper'
+#require_relative '../rails_helper'
 
-require 'uri'
-require 'Rack'
+#require 'uri'
+#require 'Rack'
 
 =begin
 describe Kit::JsonApi::Services::Url::Parser do
