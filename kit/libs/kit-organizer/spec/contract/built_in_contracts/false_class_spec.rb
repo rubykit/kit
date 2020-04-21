@@ -10,12 +10,13 @@ describe Kit::Contract::BuiltInContracts::FalseClass do
       [false],
     ]
   end
+  let(:expected_type) { FalseClass }
   let(:args_invalid) do
     {
-      [true] => 'IS_A failed: expected `true` to be a `FalseClass`',
-      [nil]  => 'IS_A failed: expected `` to be a `FalseClass`',
-      [1]    => 'IS_A failed: expected `1` to be a `FalseClass`',
-      ['1']  => 'IS_A failed: expected `1` to be a `FalseClass`',
+      [true] => nil,
+      [nil]  => nil,
+      [1]    => nil,
+      ['1']  => nil,
     }
   end
 

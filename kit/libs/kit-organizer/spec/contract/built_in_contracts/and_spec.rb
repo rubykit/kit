@@ -15,9 +15,9 @@ describe ::Kit::Contract::BuiltInContracts::And do
   end
   let(:args_invalid) do
     {
-      [nil] => 'AND failed',
-      [3]   => 'AND failed',
-      [5]   => 'AND failed',
+      [nil] => 'AND failed: [[{:detail=>"Invalid result type for contract"}], [{:detail=>"Invalid result type for contract"}]]',
+      [3]   => 'AND failed: [[{:detail=>"Invalid result type for contract"}]]',
+      [5]   => 'AND failed: [[{:detail=>"Invalid result type for contract"}]]',
     }
   end
 

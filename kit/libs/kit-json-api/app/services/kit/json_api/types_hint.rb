@@ -1,3 +1,4 @@
+# Define defaults operators available per type.
 module Kit::JsonApi::TypesHint
 
   Boolean   = :boolean
@@ -11,12 +12,12 @@ module Kit::JsonApi::TypesHint
   def self.defaults
     {
       Kit::JsonApi::TypesHint::Boolean   => [:eq],
-      Kit::JsonApi::TypesHint::Date      => [:eq, :gt, :gte, :le, :lte],
-      Kit::JsonApi::TypesHint::Id        => [:eq],
-      Kit::JsonApi::TypesHint::IdString  => [:eq],
-      Kit::JsonApi::TypesHint::IdNumeric => [:eq],
-      Kit::JsonApi::TypesHint::Numeric   => [:eq, :gt, :gte, :le, :lte],
-      Kit::JsonApi::TypesHint::String    => [:eq, :contain, :start_with, :end_with],
+      Kit::JsonApi::TypesHint::Date      => [:eq, :in, :gt, :gte, :lt, :lte],
+      Kit::JsonApi::TypesHint::Id        => [:eq, :in],
+      Kit::JsonApi::TypesHint::IdString  => [:eq, :in],
+      Kit::JsonApi::TypesHint::IdNumeric => [:eq, :in],
+      Kit::JsonApi::TypesHint::Numeric   => [:eq, :in, :gt, :gte, :lt, :lte],
+      Kit::JsonApi::TypesHint::String    => [:eq, :in, :contain, :start_with, :end_with],
     }
   end
 

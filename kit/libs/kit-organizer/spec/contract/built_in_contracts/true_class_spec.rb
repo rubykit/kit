@@ -10,12 +10,13 @@ describe Kit::Contract::BuiltInContracts::TrueClass do
       [true],
     ]
   end
+  let(:expected_type) { TrueClass }
   let(:args_invalid) do
     {
-      [false] => 'IS_A failed: expected `false` to be a `TrueClass`',
-      [nil]  => 'IS_A failed: expected `` to be a `TrueClass`',
-      [1]    => 'IS_A failed: expected `1` to be a `TrueClass`',
-      ['1']  => 'IS_A failed: expected `1` to be a `TrueClass`',
+      [false] => nil,
+      [nil]   => nil,
+      [1]     => nil,
+      ['1']   => nil,
     }
   end
 

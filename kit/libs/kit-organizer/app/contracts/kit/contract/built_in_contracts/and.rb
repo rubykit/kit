@@ -7,13 +7,17 @@ module Kit::Contract::BuiltInContracts
     end
 
     def call(*args)
-      failed = @contracts.any? do |contract|
-        status, _ = Kit::Contract::Services::Validation.valid?(contract: contract, args: args)
-        status != :ok
+      failed_list = []
+      @contracts.each do |contract|
+        status, res = Kit::Contract::Services::Validation.valid?(contract: contract, args: args)
+
+        if status != :ok
+          failed_list << res
+        end
       end
 
-      if failed
-        [:error, "AND failed"]
+      if failed_list.size > 0
+        [:error, "AND failed: #{failed_list.map { |ctx| ctx[:errors] } }"]
       else
         [:ok]
       end

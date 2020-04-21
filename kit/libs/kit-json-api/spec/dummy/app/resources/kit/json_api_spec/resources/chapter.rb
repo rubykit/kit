@@ -1,56 +1,71 @@
 module Kit::JsonApiSpec::Resources::Chapter
-=begin
+
+  include Kit::Contract
+  Ct = Kit::JsonApi::Contracts
+
+  include Kit::JsonApi::Resources::Resource
+
+  def self.resource_name
+    :chapter
+  end
+
+  def self.resource_url(resource_id:)
+    "/chapters/#{ resource_id }"
+  end
+
+  def self.relationship_url(resource_id:, relationship_id:)
+    "/chapters/#{ resource_id }/relationships/#{ relationship_id }"
+  end
 
   def self.available_fields
     {
-      id:       Kit::JsonApi::TypesHint::id_numeric,
-      title:    Kit::JsonApi::TypesHint::string,
-      ordering: Kit::JsonApi::TypesHint::numeric,
+      id:       Kit::JsonApi::TypesHint::IdNumeric,
+      title:    Kit::JsonApi::TypesHint::String,
+      ordering: Kit::JsonApi::TypesHint::Numeric,
     }
-  end
-
-  def self.available_sort_fields
-    available_fields
-      .map { |name, _| [name, [:asc, :desc]] }
-      .to_h
-  end
-
-  def self.available_filter_fields
-    available_fields
-      .map { |name, type| [name, Kit::JsonApi::TypesHint.default_filters[type]] }
-      .to_h
   end
 
   def self.available_relationships
-    {
-      book: {
-        resource: Kit::JsonApiSpec::Resources::Book,
-        filters:  ->(data:, **) { [[:eq, :id, data[:book_id]] },
-        type:     :one,
-      },
+    list = [
+      Kit::JsonApiSpec::Resources::Chapter::Relationships::Book,
+    ]
+
+    list
+      .map { |el| [el.relationship[:name], el.relationship] }
+      .to_h
+  end
+
+  before [
+    ->(query_node:) { query_node[:resource][:name] == :chapter },
+  ]
+  def self.load_data(query_node:)
+    model  = Kit::JsonApiSpec::Models::Write::Chapter
+    _, ctx = Kit::JsonApi::Services::Sql.sql_query(
+      ar_model:  model,
+      filtering: query_node[:condition],
+      sorting:   query_node[:sorting],
+      limit:     query_node[:limit],
+    )
+
+    puts ctx[:sql_str]
+    data = model.find_by_sql(ctx[:sql_str])
+    puts "LOAD DATA CHAPTER: #{ data.size }"
+
+    [:ok, data: data]
+  end
+
+  def self.serialize(record:)
+    query_node = record[:query_node]
+    resource   = query_node[:resource]
+    raw_data   = record[:raw_data]
+
+    resource_object = {
+      type:       resource[:name],
+      id:         raw_data[:id].to_s,
+      attributes: raw_data.slice(resource[:fields] - [:id, :ordering]).merge(ordering: raw_data[:index]),
     }
+
+    [:ok, resource_object: resource_object]
   end
 
-  def self.resource
-    @resource ||= {
-      name:                    :book,
-      available_fields:        available_fields,
-      available_sort_fields:   available_sort_fields,
-      available_filters:       available_filters,
-      available_relationships: available_relationships,
-      relationship_meta_defaults: {
-        inclusion_top_level: true,
-        inclusion_nested:    false,
-      }
-      data_loader:             self.method(:load_data),
-    }
-  end
-
-  before Ct::Hash[query_layer: Ct::QueryNode],
-         ->(query_layer:) { query_layer[:resource][:name] == Resource[:name] }
-  def self.load_data(query_layer:)
-
-  end
-
-=end
 end

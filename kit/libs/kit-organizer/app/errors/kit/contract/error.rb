@@ -1,3 +1,5 @@
+require "awesome_print"
+
 # When using contracts on method signatures (through `before`, `after`, `contract`) a `Kit::Contract::Error` exception is raised when a contract failure happens.
 class Kit::Contract::Error < ::StandardError
 
@@ -24,7 +26,8 @@ class Kit::Contract::Error < ::StandardError
 
     if @contract_error
       if @contract_error[:args]
-        list << "Arguments used: #{@contract_error[:args]}"
+        arguments = @contract_error[:args].ai
+        list << "Arguments used: #{arguments}"
       end
       error_callable = @contract_error[:callable]
       if error_callable.respond_to?(:source_location)

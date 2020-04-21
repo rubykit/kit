@@ -19,6 +19,9 @@ Rails.application.routes.draw do
     })
   end
 
-  Kit::Router::Services::Adapters::Http::Rails::Routes.mount_http_targets(rails_router_context: self, list: list_api,)
+  Kit::Router::Services::Adapters::Http::Rails::Routes.mount_http_targets(
+    rails_router_context: self,
+    list:                 list_api,
+  )
 
 end

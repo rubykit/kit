@@ -1,22 +1,41 @@
 module Kit::JsonApiSpec::Resources::Author
+
   include Kit::Contract
   Ct = Kit::JsonApi::Contracts
 
+  include Kit::JsonApi::Resources::Resource
+
+  def self.resource_name
+    :author
+  end
+
+  def self.resource_url(resource_id:)
+    "/authors/#{ resource_id }"
+  end
+
+  def self.relationship_url(resource_id:, relationship_name:)
+    "/articles/#{ resource_id }/relationships/#{ relationship_name }"
+  end
+
   def self.available_fields
     {
-      id:            Kit::JsonApi::TypesHint.defaults[Kit::JsonApi::TypesHint::IdNumeric],
-      created_at:    Kit::JsonApi::TypesHint.defaults[Kit::JsonApi::TypesHint::Date],
-      updated_at:    Kit::JsonApi::TypesHint.defaults[Kit::JsonApi::TypesHint::Date],
-      name:          Kit::JsonApi::TypesHint.defaults[Kit::JsonApi::TypesHint::String],
-      date_of_birth: Kit::JsonApi::TypesHint.defaults[Kit::JsonApi::TypesHint::Date],
-      date_of_death: Kit::JsonApi::TypesHint.defaults[Kit::JsonApi::TypesHint::Date],
+      id:            Kit::JsonApi::TypesHint::IdNumeric,
+      created_at:    Kit::JsonApi::TypesHint::Date,
+      updated_at:    Kit::JsonApi::TypesHint::Date,
+      name:          Kit::JsonApi::TypesHint::String,
+      date_of_birth: Kit::JsonApi::TypesHint::Date,
+      date_of_death: Kit::JsonApi::TypesHint::Date,
     }
   end
 
   def self.available_sort_fields
-    available_fields
-      .map { |name, _| [name, [:asc, :desc]] }
-      .to_h
+    {
+      id:            { order: [[:id,            :asc]],              default: true },
+      created_at:    { order: [[:created_at,    :asc], [:id, :asc]] },
+      updated_at:    { order: [[:updated_at,    :asc], [:id, :asc]] },
+      name:          { order: [[:name,          :asc], [:id, :asc]] },
+      date_of_birth: { order: [[:date_of_birth, :asc], [:id, :asc]] },
+    }
   end
 
   def self.available_filters
@@ -24,7 +43,7 @@ module Kit::JsonApiSpec::Resources::Author
       .map { |name, type| [name, Kit::JsonApi::TypesHint.defaults[type]] }
       .to_h
 
-    # @note Dummy filter, acts as an exemple
+    # @note Dummy filter, acts as an exemple of a custom filter.
     filters = {
       alive: Kit::JsonApi::TypesHint.defaults[Kit::JsonApi::TypesHint::Boolean],
     }
@@ -33,62 +52,34 @@ module Kit::JsonApiSpec::Resources::Author
   end
 
   def self.available_relationships
-    # @note Here the filter is the same for the 3 relationships
-    filter = ->(query_node:) do
-      if (parent_data = query_node&.dig(:parent, :data) && parent_data.size > 0)
-        Kit::JsonApi::Types::Condition[op: :in, column: :author_id, values: parent_data.map { |e| e[:id] }, upper_relationship: true]
-      else
-        nil
-      end
-    end
+    list = [
+      Kit::JsonApiSpec::Resources::Author::Relationships::Books,
+      Kit::JsonApiSpec::Resources::Author::Relationships::Photos,
+      Kit::JsonApiSpec::Resources::Author::Relationships::Series,
+    ]
 
-    {
-      books: {
-        #type:     [Kit::JsonApiSpec::Resources::Author, [:books, Kit::JsonApiSpec::Resources::Book]],
-        resource:          Kit::JsonApiSpec::Resources::Book,
-        type:              :many,
-        inherited_filters: [filter],
-      },
-      series: {
-        resource:          Kit::JsonApiSpec::Resources::Serie,
-        type:              :many,
-        inherited_filters: [filter],
-      },
-      photos: {
-        resource:          Kit::JsonApiSpec::Resources::Photo,
-        type:              :many,
-        inherited_filters: [filter],
-      },
-    }
-  end
-
-  def self.resource
-    @resource ||= Kit::JsonApi::Types::Resource[{
-      name:                       :author,
-      available_fields:           available_fields,
-      available_sort_fields:      available_sort_fields,
-      available_filters:          available_filters,
-      upper_layer_relationship:   nil,
-      available_relationships:    available_relationships,
-      relationship_meta_defaults: {
-        inclusion_top_level: true,
-        inclusion_nested:    false,
-      },
-      data_loader:             self.method(:load_data),
-    }]
+    list
+      .map { |el| [el.relationship[:name], el.relationship] }
+      .to_h
   end
 
   before [
-    #Ct::Hash[query_node: Ct::QueryNode],
-    ->(query_node:) { query_node[:resource][:name] == :author },
+    ->(query_node:) { query_node[:resource][:name] == resource[:name] },
   ]
   def self.load_data(query_node:)
-    model = Kit::JsonApiSpec::Models::Write::Author
-    sql   = Kit::JsonApi::Services::QueryResolver.generate_sql_query(
-      table_name: model.table_name,
+    model  = Kit::JsonApiSpec::Models::Write::Author
+    _, ctx = Kit::JsonApi::Services::Sql.sql_query(
+      ar_model:  model,
+      filtering: query_node[:condition],
+      sorting:   query_node[:sorting],
+      limit:     query_node[:limit],
     )
 
-    [:ok, data: model.find_by_sql(sql)]
+    puts ctx[:sql_str]
+    data = model.find_by_sql(ctx[:sql_str])
+    puts "LOAD DATA AUTHOR: #{ data.size }"
+
+    [:ok, data: data]
   end
 
 end

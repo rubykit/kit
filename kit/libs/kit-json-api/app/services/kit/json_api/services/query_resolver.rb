@@ -1,56 +1,77 @@
+# Resolve a Query: load data & map it
 module Kit::JsonApi::Services::QueryResolver
 
-  def self.resolve_query(json_api_query:)
-    result      = resolve_node(query_node: json_api_query[:entry_node])
-    status, ctx = result
+  include Kit::Contract
+  Ct = Kit::JsonApi::Contracts
 
-    if status == :ok
-      [:ok, json_api_query: json_api_query]
-    else
-      result
-    end
-  end
-
-  def self.resolve_node(query_node:)
+  before Ct::Hash[query_node: Ct::QueryNode]
+  after  Ct::Result[query_node: Ct::QueryNode]
+  def self.resolve_query_node(query_node:)
     Kit::Organizer.call({
       list: [
-        self.method(:resolve_filters),
-        self.method(:load_data),
-        self.method(:resolve_relationships),
+        self.method(:resolve_query_node_condition),
+        self.method(:load_records),
+        self.method(:resolve_relationships_query_nodes),
+        self.method(:resolve_relationships_records),
       ],
-      ctx: { query_node: query_node, },
+      ctx:  { query_node: query_node },
     })
   end
 
-  def self.resolve_filters(query_node:)
-    filters = query_node[:filters].map do |filter|
-      if filter.respond_to?(:call)
-        filter.call(query_node: query_node)
-      else
-        filter
-      end
-    end
-
-    query_node[:filters] = filters
+  before Ct::Hash[query_node: Ct::QueryNode]
+  after  Ct::Result[query_node: Ct::QueryNode]
+  def self.resolve_query_node_condition(query_node:)
+    query_node[:condition] = resolve_condition(
+      condition:  query_node[:condition],
+      query_node: query_node,
+    )
 
     [:ok, query_node: query_node]
   end
 
-  def self.load_data(query_node:)
+  def self.resolve_condition(condition:, query_node:)
+    if condition.is_a?(Kit::JsonApi::Types::Condition)
+      if condition[:op].in?([:or, :and])
+        condition[:values] = condition[:values].map do |value|
+          resolve_condition(condition: value, query_node: query_node)
+        end
+      end
+    elsif condition.respond_to?(:call)
+      condition = condition.call(query_node: query_node)
+    end
+
+    condition
+  end
+
+  before Ct::Hash[query_node: Ct::QueryNode]
+  after  Ct::Result[query_node: Ct::QueryNode]
+  def self.load_records(query_node:)
     result      = query_node[:data_loader].call(query_node: query_node)
     status, ctx = result
 
     if status == :ok
-      query_node[:data] = ctx[:data]
+      query_node[:records] = ctx[:data].map do |raw_data|
+        Kit::JsonApi::Types::Record[
+          query_node:    query_node,
+          raw_data:      raw_data,
+          meta:          {},
+          relationships: {},
+        ]
+      end
+
       [:ok, query_node: query_node]
     else
       result
     end
   end
 
-  def self.resolve_relationships(query_node:)
-    query_node[:relationships].each do |_relationship_name, nested_query_node|
-      status, ctx = result = resolve_node(query_node: nested_query_node)
+  before Ct::Hash[query_node: Ct::QueryNode]
+  after  Ct::Result[query_node: Ct::QueryNode]
+  def self.resolve_relationships_query_nodes(query_node:)
+    query_node[:relationships].each do |_relationship_name, relationship|
+      nested_query_node = relationship[:child_query_node]
+      result            = resolve_query_node(query_node: nested_query_node)
+      status, _ctx      = result
 
       if status == [:error]
         return result
@@ -60,94 +81,18 @@ module Kit::JsonApi::Services::QueryResolver
     [:ok, query_node: query_node]
   end
 
-=begin
-  # Load data for the `query_node`, add relationship filters to nested `query_nodes` & call itself to resolve them
-  def self.resolve_node(query_node:)
-    load_data(query_node: query_node)
+  def self.resolve_relationships_records(query_node:)
+    query_node[:relationships].each do |relationship_name, relationship|
+      child_query_node = relationship[:child_query_node]
+      child_records    = child_query_node[:records]
 
-    query_node[:relationships].each do |relationship_name, nested_query_node|
-      add_relationship_data_to_nested_query_node(
-        query_node:        query_node,
-        relationship_name: relationship_name,
-        nested_query_node: nested_query_node,
-      )
-
-      resolve_node(query_node: nested_query_node)
+      query_node[:records].each do |parent_record|
+        selector = relationship[:select_relationship_record].call(parent_record: parent_record)
+        parent_record[:relationships][relationship_name] = child_records.select(&selector)
+      end
     end
 
     [:ok, query_node: query_node]
-  end
-
-  def self.load_data(query_node:)
-    resource = query_node[:resource]
-    callable = resource[:data_loader]
-    data     = callable.call(
-      query_node: query_node,
-    )
-
-    query_node[:data] = data
-
-    [:ok, query_node: query_node]
-  end
-
-  def self.add_relationship_data_to_nested_query_node(query_node:, relationship_name:, nested_query_node:)
-    resource = query_node[:resource]
-    callable = resource[:relationships][relationship_name][:filter]
-
-    # @note Only `data` should be needed by the receiver, but in case some funky implementation needs it, also send the `query_node`
-    upper_relationship_data = relationship_filter.call(
-      data:       query_node[:data],
-      query_node: query_node,
-    )
-
-    nested_query_node[:upper_relationship] = {
-      column_name: upper_relationship_data[:column_name],
-      values:      upper_relationship_data[:values],
-    }
-
-    [:ok, nested_query_node: nested_query_node]
-  end
-=end
-
-
-  # @note The SQL is generated for Postgres. Probably needs to be tuned for other DBs.
-  def self.generate_sql_query(table_name:, filtering: [], sorting: [], limit: nil)
-    sanitized_limit     = limit || 100
-    sanitized_filtering = true
-    sanitized_sorting   = true
-
-    relationship_column = nil
-
-    if relationship_column
-      # @note We use a nested query to avoid naming collisions with the added attribute (rank)
-      # @ref https://blog.jooq.org/2018/05/14/selecting-all-columns-except-one-in-postgresql/
-      # @ref http://sqlfiddle.com/#!17/378a3/10
-
-      sql = %{
-        SELECT (data).*
-          FROM (
-            SELECT data,
-                   RANK() OVER (PARTITION BY #{relationship_column} ORDER BY #{sanitized_sorting}) AS rank
-              FROM #{table_name} data
-              WHERE #{sanitized_filtering}
-               /* AND {query_conditions}
-                  AND ({relationship_column_name} IN ({relationship_values.join(', ')}))
-               */
-               ) AS ranked_data
-         WHERE ranked_data.rank <= #{sanitized_limit}
-      }
-    else
-    # @note Avoid the window function (RANK) when not needed
-      sql = %{
-          SELECT *
-            FROM #{table_name}
-           WHERE #{sanitized_filtering}
-        ORDER BY #{sanitized_sorting}
-           LIMIT #{sanitized_limit}
-      }
-    end
-
-    sql
   end
 
 end

@@ -1,62 +1,71 @@
-module Kit::JsonApiSpec::Resources::Author
-=begin
+module Kit::JsonApiSpec::Resources::BookStore
+
+  include Kit::Contract
+  Ct = Kit::JsonApi::Contracts
+
+  include Kit::JsonApi::Resources::Resource
+
+  def self.resource_name
+    :book_store
+  end
+
+  def self.resource_url(resource_id:)
+    "/book_stores/#{ resource_id }"
+  end
+
+  def self.relationship_url(resource_id:, relationship_id:)
+    "/book_stores/#{ resource_id }/relationships/#{ relationship_id }"
+  end
 
   def self.available_fields
     {
-      id:            Kit::JsonApi::TypesHint::id_numeric,
-      created_at:    Kit::JsonApi::TypesHint::date,
-      updated_at:    Kit::JsonApi::TypesHint::date,
-      in_stock:      Kit::JsonApi::TypesHint::boolean,
+      id:         Kit::JsonApi::TypesHint::IdNumeric,
+      created_at: Kit::JsonApi::TypesHint::Date,
+      updated_at: Kit::JsonApi::TypesHint::Date,
+      in_stock:   Kit::JsonApi::TypesHint::Boolean,
     }
   end
 
   def self.available_sort_fields
     available_fields
-      .map { |name, _| [name, [:asc, :desc]] }
+      .map { |name, _| [name, { order: [[name, :asc]], default: (name == :id) }] }
       .to_h
   end
 
   def self.available_filters
     available_fields
-      .map { |name, type| [name, Kit::JsonApi::TypesHint.default_filters[type]] }
+      .map { |name, type| [name, Kit::JsonApi::TypesHint.defaults[type]] }
       .to_h
   end
 
   def self.available_relationships
-    {
-      book: {
-        resource: Kit::JsonApiSpec::Resources::Book,
-        filters:  ->(data:, **) { [[:eq, :id, data[:book_id]]] },
-        type:     :one,
-      },
-      store: {
-        resource: Kit::JsonApiSpec::Resources::Store,
-        filters:  ->(data:, **) { [[:eq, :id, data[:store_id]]] },
-        type:     :one,
-      },
-    }
+    list = [
+      Kit::JsonApiSpec::Resources::BookStore::Relationships::Book,
+      Kit::JsonApiSpec::Resources::BookStore::Relationships::Store,
+    ]
+
+    list
+      .map { |el| [el.relationship[:name],  el.relationship] }
+      .to_h
   end
 
-  def self.resource
-    @resource ||= {
-      name:                    :author,
-      available_fields:        available_fields,
-      available_sort_fields:   available_sort_fields,
-      available_filters:       available_filters,
-      available_relationships: available_relationships,
-      relationship_meta_defaults: {
-        inclusion_top_level: true,
-        inclusion_nested:    false,
-      }
-      data_loader:             self.method(:load_data),
-    }
+  before [
+    ->(query_node:) { query_node[:resource][:name] == :book_store },
+  ]
+  def self.load_data(query_node:)
+    model  = Kit::JsonApiSpec::Models::Write::BookStore
+    _, ctx = Kit::JsonApi::Services::Sql.sql_query(
+      ar_model:  model,
+      filtering: query_node[:condition],
+      sorting:   query_node[:sorting],
+      limit:     query_node[:limit],
+    )
+
+    puts ctx[:sql_str]
+    data = model.find_by_sql(ctx[:sql_str])
+    puts "LOAD DATA BOOK_STORE: #{ data.size }"
+
+    [:ok, data: data]
   end
 
-  before Ct::Hash[query_layer: Ct::QueryNode],
-         ->(query_layer:) { query_layer[:resource][:name] == Resource[:name] }
-  def self.load_data(query_layer:)
-
-  end
-
-=end
 end

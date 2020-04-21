@@ -24,7 +24,7 @@ RSpec.shared_examples_for 'a signature contract that fails on invalid values' do
 
       expect { callable.call(*args) }.to(
         raise_error(
-          an_instance_of(exception_class).and(having_attributes(message: error_msg))
+          an_instance_of(exception_class).and(having_attributes(message: a_string_starting_with(error_msg)))
         )
       )
     end

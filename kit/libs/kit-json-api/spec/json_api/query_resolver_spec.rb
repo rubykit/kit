@@ -1,36 +1,30 @@
 require_relative '../rails_helper'
 
 describe Kit::JsonApi::Services::QueryResolver do
-  let(:service)       { described_class }
+  let(:service)  { described_class }
+  let(:singular) { false }
 
-  let(:json_api_query) do
-    author_resource = Kit::JsonApiSpec::Resources::Author.resource
-    query_node       = {
-      resource:      author_resource,
-      relationships: {},
-      filters:       [[]],
-      sorting:       [[:id, :desc]],
-      limit:         5,
-      data:          nil,
-      meta:          {},
-      data_loader:   author_resource[:data_loader],
-    }
+  context 'for a top level resource' do
+    list = [
+      { resource: Kit::JsonApiSpec::Resources::Author.resource,    },
+      { resource: Kit::JsonApiSpec::Resources::Book.resource,      },
+      { resource: Kit::JsonApiSpec::Resources::BookStore.resource, },
+      { resource: Kit::JsonApiSpec::Resources::Chapter.resource,   },
+      { resource: Kit::JsonApiSpec::Resources::Photo.resource,     },
+      { resource: Kit::JsonApiSpec::Resources::Serie.resource,     },
+      { resource: Kit::JsonApiSpec::Resources::Store.resource,     },
+    ]
 
-    json_api_query  = {
-      fields: {
-        Kit::JsonApiSpec::Resources::Author => author_resource[:available_fields].map(&:first),
-      },
-      entry_node: query_node
-    }
-  end
+    list.each do |resource:|
+      it "generates a valid query plan for #{resource[:name]}" do
+        request     = { top_level_resource: resource, singular: singular, }
 
+        query_node  = Kit::JsonApi::Services::QueryBuilder.build_query(request: request)[1][:query][:entry_query_node]
 
-  context 'Resolve query' do
-    subject { service.resolve_query(json_api_query: json_api_query) }
+        status, ctx = service.resolve_query_node(query_node: query_node)
 
-    it 'works' do
-      status, ctx = subject
-      expect(status).to eq :ok
+        expect(status).to eq :ok
+      end
     end
   end
 

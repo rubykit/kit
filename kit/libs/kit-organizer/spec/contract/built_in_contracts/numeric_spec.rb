@@ -16,10 +16,11 @@ describe Kit::Contract::BuiltInContracts::Numeric do
       [BigDecimal(1)],
     ]
   end
+  let(:expected_type) { Numeric }
   let(:args_invalid) do
     {
-      [nil] => 'IS_A failed: expected `` to be a `Numeric`',
-      ['1'] => 'IS_A failed: expected `1` to be a `Numeric`',
+      [nil] => nil,
+      ['1'] => nil,
     }
   end
 

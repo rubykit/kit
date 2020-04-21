@@ -22,11 +22,11 @@ module Kit::Organizer::Services::Callable
     if target.respond_to?(:call)
       [:ok, callable: target]
     else
-      type, args = callable
+      type = target[0]
       if !store[type]
         [:error, "Kit::Organizer could not resolve callable type `#{type}`"]
       else
-        [:ok, callable: store[type].call(args: args)]
+        store[type].call(args: target)
       end
     end
   end

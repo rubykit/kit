@@ -37,6 +37,12 @@ module Kit
         config.paths.add KIT_APP_PATHS['GEM_SPEC_LIB'], load_path: true
       end
 
+      if KIT_APP_PATHS['GEM_SPEC_DB']
+        val = config.paths.add KIT_APP_PATHS['GEM_SPEC_DB'], load_path: true
+
+        ::ActiveRecord::Tasks::DatabaseTasks.db_dir = val.first
+      end
+
     end
   end
 end

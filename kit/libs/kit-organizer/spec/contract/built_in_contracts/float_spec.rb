@@ -15,11 +15,12 @@ describe Kit::Contract::BuiltInContracts::Float do
       [Float::EPSILON],
     ]
   end
+  let(:expected_type) { Float }
   let(:args_invalid) do
     {
-      [nil] => 'IS_A failed: expected `` to be a `Float`',
-      [1]   => 'IS_A failed: expected `1` to be a `Float`',
-      ['1'] => 'IS_A failed: expected `1` to be a `Float`',
+      [nil] => nil,
+      [1]   => nil,
+      ['1'] => nil,
     }
   end
 
