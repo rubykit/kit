@@ -1,4 +1,4 @@
-# @ref https://jsonapi.org/format/1.1/#fetching-includes
+# @see https://jsonapi.org/format/1.1/#fetching-includes
 module Kit::JsonApi::Services::Request::RelatedResources
 
   include Kit::Contract

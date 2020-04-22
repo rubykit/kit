@@ -1,0 +1,51 @@
+PATH
+  remote: .
+  specs:
+    Kit (0.1.0.alpha)
+
+PATH
+  remote: kit/libs/yard-kit
+  specs:
+    yard-kit (0.1.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    ast (2.4.0)
+    coderay (1.1.2)
+    jaro_winkler (1.5.4)
+    method_source (1.0.0)
+    parallel (1.19.1)
+    parser (2.7.1.1)
+      ast (~> 2.4.0)
+    pry (0.13.1)
+      coderay (~> 1.1)
+      method_source (~> 1.0)
+    rainbow (3.0.0)
+    rake (13.0.1)
+    rexml (3.2.4)
+    rubocop (0.81.0)
+      jaro_winkler (~> 1.5.1)
+      parallel (~> 1.10)
+      parser (>= 2.7.0.1)
+      rainbow (>= 2.2.2, < 4.0)
+      rexml
+      ruby-progressbar (~> 1.7)
+      unicode-display_width (>= 1.4.0, < 2.0)
+    ruby-progressbar (1.10.1)
+    unicode-display_width (1.7.0)
+    yard (0.9.24)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  Kit!
+  pry
+  rake
+  rubocop (~> 0.81.0)
+  yard
+  yard-kit!
+
+BUNDLED WITH
+   2.1.3

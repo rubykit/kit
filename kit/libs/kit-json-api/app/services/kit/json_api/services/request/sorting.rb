@@ -1,4 +1,4 @@
-# @ref https://jsonapi.org/format/1.1/#fetching-sorting
+# @see https://jsonapi.org/format/1.1/#fetching-sorting
 module Kit::JsonApi::Services::Request::Sorting
 
   include Kit::Contract

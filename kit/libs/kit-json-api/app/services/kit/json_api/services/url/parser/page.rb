@@ -4,8 +4,8 @@ module Kit::JsonApi::Services::Url::Parser::Page
   include Kit::Contract
   Ct = Kit::JsonApi::Contracts
 
-  # @ref https://jsonapi.org/format/1.1/#fetching-pagination
-  # @ref https://jsonapi.org/profiles/ethanresnick/cursor-pagination/
+  # @see https://jsonapi.org/format/1.1/#fetching-pagination
+  # @see https://jsonapi.org/profiles/ethanresnick/cursor-pagination/
   def self.parse_page(query_params_in:, query_params_out:)
     data = query_params_in[:page] || {}
     list = {}

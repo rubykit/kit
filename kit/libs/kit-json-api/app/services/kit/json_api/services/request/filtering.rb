@@ -1,4 +1,4 @@
-# @ref https://jsonapi.org/format/1.1/#fetching-filtering
+# @see https://jsonapi.org/format/1.1/#fetching-filtering
 module Kit::JsonApi::Services::Request::Filtering
 
   include Kit::Contract

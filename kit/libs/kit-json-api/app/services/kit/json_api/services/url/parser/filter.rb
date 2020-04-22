@@ -6,17 +6,17 @@ module Kit::JsonApi::Services::Url::Parser::Filter
 
   # The format of a filter is `filter[(path.)filter_name]([operator])=value(s)`.
   # If the path is ommited, it applies to the top level resource.
-  # @ex /authors?filter[name]=Dan # The filter `name` is applied on `authors`
+  # @example /authors?filter[name]=Dan # The filter `name` is applied on `authors`
   # Otherwise it applies to the related resource.
-  # @ex /authors?include=books.chapter&filter[books.chapter.title]=Strider # The filter `title` is applied on `books.chapter`
+  # @example /authors?include=books.chapter&filter[books.chapter.title]=Strider # The filter `title` is applied on `books.chapter`
   # If the operator is ommited, is defaults to `in` (similar to `eq` for single value).
-  # @ex /authors?filter[id]=2 is equal to /authors?filter[id][eq]=2
-  # @ex /authors?filter[id]=1,2 is equal to /authors?filter[id][in]=1,2
+  # @example /authors?filter[id]=2 is equal to /authors?filter[id][eq]=2
+  # @example /authors?filter[id]=1,2 is equal to /authors?filter[id][in]=1,2
   # Multiple values are treated as an implicit `OR`.
-  # @ex /authors?filter[name][contains]=Tolkien&filter[books.id]=1,2
-  # @ref https://jsonapi.org/format/1.1/#fetching-filtering
-  # @ref https://jsonapi.org/recommendations/#filtering
-  # @warning Filters on relationship DO NOT modify the parent set. /authors?filter[books.title]=Title WILL NOT affect the returned authors, only the books relationship. This ensures Resources can be loaded from different datasources (no join available).
+  # @example /authors?filter[name][contains]=Tolkien&filter[books.id]=1,2
+  # @see https://jsonapi.org/format/1.1/#fetching-filtering
+  # @see https://jsonapi.org/recommendations/#filtering
+  # @note Warning: Filters on relationship DO NOT modify the parent set. /authors?filter[books.title]=Title WILL NOT affect the returned authors, only the books relationship. This ensures Resources can be loaded from different datasources (no join available).
   def self.parse_filter(query_params_in:, query_params_out:)
     data = query_params_in[:filter] || {}
     list = {}

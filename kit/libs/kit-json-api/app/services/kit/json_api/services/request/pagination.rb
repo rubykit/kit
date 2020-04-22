@@ -1,5 +1,5 @@
-# @ref https://jsonapi.org/format/1.1/#fetching-pagination
-# @ref https://jsonapi.org/extensions/##profiles-category-pagination
+# @see https://jsonapi.org/format/1.1/#fetching-pagination
+# @see https://jsonapi.org/extensions/##profiles-category-pagination
 module Kit::JsonApi::Services::Request::Pagination
 
   include Kit::Contract
