@@ -16,9 +16,11 @@ Gem::Specification.new do |spec|
 
   spec.files = Dir["{lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
-  spec.add_development_dependency 'yard'
-  spec.add_development_dependency 'redcarpet'
-
-  spec.add_development_dependency 'rspec'
+  # @todo All of these should be development dependencies, but that prevent them from being added to to projects using the gem.
+  spec.add_dependency 'git'
+  spec.add_dependency 'redcarpet'
+  spec.add_dependency 'rspec'
+  spec.add_dependency 'sassc'
+  spec.add_dependency 'yard'
 
 end

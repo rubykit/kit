@@ -18,6 +18,8 @@ gem 'rails'
 
 gem 'kit-organizer',           path: '../../libs/kit-organizer' # GEMSPEC
 
+gem 'sassc'
+
 group :test, :development do
   gem 'pry'
 
