@@ -10,3 +10,4 @@ module Yard
 end
 
 require "yard/kit/contracts_handler"
+require "yard/kit/config"
