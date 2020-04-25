@@ -1,0 +1,66 @@
+<div class="box_info">
+  <% if CodeObjects::ClassObject === object && object.superclass %>
+  <dl>
+    <dt>Inherits:</dt>
+    <dd>
+      <span class="inheritName"><%= linkify object.superclass %></span>
+      <% if object.superclass.name != :BasicObject %>
+        <ul class="fullTree">
+          <li><%= linkify P(:Object) %></li>
+          <% object.inheritance_tree.reverse.each_with_index do |obj, i| %>
+            <li class="next"><%= obj == object ? obj.path : linkify(obj) %></li>
+          <% end %>
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      <% end %>
+    </dd>
+  </dl>
+  <% end %>
+
+  <% [[:class, "Extended by"], [:instance, "Includes"]].each do |scope, name| %>
+  <% if (mix = run_verifier(object.mixins(scope))).size > 0 %>
+  <dl>
+      <dt><%= name %>:</dt>
+      <dd><%= mix.sort_by {|o| o.path }.map {|o| linkify(o) }.join(", ") %></dd>
+  </dl>
+  <% end %>
+  <% end %>
+
+  <% if (mixed_into = mixed_into(object)).size > 0 %>
+  <dl>
+    <dt>Included in:</dt>
+    <dd><%= mixed_into.sort_by {|o| o.path }.map {|o| linkify(o) }.join(", ") %></dd>
+  </dl>
+  <% end %>
+
+  <% unless object.root? %>
+    <% files = cleanup_files(list: object.files) %>
+    <% if files.size > 1 %>
+      <dl>
+        <dt>Defined in:</dt>
+        <dd>
+          <%#= erb(:defines) %>
+
+          <% files.each_with_index do |file_data, idx| %>
+            <% path, line = file_data %>
+            <% if idx > 0 %><br><% end %>
+            <a href="<%= "#{ config[:repo_url] }/#{ path }#L#{ line }" %>" target='_blank' title="View Source" rel="help">
+              <%= "#{path}##{line}" %>
+            </a>
+          <% end %>
+
+          <%
+          <<-COMMENT
+          %>
+          <%= object.file ? object.file : '(unknown)' %><% if object.files.size > 1 %><span class="defines">,<br />
+            <%= object.files[1..-1].map {|f| f.first }.join(",<br /> ") %></span>
+          <% end %>
+          <%
+          COMMENT
+          %>
+        </dd>
+      </dl>
+    <% end %>
+  <% end %>
+</div>
+

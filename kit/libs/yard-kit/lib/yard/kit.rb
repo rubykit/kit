@@ -11,3 +11,4 @@ end
 
 require "yard/kit/contracts_handler"
 require "yard/kit/config"
+require "yard/kit/templates/helpers/yard_kit_plugin_helper"

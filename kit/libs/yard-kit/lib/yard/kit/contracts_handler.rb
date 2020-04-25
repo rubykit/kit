@@ -9,6 +9,7 @@ module Yard::Kit
   # @example
   #   bundle exec yardoc --plugin contracts
   class ContractsHandler < YARD::Handlers::Ruby::Base
+
     handles method_call(:contract)
     handles method_call(:before)
     handles method_call(:after)
@@ -36,8 +37,8 @@ module Yard::Kit
       ## TODO: What about module methods? Probably broken.
       scope     = def_method_ast.source.match(/def +self\./) ? :class : :instance
       name      = def_method_ast.method_name true
-      params    = def_method_ast.parameters # YARD::Parser::Ruby::ParameterNode
-      contracts = statement.parameters # YARD::Parser::Ruby::AstNode
+      #params    = def_method_ast.parameters # YARD::Parser::Ruby::ParameterNode
+      #contracts = statement.parameters # YARD::Parser::Ruby::AstNode
       doc       = YARD::DocstringParser.new.parse(statement.docstring).to_docstring
 
       # YARD hasn't got to the def method yet, so we create a stub of it with

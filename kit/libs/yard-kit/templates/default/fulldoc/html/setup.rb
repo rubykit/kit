@@ -1,12 +1,36 @@
 include YARD::Templates::Helpers::HtmlHelper
 
-require 'sassc'
+#require 'sassc'
 require 'json'
 
 def init
   super
 
-  # asset "css/kit_yard.css", file("css/kit_yard.css", true)
+  asset "assets/css/hexdoc_tmp.css", file("css/hexdoc_tmp.css", true)
+
+  assets_list = [
+    [File.join(File.expand_path('../../../..', __dir__), 'assets'), 'assets'],
+  ]
+
+  copy_assets(assets_list)
+
+  #copy_static_assets
+end
+
+# @see yard/lib/yard/cli/yardoc.rb
+def copy_assets(list)
+  return unless options.serializer
+
+  outpath = options.serializer.basepath
+  list.each do |from, to|
+    to    = File.join(outpath, to)
+    from += '/.' if File.directory?(from)
+
+    log.debug "Copying asset '#{ from }' to '#{ to }'"
+
+    FileUtils.mkdir_p(to)
+    FileUtils.cp_r(from, to)
+  end
 end
 
 def stylesheets_full_list

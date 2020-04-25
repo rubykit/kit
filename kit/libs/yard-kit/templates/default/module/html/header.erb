@@ -1,0 +1,18 @@
+<h1>
+  <small class="app-vsn"><%= config[:project] %> v<%= config[:version] %></small>
+
+  <!--%= format_object_title(object) %-->
+  <%= object.title %>
+
+  <% if object.has_tag?(:abstract) %><span class="abstract note title">Abstract</span><% end %>
+  <% if object.has_tag?(:deprecated) %><span class="deprecated note title">Deprecated</span><% end %>
+  <% if object.has_tag?(:api) && object.tag(:api).text == 'private' %><span class="private note title">Private</span><% end %>
+
+  <% files = cleanup_files(list: object.files) %>
+  <% if files.size == 1 %>
+    <a href="<%= "#{ config[:repo_url] }/#{ files[0][0] }#L#{ files[0][1] }" %>" target='_blank' title="View Source" class="view-source" rel="help">
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+  <% end %>
+</h1>
