@@ -1,19 +1,13 @@
-<% if constant_listing.size > 0 %>
-  <% groups(constant_listing, "Constant") do |list, name| %>
-    <% id = name.gsub(/ /, '_') %>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="<%= url_for(@item, anchor_for(@item)) %>" title="<%= @item.name %>">
+      <%= @item.name %>
+    </a>
+  </div>
 
-    <div class="summary-<%= id %> summary">
-      <h2>
-        <a href="#<%= id %>"><%= name %></a>
-      </h2>
-
-      <% list.each do |el| %>
-        <%= yieldall :item => el %>
-      <% end %>
-    </div>
-
-  <% end %>
-<% end %>
+  <% synopsis = @item.has_tag?(:deprecated) ? @item.tag(:deprecated).text : docstring_summary(@item) %>
+  <div class="summary-synopsis"><%= htmlify_line(synopsis) %></div>
+</div>
 
 <%
 <<-COMMENT
@@ -21,7 +15,6 @@
 <% if constant_listing.size > 0 %>
   <% groups(constant_listing, "Constant") do |list, name| %>
     <h2>
-      <%= name %>
       <small><a href="#" class="constants_summary_toggle">collapse</a></small>
     </h2>
 

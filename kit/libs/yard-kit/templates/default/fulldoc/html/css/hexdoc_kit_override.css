@@ -1,0 +1,5 @@
+.detail-header a.source-link {
+  position:        absolute;
+  right:           20px;
+  text-decoration: none !important;
+}

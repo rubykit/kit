@@ -1,0 +1,21 @@
+<% list = method_listing_class %>
+<% if list.size > 0 %>
+
+  <section id="methods-class" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#methods-class">
+        <span class="icon-link" aria-hidden="true"></span>
+        <span class="sr-only">Link to this section</span>
+      </a>
+      Class methods
+    </h1>
+
+    <div class="functions-list">
+      <% list.each_with_index do |meth, i| %>
+        <%= yieldall :object => meth, :owner => object, :index => i %>
+      <% end %>
+    </div>
+
+  </section>
+
+<% end %>

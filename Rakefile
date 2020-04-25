@@ -136,7 +136,7 @@ YARD::Rake::YardocTask.new do |t|
 
   t.options = [
     '--output-dir',      config[:output_dir],
-    '--plugin',          'yard-kit', # Redundant with `.yardopts`?
+    '--plugin',          'yard-kit', 'contracts', # Redundant with `.yardopts`?
     '--asset',           'docs/assets:images',
     '--markup-provider', 'redcarpet',
     '--markup',          'markdown',

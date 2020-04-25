@@ -1,0 +1,30 @@
+<section class="detail" id="<%= anchor_for(@object) %>">
+
+  <div class="detail-header">
+
+    <a href="<%= url_for(@object, anchor_for(@object)) %>" class="detail-link" title="Link to this constant">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this constant</span>
+    </a>
+
+    <h1 class="signature">
+      <%= @object.name %>
+    </h1>
+
+    <% file = @object.files.first || [] %>
+    <a href="<%= "#{ config[:repo_url] }/#{ file[0] }#L#{ file[1] }" %>" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+  </div>
+
+  <section class="docstring">
+    <%= yieldall object: @object %>
+
+    <pre>
+      <code class="nohighlight makeup ruby"><%= format_constant @object.value %></code>
+    </pre>
+  </section>
+
+</section>

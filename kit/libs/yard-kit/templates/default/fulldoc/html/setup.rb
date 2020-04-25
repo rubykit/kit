@@ -7,6 +7,7 @@ def init
   super
 
   asset "assets/css/hexdoc_tmp.css", file("css/hexdoc_tmp.css", true)
+  asset "assets/css/hexdoc_kit_override.css", file("css/hexdoc_kit_override.css", true)
 
   assets_list = [
     [File.join(File.expand_path('../../../..', __dir__), 'assets'), 'assets'],

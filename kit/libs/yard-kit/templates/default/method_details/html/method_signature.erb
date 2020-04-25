@@ -1,0 +1,46 @@
+<div class="detail-header">
+
+  <a href="<%= url_for(object, anchor_for(object)) %>" class="detail-link" title="Link to this method">
+    <span class="icon-link" aria-hidden="true"></span>
+    <span class="sr-only">Link to this method</span>
+  </a>
+
+  <h1 class="signature">
+    <% if object.tags(:overload).size == 1 %>
+      <%= signature(object.tag(:overload), false) %>
+    <% elsif object.tags(:overload).size > 1 %>
+      <% object.tags(:overload).each do |overload| %>
+        <span class="overload"><%= signature(overload, false) %></span>
+      <% end %>
+    <% else %>
+      <%= signature(object, false) %>
+    <% end %>
+  </h1>
+
+  <% file = object.files.first || [] %>
+  <a href="<%= "#{ config[:repo_url] }/#{ file[0] }#L#{ file[1] }" %>" target='_blank' rel="help" title="View Source" class='source-link'>
+    <span class="icon-code" aria-hidden="true"></span>
+    <span class="sr-only">View Source</span>
+  </a>
+
+  <div class="specs">
+    <!-- TODO: add contracts here when we can generate documentation from them -->
+
+    <% if object.aliases.size > 0 %>
+      <pre>
+        Aliases: 
+        <% object.aliases.each_with_index do |o, idx| %>
+          <% if idx > 0 %>,<% end %>
+          <a href="<%= anchor_for(o) %>"><%= h(o.name.to_s) %></a>
+        <% end %>
+      </pre>
+    <% end %>
+
+    <% if owner != object.namespace %>
+      <pre>
+        Originally defined in: <%= linkify object, owner.relative_path(object.namespace) %>
+      </pre>
+    <% end %>
+  </div>
+
+</div>

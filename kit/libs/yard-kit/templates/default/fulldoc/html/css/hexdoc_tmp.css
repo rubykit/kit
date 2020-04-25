@@ -649,7 +649,7 @@ body.sidebar-closed .sidebar {
 .sidebar .sidebar-listNav li.selected a,
 .sidebar .sidebar-listNav li:hover,
 .sidebar .sidebar-listNav li:hover a {
-  border-color: #9768d1;
+  border-color: #bf2e19;
   color: #fff
 }
 
@@ -659,7 +659,7 @@ body.sidebar-closed .sidebar {
 
 .sidebar .sidebar-search .search-button:hover,
 .sidebar .sidebar-search.selected .search-button {
-  color: #9768d1;
+  color: #bf2e19;
   opacity: 1
 }
 
@@ -1117,7 +1117,7 @@ body.sidebar-closed .sidebar {
   margin: 2em 0 1em;
   padding: .5em 1em;
   background: #f7f7f7;
-  border-left: 3px solid #9768d1;
+  border-left: 3px solid #bf2e19;
   font-size: 1em;
   font-family: Inconsolata, Menlo, Courier, monospace;
   position: relative
@@ -1204,7 +1204,7 @@ body.sidebar-closed .sidebar {
 
 .content-inner a.no-underline,
 .content-inner pre a {
-  color: #9768d1;
+  color: #bf2e19;
   text-shadow: none;
   text-decoration: none;
   background-image: none
@@ -1218,7 +1218,7 @@ body.sidebar-closed .sidebar {
 .content-inner pre a:focus,
 .content-inner pre a:hover,
 .content-inner pre a:visited {
-  color: #9768d1;
+  color: #bf2e19;
   text-decoration: none
 }
 
@@ -1375,13 +1375,13 @@ body.sidebar-closed .sidebar {
 }
 
 #search .result-id a:hover {
-  color: #9768d1
+  color: #bf2e19
 }
 
 #search .result-elem em,
 #search .result-id em {
   font-style: normal;
-  color: #9768d1
+  color: #bf2e19
 }
 
 #search .result-id small {
@@ -1553,7 +1553,7 @@ body.sidebar-closed .sidebar {
 
 #quick-switch-modal .quick-switch-wrapper #quick-switch-results .quick-switch-result.selected,
 #quick-switch-modal .quick-switch-wrapper #quick-switch-results .quick-switch-result:hover {
-  border-left: 4px solid #9768d1;
+  border-left: 4px solid #bf2e19;
   background: #f7f9fc
 }
 
@@ -1588,7 +1588,7 @@ body.sidebar-closed .sidebar {
 .autocomplete-suggestion.selected,
 .autocomplete-suggestion:hover {
   background-color: #292f3d;
-  border-left: 3px solid #9768d1
+  border-left: 3px solid #bf2e19
 }
 
 .autocomplete-suggestion em {
@@ -1724,7 +1724,7 @@ body.night-mode #search .result-id a:visited {
 }
 
 body.night-mode #search .result-id a:hover {
-  color: #9768d1
+  color: #bf2e19
 }
 
 body.night-mode .hljs-comment,
@@ -1876,7 +1876,7 @@ body.night-mode .content-inner pre a:visited {
 }
 
 body.night-mode .content-inner pre a:hover {
-  color: #9768d1
+  color: #bf2e19
 }
 
 body.night-mode .content-inner .footer {

@@ -1,0 +1,24 @@
+<% list = constant_listing %>
+<% if list.size > 0 %>
+
+  <section id="constants" class="details-list">
+
+    <h1 class="section-heading">
+      <a class="hover-link" href="#constants">
+        <span class="icon-link" aria-hidden="true"></span>
+        <span class="sr-only">Link to this section</span>
+      </a>
+      Constants
+    </h1>
+
+    <div class="functions-list">
+      <% groups(constant_listing, "Constant") do |list, name| %>
+        <% list.each_with_index do |el, i| %>
+          <%= yieldall :object => el, :owner => object, :index => i %>
+        <% end %>
+      <% end %>
+    </div>
+
+  </section>
+
+<% end %>
