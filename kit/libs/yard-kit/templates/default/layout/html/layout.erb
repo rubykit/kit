@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%= erb(:headers) %>
+  </head>
+
+  <!--<body data-type="%= sidebar_type(page.type) %">-->
+  <body data-type="">
+    <script>try { if(localStorage.getItem('night-mode') === 'true') document.body.className += ' night-mode'; } catch (e) { }</script>
+
+    <div class="main">
+      <%= erb(:sidebar) %>
+      <!-- %= erb(:search) %-->
+
+      <section class="content">
+        <div class="content-outer">
+          <div id="content" class="content-inner">
+
+            <%= erb(:breadcrumb) %>
+
+            <%= yieldall %>
+
+            <%= erb(:footer) %>
+
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>
+
+</html>
+
