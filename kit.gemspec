@@ -27,4 +27,10 @@ Gem::Specification.new do |s|
 
   # TODO: add various RubyKit Gems when we start releasing them.
 
+  s.add_development_dependency :rake
+  s.add_development_dependency :pry
+  s.add_development_dependency :git
+  s.add_development_dependency :yard
+  s.add_development_dependency :rubocop
+
 end

@@ -6,11 +6,11 @@ gemspec
 
 #gem 'rails'
 
-gem 'rake'
+#gem 'rake'
 
-gem 'pry'
+#gem 'pry'
 
-gem 'yard'
+#gem 'yard'
 gem 'yard-kit', path: 'kit/libs/yard-kit' # GEMSPEC
 
-gem 'rubocop', '~> 0.81.0'
+#gem 'rubocop', '~> 0.81.0'

@@ -1,8 +1,6 @@
 require 'yard'
 require 'yard-kit'
 
-require 'pry'
-
 FILES_MODULES = {
   'specs/dummy/'   => {
     include: %w[
@@ -60,7 +58,7 @@ end
 
 def generate_config(output_dir:)
   config = {
-    project:            'Dummy',
+    project:            'Kat',
     version:            '1.0.2',
     source_url:         'https://github.com/rubykit/yard-kit',
     authors:            ['John Doe'],
@@ -89,7 +87,9 @@ YARD::Rake::YardocTask.new do |t|
     output_dir: 'specs/dummy/docs/v1.0.2',
   )
 
-  Yard::Kit::Config.config = config
+  t.before = -> do
+    Yard::Kit::Config.config = config
+  end
 
   t.files = (config[:files_modules] + ['-'] + config[:files_extras]).flatten
 
@@ -108,8 +108,10 @@ YARD::Rake::YardocTask.new do |t|
     output_dir: 'specs/dummy/docs/raw',
   )
 
-  # Disable plugin in a hacky way
-  YARD::Templates::Engine.template_paths.pop
+  t.before = -> do
+    # Disable plugin in a hacky way
+    YARD::Templates::Engine.template_paths.pop
+  end
 
   t.files = (config[:files_modules] + ['-'] + config[:files_extras]).flatten
 
