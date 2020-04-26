@@ -68,7 +68,7 @@ def generate_config(output_dir:)
 
     source_ref:         'v1.0.2',
     repo_url:           'https://github.com/rubykit/yard-kit/blob/v1.0.2',
-    homepage_url:       'http://localhost',
+    documentation_url:  'http://localhost',
 
     main:               'overview',
     extra_section:      'GUIDES',

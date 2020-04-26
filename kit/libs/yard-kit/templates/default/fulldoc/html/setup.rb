@@ -1,21 +1,33 @@
 include YARD::Templates::Helpers::HtmlHelper
 
-#require 'sassc'
 require 'json'
 
 def init
   super
 
-  asset "assets/css/hexdoc_tmp.css", file("css/hexdoc_tmp.css", true)
-  asset "assets/css/hexdoc_kit_override.css", file("css/hexdoc_kit_override.css", true)
+  handle_static_assets
+
+  create_versions_file
+  create_sidebar_file
+end
+
+def handle_static_assets
+  asset 'assets/css/hexdoc_theme.css',     file('css/hexdoc_theme.css', true)
+  asset 'assets/css/hexdoc_theme_kit.css', file('css/hexdoc_theme_kit.css', true)
+  asset 'assets/js/hexdoc_app.js',         file('js/hexdoc_app.js', true)
 
   assets_list = [
     [File.join(File.expand_path('../../../..', __dir__), 'assets'), 'assets'],
   ]
 
   copy_assets(assets_list)
+end
 
-  #copy_static_assets
+def create_versions_file
+  asset('docs_config.js', erb('js/docs_config.js'))
+end
+
+def create_sidebar_file
 end
 
 # @see yard/lib/yard/cli/yardoc.rb
@@ -32,10 +44,6 @@ def copy_assets(list)
     FileUtils.mkdir_p(to)
     FileUtils.cp_r(from, to)
   end
-end
-
-def stylesheets_full_list
-  super # + %w[css/kit_yard.css css/kit_sass.scss]
 end
 
 # Generate YARD classic iframe full_list + JS versions used by this plugin.

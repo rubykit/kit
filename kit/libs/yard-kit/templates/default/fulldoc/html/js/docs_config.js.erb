@@ -1,0 +1,11 @@
+<%
+  # Note: seems that including Helper in layout/html/setup.rb does not do the trick.
+  config = Yard::Kit::Config.config
+%>
+
+var versionNodes = [
+  {
+    "url":     "<%= config[:documentation_url] %>",
+    "version": "v<%= config[:version] %>"
+  }
+];

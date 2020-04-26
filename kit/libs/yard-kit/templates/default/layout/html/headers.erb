@@ -1,4 +1,7 @@
-<% config = Yard::Kit::Config.config %>
+<%
+  # Note: seems that including Helper in layout/html/setup.rb does not do the trick.
+  config = Yard::Kit::Config.config
+%>
 
 <meta charset="<%= charset %>">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,20 +17,18 @@
 <% stylesheets.each do |stylesheet| %>
   <link rel="stylesheet" href="<%= mtime_url(stylesheet) %>" type="text/css" />
 <% end %>
--->
-<%= erb :script_setup %>
+<%#= erb :script_setup %>
 <% javascripts.each do |javascript| %>
   <script type="text/javascript" charset="utf-8" src="<%= mtime_url(javascript) %>"></script>
 <% end %>
-
-<!--
-<link rel="stylesheet" href="https://hexdocs.pm/phoenix/1.5.1/dist/elixir-0ab8a6a80ebaaa287431.css" />
 -->
-<link rel="stylesheet" href="<%= mtime_url("assets/css/hexdoc_tmp.css") %>" />
-<link rel="stylesheet" href="<%= mtime_url("assets/css/hexdoc_kit_override.css") %>" />
 
-<link rel="canonical" href="https://hexdocs.pm/phoenix/Phoenix.Controller.html" />
+<link rel="stylesheet" href="<%= mtime_url("assets/css/hexdoc_theme.css") %>" />
+<link rel="stylesheet" href="<%= mtime_url("assets/css/hexdoc_theme_kit.css") %>" />
 
 <script src="https://hexdocs.pm/phoenix/1.5.1/dist/sidebar_items-84487e52cb.js"></script>
-<script src="https://hexdocs.pm/phoenix/1.5.1/docs_config.js"></script>
+<script src="<%= mtime_url("docs_config.js") %>"></script>
+<script async src="<%= mtime_url("assets/js/hexdoc_app.js") %>"></script>
+<!--
 <script async src="https://hexdocs.pm/phoenix/1.5.1/dist/app-a225d03098e64fef431a.js"></script>
+-->
