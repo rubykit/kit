@@ -3,3 +3,58 @@
   right:           20px;
   text-decoration: none !important;
 }
+
+.content-inner h1 {
+  margin-bottom: 1em;
+}
+
+.content-inner h2 {
+  font-size: 1.5em;
+}
+
+.content-inner h1.section-heading {
+    margin-top: 1em;
+}
+
+.content-inner a:hover {
+  color: #666 !important;
+}
+
+body.night-mode .content-inner a:hover {
+  color: white !important;
+}
+
+/* Summary ------------------------------------------------------------------ */
+
+.summary-row {
+  margin-left: 1.2em;
+}
+
+.summary-signature p {
+  font-size: 0.9rem;
+}
+
+.summary-synopsis p {
+  font-size: 0.8rem;
+}
+
+.summary-inherited {
+  margin-left: 0.6em;
+}
+
+.summary-inherited h4 {
+  margin-block-end: 0.5em;
+}
+
+
+
+hr {
+  border-color: #ddd;
+  margin-top: 3em;
+  border-width: 1px;
+  border-top:   none;
+}
+
+body.night-mode hr {
+  border-color: #373f52;
+}

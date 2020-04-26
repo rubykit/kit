@@ -67,31 +67,53 @@ def init
   sections(*list)
 end
 
-def method_listing_class(include_specials = false)
-  full_list = method_listing(include_specials)
+def reject_api_hidden(list:)
+  list.reject do |item|
+    item.has_tag?(:api) && item.tag(:api).text == 'hide'
+  end
+end
 
-  full_list
+def attr_listing
+  list = super
+
+  reject_api_hidden(list: list)
+end
+
+def constant_listing
+  list = super
+
+  reject_api_hidden(list: list)
+end
+
+def method_listing_class
+  list = method_listing(false)
+  list = reject_api_hidden(list: list)
+
+  list
     .select { |m| m.scope == :class }
 end
 
-def method_listing_instance(include_specials = false)
-  full_list = method_listing(include_specials)
+def method_listing_instance
+  list = method_listing(false)
+  list = reject_api_hidden(list: list)
 
-  full_list
+  list
     .select { |m| m.scope == :instance }
 end
 
 def attr_listing_class
-  full_list = attr_listing
+  list = attr_listing
+  list = reject_api_hidden(list: list)
 
-  full_list
+  list
     .select { |m| m.scope == :class }
 end
 
 def attr_listing_instance
-  full_list = attr_listing
+  list = attr_listing
+  list = reject_api_hidden(list: list)
 
-  full_list
+  list
     .select { |m| m.scope == :instance }
 end
 
@@ -99,14 +121,14 @@ def groups(list, type = "Method")
   groups_data = object.groups
 
   if groups_data
-    list.each {|m| groups_data |= [m.group] if m.group && owner != m.namespace }
+    list.each { |m| groups_data |= [m.group] if m.group && owner != m.namespace }
     others = list.select {|m| !m.group || !groups_data.include?(m.group) }
     groups_data.each do |name|
       items = list.select {|m| m.group == name }
       yield(items, name) unless items.empty?
     end
   else
-    others = []
+    others     = []
     group_data = {}
     list.each do |itm|
       if itm.group
@@ -115,13 +137,14 @@ def groups(list, type = "Method")
         others << itm
       end
     end
-    group_data.each {|group, items| yield(items, group) unless items.empty? }
+    group_data.each { |group, items| yield(items, group) unless items.empty? }
   end
 
   return if others.empty?
+
   if others.first.respond_to?(:scope)
-    scopes(others) {|items, scope| yield(items, "#{scope.to_s.capitalize} #{type.to_s.downcase}s") }
+    scopes(others) { |items, scope| yield(items, "#{ scope.to_s.capitalize } #{ type.to_s.downcase }s") }
   else
-    yield(others, "#{type.to_s.capitalize}s")
+    yield(others, "#{ type.to_s.capitalize }s")
   end
 end

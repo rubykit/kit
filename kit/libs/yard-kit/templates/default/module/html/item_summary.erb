@@ -1,9 +1,9 @@
 <div class="summary-row">
   <div class="summary-signature">
     <% if @item.tags(:overload).size == 1 %>
-      <%= signature(@item.tag(:overload), true, false, !@item.attr_info) %>
+      - <%= signature(@item.tag(:overload), true, false, !@item.attr_info) %>
     <% else %>
-      <%= signature(@item, true, false, !@item.attr_info) %>
+      - <%= signature(@item, true, false, !@item.attr_info) %>
     <% end %>
 
     <% if (deprecated = @item.has_tag?(:deprecated)) %>
