@@ -46,14 +46,20 @@
   </div>
 
   <ul class="sidebar-listNav">
-
-    <li><a id="extras-list" href="#full-list"><%= config[:extra_section] || "Pages" %></a></li>
-
+    <li>
+      <a id="extras-list" href="#full-list">
+        <%= config[:extra_section] || "Pages" %>
+      </a>
+    </li>
     <% if nodes[:modules] %>
-      <li><a id="modules-list" href="#full-list">Modules</a></li>
+      <li>
+        <a id="modules-list" href="#full-list">
+          Modules
+        </a>
+      </li>
     <% end %>
-
   </ul>
+
   <div class="gradient"></div>
   <ul id="full-list" class="sidebar-fullList"></ul>
 </section>

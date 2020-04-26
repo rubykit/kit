@@ -1,0 +1,34 @@
+<%
+  extras_data_list   = @items
+  extras_export_list = [
+    {
+      title:   'API Reference',
+      id:      '_index',
+      group:   '',
+      headers: [
+        {
+          anchor: 'modules',
+          id:     'Modules',
+        },
+      ],
+    },
+  ]
+
+  extras_data_list.each do |el|
+    extras_export_list << {
+      title:   el.name,
+      id:      url_for(el).gsub(/\.html$/, ''),
+      group:   '',
+      headers: [],
+    }
+  end
+%>
+
+<%
+  modules_export_list = []
+%>
+
+sidebarNodes = {
+  "extras":  <%= JSON.pretty_generate(extras_export_list) %>,
+  "modules": <%= JSON.pretty_generate(modules_export_list) %>,
+};

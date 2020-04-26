@@ -98,7 +98,7 @@ def docs_config(project:, version:, output_dir:, source_url:, documentation_url:
     authors:            authors,
 
     logo:               logo,
-    extra_section:      'GUIDES',
+    extra_section:      'Guides',
     assets:             'guides/assets',
     main:               'overview',
 

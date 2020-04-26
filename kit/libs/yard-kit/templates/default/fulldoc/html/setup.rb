@@ -6,16 +6,11 @@ def init
   super
 
   handle_static_assets
-
   create_versions_file
   create_sidebar_file
 end
 
 def handle_static_assets
-  asset 'assets/css/hexdoc_theme.css',     file('css/hexdoc_theme.css', true)
-  asset 'assets/css/hexdoc_theme_kit.css', file('css/hexdoc_theme_kit.css', true)
-  asset 'assets/js/hexdoc_app.js',         file('js/hexdoc_app.js', true)
-
   assets_list = [
     [File.join(File.expand_path('../../../..', __dir__), 'assets'), 'assets'],
   ]
@@ -24,10 +19,11 @@ def handle_static_assets
 end
 
 def create_versions_file
-  asset('docs_config.js', erb('js/docs_config.js'))
+  asset('docs_config.js', erb('docs_config.js'))
 end
 
 def create_sidebar_file
+  asset('sidebar_items.js', erb('sidebar_items.js'))
 end
 
 # @see yard/lib/yard/cli/yardoc.rb
