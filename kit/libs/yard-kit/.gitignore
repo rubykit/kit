@@ -16,6 +16,8 @@
 # Temporarily ignore test directory
 /test/
 
+/specs/dummy/docs
+
 ################################################################################
 #
 # Default Rails .gitignore
