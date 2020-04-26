@@ -37,7 +37,11 @@ class Kat::ChildNode < Kat::BaseNode
 
   # Donec ultricies, mauris quis fringilla vulputate, urna turpis tincidunt
   # nisl, non scelerisque libero ipsum eget eros.
-  CHILD_CONST = 2
+  CHILD_CONST_A = 2
+
+  # Donec ultricies, mauris quis fringilla vulputate, urna turpis tincidunt
+  # nisl, non scelerisque libero ipsum eget eros.
+  CHILD_CONST_B = 2
 
   # Donec ultricies, mauris quis fringilla vulputate, urna turpis tincidunt
   # nisl, non scelerisque libero ipsum eget eros.
