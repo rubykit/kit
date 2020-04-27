@@ -9,6 +9,7 @@ module Yard
   end
 end
 
-require "yard/kit/contracts_handler"
-require "yard/kit/config"
-require "yard/kit/templates/helpers/yard_kit_plugin_helper"
+require 'yard/kit/contracts_handler'
+require 'yard/kit/config'
+require 'yard/kit/templates/helpers/yard_kit_plugin_helper'
+require 'yard/kit/templates/helpers/html_helper'

@@ -15,17 +15,25 @@
     },
   ]
 
-  extras_groups_lists = generate_groups_lists(groups: config[:groups_for_extras])
+  extras_groups_lists = get_groups_list(groups: config[:groups_for_extras])
 
   extras_list.each do |el|
+    toc  = get_toc(file: el)
+
+    data = {
+      title:   toc&.dig(0, :title) || el.name,
+      id:      url_for(el).gsub(/\.html$/, ''),
+      headers: (toc&.dig(0, :sections) || []).map do |h2|
+        {
+          id:     h2[:title],
+          anchor: h2[:anchor],
+        }
+      end,
+    }
+
     el_groups = match_groups(groups: config[:groups_for_extras], value: el.filename)
     el_groups.each do |group_name|
-      extras_groups_lists[group_name] << {
-        title:   el.name,
-        id:      url_for(el).gsub(/\.html$/, ''),
-        group:   group_name,
-        headers: [],
-      }
+      extras_groups_lists[group_name] << data.merge({ group: group_name })
     end
   end
 
@@ -38,20 +46,21 @@
   modules_list = Registry.all(:class, :module)
   modules_list = run_verifier(modules_list)
   modules_list = modules_list
-    .map { |el| ["#{el.namespace.path.size > 0 ? "#{el.namespace.path}::" : '' }#{el.name}", el] }
+    .map     { |el| ["#{el.namespace.path.size > 0 ? "#{el.namespace.path}::" : '' }#{el.name}", el] }
     .sort_by { |name, el| name }
 
-  modules_groups_lists = generate_groups_lists(groups: config[:groups_for_modules])
+  modules_groups_lists = get_groups_list(groups: config[:groups_for_modules])
 
   modules_list.each do |full_path, el|
+    data = {
+      title:   full_path,
+      id:      url_for(el).gsub(/\.html$/, ''),
+      headers: [],
+    }
+
     el_groups = match_groups(groups: config[:groups_for_modules], value: full_path)
     el_groups.each do |group_name|
-      modules_groups_lists[group_name] << {
-        title:   full_path,
-        id:      url_for(el).gsub(/\.html$/, ''),
-        group:   group_name,
-        headers: [],
-      }
+      modules_groups_lists[group_name] << data.merge({ group: group_name })
     end
   end
 

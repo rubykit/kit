@@ -2,6 +2,7 @@ include YARD::Templates::Helpers::HtmlHelper
 include ::Yard::Kit::Templates::Helpers::YardKitPluginHelper
 
 require 'json'
+require 'nokogiri'
 
 def init
   super
@@ -54,7 +55,31 @@ def generate_list_contents
   asset(path_js_asset, erb(template_id))
 end
 
-def generate_groups_lists(groups:)
+def li_to_hash(node:)
+  {
+    title:    (node > 'a')&.children&.first&.to_s || '',
+    anchor:   (node > 'a')&.attribute('href')&.to_s&.gsub(/^#/, ''),
+    sections: ((node > 'ul' > 'li')&.map { |subnode| li_to_hash(node: subnode) }) || [],
+  }
+end
+
+# Dirty hacks to get a Table of Content hash (based on mardown h1 / h2 / h3 / etc)
+# Only the two first levels are used by the template.
+def get_toc(file:)
+  begin
+    renderer  = Redcarpet::Render::HTML_TOC.new()
+    markdown  = Redcarpet::Markdown.new(renderer)
+    rendered  = markdown.render(file.contents).delete("\n")
+    local_dom = Nokogiri::HTML.parse(rendered)
+    result    = local_dom.css(':not(li) > ul > li').map { |node| li_to_hash(node: node) }
+  rescue StandardError
+    result = []
+  end
+
+  result
+end
+
+def get_groups_list(groups:)
   result = {}
 
   # The empty group is the first one to be displayed.

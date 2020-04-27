@@ -21,5 +21,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'redcarpet'
   spec.add_dependency 'rspec'
   spec.add_dependency 'yard'
+  spec.add_dependency 'nokogiri'
 
 end
