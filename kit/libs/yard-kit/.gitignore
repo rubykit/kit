@@ -16,7 +16,7 @@
 # Temporarily ignore test directory
 /test/
 
-/specs/dummy/docs
+/specs/dummy/docs/dist
 
 ################################################################################
 #

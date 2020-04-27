@@ -15,7 +15,7 @@ FILES_MODULES = {
 }
 
 FILES_EXTRA = {
-  'spec/dummy/guides' => {
+  'spec/dummy/docs/guides' => {
     include: %w[
       **/*.md
     ],
@@ -84,7 +84,7 @@ YARD::Rake::YardocTask.new do |t|
   t.name = 'specs:docs:dummy-app'
 
   config = generate_config(
-    output_dir: 'specs/dummy/docs/v1.0.2',
+    output_dir: 'specs/dummy/docs/dist/1.0.2',
   )
 
   t.before = -> do
@@ -105,7 +105,7 @@ YARD::Rake::YardocTask.new do |t|
   t.name = 'specs:docs:dummy-app:raw'
 
   config = generate_config(
-    output_dir: 'specs/dummy/docs/raw',
+    output_dir: 'specs/dummy/docs/dist/raw',
   )
 
   t.before = -> do

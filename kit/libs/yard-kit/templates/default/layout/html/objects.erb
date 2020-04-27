@@ -1,0 +1,37 @@
+<%
+  # Note: seems that including Helper in layout/html/setup.rb does not do the trick.
+  config = Yard::Kit::Config.config
+
+  modules_list = Registry.all(:class, :module)
+  modules_list = run_verifier(modules_list)
+
+  modules_list = modules_list
+    .map { |el| ["#{el.namespace.path.size > 0 ? "#{el.namespace.path}::" : '' }#{el.name}", el] }
+    .sort_by { |name, el| name }
+%>
+
+<% if modules_list.size > 0 %>
+  <section class="details-list">
+    <h2 id="modules" class="section-heading">Modules</h2>
+    <div class="summary">
+
+      <% modules_list.each do |name, el| %>
+
+        <div class="summary-row">
+          <div class="summary-signature">
+            <a href="<%= url_for(el) %>">
+              <%= name %>
+            </a>
+            <% if (deprecated = el.has_tag?(:deprecated)) %>
+              <span class="deprecated" title="Deprecated">deprecated</span>
+            <% end %>
+          </div>
+          <% synopsis = el.has_tag?(:deprecated) ? el.tag(:deprecated).text : docstring_summary(el) %>
+          <div class="summary-synopsis"><%= htmlify_line(synopsis) %></div>
+        </div>
+
+      <% end %>
+
+    </div>
+  </section>
+<% end %>

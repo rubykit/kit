@@ -6,4 +6,4 @@ end
 
 require 'bundler/gem_tasks'
 
-import 'specs/dummy/dummy_app.rake'
+import 'specs/dummy/tasks/documentation.rake'
