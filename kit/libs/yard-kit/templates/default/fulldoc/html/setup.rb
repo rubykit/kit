@@ -1,4 +1,5 @@
 include YARD::Templates::Helpers::HtmlHelper
+include ::Yard::Kit::Templates::Helpers::YardKitPluginHelper
 
 require 'json'
 
@@ -51,6 +52,39 @@ def generate_list_contents
   path_js_asset = "js/js_#{ @list_type }.js"
   template_id   = "full_list_#{ @list_type }_js".to_sym
   asset(path_js_asset, erb(template_id))
+end
+
+def generate_groups_lists(groups:)
+  result = {}
+
+  # The empty group is the first one to be displayed.
+  if groups.first[0] != ''
+    result[''] = []
+  end
+
+  groups.each do |name, _|
+    result[name] = []
+  end
+
+  result
+end
+
+def match_groups(groups:, value:)
+  result = []
+
+  groups.each do |group_name, regex_list|
+    regex_list = [regex_list] if !regex_list.is_a?(::Array)
+
+    regex_list.each do |regex|
+      next if !regex&.is_a?(::Regexp)
+
+      if regex.match?(value)
+        result << group_name
+      end
+    end
+  end
+
+  result.size > 0 ? result : ['']
 end
 
 =begin

@@ -52,19 +52,30 @@ end
 
 def groups_for_extras
   {
-    'Introduction' => %r{/guides\/introduction\/.?/},
-    'Architecture' => %r{/guides\/architecture\/.?/},
-    'Various'      => %r{/guides\/various\/.?/},
+    'Introduction'  => [%r{guides/introduction/.?}],
+    'Guides'        => [%r{guides/[^/]+.md}],
+    'Architecture'  => [%r{guides/architecture/.?}],
+    'Various'       => [%r{guides/various/.?}],
   }
 end
 
 def groups_for_modules
   {
-    #'Testing' => [],
-    'Code flow' => [
-      'Kit::Organizer',
-      'Kit::Contracts',
+    ''           => [
+      %r{^Kit$}
     ],
+    'Libs'       => [
+      %r{^Kit::Organizer$},
+      %r{^Kit::JsonApi$},
+      %r{^Kit::Contract$},
+      %r{^Kit::Pagination$},
+    ],
+
+    'JSON:API'   =>  [%r{^Kit::JsonApi.*}],
+
+    'Contract'   => [%r{^Kit::Contract.*}],
+    'Organizer'  => [%r{^Kit::Organizer.*}],
+    'Pagination' => [%r{^Kit::Pagination.*}],
   }
 end
 
