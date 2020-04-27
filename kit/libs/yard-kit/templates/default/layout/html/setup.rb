@@ -18,3 +18,13 @@ end
 def docstring_summary(obj)
   docstring_full(obj).summary
 end
+
+def get_modules_list
+  # TODO: check if we should use this?
+  # list = options.objects || []
+
+  list = Registry.all(:class, :module)
+  list = run_verifier(list)
+
+  list
+end

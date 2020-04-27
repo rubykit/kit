@@ -1,11 +1,5 @@
 <%
-  # Note: seems that including Helper in layout/html/setup.rb does not do the trick.
-  config = Yard::Kit::Config.config
-
-  modules_list = Registry.all(:class, :module)
-  modules_list = run_verifier(modules_list)
-
-  modules_list = modules_list
+  modules_list = get_modules_list
     .map { |el| ["#{el.namespace.path.size > 0 ? "#{el.namespace.path}::" : '' }#{el.name}", el] }
     .sort_by { |name, el| name }
 %>

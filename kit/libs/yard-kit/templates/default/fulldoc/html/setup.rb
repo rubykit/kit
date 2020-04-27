@@ -5,11 +5,33 @@ require 'json'
 require 'nokogiri'
 
 def init
-  super
+  # Somehow options.files gets cleared in the flow, so we need to catch a ref here.
+  @extras_list = options.files
 
+  super
+end
+
+# Replace default theme asset handling.
+def generate_assets
   handle_static_assets
   create_versions_file
   create_sidebar_file
+end
+
+def get_extras_list
+  list = @extras_list || []
+
+  list
+end
+
+def get_modules_list
+  # TODO: check if we should use this?
+  # list = options.objects || []
+
+  list = Registry.all(:class, :module)
+  list = run_verifier(list)
+
+  list
 end
 
 def handle_static_assets
@@ -42,9 +64,6 @@ def copy_assets(list)
     FileUtils.mkdir_p(to)
     FileUtils.cp_r(from, to)
   end
-end
-
-def generate_list_contents
 end
 
 def li_to_hash(node:)

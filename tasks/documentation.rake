@@ -41,6 +41,7 @@ def files_modules
     .map do |lib_path, data|
       (data[:include] || []).map { |path| "#{ lib_path }/#{ path }" }
     end
+    .flatten
 end
 
 def files_extras
@@ -48,6 +49,7 @@ def files_extras
     .map do |lib_path, data|
       (data[:include] || []).map { |path| Dir["#{ lib_path }/#{ path }"] }
     end
+    .flatten
 end
 
 def groups_for_extras
