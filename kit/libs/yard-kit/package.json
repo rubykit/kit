@@ -1,6 +1,6 @@
 {
-  "name": "ex_doc",
-  "description": "ExDoc produces HTML and EPUB documentation for Elixir projects.",
+  "name": "yard_kit",
+  "description": "YardKit is a Yard plugin that produces ExDoc look-alike documentation for Ruby projects.",
   "directories": {
     "test": "test"
   },
@@ -9,20 +9,20 @@
     "npm": ">= 5.6.0"
   },
   "scripts": {
-    "lint": "npx eslint \"./assets/js/**/*.js\"",
-    "test": "npx karma start ./assets/karma.conf.js --single-run",
-    "build": "webpack --config ./assets/webpack.js"
+    "lint": "npx eslint \"./assets/src/js/**/*.js\"",
+    "test": "npx karma start ./assets/src/karma.conf.js --single-run",
+    "build": "webpack --config ./assets/src/webpack.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/elixir-lang/ex_doc.git"
+    "url": "git+https://github.com/rubykit/kit.git"
   },
-  "author": "Plataformatec",
-  "license": "Apache-2.0",
+  "author": "Rubykit",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/elixir-lang/ex_doc/issues"
+    "url": "https://github.com/rubykit/kit/issues"
   },
-  "homepage": "https://github.com/elixir-lang/ex_doc#readme",
+  "homepage": "https://github.com/rubykit/kit/tree/master/kit/libs/yard-kit#readme",
   "browserslist": "last 2 versions",
   "devDependencies": {
     "@babel/cli": "^7.0.0",
@@ -33,6 +33,7 @@
     "babel-eslint": "^9.0.0",
     "babel-loader": "^8.0.2",
     "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^5.1.1",
     "css-loader": "^1.0.0",
     "eslint": "^5.6.0",
     "eslint-config-standard": "^12.0.0",

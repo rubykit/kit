@@ -3,11 +3,10 @@ const MiniCSSExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const { resolve } = require('path')
+const CopyPlugin = require('copy-webpack-plugin')
 
 const pathsToClean = [
-  './formatters/epub/dist',
-  './formatters/html/dist',
-  './formatters/html/fonts'
+  './assets/dist/',
 ]
 
 const cleanOptions = {
@@ -15,24 +14,19 @@ const cleanOptions = {
 }
 
 const buildFilename = function(name, extension) {
-  name = name.split("-")
-  folder = name[0]
-  file = name[1]
-  return folder + '/dist/' + file + '-[contenthash]' + extension
+  let folder = extension.substring(1);
+  //let path   = folder + '/' + name + '-[contenthash]' + extension;
+  let path   = folder + '/' + name + extension;
+  return path
 }
 
 module.exports = {
   mode: 'production',
   entry: {
-    "epub-app": './assets/js/epub.js',
-    "epub-elixir": './assets/less/entry/epub-elixir.less',
-    "epub-erlang": './assets/less/entry/epub-erlang.less',
-    "html-app": './assets/js/html.js',
-    "html-elixir": './assets/less/entry/html-elixir.less',
-    "html-erlang": './assets/less/entry/html-erlang.less',
+    "app": ['./assets/src/js/html.js', './assets/src/less/entry/html-ruby.less'],
   },
   output: {
-    path: resolve(__dirname, '../formatters'),
+    path: resolve(__dirname, '../dist'),
     filename: (chunkData) => buildFilename(chunkData.chunk.name, '.js')
   },
   resolve: {
@@ -71,7 +65,26 @@ module.exports = {
       },
       {
         test: /\.less$/,
-        use: [MiniCSSExtractPlugin.loader, 'css-loader', 'postcss-loader', 'less-loader']
+        use: [
+          {
+            loader: MiniCSSExtractPlugin.loader,
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              url: false,
+            },
+          },
+          {
+            loader: 'postcss-loader',
+          },
+          {
+            loader: 'less-loader',
+            options: {
+              relativeUrls: false,
+            }
+          },
+        ],
       },
       {
         test: /\.(eot|svg|ttf|woff)$/,
@@ -80,7 +93,7 @@ module.exports = {
             loader: 'file-loader',
             options: {
               name: '[name].[ext]',
-              outputPath: 'html/fonts/'
+              outputPath: 'fonts/'
             }
           }
         ]
@@ -91,14 +104,11 @@ module.exports = {
     new MiniCSSExtractPlugin({moduleFilename: ({name}) => buildFilename(name, '.css')}),
     new CleanWebpackPlugin({
       cleanOnceBeforeBuildPatterns: [
-        './epub/dist',
-        './html/dist',
-        './html/fonts'
+        './**/*',
       ],
-      cleanAfterEveryBuildPatterns: [
-        './*/dist/erlang-*.js',
-        './*/dist/elixir-*.js'
-      ]
-    })
-  ]
+    }),
+    new CopyPlugin([
+      { from: './assets/src/fonts', to: './fonts' },
+    ]),
+  ],
 }

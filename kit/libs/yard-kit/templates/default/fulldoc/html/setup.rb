@@ -36,7 +36,7 @@ end
 
 def handle_static_assets
   assets_list = [
-    [File.join(File.expand_path('../../../..', __dir__), 'assets'), 'assets'],
+    [File.join(File.expand_path('../../../..', __dir__), 'assets/dist'), 'assets'],
   ]
 
   copy_assets(assets_list)

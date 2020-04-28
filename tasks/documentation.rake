@@ -142,7 +142,7 @@ YARD::Rake::YardocTask.new do |t|
     source_url:        gemspec_data.metadata['source_code_base_uri'],
     documentation_url: 'file:///Users/nathan/rubykit/repositories/kit/docs/dist/edge',
     authors:           [gemspec_data.author],
-    logo:              'images/logo.v1.svg',
+    logo:              'assets/images/logo.v1.svg',
   })
 
   t.before = -> do
@@ -154,7 +154,7 @@ YARD::Rake::YardocTask.new do |t|
   t.options = [
     '--output-dir',      config[:output_dir],
     '--plugin',          'yard-kit', 'contracts', # Redundant with `.yardopts`?
-    '--asset',           'docs/assets:images',
+    '--asset',           'docs/assets:assets/images',
     '--markup-provider', 'redcarpet',
     '--markup',          'markdown',
   ]
