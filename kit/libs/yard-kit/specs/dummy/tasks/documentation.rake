@@ -5,17 +5,13 @@ FILES_MODULES = {
   'specs/dummy/'   => {
     include: %w[
       kat.rb
-    ],
-  },
-  'specs/dummy/kat/'  => {
-    include: %w[
-      **/*.rb
+      kat/**/*.rb
     ],
   },
 }
 
 FILES_EXTRA = {
-  'spec/dummy/docs/guides' => {
+  'specs/dummy/docs/guides' => {
     include: %w[
       **/*.md
     ],
@@ -40,26 +36,34 @@ end
 
 def groups_for_extras
   {
-    'Introduction' => %r{/guides\/introduction\/.?/},
-    'Architecture' => %r{/guides\/architecture\/.?/},
-    'Various'      => %r{/guides\/various\/.?/},
+    'Introduction' => [%r{guides/f1/.?}],
+    'Architecture' => [%r{guides/f2/.?}],
+    'Important'    => [
+      %r{guides/f1/ab},
+      %r{guides/f2/sub},
+    ],
   }
 end
 
 def groups_for_modules
   {
-    'Derived Nodes' => [
-      'Kat::ChildNode',
-      'Kat::ChildChildNode',
+    ''         => [
+      %r{^Kat$},
     ],
-    'Services'      => [
-      'Kat::Service',
+    'Node'     => [
+      %r{^Kat::Child*},
+    ],
+    'Services' => [
+      %r{^Kat::Service*},
+    ],
+    'All'      => [
+      %r{^Kat::},
     ],
   }
 end
 
 def generate_config(output_dir:)
-  config = {
+  {
     project:            'Kat',
     version:            '1.0.2',
     source_url:         'https://github.com/rubykit/yard-kit',
