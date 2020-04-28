@@ -47,6 +47,56 @@ body.night-mode .content-inner a:hover {
 }
 
 
+/* Sidebar ------------------------------------------------------------------ */
+
+.sidebar .sidebar-search {
+  margin-top: 0px;
+  padding: 12px;
+}
+
+.sidebar .sidebar-search .search-input {
+  margin-left: 0px;
+  width: 100%;
+}
+
+
+.sidebar .sidebar-listNav {
+  padding-top: 0px;
+}
+
+/* Project */
+
+.sidebar .sidebar-projectName {
+  font-family: Inconsolata, Menlo, Courier, monospace;
+}
+
+.sidebar .sidebar-projectDetails {
+  margin-left: 15px;
+  text-align: left;
+}
+
+.sidebar .sidebar-projectVersionsDropdown {
+  direction: ltr;
+}
+
+
+/* Width */
+
+body.sidebar-opened .sidebar-button, body.sidebar-opening .sidebar-button {
+    -webkit-transform: translateX(350px);
+    transform: translateX(350px);
+}
+
+.sidebar {
+  width: 400px;
+}
+
+.content {
+  padding-left: 400px;
+}
+
+
+/* Various ------------------------------------------------------------------ */
 
 hr {
   border-color: #ddd;

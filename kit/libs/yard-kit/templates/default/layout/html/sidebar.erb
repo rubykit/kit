@@ -26,6 +26,12 @@
 
   <% url = config[:documentation_url] || config[:main] %>
   <div class="sidebar-header">
+    <% if config[:logo] %>
+      <a href="<%= url %>">
+        <% logo_url = config[:logo].start_with?('http') ? config[:logo] : "#{ config[:documentation_url] }/#{ config[:logo] }" %>
+        <img src="<%= logo_url %>" alt="<%= config[:project] %>" class="sidebar-projectImage">
+      </a>
+    <% end %>
     <div class="sidebar-projectDetails">
       <a href="<%= url %>" class="sidebar-projectName">
         <%= config[:project] %>
@@ -34,12 +40,6 @@
         v<%= config[:version] %>
       </h2>
     </div>
-    <% if config[:logo] %>
-      <a href="<%= url %>">
-        <% logo_url = config[:logo].start_with?('http') ? config[:logo] : "#{ config[:documentation_url] }/#{ config[:logo] }" %>
-        <img src="<%= logo_url %>" alt="<%= config[:project] %>" class="sidebar-projectImage">
-      </a>
-    <% end %>
   </div>
 
   <ul class="sidebar-listNav">
