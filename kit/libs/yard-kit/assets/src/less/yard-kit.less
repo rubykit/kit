@@ -1,6 +1,8 @@
 /* Various ------------------------------------------------------------------ */
 
 .detail-header {
+  border-radius: 4px;
+
   a.source-link {
     position: absolute;
     right: 20px;
@@ -125,3 +127,24 @@ body.night-mode {
     border-color: #373f52;
   }
 }
+
+/* Code ----------------------------------------------------------------------*/
+
+.content-inner {
+  pre {
+    code {
+      border-radius: 4px;
+    }
+
+    a, a:visited {
+      color: @white;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: @main;
+      opacity: 0.7;
+    }
+  }
+}
+
