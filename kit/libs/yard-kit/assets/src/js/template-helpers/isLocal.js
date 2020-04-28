@@ -1,8 +1,8 @@
-export default function (nodeId, options) {
-  var currentPath = window.location.pathname.split('/')
-  nodeId = nodeId + '.html'
+export default function (nodeUrl, options) {
+  var currentPath = window.location.pathname.split('#')[0]
+  nodeUrl = nodeUrl.split('#')[0]
 
-  if (nodeId === currentPath[currentPath.length - 1]) {
+  if (currentPath.endsWith(nodeUrl)) {
     return options.fn(this)
   } else {
     return options.inverse(this)

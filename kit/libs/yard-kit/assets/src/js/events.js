@@ -61,7 +61,8 @@ function fillSidebarWithNodes (nodes, filter) {
   filter = filter || moduleType
   var filtered = nodes[filter] || []
   var fullList = $('#full-list')
-  fullList.replaceWith(sidebarItemsTemplate({'nodes': filtered, 'group': ''}))
+  const relative_url_path = yard_kit_relative_url_path || '';
+  fullList.replaceWith(sidebarItemsTemplate({'nodes': filtered, 'group': '', 'relative_url_path': relative_url_path}))
   setupSelected(['#', filter, '-list'].join(''))
 
   $('#full-list li a').on('click', e => {

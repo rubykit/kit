@@ -4,11 +4,13 @@
   extras_groups_lists = get_groups_list(groups: config[:groups_for_extras])
 
   extras_list.each do |el|
+    url = url_for(el)
     toc  = get_toc(file: el)
 
     data = {
       title:   toc&.dig(0, :title) || el.name,
-      id:      url_for(el).gsub(/\.html$/, ''),
+      id:      url.gsub(/\.html$/, ''),
+      url:     url,
       headers: (toc&.dig(0, :sections) || []).map do |h2|
         {
           id:     h2[:title],
@@ -31,6 +33,7 @@
   extras_export_list.unshift({
     title:   'API Reference',
     id:      '_index',
+    url:     '_index.html',
     group:   '',
     headers: [
       {
@@ -49,9 +52,11 @@
   modules_groups_lists = get_groups_list(groups: config[:groups_for_modules])
 
   modules_list.each do |full_path, el|
+    url = url_for(el)
     data = {
       title:   full_path,
-      id:      url_for(el).gsub(/\.html$/, ''),
+      id:      url.gsub(/\.html$/, ''),
+      url:     url,
       headers: [],
     }
 

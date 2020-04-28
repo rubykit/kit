@@ -24,7 +24,7 @@
     </div>
   </div>
 
-  <% url = config[:documentation_url] || config[:main] %>
+  <% url = url_for_main %>
   <div class="sidebar-header">
     <% if config[:logo] %>
       <a href="<%= url %>">

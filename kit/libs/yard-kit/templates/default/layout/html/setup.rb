@@ -5,6 +5,10 @@ def init
   super
 end
 
+def file
+  @file
+end
+
 def docstring_full(obj)
   docstring = (obj.tags(:overload).size == 1 && obj.docstring.empty?) ? obj.tag(:overload).docstring : obj.docstring
 
