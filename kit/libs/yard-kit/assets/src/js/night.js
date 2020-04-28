@@ -17,7 +17,7 @@ function activateNightMode () {
 
 function deactivateNightMode () {
   body.removeClass(nightMode)
-  try { localStorage.removeItem(nightMode) } catch (e) { }
+  try { localStorage.setItem(nightMode, false) } catch (e) { }
 }
 
 function checkForNightMode () {
@@ -25,11 +25,11 @@ function checkForNightMode () {
     const userWantsNightMode = localStorage.getItem(nightMode)
 
     if (userWantsNightMode != null) {
-      if (userWantsNightMode === true) {
+      if (userWantsNightMode === true || userWantsNightMode === 'true') {
         activateNightMode()
       }
     } else if (matchMedia('(prefers-color-scheme: dark)').matches) {
-      body.addClass(nightMode)
+      activateNightMode()
     }
   } catch (e) { }
 }

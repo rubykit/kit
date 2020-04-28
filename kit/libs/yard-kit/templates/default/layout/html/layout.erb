@@ -4,9 +4,15 @@
     <%= erb(:headers) %>
   </head>
 
-  <!--<body data-type="%= sidebar_type(page.type) %">-->
   <body data-type="">
-    <script>try { if(localStorage.getItem('night-mode') === 'true') document.body.className += ' night-mode'; } catch (e) { }</script>
+    <script>
+      try {
+        let night_mode = localStorage.getItem('night-mode');
+        if (night_mode === 'true' || night_mode === true) {
+          document.body.className += ' night-mode';
+        }
+      } catch (e) {}
+    </script>
 
     <div class="main">
       <%= erb(:sidebar) %>
