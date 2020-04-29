@@ -147,6 +147,8 @@ YARD::Rake::YardocTask.new do |t|
 
   t.before = -> do
     Yard::Kit::Config.config = config
+
+    FileUtils.rm_rf(Dir[config[:output_dir] + '/*'])
   end
 
   t.files = (config[:files_modules] + ['-'] + config[:files_extras]).flatten

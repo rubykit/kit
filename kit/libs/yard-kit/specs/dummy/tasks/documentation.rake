@@ -76,7 +76,7 @@ def generate_config(output_dir:)
     repo_url:           'https://github.com/rubykit/yard-kit/blob/v1.0.2',
     documentation_url:  'http://localhost',
 
-    main:               'overview',
+    main_redirect_url:  'file.neu_dixi_raptam.html',
     extra_section:      'GUIDES',
     assets:             'guides/assets',
     files_modules:      files_modules,
@@ -95,9 +95,13 @@ YARD::Rake::YardocTask.new do |t|
 
   t.before = -> do
     Yard::Kit::Config.config = config
+
+    FileUtils.rm_rf(Dir[config[:output_dir] + '/*'])
   end
 
   t.files = (config[:files_modules] + ['-'] + config[:files_extras]).flatten
+
+
 
   t.options = [
     '--output-dir',      config[:output_dir],
@@ -117,9 +121,13 @@ YARD::Rake::YardocTask.new do |t|
   t.before = -> do
     # Disable plugin in a hacky way
     YARD::Templates::Engine.template_paths.pop
+
+    FileUtils.rm_rf(Dir[config[:output_dir] + '/*'])
   end
 
   t.files = (config[:files_modules] + ['-'] + config[:files_extras]).flatten
+
+
 
   t.options = [
     '--output-dir',      config[:output_dir],
