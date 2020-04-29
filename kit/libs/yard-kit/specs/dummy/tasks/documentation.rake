@@ -101,8 +101,6 @@ YARD::Rake::YardocTask.new do |t|
 
   t.files = (config[:files_modules] + ['-'] + config[:files_extras]).flatten
 
-
-
   t.options = [
     '--output-dir',      config[:output_dir],
     '--plugin',          'yard-kit', 'contracts', # Redundant with `.yardopts`?
@@ -126,8 +124,6 @@ YARD::Rake::YardocTask.new do |t|
   end
 
   t.files = (config[:files_modules] + ['-'] + config[:files_extras]).flatten
-
-
 
   t.options = [
     '--output-dir',      config[:output_dir],

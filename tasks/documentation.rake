@@ -101,19 +101,22 @@ def get_documentation_version(version:, source_url:)
   }
 end
 
-def docs_config(project:, version:, output_dir:, source_url:, documentation_url:, authors: [], logo:)
+def docs_config(project:, version:, source_url:, authors: [])
   data = {
     project:            project,
     version:            version,
-    documentation_url:  documentation_url,
     source_url:         source_url,
-    output_dir:         output_dir,
     authors:            authors,
 
-    logo:               logo,
+    output_dir:         'docs/dist',
+    documentation_url:  '',
+
+    logo:               'assets/images/logo.v1.svg',
     extra_section:      'Guides',
     assets:             'guides/assets',
     main:               'overview',
+
+    main_redirect_url:  'Kit.html',
 
     files_modules:      files_modules,
     groups_for_modules: groups_for_modules,
@@ -136,13 +139,10 @@ YARD::Rake::YardocTask.new do |t|
   gemspec_data = eval(File.read(gemspec_path), binding, gemspec_path)
 
   config = docs_config({
-    project:           gemspec_data.name,
-    version:           gemspec_data.version,
-    output_dir:        'docs/dist',
-    source_url:        gemspec_data.metadata['source_code_base_uri'],
-    documentation_url: 'file:///Users/nathan/rubykit/repositories/kit/docs/dist/edge',
-    authors:           [gemspec_data.author],
-    logo:              'assets/images/logo.v1.svg',
+    project:    gemspec_data.name,
+    version:    gemspec_data.version,
+    source_url: gemspec_data.metadata['source_code_base_uri'],
+    authors:    [gemspec_data.author],
   })
 
   t.before = -> do

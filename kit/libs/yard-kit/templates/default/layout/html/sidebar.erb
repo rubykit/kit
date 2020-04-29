@@ -28,7 +28,7 @@
   <div class="sidebar-header">
     <% if config[:logo] %>
       <a href="<%= url %>">
-        <% logo_url = config[:logo].start_with?('http') ? config[:logo] : "#{ config[:documentation_url] }/#{ config[:logo] }" %>
+        <% logo_url = config[:logo].start_with?('http') ? config[:logo] : url_for_file(config[:logo]) %>
         <img src="<%= logo_url %>" alt="<%= config[:project] %>" class="sidebar-projectImage">
       </a>
     <% end %>

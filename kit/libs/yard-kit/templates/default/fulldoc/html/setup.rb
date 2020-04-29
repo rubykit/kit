@@ -7,11 +7,10 @@ require 'nokogiri'
 # @ref https://github.com/lsegal/yard/blob/master/templates/default/fulldoc/html/setup.rb#L4
 def init
   options.objects = objects = run_verifier(options.objects)
+  return serialize_onefile if options.onefile
 
   # Handle README before we generate anything referencing it.
   handle_readme
-
-  return serialize_onefile if options.onefile
   generate_assets
 
   serialize('_index.html')
@@ -27,13 +26,11 @@ def init
   #options.delete(:files)
 
   objects.each do |object|
-    begin
-      serialize(object)
-    rescue => e
-      path = options.serializer.serialized_path(object)
-      log.error "Exception occurred while generating '#{path}'"
-      log.backtrace(e)
-    end
+    serialize(object)
+  rescue StandardError => e
+    path = options.serializer.serialized_path(object)
+    log.error "Exception occurred while generating '#{path}'"
+    log.backtrace(e)
   end
 
 end
@@ -42,19 +39,21 @@ end
 # @ref https://github.com/lsegal/yard/blob/master/lib/yard/cli/yardoc.rb#L297
 def handle_readme
   # We double check if the README was in the original file_list, otherwise we remove it
-  if (readme_file = options.files.first).name == 'README'
-    kit_files_extra = config[:files_extra] || []
-    if !kit_files_extra.find { |path| path.end_with?(readme_file.filename) }
-      options.files.shift
-    end
+  first_file = options.files.first
+
+  return if first_file&.name != 'README'
+
+  kit_files_extra = config[:files_extra] || []
+  if !kit_files_extra.find { |path| path.end_with?(first_file.filename) }
+    options.files.shift
   end
 end
 
 # The API reference is generated as _index.html, fix this.
 def rename_api_reference
-  top_level_path = File.expand_path('../../../..', __dir__)
-  from = File.join(top_level_path, config[:output_dir], '_index.html')
-  to   = File.join(top_level_path, config[:output_dir], 'api_reference.html')
+  from = File.join(config[:output_dir], '_index.html')
+  to   = File.join(config[:output_dir], 'api_reference.html')
+
   FileUtils.mv(from, to, force: true)
 end
 
@@ -71,7 +70,7 @@ end
 
 # Get the list of files
 def get_extras_list
-  list = options.files || []
+  list ||= options.files || []
 
   list
 end
