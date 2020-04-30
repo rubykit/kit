@@ -93,6 +93,8 @@ class Kat::ChildChildNode < Kat::ChildNode
 
   alias instance_alias instance_m3
 
+  alias instance_alias_inherited instance_m2
+
   # Maecenas a imperdiet mauris.
   # Etiam luctus est tellus, nec aliquam mi maximus in.
   # Sed fermentum imperdiet turpis sit amet dapibus.

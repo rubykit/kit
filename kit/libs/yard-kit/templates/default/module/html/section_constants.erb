@@ -1,4 +1,4 @@
-<% list = constant_listing %>
+<% list = Yard::Kit::Services::Modules.get_constants(object: object, options: options) %>
 <% if list.size > 0 %>
 
   <section id="constants" class="details-list">
@@ -12,10 +12,8 @@
     </h1>
 
     <div class="functions-list">
-      <% groups(constant_listing, "Constant") do |list, name| %>
-        <% list.each_with_index do |el, i| %>
-          <%= yieldall :object => el, :owner => object, :index => i %>
-        <% end %>
+      <% list.each do |method| %>
+        <%= yieldall item: method, owner: object %>
       <% end %>
     </div>
 

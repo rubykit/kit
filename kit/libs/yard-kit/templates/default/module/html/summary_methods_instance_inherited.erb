@@ -3,6 +3,8 @@
   <%
      superclass = data[:superclass]
      list       = data[:list]
+
+     next if list.size == 0
   %>
 
   <div class="summary-methods-instance-inherited-<%= superclass.name.downcase %> summary summary-inherited">

@@ -3,33 +3,20 @@
   owner     = @owner
 
   anchor    = anchor_for(item)
-  link_href = url_for(item, anchor)
+  link_href = url_for(owner, anchor)
 
-  file      = object.files.first || []
+  file      = item.files.first || []
   src_href  = "#{ config[:repo_url] }/#{ file[0] }#L#{ file[1] }"
 
+  container_classes = Yard::Kit::Services::Methods.attributes_container_classes(item: item)
+
   aliases   = item.aliases
-
-  deprecated  = item.has_tag?(:deprecated)
-  private_api = item.has_tag?(:api) && item.tag(:api).text == 'private'
-  visibility  = item&.visibility
-
-  container_classes = []
-  if visibility
-    container_classes << "attr-visibility-#{visibility}"
-  end
-  if deprecated
-    container_classes << 'attribute-deprecated'
-  end
-  if private_api
-    container_classes << 'attribute-private-api'
-  end
-
 %>
 
 <section class="detail" id="<%= anchor %>">
 
   <div class="detail-header <%= container_classes.join(' ') %>">
+
     <a href="<%= link_href %>" class="detail-link" title="Link to this method">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this method</span>

@@ -1,28 +1,44 @@
-<section class="detail" id="<%= anchor_for(@object) %>">
+<%
+  item      = @item
+  owner     = @owner
 
-  <div class="detail-header">
+  anchor    = anchor_for(item)
+  link_href = url_for(owner, anchor)
 
-    <a href="<%= url_for(@object, anchor_for(@object)) %>" class="detail-link" title="Link to this constant">
+  file      = item.files.first || []
+  src_href  = "#{ config[:repo_url] }/#{ file[0] }#L#{ file[1] }"
+
+  container_classes = Yard::Kit::Services::Methods.attributes_container_classes(item: item)
+%>
+
+<section class="detail" id="<%= anchor %>">
+
+  <div class="detail-header" <%= container_classes.join(' ') %>">
+
+    <a href="<%= link_href %>" class="detail-link" title="Link to this constant">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this constant</span>
     </a>
 
     <h1 class="signature">
-      <span class="name"><%= @object.name %></span>
+      <% @signature_item = item %>
+      <%= erb(:_signature) %>
     </h1>
 
-    <% file = @object.files.first || [] %>
-    <a href="<%= "#{ config[:repo_url] }/#{ file[0] }#L#{ file[1] }" %>" target='_blank' rel="help" title="View Source" class='source-link'>
+    <a href="<%= src_href %>" target='_blank' rel="help" title="View Source" class='source-link'>
       <span class="icon-code" aria-hidden="true"></span>
       <span class="sr-only">View Source</span>
     </a>
 
+    <% @attributes_item = item %>
+    <%= erb(:_attributes_list) %>
+
   </div>
 
   <section class="docstring">
-    <%= yieldall object: @object %>
+    <%= yieldall object: item %>
 
-    <pre><code class="ruby"><%= format_constant @object.value %></code></pre>
+    <pre><code class="ruby"><%= format_constant item.value %></code></pre>
   </section>
 
 </section>

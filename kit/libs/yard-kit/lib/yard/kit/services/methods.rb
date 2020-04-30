@@ -1,6 +1,6 @@
 module Yard::Kit::Services::Methods
 
-  # @note Does not include `verifiers`
+  # TODO: add support for finding target method when in parents
   def self.get_alias_target(method:)
     is_alias     = false
     alias_target = nil
@@ -20,7 +20,7 @@ module Yard::Kit::Services::Methods
       end
     end
 
-    { is_alias: is_alias, alias_target: alias_target }
+    { is_alias: is_alias, alias_target_method: alias_target }
   end
 
   # Might be used on a constant

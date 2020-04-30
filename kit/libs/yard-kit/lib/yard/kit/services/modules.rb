@@ -10,58 +10,62 @@ module Yard::Kit::Services::Modules
     )
 
     if !include_aliases
-      list = list.reject { |el| !(::YARD::CodeObjects::Proxy === el.namespace) && el.is_alias? }
+      list.delete_if { |el| !(::YARD::CodeObjects::Proxy === el.namespace) && el.is_alias? }
     end
 
     if !include_attributes
-      list = list.reject { |el| !(::YARD::CodeObjects::Proxy === el.namespace) && el.is_attribute? }
+      list.delete_if { |el| !(::YARD::CodeObjects::Proxy === el.namespace) && el.is_attribute? }
     end
 
     if !include_specials
-      list = list.reject { |el| el.constructor? || el.name(true) == '#method_missing' }
+      list.delete_if { |el| el.constructor? || el.name(true) == '#method_missing' }
     end
 
     if !include_instance_methods
-      list = list.reject { |el| el.scope == :instance }
+      list.delete_if { |el| el.scope == :instance }
     end
 
     if !include_class_methods
-      list = list.reject { |el| el.scope == :class }
+      list.delete_if { |el| el.scope == :class }
     end
 
     if options.embed_mixins.any?
-      list = list.reject { |el| options.embed_mixins_match?(el.namespace) == false }
+      list.delete_if { |el| options.embed_mixins_match?(el.namespace) == false }
     end
+
+    list.delete_if { |el| el.has_tag?(:api) && el.tag(:api).text == 'hide' }
 
     list
       .sort_by { |el| [el.scope.to_s, el.name.to_s.downcase] }
   end
 
   def self.get_inherited_methods(object:, options:, include_instance_methods: true, include_class_methods: true, hide_if_overwritten: true)
-    list = {}
+    list         = {}
     method_names = {}
 
-    object.inheritance_tree(true)[1..-1].each do |superclass|
+    (object.inheritance_tree(true)[1..-1] || []).each do |superclass|
       next if superclass.is_a?(::YARD::CodeObjects::Proxy)
       next if options.embed_mixins.size > 0 && options.embed_mixins_match?(superclass) != false
 
       sublist = superclass
         .meths(included: false, inherited: false)
-        .reject! { |el| object.child(scope: el.scope, name: el.name) != nil }
-        .reject! { |el| el.is_alias? || el.is_attribute? }
+        .delete_if { |el| object.child(scope: el.scope, name: el.name) != nil }
+        .delete_if { |el| el.is_alias? || el.is_attribute? }
 
       if hide_if_overwritten
-        sublist = sublist.reject { |el| method_names[el.name] == true }
+        sublist.delete_if { |el| method_names[el.name] == true }
         sublist.each { |el| method_names[el.name] = true }
       end
 
       if !include_instance_methods
-        sublist = sublist.reject { |el| el.scope == :instance }
+        sublist.delete_if { |el| el.scope == :instance }
       end
 
       if !include_class_methods
-        sublist = sublist.reject { |el| el.scope == :class }
+        sublist.delete_if { |el| el.scope == :class }
       end
+
+      sublist.delete_if { |el| el.has_tag?(:api) && el.tag(:api).text == 'hide' }
 
       next if sublist.size == 0
 
@@ -85,7 +89,7 @@ module Yard::Kit::Services::Modules
         superclass.attributes[scope].each do |_name, rw|
           sublist = [rw[:read], rw[:write]]
             .compact
-            .reject { |el| !(::YARD::CodeObjects::Proxy === el.namespace) && el.is_alias? }
+            .delete_if { |el| !(::YARD::CodeObjects::Proxy === el.namespace) && el.is_alias? }
 
           list << sublist.first
         end
@@ -101,7 +105,7 @@ module Yard::Kit::Services::Modules
   def self.get_inherited_attributes(object:, options:)
     list = {}
 
-    object.inheritance_tree(true)[1..-1].each do |superclass|
+    (object.inheritance_tree(true)[1..-1] || []).each do |superclass|
       next if superclass.is_a?(::YARD::CodeObjects::Proxy)
       next if !options.embed_mixins.empty? && options.embed_mixins_match?(superclass) != false
 
@@ -125,7 +129,9 @@ module Yard::Kit::Services::Modules
       inherited: include_inherited,
       included:  options.embed_mixins.any?,
     )
-    list = list + object.cvars
+    list = (list + object.cvars)
+
+    list.delete_if { |el| el.has_tag?(:api) && el.tag(:api).text == 'hide' }
 
     list
       .sort_by { |el| el.name.to_s }
@@ -134,13 +140,16 @@ module Yard::Kit::Services::Modules
   def self.get_inherited_constants(object:, options:)
     list = {}
 
-    object.inheritance_tree(true)[1..-1].each do |superclass|
+    (object.inheritance_tree(true)[1..-1] || []).each do |superclass|
       next if superclass.is_a?(::YARD::CodeObjects::Proxy)
       next if !options.embed_mixins.empty? && options.embed_mixins_match?(superclass) != false
 
-      sublist = superclass.constants(included: false, inherited: false)
+      sublist = superclass
+        .constants(included: false, inherited: false)
         .select  { |el| object.child(type: :constant, name: el.name) == nil }
         .sort_by { |el| el.name.to_s }
+
+      sublist.delete_if { |el| el.has_tag?(:api) && el.tag(:api).text == 'hide' }
 
       list[superclass.name] = { superclass: superclass, list: sublist }
     end

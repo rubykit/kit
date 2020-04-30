@@ -1,13 +1,14 @@
 <%
   item         = @item
+  owner        = object
 
   synopsis     = docstring_summary(item)
 
   is_alias     = false
-  if item.is_a?(YARD::CodeObjects::MethodObject)
-    alias_data   = Yard::Kit::Services::Methods.get_alias_target(method: item)
-    is_alias     = alias_data[:is_alias?]
-    alias_target = alias_data[:alias_target]
+  if !item.is_a?(YARD::CodeObjects::ConstantObject)
+    alias_data          = Yard::Kit::Services::Methods.get_alias_target(method: item)
+    is_alias            = alias_data[:is_alias]
+    alias_target_method = alias_data[:alias_target_method]
   end
 
   link_title = item.is_a?(YARD::CodeObjects::MethodObject) ? "#{ h(item.name(true)) } (#{ item.scope } #{ item.type })" : "#{ h(item.name) } (#{ item.type })"
@@ -15,7 +16,11 @@
   if item.is_a?(::YARD::CodeObjects::ConstantObject)
     link_href = anchor_for(item)
   else
-    link_href = url_for(alias_target || item)
+    link_target_method = alias_target_method || item
+    link_target_object = alias_target_method ? alias_target_method.namespace : owner
+
+    anchor      = anchor_for(link_target_method)
+    link_href   = url_for(link_target_object, anchor)
   end
 
   container_classes = Yard::Kit::Services::Methods.attributes_container_classes(item: item)
@@ -29,8 +34,8 @@
 
       <% if is_alias %>
         <span>&#x21d2;</span>
-        <% if alias_target %>
-          <% @signature_item = alias_target %>
+        <% if alias_target_method %>
+          <% @signature_item = alias_target_method %>
           <%= erb(:_signature) %>
         <% else %>
             Unknown
