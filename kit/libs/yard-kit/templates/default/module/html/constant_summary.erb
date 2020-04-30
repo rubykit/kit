@@ -1,40 +1,36 @@
-<% if constant_listing.size > 0 %>
-  <% groups(constant_listing, "Constant") do |list, name| %>
-    <% id = name.gsub(/ /, '_') %>
+<%
+  synopsis     = docstring_summary(@item)
+  deprecated   = @item.has_tag?(:deprecated)
+  private_api  = @item.has_tag?(:api) && @item.tag(:api).text == 'private'
 
-    <div class="summary-<%= id %> summary">
-      <h2>
-        <a href="#<%= id %>"><%= name %></a>
-      </h2>
+  summary_row_classes = []
+  if deprecated
+    summary_row_classes << 'attribute-deprecated'
+  end
+  if private_api
+    summary_row_classes << 'attribute-private-api'
+  end
 
-      <% list.each do |el| %>
-        <%= yieldall :item => el %>
-      <% end %>
+  link_href  = anchor_for(@item)
+  link_title = "#{ h(@item.name) } (#{ @item.type })"
+%>
+
+<div class="summary-row <%= summary_row_classes.join(' ') %>">
+  <a href="<%= link_href %>" title="<%= link_title %>">
+    <div class="summary-signature">
+      <span class="name"><%= @item.name %></span>
+
+      <span class='attributes-list'>
+        <% if deprecated %>
+          <span class="attribute-container" data-attribute-type="api" data-attribute-type="deprecated"><span class='attribute-type'>API</span><span class='attribute-value'>Deprecated</span></span>
+        <% end %>
+        <% if private_api %>
+          <span class="attribute-container" data-attribute-type="api" data-attribute-type="private"><span class='attribute-type'>API</span><span class='attribute-value'>Private</span></span>
+        <% end %>
+
+      </span>
     </div>
 
-  <% end %>
-<% end %>
-
-<%
-<<-COMMENT
-%>
-<% if constant_listing.size > 0 %>
-  <% groups(constant_listing, "Constant") do |list, name| %>
-    <h2>
-      <%= name %>
-      <small><a href="#" class="constants_summary_toggle">collapse</a></small>
-    </h2>
-
-    <dl class="constants">
-      <% list.each do |cnst| %>
-        <dt id="<%= anchor_for(cnst) %>" class="<%= cnst.has_tag?(:deprecated) ? 'deprecated' : '' %>"><%= cnst.name %> =
-          <%= yieldall :object => cnst %>
-        </dt>
-        <dd><pre class="code"><%= format_constant cnst.value %></pre></dd>
-      <% end %>
-    </dl>
-  <% end %>
-<% end %>
-<%
-COMMENT
-%>
+    <div class="summary-synopsis"><%= htmlify_line(synopsis) %></div>
+  </a>
+</div>

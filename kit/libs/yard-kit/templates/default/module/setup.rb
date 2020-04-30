@@ -17,28 +17,30 @@ def init
       :summary_class_methods, [
         :item_summary,
       ],
-      :summary_class_inherited_methods, [
+      :summary_class_methods_inherited, [
         :item_summary,
       ],
 
       :summary_instance_methods, [
         :item_summary,
       ],
-      :summary_instance_inherited_methods, [
+      :summary_instance_methods_inherited, [
         :item_summary,
       ],
 
-      # Attributes
-      :attribute_summary, [
+      :summary_instance_attributes, [
         :item_summary,
       ],
-      :inherited_attributes,
-
-      # Constants
-      :constant_summary, [
-        :constant_item_summary,
+      :summary_instance_attributes_inherited, [
+        :item_summary,
       ],
-      :inherited_constants,
+
+      :summary_constants, [
+        :constant_summary,
+      ],
+      :summary_constants_inherited, [
+        :constant_summary,
+      ],
     ],
 
     :section_methods_class, [
@@ -69,7 +71,7 @@ def init
     ],
 
     # This will probably never be used.
-    :methodmissing,       [T('method_details')],
+    #:methodmissing,       [T('method_details')],
 
   ]
 

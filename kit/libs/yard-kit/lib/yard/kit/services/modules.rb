@@ -121,14 +121,14 @@ module Yard::Kit::Services::Modules
   # Constants ------------------------------------------------------------------
 
   def self.get_constants(object:, options:, include_inherited: false)
-    list = object.meths(
+    list = object.constants(
       inherited: include_inherited,
       included:  options.embed_mixins.any?,
     )
     list = list + object.cvars
 
     list
-      .sort_by { |el| [el.scope.to_s, el.name.to_s.downcase] }
+      .sort_by { |el| el.name.to_s }
   end
 
   def self.get_inherited_constants(object:, options:)
@@ -139,7 +139,7 @@ module Yard::Kit::Services::Modules
       next if !options.embed_mixins.empty? && options.embed_mixins_match?(superclass) != false
 
       sublist = superclass.constants(included: false, inherited: false)
-        .select  { |el| el.child(type: :constant, name: el.name).nil? }
+        .select  { |el| object.child(type: :constant, name: el.name) == nil }
         .sort_by { |el| el.name.to_s }
 
       list[superclass.name] = { superclass: superclass, list: sublist }

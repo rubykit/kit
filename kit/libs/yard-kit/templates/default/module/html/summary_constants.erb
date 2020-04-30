@@ -1,0 +1,14 @@
+<% list = Yard::Kit::Services::Modules.get_constants(object: object, options: options) %>
+<% if list.size > 0 %>
+
+  <div class="summary-constants summary">
+    <h2>
+      <a href="#constants">Constants</a>
+    </h2>
+
+    <% list.each do |item| %>
+      <%= yieldall item: item %>
+    <% end %>
+  </div>
+
+<% end %>

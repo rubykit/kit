@@ -1,0 +1,14 @@
+<% list = Yard::Kit::Services::Modules.get_attributes(object: object, options: options) %>
+<% if list.size > 0 %>
+
+  <div class="summary-instance-attributes summary">
+    <h2>
+      <a href="#attributes-instance">Instance attributes</a>
+    </h2>
+
+    <% list.each do |item| %>
+      <%= yieldall item: item %>
+    <% end %>
+  </div>
+
+<% end %>
