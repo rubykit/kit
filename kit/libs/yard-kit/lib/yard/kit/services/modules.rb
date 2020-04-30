@@ -1,5 +1,3 @@
-require 'pry'
-
 module Yard::Kit::Services::Modules
 
   # Methods --------------------------------------------------------------------

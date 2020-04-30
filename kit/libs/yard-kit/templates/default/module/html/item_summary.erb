@@ -1,32 +1,37 @@
 <%
-  deprecated  = @item.has_tag?(:deprecated)
-  private_api = @item.has_tag?(:api) && @item.tag(:api).text == 'private'
-  alias_of    = nil
-  visibility  = @item.visibility
+  synopsis     = docstring_summary(@item)
+  alias_target = Yard::Kit::Services::Methods.get_alias_target(method: @item)
 
-  synopsis    = docstring_summary(@item)
+  deprecated   = @item.has_tag?(:deprecated)
+  private_api  = @item.has_tag?(:api) && @item.tag(:api).text == 'private'
+  visibility   = @item.visibility
 
-  classes = ["attr-visibility-#{visibility}"]
-
+  sumary_row_classes = ["attr-visibility-#{visibility}"]
   if deprecated
-    classes << 'attribute-deprecated'
+    sumary_row_classes << 'attribute-deprecated'
   end
   if private_api
-    classes << 'attribute-private-api'
+    sumary_row_classes << 'attribute-private-api'
   end
-  if alias_of
-    classes << 'attribute-alias'
-  end
+
+  link_title = @item.is_a?(YARD::CodeObjects::MethodObject) ? "#{ h(@item.name(true)) } (#{ @item.scope } #{ @item.type })" : "#{ h(@item.name) } (#{ @item.type })"
+  link_href  = url_for(alias_target || @item)
 %>
 
-<div class="summary-row <%= classes.join(' ') %>">
-  <% link_title = @item.is_a?(YARD::CodeObjects::MethodObject) ? "#{ h(@item.name(true)) } (#{ @item.scope } #{ @item.type })" : "#{ h(@item.name) } (#{ @item.type })" %>
-  <a href="<%= url_for(@item) %>" title="<%= link_title %>">
+<div class="summary-row <%= sumary_row_classes.join(' ') %>">
+  <a href="<%= link_href %>" title="<%= link_title %>">
     <div class="summary-signature">
+      <% @signature_item = @item %>
       <%= erb(:signature) %>
 
-      <% if alias_of %>
-        <span> alias of </span>
+      <% if @item.is_alias? %>
+        <span>&#x21d2;</span>
+        <% if alias_target %>
+          <% @signature_item = alias_target %>
+          <%= erb(:signature) %>
+        <% else %>
+            Unknown
+        <% end %>
       <% end %>
 
       <span class='attributes-list'>
@@ -61,7 +66,7 @@
       </span>
     </div>
 
-    <% if !alias_of %>
+    <% if !@item.is_alias? %>
       <div class="summary-synopsis"><%= htmlify_line(synopsis) %></div>
     <% end %>
   </a>
@@ -70,9 +75,6 @@
 <%
 <<-COMMENT
 %>
-  <% if @item.aliases.size > 0 %>
-    (also: <%= @item.aliases.map {|o| h(o.name(true)) }.join(", ") %>)
-  <% end %>
   <% if object != @item.namespace %>
     <span class="note title not_defined_here">
       <%= @item.namespace.type == :class ? 'inherited' : (@item.scope == :class ? 'extended' : 'included') %>
