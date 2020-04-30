@@ -1,16 +1,16 @@
-<% list = Yard::Kit::Services::Modules.get_methods(object: object, options: options, include_class_methods: false, include_aliases: false) %>
+<% list = Yard::Kit::Services::Modules.get_attributes(object: object, options: options) %>
 <% if list.size > 0 %>
 
   <hr>
 
-  <section id="methods-instance" class="details-list">
+  <section id="attributes-instance" class="details-list">
 
     <h1 class="section-heading">
-      <a class="hover-link" href="#methods-instance">
+      <a class="hover-link" href="#attributes-instance">
         <span class="icon-link" aria-hidden="true"></span>
         <span class="sr-only">Link to this section</span>
       </a>
-      Instance methods
+      Instance attributes
     </h1>
 
     <div class="functions-list">

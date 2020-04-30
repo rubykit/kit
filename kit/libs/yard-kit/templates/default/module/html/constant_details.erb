@@ -8,7 +8,7 @@
     </a>
 
     <h1 class="signature">
-      - <%= @object.name %>
+      <span class="name"><%= @object.name %></span>
     </h1>
 
     <% file = @object.files.first || [] %>
@@ -22,9 +22,7 @@
   <section class="docstring">
     <%= yieldall object: @object %>
 
-    <pre>
-      <code class="ruby"><%= format_constant @object.value %></code>
-    </pre>
+    <pre><code class="ruby"><%= format_constant @object.value %></code></pre>
   </section>
 
 </section>

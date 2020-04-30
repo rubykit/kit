@@ -47,6 +47,24 @@ class Kat::ChildChildNode < Kat::ChildNode
   # Maecenas a imperdiet mauris.
   # Etiam luctus est tellus, nec aliquam mi maximus in.
   # Sed fermentum imperdiet turpis sit amet dapibus.
+  #
+  # ## Options
+  #
+  #   * `:check_origin` controls the origin configuration.
+  #     Defaults to `true`. May be false or a keyword list
+  #     of options.
+  #   * `:random` the randomness level.controls the longpoll configuration.
+  #     Defaults to `1`.
+  #
+  # ## Examples
+  #
+  #     ChildChildNode.class_m3('path', 'transport', {
+  #       check_origin: [
+  #         "https://example.com",
+  #         "//another.com:888",
+  #         "//other.com",
+  #       ],
+  #     })
   def self.class_m3(u, v, w:)
   end
 

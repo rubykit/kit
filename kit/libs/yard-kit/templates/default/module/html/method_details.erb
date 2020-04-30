@@ -1,0 +1,72 @@
+<%
+  item      = @item
+  owner     = @owner
+
+  anchor    = anchor_for(item)
+  link_href = url_for(item, anchor)
+
+  file      = object.files.first || []
+  src_href  = "#{ config[:repo_url] }/#{ file[0] }#L#{ file[1] }"
+
+  aliases   = item.aliases
+
+  deprecated  = item.has_tag?(:deprecated)
+  private_api = item.has_tag?(:api) && item.tag(:api).text == 'private'
+  visibility  = item&.visibility
+
+  container_classes = []
+  if visibility
+    container_classes << "attr-visibility-#{visibility}"
+  end
+  if deprecated
+    container_classes << 'attribute-deprecated'
+  end
+  if private_api
+    container_classes << 'attribute-private-api'
+  end
+
+%>
+
+<section class="detail" id="<%= anchor %>">
+
+  <div class="detail-header <%= container_classes.join(' ') %>">
+    <a href="<%= link_href %>" class="detail-link" title="Link to this method">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this method</span>
+    </a>
+
+    <h1 class="signature">
+      <% @signature_item = item %>
+      <%= erb(:_signature) %>
+    </h1>
+
+    <a href="<%= src_href %>" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+    <% @attributes_item = item %>
+    <%= erb(:_attributes_list) %>
+
+    <div class="specs" style='opacity: 1; margin-left: 15px; font-size: 0.8em; color: #777;'>
+      <!-- TODO: add contracts here when we can generate documentation from them -->
+
+      <% if aliases.size > 0 %>
+        <span>Aliases:<span>
+        <span style='color: #d2d2d2;'><%= aliases.map { |o| "#{ (o.scope == :class) ? '.' : '#' }#{ o.name }" }.join(', ') %></span>
+      <% end %>
+
+      <% if owner != item.namespace %>
+        <pre>
+          Originally defined in: <%= linkify item, owner.relative_path(item.namespace) %>
+        </pre>
+      <% end %>
+    </div>
+
+  </div>
+
+  <section class="docstring">
+    <%= yieldall object: item %>
+  </section>
+
+</section>

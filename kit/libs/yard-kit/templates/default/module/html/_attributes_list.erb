@@ -1,0 +1,48 @@
+<%
+  item = @attributes_item
+  list = []
+
+  deprecated = item.has_tag?(:deprecated)
+  if deprecated
+    list << [:api, :deprecated]
+  end
+
+  private_api = item.has_tag?(:api) && item.tag(:api).text == 'private'
+  if private_api
+    list << [:api, :private]
+  end
+
+  visibility = item.respond_to?(:visibility) ? item.visibility : nil
+  if visibility != :public
+    list << [:ruby, visibility]
+  end
+
+  constructor = item.respond_to?(:constructor?) ? item.constructor? : nil
+  if constructor
+    list << [:ruby, :constructor]
+  end
+
+  abstract = item.has_tag?(:abstract)
+  if abstract
+    list << [:ruby, :abstract]
+  end
+
+  read_write_info = (item.respond_to?(:attr_info) && !item.is_a?(::YARD::CodeObjects::ConstantObject)) ? item.attr_info : nil
+  if read_write_info
+    readonly  = !run_verifier([read_write_info[:read]].compact).empty? && run_verifier([read_write_info[:write]].compact).empty?
+    if readonly
+      list << [:ruby, :readonly]
+    end
+
+    writeonly = !run_verifier([read_write_info[:write]].compact).empty? && run_verifier([read_write_info[:read]].compact).empty?
+    if writeonly
+      list << [:ruby, :writeonly]
+    end
+  end
+%>
+
+<span class='attributes-list'>
+  <% list.each do |type, value| %>
+    <span class="attribute-container" data-attribute-type="<%= type.to_s.downcase %>" data-attribute-value="<%= value.to_s.downcase %>"><span class='attribute-type'><%= type.to_s.upcase %></span><span class='attribute-value'><%= value.to_s.capitalize %></span></span>
+  <% end %>
+</span>

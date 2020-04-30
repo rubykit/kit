@@ -1,4 +1,4 @@
-<% list = Yard::Kit::Services::Modules.get_methods(object: object, options: options, include_instance_methods: false, include_aliases: true) %>
+<% list = Yard::Kit::Services::Modules.get_methods(object: object, options: options, include_instance_methods: false, include_aliases: false) %>
 <% if list.size > 0 %>
 
   <hr>
@@ -14,8 +14,8 @@
     </h1>
 
     <div class="functions-list">
-      <% list.each_with_index do |meth, i| %>
-        <%= yieldall :object => meth, :owner => object, :index => i %>
+      <% list.each do |method| %>
+        <%= yieldall item: method, owner: object %>
       <% end %>
     </div>
 

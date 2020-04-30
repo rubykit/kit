@@ -14,55 +14,52 @@ def init
 
     :section_summary, [
 
-      :summary_class_methods, [
+      :summary_methods_class, [
         :item_summary,
       ],
-      :summary_class_methods_inherited, [
-        :item_summary,
-      ],
-
-      :summary_instance_methods, [
-        :item_summary,
-      ],
-      :summary_instance_methods_inherited, [
+      :summary_methods_class_inherited, [
         :item_summary,
       ],
 
-      :summary_instance_attributes, [
+      :summary_methods_instance, [
         :item_summary,
       ],
-      :summary_instance_attributes_inherited, [
+      :summary_methods_instance_inherited, [
+        :item_summary,
+      ],
+
+      :summary_attributes_instance, [
+        :item_summary,
+      ],
+      :summary_attributes_instance_inherited, [
         :item_summary,
       ],
 
       :summary_constants, [
-        :constant_summary,
+        :item_summary,
       ],
       :summary_constants_inherited, [
-        :constant_summary,
+        :item_summary,
       ],
     ],
 
     :section_methods_class, [
-      T('method_details'),
+      :method_details, [
+        T('docstring'),
+      ],
     ],
 
     :section_methods_instance, [
-      T('method_details'),
+      :method_details, [
+        T('docstring'),
+      ],
     ],
 
-    # This is unlikely to be used.
-    :section_attributes, [
-      :attribute_details,   [T('method_details')],
+    :section_attributes_instance, [
+      :method_details, [
+        T('docstring'),
+      ],
     ],
-
-    #:section_attributes_class, [
-    #  T('method_details'),
-    #],
-
-    #:section_attributes_instance, [
-    #  T('method_details'),
-    #],
 
     :section_constants, [
       :constant_details, [

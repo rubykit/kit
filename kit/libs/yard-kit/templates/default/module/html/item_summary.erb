@@ -1,80 +1,44 @@
 <%
-  synopsis     = docstring_summary(@item)
+  item         = @item
 
-  alias_data   = Yard::Kit::Services::Methods.get_alias_target(method: @item)
-  is_alias     = alias_data[:is_alias?]
-  alias_target = alias_data[:alias_target]
+  synopsis     = docstring_summary(item)
 
-  deprecated   = @item.has_tag?(:deprecated)
-  private_api  = @item.has_tag?(:api) && @item.tag(:api).text == 'private'
-  visibility   = @item&.visibility
-
-  summary_row_classes = []
-  if visibility
-    summary_row_classes << "attr-visibility-#{visibility}"
-  end
-  if deprecated
-    summary_row_classes << 'attribute-deprecated'
-  end
-  if private_api
-    summary_row_classes << 'attribute-private-api'
+  is_alias     = false
+  if item.is_a?(YARD::CodeObjects::MethodObject)
+    alias_data   = Yard::Kit::Services::Methods.get_alias_target(method: item)
+    is_alias     = alias_data[:is_alias?]
+    alias_target = alias_data[:alias_target]
   end
 
-  link_title = @item.is_a?(YARD::CodeObjects::MethodObject) ? "#{ h(@item.name(true)) } (#{ @item.scope } #{ @item.type })" : "#{ h(@item.name) } (#{ @item.type })"
+  link_title = item.is_a?(YARD::CodeObjects::MethodObject) ? "#{ h(item.name(true)) } (#{ item.scope } #{ item.type })" : "#{ h(item.name) } (#{ item.type })"
 
-  if @item.is_a?(::YARD::CodeObjects::ConstantObject)
-    link_href = anchor_for(@item)
+  if item.is_a?(::YARD::CodeObjects::ConstantObject)
+    link_href = anchor_for(item)
   else
-    link_href = url_for(alias_target || @item)
+    link_href = url_for(alias_target || item)
   end
+
+  container_classes = Yard::Kit::Services::Methods.attributes_container_classes(item: item)
 %>
 
-<div class="summary-row <%= summary_row_classes.join(' ') %>">
+<div class="summary-row <%= container_classes.join(' ') %>" data-object-type="<%= item.type %>">
   <a href="<%= link_href %>" title="<%= link_title %>">
     <div class="summary-signature">
-      <% @signature_item = @item %>
-      <%= erb(:signature) %>
+      <% @signature_item = item %>
+      <%= erb(:_signature) %>
 
       <% if is_alias %>
         <span>&#x21d2;</span>
         <% if alias_target %>
           <% @signature_item = alias_target %>
-          <%= erb(:signature) %>
+          <%= erb(:_signature) %>
         <% else %>
             Unknown
         <% end %>
       <% end %>
 
-      <span class='attributes-list'>
-        <% if deprecated %>
-          <span class="attribute-container" data-attribute-type="api" data-attribute-type="deprecated"><span class='attribute-type'>API</span><span class='attribute-value'>Deprecated</span></span>
-        <% end %>
-        <% if private_api %>
-          <span class="attribute-container" data-attribute-type="api" data-attribute-type="private"><span class='attribute-type'>API</span><span class='attribute-value'>Private</span></span>
-        <% end %>
-
-        <% if visibility != :public %>
-          <span class="attribute-container" data-attribute-type="ruby" data-attribute-type="<%= visibility %>"><span class='attribute-type'>Ruby</span><span class='attribute-value'><%= visibility %></span></span>
-        <% end %>
-
-        <% if @item.constructor? %>
-          <span class="attribute-container" data-attribute-type="ruby" data-attribute-type="constructor"><span class='attribute-type'>Ruby</span><span class='attribute-value'>constructor</span></span>
-        <% end %>
-
-        <% if @item.has_tag?(:abstract) %>
-          <span class="attribute-container" data-attribute-type="ruby" data-attribute-type="abstract"><span class='attribute-type'>Ruby</span><span class='attribute-value'>abstract</span></span>
-        <% end %>
-
-        <% if rw = @item.attr_info %>
-          <% if !run_verifier([rw[:read]].compact).empty? && run_verifier([rw[:write]].compact).empty? %>
-          <span class="attribute-container" data-attribute-type="ruby" data-attribute-type="readonly"><span class='attribute-type'>Ruby</span><span class='attribute-value'>readonly</span></span>
-          <% end %>
-          <% if !run_verifier([rw[:write]].compact).empty? && run_verifier([rw[:read]].compact).empty? %>
-          <span class="attribute-container" data-attribute-type="ruby" data-attribute-type="writeonly"><span class='attribute-type'>Ruby</span><span class='attribute-value'>writeonly</span></span>
-          <% end %>
-        <% end %>
-
-      </span>
+      <% @attributes_item = item %>
+      <%= erb(:_attributes_list) %>
     </div>
 
     <% if !is_alias %>
@@ -86,10 +50,10 @@
 <%
 <<-COMMENT
 %>
-  <% if object != @item.namespace %>
+  <% if object != item.namespace %>
     <span class="note title not_defined_here">
-      <%= @item.namespace.type == :class ? 'inherited' : (@item.scope == :class ? 'extended' : 'included') %>
-      from <%= linkify @item, object.relative_path(@item.namespace) %>
+      <%= item.namespace.type == :class ? 'inherited' : (item.scope == :class ? 'extended' : 'included') %>
+      from <%= linkify item, object.relative_path(item.namespace) %>
     </span>
   <% end %>
 <%
