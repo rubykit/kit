@@ -1,4 +1,115 @@
+
+/* Theming ------------------------------------------------------------------ */
+
+@monokai_red:    #ff6188;
+@monokai_orange: #fc9867;
+@monokai_yellow: #ffd866;
+@monokai_green:  #a9dc76;
+@monokai_blue:   #78dce8;
+@monokai_purple: #ab9df2;
+@monokai_black:  #2d2a2e;
+@monokai_white:  #fcfcfa;
+
+@red:            #f83535;
+
+body.night-mode {
+  .summary-signature .name {
+    color: @monokai_green;
+    color: #a6e22e;
+  }
+
+  .summary-row {
+    &.attribute-private-api {
+      .summary-signature .name {
+        color: #666;
+      }
+    }
+    &.attribute-deprecated {
+      .summary-signature .name {
+        color: @monokai_yellow;
+        color: #e6db74;
+      }
+    }
+
+  }
+
+}
+
+.summary-signature {
+  .name {
+    margin-left: 3px;
+    margin-right: 3px;
+    font-weight: normal;
+  }
+  .scope, .arguments {
+    font-weight: normal;
+  }
+
+}
+
+.attributes-list {
+  position:   absolute;
+  display:    block;
+  right:      1.2em;
+  top:        10px;
+  text-align: right;
+}
+
+.attribute-container {
+  display:  inline-block;
+
+  padding: 4px 8px;
+
+  font-size: 75%;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+
+  border: 1px solid #d2d2d2;
+  border-radius: 10rem;
+
+  background: transparent;
+  font-style: normal;
+  font-weight: normal;
+
+  color: #d2d2d2;
+
+
+  .attribute-type {
+    text-transform: uppercase;
+    margin-right: 4px;
+  }
+
+  .attribute-value {
+    text-transform: lowercase;
+  }
+
+  &[data-attribute-type='ruby'] {
+    border-color: #bf2e19;
+    .attribute-type {
+      color: #bf2e19;
+    }
+  }
+
+  &[data-attribute-type='api'] {
+    border-color: #e6db74;
+    border-color: #118fa7;
+    .attribute-type {
+      color: #e6db74;
+      color: #118fa7;
+    }
+  }
+}
+
+
+
 /* Various ------------------------------------------------------------------ */
+
+h1, h2, h3, h4, h5 {
+  letter-spacing: 1px;
+}
 
 .detail-header {
   border-radius: 4px;
@@ -37,28 +148,48 @@ body.night-mode {
   }
 }
 
-/* Summary ------------------------------------------------------------------ */
 
-.summary-row {
-  margin-left: 1.2em;
+a {
+  text-decoration: none !important;
+}
+.docstring {
+  a {
+    text-decoration: underline !important;
+  }
 }
 
-.summary-signature {
+
+/* Summary ------------------------------------------------------------------ */
+
+.content-inner .summary .summary-row .summary-synopsis {
+  margin-bottom: 0px;
+}
+
+.summary-row {
+  position:      relative;
+  border-radius: 4px;
+  padding:       0.25em 0 0.25em 1.2em;
+
+  &:hover {
+    background-color: #2E2E34;
+  }
+}
+
+.summary-signature, .summary-synopsis {
   p {
     font-size: 0.9rem;
   }
 }
 
-.summary-synopsis {
-  p {
-    font-size: 0.8rem;
-  }
-}
-
 .summary-inherited {
-  margin-left: 0.6em;
-  h4 {
-    margin-block-end: 0.5em;
+  h3 {
+    font-size: 1em;
+    font-weight: 500;
+    font-style: italic;
+  }
+  a {
+    text-decoration: none;
+    color: white;
   }
 }
 

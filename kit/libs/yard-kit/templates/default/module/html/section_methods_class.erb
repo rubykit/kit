@@ -1,4 +1,4 @@
-<% list = method_listing_class %>
+<% list = Yard::Kit::Services::Modules.get_methods(object: object, options: options, include_instance_methods: false, include_aliases: true) %>
 <% if list.size > 0 %>
 
   <hr>

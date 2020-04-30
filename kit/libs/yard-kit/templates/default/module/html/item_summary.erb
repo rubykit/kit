@@ -1,63 +1,84 @@
-<div class="summary-row">
-  <div class="summary-signature">
-    <% if @item.tags(:overload).size == 1 %>
-      - <%= signature(@item.tag(:overload), true, false, !@item.attr_info) %>
-    <% else %>
-      - <%= signature(@item, true, false, !@item.attr_info) %>
-    <% end %>
+<%
+  deprecated  = @item.has_tag?(:deprecated)
+  private_api = @item.has_tag?(:api) && @item.tag(:api).text == 'private'
+  alias_of    = nil
+  visibility  = @item.visibility
 
-    <% if (deprecated = @item.has_tag?(:deprecated)) %>
-      <span class="deprecated" title="Deprecated">deprecated</span>
-    <% end %>
-  </div>
+  synopsis    = docstring_summary(@item)
 
-  <% synopsis = @item.has_tag?(:deprecated) ? @item.tag(:deprecated).text : docstring_summary(@item) %>
-  <div class="summary-synopsis"><%= htmlify_line(synopsis) %></div>
+  classes = ["attr-visibility-#{visibility}"]
+
+  if deprecated
+    classes << 'attribute-deprecated'
+  end
+  if private_api
+    classes << 'attribute-private-api'
+  end
+  if alias_of
+    classes << 'attribute-alias'
+  end
+%>
+
+<div class="summary-row <%= classes.join(' ') %>">
+  <% link_title = @item.is_a?(YARD::CodeObjects::MethodObject) ? "#{ h(@item.name(true)) } (#{ @item.scope } #{ @item.type })" : "#{ h(@item.name) } (#{ @item.type })" %>
+  <a href="<%= url_for(@item) %>" title="<%= link_title %>">
+    <div class="summary-signature">
+      <%= erb(:signature) %>
+
+      <% if alias_of %>
+        <span> alias of </span>
+      <% end %>
+
+      <span class='attributes-list'>
+        <% if deprecated %>
+          <span class="attribute-container" data-attribute-type="api" data-attribute-type="deprecated"><span class='attribute-type'>API</span><span class='attribute-value'>Deprecated</span></span>
+        <% end %>
+        <% if private_api %>
+          <span class="attribute-container" data-attribute-type="api" data-attribute-type="private"><span class='attribute-type'>API</span><span class='attribute-value'>Private</span></span>
+        <% end %>
+
+        <% if visibility != :public %>
+          <span class="attribute-container" data-attribute-type="ruby" data-attribute-type="<%= visibility %>"><span class='attribute-type'>Ruby</span><span class='attribute-value'><%= visibility %></span></span>
+        <% end %>
+
+        <% if @item.constructor? %>
+          <span class="attribute-container" data-attribute-type="ruby" data-attribute-type="constructor"><span class='attribute-type'>Ruby</span><span class='attribute-value'>constructor</span></span>
+        <% end %>
+
+        <% if @item.has_tag?(:abstract) %>
+          <span class="attribute-container" data-attribute-type="ruby" data-attribute-type="abstract"><span class='attribute-type'>Ruby</span><span class='attribute-value'>abstract</span></span>
+        <% end %>
+
+        <% if rw = @item.attr_info %>
+          <% if !run_verifier([rw[:read]].compact).empty? && run_verifier([rw[:write]].compact).empty? %>
+          <span class="attribute-container" data-attribute-type="ruby" data-attribute-type="readonly"><span class='attribute-type'>Ruby</span><span class='attribute-value'>readonly</span></span>
+          <% end %>
+          <% if !run_verifier([rw[:write]].compact).empty? && run_verifier([rw[:read]].compact).empty? %>
+          <span class="attribute-container" data-attribute-type="ruby" data-attribute-type="writeonly"><span class='attribute-type'>Ruby</span><span class='attribute-value'>writeonly</span></span>
+          <% end %>
+        <% end %>
+
+      </span>
+    </div>
+
+    <% if !alias_of %>
+      <div class="summary-synopsis"><%= htmlify_line(synopsis) %></div>
+    <% end %>
+  </a>
 </div>
 
 <%
 <<-COMMENT
 %>
-<li class="<%= @item.visibility %> <%= @item.has_tag?(:deprecated) ? 'deprecated' : '' %>">
-  <span class="summary_signature">
-    <% if @item.tags(:overload).size == 1 %>
-      <%= signature(@item.tag(:overload), true, false, !@item.attr_info) %>
-    <% else %>
-      <%= signature(@item, true, false, !@item.attr_info) %>
-    <% end %>
-
-    <% if @item.aliases.size > 0 %>
-      (also: <%= @item.aliases.map {|o| h(o.name(true)) }.join(", ") %>)
-    <% end %>
-  </span>
+  <% if @item.aliases.size > 0 %>
+    (also: <%= @item.aliases.map {|o| h(o.name(true)) }.join(", ") %>)
+  <% end %>
   <% if object != @item.namespace %>
     <span class="note title not_defined_here">
       <%= @item.namespace.type == :class ? 'inherited' : (@item.scope == :class ? 'extended' : 'included') %>
       from <%= linkify @item, object.relative_path(@item.namespace) %>
     </span>
   <% end %>
-  <% if @item.constructor? %>
-    <span class="note title constructor">constructor</span>
-  <% end %>
-  <% if rw = @item.attr_info %>
-    <% if !run_verifier([rw[:read]].compact).empty? && run_verifier([rw[:write]].compact).empty? %>
-      <span class="note title readonly">readonly</span>
-    <% end %>
-    <% if !run_verifier([rw[:write]].compact).empty? && run_verifier([rw[:read]].compact).empty? %>
-      <span class="note title writeonly">writeonly</span>
-    <% end %>
-  <% end %>
-  <% if @item.visibility != :public %><span class="note title <%= @item.visibility %>"><%= @item.visibility %></span><% end %>
-  <% if @item.has_tag?(:abstract) %><span class="abstract note title">abstract</span><% end %>
-  <% if @item.has_tag?(:deprecated) %><span class="deprecated note title">deprecated</span><% end %>
-  <% if @item.has_tag?(:api) && @item.tag(:api).text == 'private' %><span class="private note title">private</span><% end %>
-
-  <% if @item.has_tag?(:deprecated) %>
-    <span class="summary_desc"><strong>Deprecated.</strong> <%= htmlify_line @item.tag(:deprecated).text %></span>
-  <% else %>
-    <span class="summary_desc"><%= htmlify_line docstring_summary(@item) %></span>
-  <% end %>
-</li>
 <%
 COMMENT
 %>

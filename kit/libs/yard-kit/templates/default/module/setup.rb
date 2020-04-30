@@ -13,11 +13,20 @@ def init
     :children, # TODO: comment this out when the sidebar data is generated
 
     :section_summary, [
-      # Methods
-      :method_summary, [
+
+      :summary_class_methods, [
         :item_summary,
       ],
-      :inherited_methods,
+      :summary_class_inherited_methods, [
+        :item_summary,
+      ],
+
+      :summary_instance_methods, [
+        :item_summary,
+      ],
+      :summary_instance_inherited_methods, [
+        :item_summary,
+      ],
 
       # Attributes
       :attribute_summary, [

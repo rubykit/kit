@@ -4,6 +4,7 @@ include ::Yard::Kit::Templates::Helpers::YardKitPluginHelper
 require 'json'
 require 'nokogiri'
 
+# @todo Rewrite with Kit::Organizer?
 # @ref https://github.com/lsegal/yard/blob/master/templates/default/fulldoc/html/setup.rb#L4
 def init
   options.objects = objects = run_verifier(options.objects)

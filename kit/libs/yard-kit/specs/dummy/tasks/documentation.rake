@@ -129,5 +129,7 @@ YARD::Rake::YardocTask.new do |t|
     '--output-dir',      config[:output_dir],
     '--markup-provider', 'redcarpet',
     '--markup',          'markdown',
+    '--private',
+    '--protected',
   ]
 end

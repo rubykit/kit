@@ -1,0 +1,14 @@
+<% list = Yard::Kit::Services::Modules.get_methods(object: object, options: options, include_instance_methods: false, include_aliases: true) %>
+<% if list.size > 0 %>
+
+  <div class="summary-class-methods summary">
+    <h2>
+      <a href="#methods-class">Class methods</a>
+    </h2>
+
+    <% list.each do |item| %>
+      <%= yieldall item: item %>
+    <% end %>
+  </div>
+
+<% end %>

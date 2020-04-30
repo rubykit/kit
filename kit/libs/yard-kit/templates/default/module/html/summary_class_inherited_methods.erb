@@ -1,0 +1,15 @@
+<% toplist = Yard::Kit::Services::Modules.get_inherited_methods(object: object, options: options, include_instance_methods: false) %>
+<% toplist.each do |_superclass_name, data| %>
+  <%
+     superclass = data[:superclass]
+     list       = data[:list]
+  %>
+
+  <div class="summary-inherited-class-methods-<%= superclass.name.downcase %> summary summary-inherited">
+    <h3><%= superclass.type == :class ? 'Inherited' : 'Included' %> from <%= linkify(superclass) %></h3>
+    <% list.each do |item| %>
+      <%= yieldall item: item, object: object, superclass: superclass %>
+    <% end %>
+  </div>
+
+<% end %>

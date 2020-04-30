@@ -88,6 +88,12 @@ class Kat::ChildNode < Kat::BaseNode
 
   # Donec ultricies, mauris quis fringilla vulputate, urna turpis tincidunt
   # nisl, non scelerisque libero ipsum eget eros.
+  def instance_m2_for_overload(action, options = {}, &block)
+    [:ok]
+  end
+
+  # Donec ultricies, mauris quis fringilla vulputate, urna turpis tincidunt
+  # nisl, non scelerisque libero ipsum eget eros.
   #
   # ## Examples
   #
