@@ -65,7 +65,7 @@ $(() => {
   initEvents()
   initMakeup()
   initKeyboardShortcuts()
-  initTooltips()
+  // initTooltips()
   initHintsPage()
 
   hljs.initHighlighting()
