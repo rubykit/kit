@@ -1,5 +1,6 @@
 <%
-  url_generator = ->(el:) { url_for(el) }
+  url_generator    = ->(el:) { url_for(el) }
+  anchor_generator = ->(el:) { anchor_for(el) }
 
   extras_list = Yard::Kit::Services::Sidebar::Extras.get_extras_list({
     options:       options,
@@ -7,11 +8,12 @@
   })
 
   modules_list = Yard::Kit::Services::Sidebar::Modules.get_modules_list({
-    options:       options,
-    url_generator: url_generator,
+    options:          options,
+    url_generator:    url_generator,
+    anchor_generator: anchor_generator,
   })
-
 %>
+
 sidebarNodes = {
   "extras":  <%= JSON.pretty_generate(extras_list) %>,
   "modules": <%= JSON.pretty_generate(modules_list) %>,
