@@ -27,6 +27,7 @@ import {initialize as initEvents} from './events'
 import {initialize as initSidebar} from './sidebar'
 import {initialize as initVersions} from './versions'
 import {initialize as initNightMode} from './night'
+import {initialize as initPrivateApis} from './private-apis'
 import {initialize as initMakeup} from './makeup'
 import {initialize as initKeyboardShortcuts} from './keyboard-shortcuts'
 import {initialize as initTooltips} from './tooltips/tooltips'
@@ -60,6 +61,7 @@ $(() => {
   hljs.registerLanguage('xml', xml)
 
   initNightMode()
+  initPrivateApis()
   initSidebar()
   initVersions()
   initEvents()

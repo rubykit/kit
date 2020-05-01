@@ -17,6 +17,9 @@
         <span class="sr-only">Link to this section</span>
       </a>
       Constants
+      <% if Yard::Kit::Services::Properties.has_private_apis?(list: list) %>
+        <span class='private-apis-warning unselectable'>⚠️ Private APIs are currently hidden.</span>
+      <% end %>
     </h1>
 
     <div class="functions-list">

@@ -1,0 +1,35 @@
+.private-apis-warning {
+  display:     none;
+
+  font-size:   12px;
+  font-weight: normal;
+  color:       #ffd866;
+}
+
+.section-heading {
+  position: relative;
+
+  .private-apis-warning {
+    position:    absolute;
+    right:       0px;
+  }
+}
+
+body.hide-private-apis {
+
+  [data-tag-api='private'],
+  [data-ruby-visibility='protected'],
+  [data-ruby-visibility='private']
+  {
+    display: none;
+  }
+
+  .private-apis-warning {
+    display: block;
+  }
+
+  .section-heading .private-apis-warning {
+    display: inline-block;
+  }
+}
+

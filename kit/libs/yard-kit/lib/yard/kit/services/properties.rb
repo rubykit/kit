@@ -59,4 +59,20 @@ module Yard::Kit::Services::Properties
       .to_h
   end
 
+  # Return `true` if at least one item in the list is considered a `private API`
+  def self.has_private_apis?(list:)
+    list.each do |item|
+      if item.has_tag?(:api) && item.tag(:api).text == 'private'
+        return true
+      end
+
+      visibility = item.respond_to?(:visibility) ? item.visibility : nil
+      if visibility != :public
+        return true
+      end
+    end
+
+    false
+  end
+
 end
