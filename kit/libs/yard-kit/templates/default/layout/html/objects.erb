@@ -1,24 +1,30 @@
 <%
-  modules_list = Yard::Kit::Services::Modules.get_modules_hash(options: options)
+  list = Yard::Kit::Services::Modules.get_modules_hash({
+    options:         options,
+    verifier_runner: ->(el) { run_verifier(el) },
+  })
 %>
 
-<% if modules_list.size > 0 %>
+<% if list.size > 0 %>
   <section class="details-list">
     <h2 id="modules" class="section-heading">Modules</h2>
     <div class="summary">
 
-      <% modules_list.each do |name, el| %>
+      <% list.each do |name, el| %>o
+        <%
+          deprecated = el.has_tag?(:deprecated)
+          synopsis   = el.has_tag?(:deprecated) ? el.tag(:deprecated).text : Yard::Kit::Services::Docstring.summary(object: el)
+        %>
 
         <div class="summary-row">
           <div class="summary-signature">
             <a href="<%= url_for(el) %>">
               <%= name %>
             </a>
-            <% if (deprecated = el.has_tag?(:deprecated)) %>
+            <% if deprecated %>
               <span class="deprecated" title="Deprecated">deprecated</span>
             <% end %>
           </div>
-          <% synopsis = el.has_tag?(:deprecated) ? el.tag(:deprecated).text : Yard::Kit::Services::Docstring.summary(object: el) %>
           <div class="summary-synopsis"><%= htmlify_line(synopsis) %></div>
         </div>
 

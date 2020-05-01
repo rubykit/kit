@@ -1,4 +1,10 @@
-<% list = Yard::Kit::Services::Modules.get_attributes(object: object, options: options) %>
+<%
+  list = Yard::Kit::Services::Modules.get_attributes({
+    object:          object,
+    options:         options,
+    verifier_runner: ->(el) { run_verifier(el) },
+  })
+%>
 <% if list.size > 0 %>
 
   <hr>

@@ -23,10 +23,13 @@
     link_href   = url_for(link_target_object, anchor)
   end
 
-  container_classes = Yard::Kit::Services::Methods.attributes_container_classes(item: item)
+  data_attr_list = Yard::Kit::Services::Properties.object_html_data_properties({
+    item:            item,
+    verifier_runner: ->(el) { run_verifier(el) },
+  })
 %>
 
-<div class="summary-row <%= container_classes.join(' ') %>" data-object-type="<%= item.type %>">
+<div class="summary-row" data-doc-type="<%= item.type %>" <%= data_attr_list.map { |k, v| "#{k}=\"#{v}\"" }.join(' ') %>>
   <a href="<%= link_href %>" title="<%= link_title %>">
     <div class="summary-signature">
       <% @signature_item = item %>

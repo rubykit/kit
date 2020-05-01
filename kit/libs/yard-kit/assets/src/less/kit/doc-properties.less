@@ -1,0 +1,72 @@
+.doc-properties-list {
+  position:   absolute;
+  display:    block;
+  right:      1.2em;
+  top:        10px;
+  text-align: right;
+}
+
+.doc-property {
+  display:  inline-block;
+
+  padding: 4px 8px;
+
+  font-size: 75%;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+
+  border: 1px solid #d2d2d2;
+  border-radius: 10rem;
+
+  background: transparent;
+  font-style: normal;
+  font-weight: normal;
+
+  color: #d2d2d2;
+
+  &[data-tag-deprecated='true'],
+  &[data-tag-api='private']
+  {
+    border-color: #e6db74;
+    border-color: #118fa7;
+    .doc-property-name {
+      color: #e6db74;
+      color: #118fa7;
+    }
+  }
+
+  &[data-ruby-visibility='protected'],
+  &[data-ruby-visibility='private'],
+  &[data-ruby-constructor='true'],
+  &[data-ruby-abstract='true'],
+  &[data-ruby-readonly='true'],
+  &[data-ruby-writeonly='true']
+  {
+    border-color: #bf2e19;
+    .doc-property-name {
+      color: #bf2e19;
+    }
+  }
+
+  .doc-property-name {
+    text-transform: uppercase;
+    margin-right: 4px;
+  }
+
+  .doc-property-value {
+    text-transform: lowercase;
+  }
+
+}
+
+/* Adjust positioning in details sections */
+
+.detail-header {
+  .doc-properties-list {
+    top:   8px;
+    right: 50px;
+  }
+}

@@ -1,0 +1,28 @@
+.content-inner .detail-header {
+  border-left-width: 4px;
+  border-left-color: @color_attr_default;
+
+  &[data-tag-api="private"] {
+    border-left-color: @color_attr_api_private;
+  }
+
+  &[data-tag-deprecated="true"] {
+    border-left-color: @color_attr_api_deprecated;
+  }
+}
+
+.detail-header {
+  border-radius: 4px;
+
+  a.source-link {
+    position: absolute;
+    right: 20px;
+    text-decoration: none !important;
+  }
+}
+
+.detail-header {
+  .source-link {
+    margin-top: 2px;
+  }
+}

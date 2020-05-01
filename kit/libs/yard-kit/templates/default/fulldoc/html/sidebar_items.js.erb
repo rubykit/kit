@@ -3,14 +3,15 @@
   anchor_generator = ->(el:) { anchor_for(el) }
 
   extras_list = Yard::Kit::Services::Sidebar::Extras.get_extras_list({
-    options:       options,
-    url_generator: url_generator,
+    options:         options,
+    url_generator:   url_generator,
   })
 
   modules_list = Yard::Kit::Services::Sidebar::Modules.get_modules_list({
     options:          options,
     url_generator:    url_generator,
     anchor_generator: anchor_generator,
+    verifier_runner:  ->(el) { run_verifier(el) },
   })
 %>
 

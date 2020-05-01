@@ -1,4 +1,12 @@
-<% list = Yard::Kit::Services::Modules.get_methods(object: object, options: options, include_class_methods: false, include_aliases: true) %>
+<%
+  list = Yard::Kit::Services::Modules.get_methods({
+    object:                object,
+    options:               options,
+    include_class_methods: false,
+    include_aliases:       true,
+    verifier_runner:       ->(el) { run_verifier(el) },
+  })
+%>
 <% if list.size > 0 %>
 
   <div class="summary-methods-instance summary">

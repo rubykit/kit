@@ -1,0 +1,102 @@
+
+/* Theming ------------------------------------------------------------------ */
+
+@monokai_red:    #ff6188;
+@monokai_orange: #fc9867;
+@monokai_yellow: #ffd866;
+@monokai_green:  #a9dc76;
+@monokai_blue:   #78dce8;
+@monokai_purple: #ab9df2;
+@monokai_black:  #2d2a2e;
+@monokai_white:  #fcfcfa;
+
+/*
+@attr_red:            #f83535;
+*/
+
+@color_attr_default:        #a6e22e;
+@color_attr_api_private:    #666;
+@color_attr_api_deprecated: #e6db74;
+
+
+/* Various ------------------------------------------------------------------ */
+
+h1, h2, h3, h4, h5 {
+  letter-spacing: 1px;
+}
+
+.content-inner {
+  h1 {
+    margin-bottom: 1em;
+  }
+  h2 {
+    font-size: 1.5em;
+  }
+  h1.section-heading {
+    margin-top: 1em;
+  }
+  a {
+    &:hover {
+      color: #666 !important;
+    }
+  }
+}
+
+body.night-mode {
+  .content-inner {
+    a {
+      &:hover {
+        color: white !important;
+      }
+    }
+  }
+}
+
+a {
+  text-decoration: none !important;
+}
+.docstring {
+  a {
+    text-decoration: underline !important;
+  }
+}
+
+.unselectable {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+
+/* Code ----------------------------------------------------------------------*/
+
+.content-inner {
+  pre {
+    code {
+      border-radius: 4px;
+    }
+
+    a, a:visited {
+      color: @white;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: @main;
+      opacity: 0.7;
+    }
+  }
+}
+
+
+/* Imports -------------------------------------------------------------------*/
+
+@import './kit/hr';
+@import './kit/doc-properties';
+
+@import './kit/sidebar';
+@import './kit/summary';
+@import './kit/detail';

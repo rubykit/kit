@@ -8,12 +8,15 @@
   file      = item.files.first || []
   src_href  = "#{ config[:repo_url] }/#{ file[0] }#L#{ file[1] }"
 
-  container_classes = Yard::Kit::Services::Methods.attributes_container_classes(item: item)
+  data_attr_list = Yard::Kit::Services::Properties.object_html_data_properties({
+    item:            item,
+    verifier_runner: ->(el) { run_verifier(el) },
+  })
 %>
 
 <section class="detail" id="<%= anchor %>">
 
-  <div class="detail-header" <%= container_classes.join(' ') %>">
+  <div class="detail-header" <%= data_attr_list.map { |k, v| "#{k}=\"#{v}\"" }.join(' ') %>>
 
     <a href="<%= link_href %>" class="detail-link" title="Link to this constant">
       <span class="icon-link" aria-hidden="true"></span>

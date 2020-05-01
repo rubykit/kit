@@ -1,4 +1,11 @@
-<% toplist = Yard::Kit::Services::Modules.get_inherited_methods(object: object, options: options, include_instance_methods: false) %>
+<%
+  toplist = Yard::Kit::Services::Modules.get_inherited_methods({
+    object:                   object,
+    options:                  options,
+    include_instance_methods: false,
+    verifier_runner:          ->(el) { run_verifier(el) },
+  })
+%>
 <% toplist.each do |_superclass_name, data| %>
   <%
      superclass = data[:superclass]

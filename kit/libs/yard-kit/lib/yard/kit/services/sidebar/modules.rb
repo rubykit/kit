@@ -1,8 +1,11 @@
 module Yard::Kit::Services::Sidebar::Modules
 
-  def self.get_modules_list(options:, url_generator:, anchor_generator:)
+  def self.get_modules_list(options:, url_generator:, anchor_generator:, verifier_runner:)
     config       = Yard::Kit::Config.config
-    modules_list = Yard::Kit::Services::Modules.get_modules_hash(options: options)
+    modules_list = Yard::Kit::Services::Modules.get_modules_hash({
+      options:         options,
+      verifier_runner: verifier_runner,
+    })
 
     modules_groups_lists = Yard::Kit::Services::Sidebar.get_groups_list(groups: config[:groups_for_modules])
 
@@ -12,7 +15,12 @@ module Yard::Kit::Services::Sidebar::Modules
         title:      full_path,
         id:         url.gsub(/\.html$/, ''),
         url:        url,
-        nodeGroups: generate_node_groups(object: el, options: options, anchor_generator: anchor_generator),
+        nodeGroups: generate_node_groups({
+          object:           el,
+          options:          options,
+          anchor_generator: anchor_generator,
+          verifier_runner:  verifier_runner,
+        }),
       }
 
       el_groups = Yard::Kit::Services::Sidebar.match_groups(groups: config[:groups_for_modules], value: full_path)
@@ -26,49 +34,65 @@ module Yard::Kit::Services::Sidebar::Modules
       .flatten
   end
 
-  def self.generate_node_groups(options:, object:, anchor_generator:)
+  def self.generate_node_groups(options:, object:, anchor_generator:, verifier_runner:)
     templates = [
       {
-        key:  'methods-class',
-        name: 'Class methods',
-        list: Yard::Kit::Services::Modules.get_methods(object: object, options: options, include_instance_methods: false, include_aliases: true),
-        transform_node: ->(el:) do
+        key:       'methods-class',
+        name:      'Class methods',
+        list:      Yard::Kit::Services::Modules.get_methods({
+          object:                   object,
+          options:                  options,
+          include_instance_methods: false,
+          include_aliases:          true,
+          verifier_runner:          verifier_runner,
+        }),
+        transform: ->(el:) do
           {
-            id:     "##{ el.name }",
-            anchor: anchor_generator.call(el: el),
+            id: "##{ el.name }",
           }
         end,
       },
       {
-        key:  'methods-instance',
-        name: 'Instance methods',
-        list: Yard::Kit::Services::Modules.get_methods(object: object, options: options, include_class_methods: false, include_aliases: true),
-        transform_node: ->(el:) do
+        key:       'methods-instance',
+        name:      'Instance methods',
+        list:      Yard::Kit::Services::Modules.get_methods({
+          object:                object,
+          options:               options,
+          include_class_methods: false,
+          include_aliases:       true,
+          verifier_runner:       verifier_runner,
+        }),
+        transform: ->(el:) do
           {
-            id:     ".#{ el.name }",
-            anchor: anchor_generator.call(el: el),
+            id: ".#{ el.name }",
           }
         end,
       },
       {
-        key:  'attributes-instance',
-        name: 'Instance attributes',
-        list: Yard::Kit::Services::Modules.get_attributes(object: object, options: options),
-        transform_node: ->(el:) do
+        key:       'attributes-instance',
+        name:      'Instance attributes',
+        list:      Yard::Kit::Services::Modules.get_attributes({
+          object:          object,
+          options:         options,
+          verifier_runner: verifier_runner,
+        }),
+        transform: ->(el:) do
           {
-            id:     ".#{ el.name }",
-            anchor: anchor_generator.call(el: el),
+            id: ".#{ el.name }",
           }
         end,
       },
       {
-        key:  'constants',
-        name: 'Constants',
-        list: Yard::Kit::Services::Modules.get_constants(object: object, options: options),
-        transform_node: ->(el:) do
+        key:       'constants',
+        name:      'Constants',
+        list:      Yard::Kit::Services::Modules.get_constants({
+          object:          object,
+          options:         options,
+          verifier_runner: verifier_runner,
+        }),
+        transform: ->(el:) do
           {
-            id:     el.name,
-            anchor: anchor_generator.call(el: el),
+            id: el.name,
           }
         end,
       },
@@ -81,7 +105,19 @@ module Yard::Kit::Services::Sidebar::Modules
       {
         key:   data[:key],
         name:  data[:name],
-        nodes: list.map { |node| data[:transform_node].call(el: node) },
+        nodes: list.map do |node|
+          res = {
+            anchor:     anchor_generator.call(el: node),
+            properties: Yard::Kit::Services::Properties.object_properties({
+              item:            node,
+              verifier_runner: verifier_runner,
+            }),
+          }
+
+          res = res.merge data[:transform].call(el: node)
+
+          res
+        end,
       }
     end.compact
   end

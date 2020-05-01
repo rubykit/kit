@@ -23,25 +23,4 @@ module Yard::Kit::Services::Methods
     { is_alias: is_alias, alias_target_method: alias_target }
   end
 
-  # Might be used on a constant
-  def self.attributes_container_classes(item:)
-    deprecated   = item.has_tag?(:deprecated)
-    private_api  = item.has_tag?(:api) && item.tag(:api).text == 'private'
-    visibility   = item&.respond_to?(:visibility) ? item.visibility : nil
-
-    list = []
-
-    if visibility
-      list << "attr-visibility-#{visibility}"
-    end
-    if deprecated
-      list << 'attribute-deprecated'
-    end
-    if private_api
-      list << 'attribute-private-api'
-    end
-
-    list
-  end
-
 end
