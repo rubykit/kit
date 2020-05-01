@@ -29,7 +29,6 @@ import {initialize as initVersions} from './versions'
 import {initialize as initNightMode} from './night'
 import {initialize as initMakeup} from './makeup'
 import {initialize as initKeyboardShortcuts} from './keyboard-shortcuts'
-import {initialize as initQuickSwitch} from './quick-switch'
 import {initialize as initTooltips} from './tooltips/tooltips'
 import {initialize as initHintsPage} from './tooltips/hints-page'
 
@@ -66,7 +65,6 @@ $(() => {
   initEvents()
   initMakeup()
   initKeyboardShortcuts()
-  initQuickSwitch()
   initTooltips()
   initHintsPage()
 
