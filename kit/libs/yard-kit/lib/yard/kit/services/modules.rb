@@ -1,5 +1,22 @@
 module Yard::Kit::Services::Modules
 
+  def self.get_modules_list(options:)
+    # TODO: check if we should use `options.objects` instead
+
+    list = ::YARD::Registry.all(:class, :module)
+    #list = run_verifier(list)
+
+    list.delete_if { |el| el.has_tag?(:api) && el.tag(:api).text == 'hide' }
+
+    list
+  end
+
+  def self.get_modules_hash(options:)
+    get_modules_list(options: options)
+      .map { |el| ["#{ el.namespace.path.size > 0 ? "#{ el.namespace.path }::" : '' }#{ el.name }", el] }
+      .sort_by { |name, el| name }
+  end
+
   # Methods --------------------------------------------------------------------
 
   # @note Does not include `verifiers`

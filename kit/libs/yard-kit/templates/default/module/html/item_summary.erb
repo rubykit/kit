@@ -2,7 +2,7 @@
   item         = @item
   owner        = object
 
-  synopsis     = docstring_summary(item)
+  synopsis     = Yard::Kit::Services::Docstring.summary(object: item)
 
   is_alias     = false
   if !item.is_a?(YARD::CodeObjects::ConstantObject)
