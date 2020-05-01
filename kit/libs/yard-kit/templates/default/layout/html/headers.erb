@@ -1,3 +1,19 @@
+ <%
+  files = {
+    css_app:          'assets/css/app*.css',
+    js_app:           'assets/js/app*.js',
+    js_sidebar_items: 'sidebar_items*.js',
+    js_docs_config:   'docs_config*.js',
+  }
+
+  files.each do |key, file_path|
+    base_path      = config[:output_dir]
+    asset_file     = Dir["#{ base_path }/#{ file_path }"].first
+    rel_asset_file = asset_file[(base_path.size + 1)..(-1)]
+    files[key]     = rel_asset_file
+  end
+ %>
+
 <meta charset="<%= charset %>">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -8,12 +24,12 @@
 <% end %>
 <title><%= @page_title %> — <%= config[:project] %> v<%= config[:version] %></title>
 
-<link rel="stylesheet" href="<%= mtime_url("assets/css/app.css") %>" />
+<link rel="stylesheet" href="<%= url_for_file(files[:css_app]) %>" />
 
 <script>
   var yard_kit_relative_url_path = "<%= url_for_main.gsub('index.html', '') %>";
 </script>
 
-<script src="<%= mtime_url("sidebar_items.js") %>"></script>
-<script src="<%= mtime_url("docs_config.js") %>"></script>
-<script async src="<%= mtime_url("assets/js/app.js") %>"></script>
+<script src="<%= url_for_file(files[:js_sidebar_items]) %>"></script>
+<script src="<%= url_for_file(files[:js_docs_config]) %>"  ></script>
+<script src="<%= url_for_file(files[:js_app]) %>"    async ></script>

@@ -15,8 +15,7 @@ const cleanOptions = {
 
 const buildFilename = function(name, extension) {
   let folder = extension.substring(1);
-  //let path   = folder + '/' + name + '-[contenthash]' + extension;
-  let path   = folder + '/' + name + extension;
+  let path   = folder + '/' + name + '-[contenthash]' + extension;
   return path
 }
 

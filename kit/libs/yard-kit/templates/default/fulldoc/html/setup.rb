@@ -33,7 +33,6 @@ def init
     log.error "Exception occurred while generating '#{path}'"
     log.backtrace(e)
   end
-
 end
 
 # Yard treats README differently and doesn't land itself to being patched.
@@ -97,13 +96,18 @@ def handle_static_assets
 end
 
 # Generate the file containing the list of all known doc versions and their URL
+# We do not add a digest because this file will be overwritten from the outside
+#  when hosting multiple versions of the documentation.
 def create_versions_file
-  asset('docs_config.js', erb('docs_config.js'))
+  file_content = erb('docs_config.js')
+  asset('docs_config.js', file_content)
 end
 
 # Generate the file containing the data to generate the sidebar
 def create_sidebar_file
-  asset('sidebar_items.js', erb('sidebar_items.js'))
+  file_content = erb('sidebar_items.js')
+  file_digest  = Digest::MD5.hexdigest(file_content)[0..9]
+  asset("sidebar_items-#{ file_digest }.js", file_content)
 end
 
 # Patched version that creates the needed directory (mkdir_p).
