@@ -73,6 +73,18 @@ class Kat::ChildChildNode < Kat::ChildNode
   def self.class_m3(u, v, w:)
   end
 
+  # Maecenas a imperdiet mauris.
+  # @note Etiam luctus est tellus, nec aliquam mi maximus in.
+  # @note Sed fermentum imperdiet turpis sit amet dapibus.
+  def self.class_m4_notes(u, v, w:)
+  end
+
+  # Maecenas a imperdiet mauris.
+  # @todo Etiam luctus est tellus, nec aliquam mi maximus in.
+  # @todo Sed fermentum imperdiet turpis sit amet dapibus.
+  def self.class_m5_todos(u, v, w:)
+  end
+
   class << self
     alias class_alias class_m3
 
@@ -87,6 +99,7 @@ class Kat::ChildChildNode < Kat::ChildNode
   # Maecenas a imperdiet mauris.
   # Etiam luctus est tellus, nec aliquam mi maximus in.
   # Sed fermentum imperdiet turpis sit amet dapibus.
+  # @ref https://github.com/rubykit/kit
   def initialize(options: {})
   end
 

@@ -14,9 +14,28 @@
 @attr_red:            #f83535;
 */
 
+@color_type_warning: #ffd866;
+@color_type_dimmed:  #777;
+
 @color_attr_default:        #a6e22e;
 @color_attr_api_private:    #666;
 @color_attr_api_deprecated: #e6db74;
+
+.color-tag-deprecated-true {
+  color: @color_attr_api_deprecated;
+}
+
+.color-tag-api-private {
+  color: @color_attr_api_private;
+}
+
+.color-type-warning {
+  color: @color_type_warning;
+}
+
+.color-type-dimmed {
+  color: @color_type_dimmed;
+}
 
 
 /* Various ------------------------------------------------------------------ */
@@ -97,6 +116,7 @@ a {
 @import './kit/private-apis';
 @import './kit/hr';
 @import './kit/doc-properties';
+@import './kit/docstring';
 
 @import './kit/sidebar';
 @import './kit/summary';

@@ -6,6 +6,18 @@
     verifier_runner: ->(el) { run_verifier(el) },
   })
 
+  whitelist = [
+    'data-tag-deprecated',
+    'data-tag-api',
+    'data-ruby-constructor',
+    'data-ruby-abstract',
+    'data-ruby-visibility',
+    'data-ruby-readonly',
+    'data-ruby-writeonly',
+  ]
+
+  data_attr_list.delete_if { |k, _| !whitelist.include?(k) }
+
   list = data_attr_list.map do |k, v|
     boolean_list = ['data-tag-deprecated', 'data-ruby-constructor', 'data-ruby-abstract', 'data-ruby-readonly', 'data-ruby-writeonly']
 

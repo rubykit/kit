@@ -129,8 +129,6 @@ def generate_js_search_file
   # Allows to bust the search sessionStorage cache when the assets change
   @search_items_digest = file_digest
 
-  file_digest  = 'DEBUG'
-
   asset("search_items-#{ file_digest }.js", file_content)
 end
 
