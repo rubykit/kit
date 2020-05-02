@@ -8,7 +8,7 @@ module Yard::Kit::Services::Sidebar::Extras
 
     extras_list.each do |el|
       url = url_generator.call(el: el)
-      toc = Yard::Kit::Services::Extras.get_toc(file: el)
+      toc = el.contents_toc
 
       data = {
         title:   toc&.dig(0, :title) || el.name,

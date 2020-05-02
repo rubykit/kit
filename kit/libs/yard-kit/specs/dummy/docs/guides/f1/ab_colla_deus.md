@@ -16,21 +16,23 @@ Loco fibras axis, paratae **qui**, ait sic proles. Maius in Cereris onerata
 *ferrumque* cineres ego quam cur sedes recepit, umbram. Harpalos Iunonius
 poplite pulvere reverti res silvas videor! Ego abest hostibus **ades** tu pete.
 
-    def create_set_and_get(initial_value=0) # note the default value of 0
-      closure_value = initial_value
-      [ Proc.new {|x| closure_value = x}, Proc.new { closure_value } ]
-    end
+```ruby
+def create_set_and_get(initial_value=0) # note the default value of 0
+  closure_value = initial_value
+  [ Proc.new {|x| closure_value = x}, Proc.new { closure_value } ]
+end
 
-    setter, getter = create_set_and_get  # returns two values
-    setter.call(21)
-    getter.call      # => 21
+setter, getter = create_set_and_get  # returns two values
+setter.call(21)
+getter.call      # => 21
 
-    # Parameter variables can also be used as a binding for the closure,
-    # so the preceding can be rewritten as:
+# Parameter variables can also be used as a binding for the closure,
+# so the preceding can be rewritten as:
 
-    def create_set_and_get(closure_value=0)
-      [ proc {|x| closure_value = x } , proc { closure_value } ]
-    end
+def create_set_and_get(closure_value=0)
+  [ proc {|x| closure_value = x } , proc { closure_value } ]
+end
+```
 
 Fama Graios opus inque, tam umero bracchia, tremens *volentem cadavera*
 demurmurat et Tyria; sit. Parantem bello viri, tollebat, litora monet omen

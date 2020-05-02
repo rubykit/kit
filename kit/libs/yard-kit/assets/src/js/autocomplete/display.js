@@ -1,3 +1,5 @@
+/* globals yard_kit_relative_url_path */
+
 // Dependencies
 // ------------
 
@@ -13,10 +15,12 @@ const autocompleteElement = $('.autocomplete')
 // Updates list of results inside the autocomplete.
 function updateSuggestions (term) {
   const results = getSuggestions(term)
+  const relative_url_path = yard_kit_relative_url_path || ''
   const template = autocompleteResultsTemplate({
     empty: results.length === 0,
     results: results,
-    term: term
+    term: term,
+    relative_url_path: relative_url_path,
   })
 
   autocompleteElement.html(template)

@@ -15,7 +15,9 @@ require 'yard/kit/config'
 require 'yard/kit/redcarpet/redcarpet_render_custom.rb'
 require 'yard/kit/redcarpet/redcarpet_compat.rb'
 
-require 'yard/kit/templates/helpers/yard_kit_plugin_helper'
-require 'yard/kit/templates/helpers/html_helper'
+require 'yard/kit/yard/templates/helpers/yard_kit_plugin_helper'
+require 'yard/kit/yard/overrides/html_helper'
+require 'yard/kit/yard/overrides/base'
+require 'yard/kit/yard/overrides/extra_file_object'
 
 require 'yard/kit/services'

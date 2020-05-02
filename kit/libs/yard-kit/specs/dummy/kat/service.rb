@@ -8,7 +8,9 @@ require '../mixins/module_extend'
 # malesuada fames ac ante ipsum primis in faucibus. Etiam non nisl leo.
 # Vestibulum molestie nisl felis, a vulputate purus ultricies at:
 #
-#     Kat::Service.m1(str: "...")
+# ```ruby
+# Kat::Service.m1(str: "...")
+# ```
 #
 #  Mauris laoreet euismod velit, in malesuada diam rutrum in.
 module Kat::Service

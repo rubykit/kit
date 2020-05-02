@@ -1,4 +1,4 @@
-/* globals sidebarNodes */
+/* globals sidebarNodes, yard_kit_relative_url_path */
 
 // Dependencies
 // ------------

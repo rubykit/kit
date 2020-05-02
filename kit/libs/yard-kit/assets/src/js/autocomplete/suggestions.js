@@ -1,4 +1,4 @@
-/* globals sidebarNodes */
+/* globals sidebarNodes, yard_kit_relative_url_path */
 
 // Dependencies
 // ------------
@@ -29,13 +29,14 @@ const labels = {
  *
  * @returns {Object} Serialized object that can be used directly in the autocomplete template.
  */
-function serialize (item, moduleId = null) {
-  const isChild = item.category === 'Child'
-  const anchor = isChild ? item.anchor : ''
-  const category = isChild ? 'Child' : item.category
+function serialize (item, module = null) {
+  const moduleId    = module ? module.id : null
+  const isChild     = item.category === 'Child'
+  const anchor      = isChild ? item.anchor : ''
+  const category    = isChild ? 'Child' : item.category
   const description = isChild ? moduleId : null
-  const label = item.label || null
-  const link = anchor ? `${moduleId}.html#${anchor}` : `${moduleId}.html`
+  const label       = item.label || null
+  const link        = `${yard_kit_relative_url_path}${isChild ? module.url : item.element.url}${isChild ? `#${item.anchor}` : ''}`
 
   return {
     link: link, // Link to the result. Used in the 'href' tag.
@@ -112,11 +113,12 @@ function findIn (elements, term, categoryName) {
     if (titleMatch) {
       const parentResult = serialize({
         id: element.id,
+        element: element,
         match: highlight(titleMatch),
         category: categoryName,
         matchQuality: matchQuality(titleMatch),
         group: element.group
-      }, element.id)
+      }, element)
 
       results.push(parentResult)
     }
@@ -132,7 +134,7 @@ function findIn (elements, term, categoryName) {
             child.category = 'Child'
             child.label = labels[key]
 
-            return serialize(child, element.id)
+            return serialize(child, element)
           })
 
           results = results.concat(foundChildren)
@@ -188,6 +190,7 @@ function findMatchingChildren (elements, parentId, term, key) {
       const lastSegmentMatch = element.id.match(lastSegmentMatcher)
       result.matchQuality = matchQuality(lastSegmentMatch)
       result.match = highlight(lastSegmentMatch)
+      result.element = element
     } else {
       return acc
     }

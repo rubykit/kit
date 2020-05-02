@@ -1,0 +1,14 @@
+<%
+  url_generator    = ->(*el) { url_for(*el) }
+  anchor_generator = ->(*el) { anchor_for(*el) }
+  verifier_runner  = ->(*el) { run_verifier(*el) }
+
+  list = Yard::Kit::Services::Search.get_search_list({
+    options:          options,
+    url_generator:    url_generator,
+    anchor_generator: anchor_generator,
+    verifier_runner:  verifier_runner,
+  })
+%>
+
+searchNodes = <%= JSON.pretty_generate(list) %>;

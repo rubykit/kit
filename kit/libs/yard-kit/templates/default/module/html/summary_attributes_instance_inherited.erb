@@ -1,5 +1,5 @@
 <%
-  toplist = Yard::Kit::Services::Modules.get_inherited_attributes({
+  toplist = Yard::Kit::Services::Modules.get_object_inherited_attributes({
     object:          object,
     options:         options,
     verifier_runner: ->(el) { run_verifier(el) },

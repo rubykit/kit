@@ -1,5 +1,5 @@
 <%
-  list = Yard::Kit::Services::Modules.get_modules_hash({
+  list = Yard::Kit::Services::Modules.get_all_modules_as_hash({
     options:         options,
     verifier_runner: ->(el) { run_verifier(el) },
   })

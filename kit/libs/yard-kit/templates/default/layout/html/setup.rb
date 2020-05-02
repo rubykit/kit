@@ -1,5 +1,5 @@
 include YARD::Templates::Helpers::HtmlHelper
-include ::Yard::Kit::Templates::Helpers::YardKitPluginHelper
+include ::Yard::Kit::YardKitPluginHelper
 
 def init
   super
@@ -9,4 +9,13 @@ end
 # Used to set `data-type` in the <body>
 def file
   @file
+end
+
+# Use our extended ExtraFile properties
+def diskfile
+  if @file.respond_to?(:contents_rendered)
+    @file.contents_rendered
+  else
+    super
+  end
 end

@@ -1,4 +1,4 @@
-/* globals searchNodes */
+/* globals searchNodes, searchNodesDigest */
 
 // Search
 // ======
@@ -94,7 +94,8 @@ export function search (value) {
 
 function getIndex () {
   var projectMeta = getProjectMeta()
-  var stored = sessionStorage.getItem(projectMeta)
+  var sessionStorageKey = `${projectMeta}-${searchNodesDigest}`
+  var stored = sessionStorage.getItem(sessionStorageKey)
 
   try {
     if (stored == null) throw 'create and save'
@@ -104,7 +105,7 @@ function getIndex () {
     var stringified = JSON.stringify(idx)
 
     try {
-      sessionStorage.setItem(projectMeta, stringified)
+      sessionStorage.setItem(sessionStorageKey, stringified)
     } catch {
     }
 
@@ -118,13 +119,19 @@ function getProjectMeta () {
 
 function titleExtractor (document) {
   var title = document['title']
-  var type = document['type']
+  var type  = document['type']
+  var orig  = title
 
-  if (type === 'function' || type === 'callback' || type === 'type') {
-    var modFun = title.replace(/\/\d+/, '')
-    var modOrFun = modFun.replace('.', ' ')
-    var parts = title.split('.')
-    title = title + ' ' + modFun + ' ' + modOrFun + ' ' + parts[parts.length - 1]
+  if (type == 'module' || type == 'constant' || type == 'class' || type == 'namespace') {
+    let idx = orig.lastIndexOf('::')
+    if (idx != -1) {
+      title = title + ' ' + orig.substr(0, idx) + ' ' + orig.substr(idx + 2)
+    }
+  }
+  else if (type.includes('method') || type.includes('attribute')) {
+    let sep   = orig.includes('.') ? '.' : '#'
+    let split = orig.split(sep)
+    title = title + ' ' + split.join(' ') + ' ' + sep + split.slice(-1)[0]
   }
 
   return title

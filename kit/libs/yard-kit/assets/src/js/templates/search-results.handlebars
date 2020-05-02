@@ -4,7 +4,7 @@
   {{#each results}}
     <div class="result">
       <h2 class="result-id">
-        <a href="{{this.ref}}">{{this.title}} <small>({{this.type}})</small></a>
+        <a href="{{../relative_url_path}}{{this.ref}}">{{this.title}} <small>({{this.type}})</small></a>
       </h2>
         {{#each excerpts}}
           <p class="result-elem">{{{this}}}</p>

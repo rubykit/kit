@@ -1,0 +1,22 @@
+ <%
+  files = {
+    js_search: 'search_items*.js',
+  }
+
+  files.each do |key, file_path|
+    base_path      = config[:output_dir]
+    asset_file     = Dir["#{ base_path }/#{ file_path }"].first
+    rel_asset_file = asset_file[(base_path.size + 1)..(-1)]
+    files[key]     = rel_asset_file
+  end
+ %>
+
+<div id="search">
+  <h1>Search</h1>
+  <div class="loading"><div></div><div></div><div></div><div></div></div>
+</div>
+
+<script>
+  searchNodesDigest = "<%= @search_items_digest %>";
+</script>
+<script src="<%= url_for_file(files[:js_search]) %>"></script>

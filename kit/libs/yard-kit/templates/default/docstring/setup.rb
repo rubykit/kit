@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-include ::Yard::Kit::Templates::Helpers::YardKitPluginHelper
+include ::Yard::Kit::YardKitPluginHelper
 
 def init
   return if object.docstring.blank? && !object.has_tag?(:api)

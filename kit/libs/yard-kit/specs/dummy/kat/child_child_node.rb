@@ -16,12 +16,14 @@ require_relative 'child_node'
 # malesuada fames ac ante ipsum primis in faucibus. Etiam non nisl leo.
 # Vestibulum molestie nisl felis, a vulputate purus ultricies at:
 #
-#     node = ChildChildNode.new(options: { active: false })
+# ```ruby
+# node = ChildChildNode.new(options: { active: false })
 #
-#     node.instance_m(:substitute) do |el|
-#       # code ...
-#       # code ...
-#     end
+# node.instance_m(:substitute) do |el|
+#   # code ...
+#   # code ...
+# end
+# ```
 #
 #  Mauris laoreet euismod velit, in malesuada diam rutrum in.
 class Kat::ChildChildNode < Kat::ChildNode
@@ -58,13 +60,16 @@ class Kat::ChildChildNode < Kat::ChildNode
   #
   # ## Examples
   #
-  #     ChildChildNode.class_m3('path', 'transport', {
-  #       check_origin: [
-  #         "https://example.com",
-  #         "//another.com:888",
-  #         "//other.com",
-  #       ],
-  #     })
+  # ```ruby
+  # ChildChildNode.class_m3('path', 'transport', {
+  #   check_origin: [
+  #     "https://example.com",
+  #     "//another.com:888",
+  #     "//other.com",
+  #   ],
+  # })
+  # ```
+  #
   def self.class_m3(u, v, w:)
   end
 

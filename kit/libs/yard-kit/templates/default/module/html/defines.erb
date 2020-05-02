@@ -1,4 +1,4 @@
-<% files = cleanup_files(list: object.files) %>
+<% files = Yard::Kit::Services::Utils.cleanup_files(list: object.files) %>
 <% files.each_with_index do |file_data, idx| %>
   <% path, line = file_data %>
   <% if idx > 0 %><br><% end %>

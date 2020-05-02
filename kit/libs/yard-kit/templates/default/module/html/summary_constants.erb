@@ -1,5 +1,5 @@
 <%
-  list = Yard::Kit::Services::Modules.get_constants({
+  list = Yard::Kit::Services::Modules.get_object_constants({
     object:          object,
     options:         options,
     verifier_runner: ->(el) { run_verifier(el) },

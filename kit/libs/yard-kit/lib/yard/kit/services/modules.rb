@@ -1,8 +1,6 @@
 module Yard::Kit::Services::Modules
 
-  def self.get_modules_list(options:, verifier_runner:)
-    # TODO: check if we should use `options.objects` instead
-
+  def self.get_all_modules_as_list(options:, verifier_runner:)
     list = ::YARD::Registry.all(:class, :module)
     list = verifier_runner.call(list)
 
@@ -11,16 +9,26 @@ module Yard::Kit::Services::Modules
     list
   end
 
-  def self.get_modules_hash(options:, verifier_runner:)
-    get_modules_list(options: options, verifier_runner: verifier_runner)
+  def self.get_all_modules_as_hash(options:, verifier_runner:)
+    get_all_modules_as_list(options: options, verifier_runner: verifier_runner)
       .map { |el| ["#{ el.namespace.path.size > 0 ? "#{ el.namespace.path }::" : '' }#{ el.name }", el] }
       .sort_by { |name, el| name }
   end
 
+
   # Methods --------------------------------------------------------------------
 
+  def self.get_all_methods_as_list(options:, verifier_runner:)
+    list = ::YARD::Registry.all(:method)
+    list = verifier_runner.call(list)
+
+    list.delete_if { |el| el.has_tag?(:api) && el.tag(:api).text == 'hide' }
+
+    list
+  end
+
   # @note Does not include `verifiers`
-  def self.get_methods(object:, options:, verifier_runner:, include_aliases: true, include_attributes: false, include_inherited: false, include_specials: true, include_instance_methods: true, include_class_methods: true)
+  def self.get_object_methods(object:, options:, verifier_runner:, include_aliases: true, include_attributes: false, include_inherited: false, include_specials: true, include_instance_methods: true, include_class_methods: true)
     list = object.meths(
       inherited: include_inherited,
       included:  !options.embed_mixins.any?,
@@ -58,7 +66,7 @@ module Yard::Kit::Services::Modules
       .sort_by { |el| [el.scope.to_s, el.name.to_s.downcase] }
   end
 
-  def self.get_inherited_methods(object:, options:, verifier_runner:, include_instance_methods: true, include_class_methods: true, hide_if_overwritten: true)
+  def self.get_object_inherited_methods(object:, options:, verifier_runner:, include_instance_methods: true, include_class_methods: true, hide_if_overwritten: true)
     list         = {}
     method_names = {}
 
@@ -99,7 +107,7 @@ module Yard::Kit::Services::Modules
 
   # Attributes -----------------------------------------------------------------
 
-  def self.get_attributes(object:, options:, verifier_runner:)
+  def self.get_object_attributes(object:, options:, verifier_runner:)
     list = []
 
     object.inheritance_tree(true).each do |superclass|
@@ -125,7 +133,7 @@ module Yard::Kit::Services::Modules
       .sort_by { |el| [el.scope.to_s, el.name.to_s.downcase] }
   end
 
-  def self.get_inherited_attributes(object:, options:, verifier_runner:)
+  def self.get_object_inherited_attributes(object:, options:, verifier_runner:)
     list = {}
 
     (object.inheritance_tree(true)[1..-1] || []).each do |superclass|
@@ -149,7 +157,16 @@ module Yard::Kit::Services::Modules
 
   # Constants ------------------------------------------------------------------
 
-  def self.get_constants(object:, options:, verifier_runner:, include_inherited: false)
+  def self.get_all_constants_as_list(options:, verifier_runner:)
+    list = ::YARD::Registry.all(:constant)
+    list = verifier_runner.call(list)
+
+    list.delete_if { |el| el.has_tag?(:api) && el.tag(:api).text == 'hide' }
+
+    list
+  end
+
+  def self.get_object_constants(object:, options:, verifier_runner:, include_inherited: false)
     list = object.constants(
       inherited: include_inherited,
       included:  options.embed_mixins.any?,
@@ -164,7 +181,7 @@ module Yard::Kit::Services::Modules
       .sort_by { |el| el.name.to_s }
   end
 
-  def self.get_inherited_constants(object:, options:, verifier_runner:)
+  def self.get_object_inherited_constants(object:, options:, verifier_runner:)
     list = {}
 
     (object.inheritance_tree(true)[1..-1] || []).each do |superclass|

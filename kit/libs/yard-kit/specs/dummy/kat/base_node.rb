@@ -17,12 +17,14 @@ require_relative '../mixins/class_extend1.rb'
 # malesuada fames ac ante ipsum primis in faucibus. Etiam non nisl leo.
 # Vestibulum molestie nisl felis, a vulputate purus ultricies at:
 #
-#     node = BaseNode.new(options: { active: false })
+# ```ruby
+# node = BaseNode.new(options: { active: false })
 #
-#     node.instance_m(:substitute) do |el|
-#       # code ...
-#       # code ...
-#     end
+# node.instance_m(:substitute) do |el|
+#   # code ...
+#   # code ...
+# end
+# ```
 #
 #  Mauris laoreet euismod velit, in malesuada diam rutrum in.
 class Kat::BaseNode
@@ -43,7 +45,10 @@ class Kat::BaseNode
   #
   # ## Examples
   #
-  #     irb> BaseNode.new(options: { levels: 3 })
+  # ```console
+  # irb> node.instance_m1a(:replace, { layer: 2 })
+  # [:ok]
+  # ```
   #
   def initialize(options:)
   end
@@ -53,8 +58,11 @@ class Kat::BaseNode
   #
   # ## Examples
   #
-  #     irb> node.instance_m(:replace, { layer: 2 })
-  #     [:ok]
+  # ```console
+  # irb> node.instance_m(:replace, { layer: 2 })
+  # [:ok]
+  # ```
+  #
   def instance_m(action, options = {}, &block)
     [:ok]
   end
@@ -64,8 +72,11 @@ class Kat::BaseNode
   #
   # ## Examples
   #
-  #     irb> BaseNode.class_m(next: true, prev: false)
-  #     [:ok]
+  # ```console
+  # irb> BaseNode.class_m(next: true, prev: false)
+  # [:ok]
+  # ```
+  #
   def self.class_m(next:, prev:)
     [:ok]
   end
@@ -75,8 +86,11 @@ class Kat::BaseNode
   #
   # ## Examples
   #
-  #     irb> node.instance_m1a(:replace, { layer: 2 })
-  #     [:ok]
+  # ```console
+  # irb> node.instance_m1a(:replace, { layer: 2 })
+  # [:ok]
+  # ```
+  #
   def instance_m1a(action, options = {}, &block)
     [:ok]
   end
@@ -86,8 +100,11 @@ class Kat::BaseNode
   #
   # ## Examples
   #
-  #     irb> BaseNode.class_m1a(next: true, prev: false)
-  #     [:ok]
+  # ```console
+  # irb> node.instance_m1a(:replace, { layer: 2 })
+  # [:ok]
+  # ```
+  #
   def self.class_m1a(next:, prev:)
     [:ok]
   end

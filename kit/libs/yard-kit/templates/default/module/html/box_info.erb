@@ -34,7 +34,7 @@
   <% end %>
 
   <% unless object.root? %>
-    <% files = cleanup_files(list: object.files) %>
+    <% files = Yard::Kit::Services::Utils.cleanup_files(list: object.files) %>
     <% if files.size > 1 %>
       <dl>
         <dt>Defined in:</dt>

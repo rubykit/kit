@@ -22,7 +22,7 @@
 <% if config[:authors].size > 0 %>
   <meta name="author" content="<%= config[:authors].join(', ') %>">
 <% end %>
-<title><%= @page_title %> — <%= config[:project] %> v<%= config[:version] %></title>
+<title><%= @title || @page_title  %> — <%= config[:project] %> v<%= config[:version] %></title>
 
 <link rel="stylesheet" href="<%= url_for_file(files[:css_app]) %>" />
 

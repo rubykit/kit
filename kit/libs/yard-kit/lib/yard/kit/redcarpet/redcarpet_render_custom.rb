@@ -1,8 +1,9 @@
 require 'redcarpet'
 
+# Custom RedCarpet renderer
 class Yard::Kit::RedcarpetRenderCustom < ::Redcarpet::Render::HTML
 
-  STRIPPED = " -&+$,/:;=?@\"#{}|^~[]`\\*()%.!'"
+  STRIPPED = ' -&+$,/:;=?@"{}#|^~[]`\\*()%.!\''
 
   # @ref https://github.com/vmg/redcarpet/blob/master/ext/redcarpet/html.c#L274
   def self.header_anchor(text)
@@ -13,7 +14,7 @@ class Yard::Kit::RedcarpetRenderCustom < ::Redcarpet::Render::HTML
     text = Yard::Kit::Services::Utils.remove_html_entities(text)
 
     # Replace-non ASCII chars
-    text = text.encode("ASCII", "UTF-8", invalid: :replace, undef: :replace, replace: '-')
+    text = text.encode('ASCII', 'UTF-8', invalid: :replace, undef: :replace, replace: '-')
 
     # Replace invalid characters
     text = text.tr(STRIPPED, '-')
@@ -26,13 +27,12 @@ class Yard::Kit::RedcarpetRenderCustom < ::Redcarpet::Render::HTML
   # @ref https://github.com/vmg/redcarpet/blob/master/ext/redcarpet/html.c#L322
   def header(text, level)
     anchor = self.class.header_anchor(text)
-    %{
-      <h#{level} id="#{anchor}" class="section-heading">
-        <a href="##{anchor}" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
-        #{text}
-      </h#{level}>
-    }
+    %(
+      <h#{ level } id="#{ anchor }" class="section-heading">
+        <a href="##{ anchor }" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+        #{ text }
+      </h#{ level }>
+    )
   end
 
 end
-

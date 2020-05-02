@@ -7,7 +7,7 @@
     url_generator:   url_generator,
   })
 
-  modules_list = Yard::Kit::Services::Sidebar::Modules.get_modules_list({
+  modules_list = Yard::Kit::Services::Sidebar::Modules.get_all_modules_as_list({
     options:          options,
     url_generator:    url_generator,
     anchor_generator: anchor_generator,
@@ -18,4 +18,5 @@
 sidebarNodes = {
   "extras":  <%= JSON.pretty_generate(extras_list) %>,
   "modules": <%= JSON.pretty_generate(modules_list) %>,
+  "tasks":   [],
 };

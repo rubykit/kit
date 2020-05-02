@@ -1,8 +1,8 @@
 module Yard::Kit::Services::Sidebar::Modules
 
-  def self.get_modules_list(options:, url_generator:, anchor_generator:, verifier_runner:)
+  def self.get_all_modules_as_list(options:, url_generator:, anchor_generator:, verifier_runner:)
     config       = Yard::Kit::Config.config
-    modules_list = Yard::Kit::Services::Modules.get_modules_hash({
+    modules_list = Yard::Kit::Services::Modules.get_all_modules_as_hash({
       options:         options,
       verifier_runner: verifier_runner,
     })
@@ -13,7 +13,7 @@ module Yard::Kit::Services::Sidebar::Modules
       url  = url_generator.call(el: el)
       data = {
         title:      full_path,
-        id:         url.gsub(/\.html$/, ''),
+        id:         el.name,
         url:        url,
         nodeGroups: generate_node_groups({
           object:           el,
@@ -39,7 +39,7 @@ module Yard::Kit::Services::Sidebar::Modules
       {
         key:       'methods-class',
         name:      'Class methods',
-        list:      Yard::Kit::Services::Modules.get_methods({
+        list:      Yard::Kit::Services::Modules.get_object_methods({
           object:                   object,
           options:                  options,
           include_instance_methods: false,
@@ -55,7 +55,7 @@ module Yard::Kit::Services::Sidebar::Modules
       {
         key:       'methods-instance',
         name:      'Instance methods',
-        list:      Yard::Kit::Services::Modules.get_methods({
+        list:      Yard::Kit::Services::Modules.get_object_methods({
           object:                object,
           options:               options,
           include_class_methods: false,
@@ -71,7 +71,7 @@ module Yard::Kit::Services::Sidebar::Modules
       {
         key:       'attributes-instance',
         name:      'Instance attributes',
-        list:      Yard::Kit::Services::Modules.get_attributes({
+        list:      Yard::Kit::Services::Modules.get_object_attributes({
           object:          object,
           options:         options,
           verifier_runner: verifier_runner,
@@ -85,7 +85,7 @@ module Yard::Kit::Services::Sidebar::Modules
       {
         key:       'constants',
         name:      'Constants',
-        list:      Yard::Kit::Services::Modules.get_constants({
+        list:      Yard::Kit::Services::Modules.get_object_constants({
           object:          object,
           options:         options,
           verifier_runner: verifier_runner,

@@ -4,7 +4,7 @@
     <%= erb(:headers) %>
   </head>
 
-  <body data-type="<%= (object.is_a?(String) || file) ? 'extras' : 'modules' %>">
+  <body data-type="<%= @body_data_type || ((object.is_a?(String) || file) ? 'extras' : 'modules') %>">
     <script>
       try {
         let night_mode = localStorage.getItem('night-mode');

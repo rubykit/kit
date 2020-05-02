@@ -1,5 +1,5 @@
 <%
-  list = Yard::Kit::Services::Modules.get_attributes({
+  list = Yard::Kit::Services::Modules.get_object_attributes({
     object:          object,
     options:         options,
     verifier_runner: ->(el) { run_verifier(el) },
