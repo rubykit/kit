@@ -15,4 +15,12 @@ module Yard::Kit::Services::Utils
     end
   end
 
+  def self.remove_html_tags(str)
+    str.gsub(%r{<\/?[^>]*>}, '')
+  end
+
+  def self.remove_html_entities(str)
+    str.gsub(%{&([a-zA-Z0-9]+|#[0-9]{1,6}|#x[0-9a-fA-F]{1,6});}, '')
+  end
+
 end
