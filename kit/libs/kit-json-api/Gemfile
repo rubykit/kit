@@ -35,6 +35,6 @@ group :test, :development do
 end
 
 group :development do
-  gem 'yard-kit',                path: '../../libs/yard-kit'
+  gem 'kit-doc-yard',            path: '../../libs/kit-doc-yard'
   gem 'rubocop', '~> 0.81.0'
 end

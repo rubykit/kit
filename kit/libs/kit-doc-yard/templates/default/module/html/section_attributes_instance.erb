@@ -1,0 +1,34 @@
+<%
+  list = Kit::Doc::Services::Modules.get_object_attributes({
+    object:          object,
+    options:         options,
+    verifier_runner: ->(el) { run_verifier(el) },
+  })
+%>
+<% if list.size > 0 %>
+
+  <hr>
+
+  <section id="attributes-instance" class="details-list">
+
+    <h1 class="section-heading">
+      <a class="hover-link" href="#attributes-instance">
+        <span class="icon-link" aria-hidden="true"></span>
+        <span class="sr-only">Link to this section</span>
+      </a>
+      Instance attributes
+      <span class='list-count'><%= list.size %></span>
+      <% if Kit::Doc::Services::Properties.has_private_apis?(list: list) %>
+        <span class='private-apis-warning unselectable'>⚠️ Private APIs are currently hidden.</span>
+      <% end %>
+    </h1>
+
+    <div class="functions-list">
+      <% list.each do |method| %>
+        <%= yieldall item: method, owner: object %>
+      <% end %>
+    </div>
+
+  </section>
+
+<% end %>

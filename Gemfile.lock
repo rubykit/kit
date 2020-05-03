@@ -4,9 +4,9 @@ PATH
     Kit (0.1.0.alpha)
 
 PATH
-  remote: kit/libs/yard-kit
+  remote: kit/libs/kit-doc-yard
   specs:
-    yard-kit (0.0.2)
+    kit-doc-yard (0.0.2)
       nokogiri
       rake
       redcarpet
@@ -41,15 +41,15 @@ GEM
       rspec-core (~> 3.9.0)
       rspec-expectations (~> 3.9.0)
       rspec-mocks (~> 3.9.0)
-    rspec-core (3.9.1)
-      rspec-support (~> 3.9.1)
+    rspec-core (3.9.2)
+      rspec-support (~> 3.9.3)
     rspec-expectations (3.9.1)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.9.0)
     rspec-mocks (3.9.1)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.9.0)
-    rspec-support (3.9.2)
+    rspec-support (3.9.3)
     rubocop (0.81.0)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
@@ -68,11 +68,11 @@ PLATFORMS
 DEPENDENCIES
   Kit!
   git
+  kit-doc-yard!
   pry
   rake
   rubocop
   yard
-  yard-kit!
 
 BUNDLED WITH
    2.1.3

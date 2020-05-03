@@ -1,9 +1,7 @@
 require 'yard'
-require 'yard-kit'
+require 'kit-doc-yard'
 require 'rubygems'
 require 'git'
-
-require 'pry'
 
 require_relative '../version'
 
@@ -146,7 +144,7 @@ YARD::Rake::YardocTask.new do |t|
   })
 
   t.before = -> do
-    Yard::Kit::Config.config = config
+    Kit::Doc::Services::Config.config = config
 
     FileUtils.rm_rf(Dir[config[:output_dir] + '/*'])
   end
@@ -155,7 +153,7 @@ YARD::Rake::YardocTask.new do |t|
 
   t.options = [
     '--output-dir',      config[:output_dir],
-    '--plugin',          'yard-kit', 'contracts', # Redundant with `.yardopts`?
+    '--plugin',          'kit-doc-yard', 'kit-doc-yard-contracts', # Redundant with `.yardopts`?
     '--asset',           'docs/assets:assets/images',
     '--markup-provider', 'redcarpet',
     '--markup',          'markdown',

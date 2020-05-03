@@ -31,4 +31,4 @@ gem 'awesome_print'
 gem 'kit-app-container',       path: '../../libs/kit-app-container' # DEV MODE
 gem 'kit-dummy-app-container', path: '../../libs/kit-dummy-app-container' # DEV MODE
 
-gem 'yard-kit',                path: '../../libs/yard-kit'
+gem 'kit-doc-yard',            path: '../../libs/kit-doc-yard'

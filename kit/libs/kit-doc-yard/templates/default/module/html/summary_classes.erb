@@ -1,0 +1,21 @@
+<%
+  list = Kit::Doc::Services::Modules.get_object_classes({
+    object:          object,
+    options:         options,
+    verifier_runner: ->(el) { run_verifier(el) },
+  })
+%>
+<% if list.size > 0 %>
+
+  <div class="summary summary-classes">
+    <h2 class='summary-heading'>
+      <a href="#classes" class='title'>Classes</a>
+      <span class='list-count'><%= list.size %></span>
+    </h2>
+
+    <% list.each do |item| %>
+      <%= yieldall item: item %>
+    <% end %>
+  </div>
+
+<% end %>

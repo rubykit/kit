@@ -27,4 +27,4 @@ gem 'kit-dummy-app-container', path: '../../libs/kit-dummy-app-container' # DEV 
 
 gem 'kit-organizer',           path: '../../libs/kit-organizer' # DEV MODE
 
-gem 'yard-kit',                path: '../../libs/yard-kit'
+gem 'kit-doc-yard',            path: '../../libs/kit-doc-yard'
