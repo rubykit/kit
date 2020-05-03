@@ -2,7 +2,7 @@ require 'yard'
 require 'yard-kit'
 
 FILES_MODULES = {
-  'specs/dummy/'   => {
+  'specs/dummy/' => {
     include: %w[
       kat.rb
       kat/**/*.rb

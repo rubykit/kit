@@ -38,8 +38,8 @@
   end
 %>
 
-<span class='doc-properties-list'>
+<span class='docstring-tags'>
   <% list.each do |data:, display:| %>
-    <span class="doc-property" <%= data[0] %>="<%= data[1] %>"><span class='doc-property-name'><%= display[0].to_s.upcase %></span><span class='doc-property-value'><%= display[1].to_s.capitalize %></span></span>
+    <span class="docstring-tag" <%= data[0] %>="<%= data[1] %>"><span class='docstring-tag-type'><%= display[0].to_s.upcase %></span><span class='docstring-tag-value'><%= display[1].to_s.capitalize %></span></span>
   <% end %>
 </span>

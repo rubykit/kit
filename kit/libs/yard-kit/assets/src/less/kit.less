@@ -1,49 +1,10 @@
-
-/* Theming ------------------------------------------------------------------ */
-
-@monokai_red:    #ff6188;
-@monokai_orange: #fc9867;
-@monokai_yellow: #ffd866;
-@monokai_green:  #a9dc76;
-@monokai_blue:   #78dce8;
-@monokai_purple: #ab9df2;
-@monokai_black:  #2d2a2e;
-@monokai_white:  #fcfcfa;
-
-/*
-@attr_red:            #f83535;
-*/
-
-@color_type_warning: #ffd866;
-@color_type_dimmed:  #777;
-
-@color_attr_default:        #a6e22e;
-@color_attr_api_private:    #666;
-@color_attr_api_deprecated: #e6db74;
-
-.color-tag-deprecated-true {
-  color: @color_attr_api_deprecated;
-}
-
-.color-tag-api-private {
-  color: @color_attr_api_private;
-}
-
-.color-type-warning {
-  color: @color_type_warning;
-}
-
-.color-type-dimmed {
-  color: @color_type_dimmed;
-}
-
-
-/* Various ------------------------------------------------------------------ */
+@import './kit/colors';
 
 h1, h2, h3, h4, h5 {
   letter-spacing: 1px;
 }
 
+/* Header */
 .modules-header {
   .object-type {
     font-family: @monoFontFamily;
@@ -55,19 +16,9 @@ h1, h2, h3, h4, h5 {
 }
 
 .content-inner {
-  h1 {
-    /*
-    margin-bottom: 1em;
-    */
-  }
-
+  /* Reduce Summary h1 since we now use HRs as separator */
   h1.section-heading {
     margin-top: 1em;
-  }
-  a {
-    &:hover {
-      color: #666 !important;
-    }
   }
 }
 
@@ -82,28 +33,17 @@ h1, h2, h3, h4, h5 {
   }
 
   li p {
-      margin-block-start: 0.5em;
-      margin-block-end: 0.5em;
+    margin-block-start: 0.5em;
+    margin-block-end: 0.5em;
   }
 }
 
-body.night-mode {
-  .content-inner {
-    a {
-      &:hover {
-        color: white !important;
-      }
-    }
-  }
+.content-inner .docstring {
+  margin: 0;
 }
 
-a {
-  text-decoration: none !important;
-}
-.docstring {
-  a {
-    text-decoration: underline !important;
-  }
+.detail-body {
+  margin: 1.2em 0 2.1em 1.2em;
 }
 
 .unselectable {
@@ -115,6 +55,25 @@ a {
   user-select: none;
 }
 
+/* Link behaviour ------------------------------------------------------------*/
+
+a {
+  text-decoration: none !important;
+}
+
+.docstring a {
+  text-decoration: underline !important;
+
+  &.hover-link {
+    text-decoration: none !important;
+  }
+}
+
+.content-inner {
+  a:hover, a:visited:hover {
+    opacity: 0.6;
+  }
+}
 
 /* Code ----------------------------------------------------------------------*/
 
@@ -122,16 +81,6 @@ a {
   pre {
     code {
       border-radius: 4px;
-    }
-
-    a, a:visited {
-      color: @white;
-      text-decoration: none;
-    }
-
-    a:hover {
-      color: @main;
-      opacity: 0.7;
     }
   }
 }
@@ -141,7 +90,7 @@ a {
 
 @import './kit/private-apis';
 @import './kit/hr';
-@import './kit/docstring';
+@import './kit/docstring-tags';
 
 @import './kit/sidebar';
 @import './kit/summary';

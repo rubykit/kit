@@ -1,0 +1,145 @@
+/* Module doc ----------------------------------------------------------------*/
+
+#moduledoc .docstring-tags {
+  font-weight: 400;
+  font-size: 0.9em;
+
+  details summary:hover {
+    cursor: pointer;
+  }
+
+  font-family: @monoFontFamily;
+
+  .docs-tag-type {
+    font-weight: 700;
+  }
+
+  details .doc-tag-value {
+    padding-left: 30px;
+  }
+
+  .doc-tag-value {
+    p {
+      margin: 0;
+    }
+  }
+}
+
+
+/* Pill variation ------------------------------------------------------------*/
+
+.detail-header, .summary-row {
+
+  .docstring-tags {
+    position:   absolute;
+    display:    block;
+    right:      1.2em;
+    top:        10px;
+    text-align: right;
+  }
+
+  .docstring-tag {
+    display:  inline-block;
+
+    padding: 4px 8px;
+
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+
+    border: 1px solid @nightTextHeaders;
+    border-radius: 10rem;
+
+    background: transparent;
+    font-style: normal;
+    font-weight: normal;
+
+    &[data-tag-deprecated='true'],
+    &[data-tag-api='private']
+    {
+      border-color: @color_pill_attr_api;
+      .docstring-tag-type {
+        color: @color_pill_attr_api;
+      }
+    }
+
+    &[data-ruby-visibility='protected'],
+    &[data-ruby-visibility='private'],
+    &[data-ruby-constructor='true'],
+    &[data-ruby-abstract='true'],
+    &[data-ruby-readonly='true'],
+    &[data-ruby-writeonly='true']
+    {
+      border-color: @color_pill_attr_ruby;
+      .docstring-tag-type {
+        color: @color_pill_attr_ruby;
+      }
+    }
+
+    .docstring-tag-type {
+      text-transform: uppercase;
+      margin-right: 4px;
+    }
+
+    .docstring-tag-value {
+      text-transform: lowercase;
+    }
+
+  }
+
+}
+
+/* Adjust positioning in details sections */
+
+.detail-header {
+  .docstring-tags {
+    top:   8px;
+    right: 50px;
+  }
+}
+
+
+/* Detail body, before docstring ---------------------------------------------*/
+
+.detail-body .docstring-tags .docstring-tag {
+  font-size:   13px;
+  font-weight: 400;
+
+  font-family: @monoFontFamily;
+
+  .docstring-tag-type {
+    display:        inline-block;
+    vertical-align: top;
+    line-height:    1.1em;
+    font-weight:    700;
+  }
+
+  .docstring-tag-value {
+    display:        inline-block;
+    vertical-align: top;
+    margin-left:    10px;
+    padding-top:    1px;
+
+    ul {
+      list-style-type: '-';
+      margin: 0px;
+      padding: 0px;
+
+      li {
+        margin: 0px;
+        padding-bottom: 4px;
+        line-height: 1.1em;
+      }
+    }
+  }
+
+  i {
+    font-style:   normal;
+    font-weight:  normal;
+    margin-right: 2px;
+    font-family:  @sansFontFamily;
+  }
+}
