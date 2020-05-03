@@ -37,7 +37,7 @@ module Yard::Kit::Services::Search
 
   # Generate search_items output for Modules / Classes
   def self.handle_modules(options:, url_generator:, anchor_generator:, verifier_runner:)
-    list = Yard::Kit::Services::Modules.get_all_modules_as_list({
+    list = Yard::Kit::Services::Modules.get_all_namespaces_as_list({
       options:         options,
       verifier_runner: verifier_runner,
     })

@@ -7,12 +7,22 @@ def init
 
     :section_moduledoc, [
       T('docstring'),
+      :box_info,
     ],
 
-    :box_info,
-    :children, # TODO: comment this out when the sidebar data is generated
-
     :section_summary, [
+
+      :summary_modules, [
+        :item_summary,
+      ],
+
+      :summary_classes, [
+        :item_summary,
+      ],
+
+      :summary_subclasses, [
+        :item_summary,
+      ],
 
       :summary_methods_class, [
         :item_summary,
@@ -66,10 +76,6 @@ def init
         T('docstring'),
       ],
     ],
-
-    # This will probably never be used.
-    #:methodmissing,       [T('method_details')],
-
   ]
 
   sections(*list)

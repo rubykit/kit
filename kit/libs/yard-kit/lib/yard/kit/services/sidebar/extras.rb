@@ -38,12 +38,14 @@ module Yard::Kit::Services::Sidebar::Extras
       id:      'api_reference',
       url:     'api_reference.html',
       group:   '',
+=begin
       headers: [
         {
-          anchor: 'modules',
-          id:     'Modules',
+          anchor: 'namespaces',
+          id:     'Namespaces',
         },
       ],
+=end
     })
 
     extras_export_list

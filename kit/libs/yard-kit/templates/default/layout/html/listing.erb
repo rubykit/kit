@@ -1,6 +1,15 @@
-<h1>
-  <small class="app-vsn"><%= config[:project] %> v<%= config[:version] %></small>
-  API Reference
-</h1>
+<section id="api-reference" class="details-list">
 
-<%= yieldall %>
+   <h1 class="section-heading">
+      <small class="app-vsn"><%= config[:project] %> v<%= config[:version] %></small>
+      <a class="hover-link" href="#api-reference">
+        <span class="icon-link" aria-hidden="true"></span>
+        <span class="sr-only">Link to this section</span>
+      </a>
+      API Reference
+      <span class='private-apis-warning unselectable'>⚠️ Private APIs are currently hidden.</span>
+   </h1>
+
+   <%= yieldall %>
+
+</section>

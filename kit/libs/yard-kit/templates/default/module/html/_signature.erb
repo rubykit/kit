@@ -2,24 +2,27 @@
   # HtmlHelper.signature as a template.
   # @ref https://github.com/lsegal/yard/blob/master/lib/yard/templates/helpers/html_helper.rb#L526
 
-  item = @signature_item
+  item      = @signature_item
+  full_name = @signature_full_name || false
 
-  if !item.is_a?(::YARD::CodeObjects::ConstantObject)
+  simplified = ([:class, :module, :constant].select { |type| item.type == type }.size > 0)
+
+  if !simplified
     if item.tags(:overload).size == 1
       item = item.tag(:overload)
     end
 
     full_attr_name = !item.attr_info
 
-    scope       = (item.scope == :class) ? '.' : '#'
-    name        = full_attr_name ? item.name : item.name.to_s.gsub(/^(\w+)=$/, '\1')
-    arguments   = (!full_attr_name && item.writer?) ? '' : format_args(item)
-    block       = format_block(item)
+    scope     = (item.scope == :class) ? '.' : '#'
+    name      = full_attr_name ? item.name : item.name.to_s.gsub(/^(\w+)=$/, '\1')
+    arguments = (!full_attr_name && item.writer?) ? '' : format_args(item)
+    block     = format_block(item)
   end
 %>
 
-<% if item.is_a?(::YARD::CodeObjects::ConstantObject) %>
-<span class="name"><%= item.name %></span>
+<% if simplified %>
+  <span class="name"><%= (full_name && item.namespace.type != :root) ? "#{ item.namespace }::" : '' %><%= item.name %></span>
 <% else %>
 <span class='scope'><%= scope %></span><span class='name'><%= name %></span><span class='arguments'><%= arguments %></span><span class='block'><%= block %></span>
 <% end %>

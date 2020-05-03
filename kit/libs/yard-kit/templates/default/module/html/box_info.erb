@@ -1,66 +1,95 @@
-<div class="box_info">
-  <% if CodeObjects::ClassObject === object && object.superclass %>
-  <dl>
-    <dt>Inherits:</dt>
-    <dd>
-      <span class="inheritName"><%= linkify object.superclass %></span>
-      <% if object.superclass.name != :BasicObject %>
-        <ul class="fullTree">
-          <li><%= linkify P(:Object) %></li>
-          <% object.inheritance_tree.reverse.each_with_index do |obj, i| %>
-            <li class="next"><%= obj == object ? obj.path : linkify(obj) %></li>
-          <% end %>
-        </ul>
-        <a href="#" class="inheritanceTree">show all</a>
-      <% end %>
-    </dd>
-  </dl>
+<%
+  inheritance_list = (CodeObjects::ClassObject === object && object.superclass && object.superclass.name != :BasicObject) ? object.inheritance_tree : []
+  if inheritance_list.size > 0
+    inheritance_list = inheritance_list.dup.push(P(:Object))
+    inheritance_list.shift
+  end
+
+  verifier_runner  = ->(*el) { run_verifier(*el) }
+
+  include_list  = Yard::Kit::Services::Modules.get_object_mixins_include(object: object, verifier_runner: verifier_runner)
+  extend_list   = Yard::Kit::Services::Modules.get_object_mixins_extend(object: object, verifier_runner: verifier_runner)
+  included_list = Yard::Kit::Services::Modules.get_object_included_into(object: object, verifier_runner: verifier_runner, globals: globals)
+  extended_list = Yard::Kit::Services::Modules.get_object_extended_into(object: object, verifier_runner: verifier_runner, globals: globals)
+  files_list    = !object.root? ? Yard::Kit::Services::Utils.cleanup_files(list: object.files) : []
+
+%>
+<h2>Infos</h2>
+
+<div class="docstring-tags">
+
+  <% if inheritance_list.size > 0 %>
+    <div class='doc-tag' data-ruby-inheritance='<%= inheritance_list.join(' ') %>'>
+      <span class='doc-tag-type'>Inheritance:</span>
+      <span class='doc-tag-value'>
+        <% inheritance_list.each_with_index do |obj, idx| %><% if idx > 0 %> &#8594; <% end %><%= obj == object ? obj.path : linkify(obj) %><% end %>
+      </span>
+    </div>
   <% end %>
 
-  <% [[:class, "Extended by"], [:instance, "Includes"]].each do |scope, name| %>
-  <% if (mix = run_verifier(object.mixins(scope))).size > 0 %>
-  <dl>
-      <dt><%= name %>:</dt>
-      <dd><%= mix.sort_by {|o| o.path }.map {|o| linkify(o) }.join(", ") %></dd>
-  </dl>
-  <% end %>
-  <% end %>
-
-  <% if (mixed_into = mixed_into(object)).size > 0 %>
-  <dl>
-    <dt>Included in:</dt>
-    <dd><%= mixed_into.sort_by {|o| o.path }.map {|o| linkify(o) }.join(", ") %></dd>
-  </dl>
-  <% end %>
-
-  <% unless object.root? %>
-    <% files = Yard::Kit::Services::Utils.cleanup_files(list: object.files) %>
-    <% if files.size > 1 %>
-      <dl>
-        <dt>Defined in:</dt>
-        <dd>
-          <%#= erb(:defines) %>
-
-          <% files.each_with_index do |file_data, idx| %>
-            <% path, line = file_data %>
-            <% if idx > 0 %><br><% end %>
-            <a href="<%= "#{ config[:repo_url] }/#{ path }#L#{ line }" %>" target='_blank' title="View Source" rel="help">
-              <%= "#{path}##{line}" %>
-            </a>
-          <% end %>
-
-          <%
-          <<-COMMENT
-          %>
-          <%= object.file ? object.file : '(unknown)' %><% if object.files.size > 1 %><span class="defines">,<br />
-            <%= object.files[1..-1].map {|f| f.first }.join(",<br /> ") %></span>
-          <% end %>
-          <%
-          COMMENT
-          %>
-        </dd>
-      </dl>
+  <%
+    groups = [
+      {
+        tag:      'Used class mixins:',
+        list:     extend_list,
+        data_tag: 'extends',
+      },
+      {
+        tag:      'Used instance mixins:',
+        list:     include_list,
+        data_tag: 'includes',
+      },
+      {
+        tag:      'Used as a class mixin in:',
+        list:     extended_list,
+        data_tag: 'extended',
+      },
+      {
+        tag:      'Used as an instance mixin in:',
+        list:     included_list,
+        data_tag: 'included',
+      },
+    ]
+  %>
+  <% groups.each do |tag:, list:, data_tag:| %>
+    <% if list.size > 0 %>
+      <div class='doc-tag' data-ruby-<%= tag %>='<%= list.join(' ') %>'>
+        <% if list.size == 1 %>
+          <span class='doc-tag-type'><%= tag %></span>
+          <span class='doc-tag-value'><%= linkify(list[0]) %></span>
+        <% else %>
+          <details>
+            <summary class='doc-tag-type'><%= tag %> <%= list.size %> elements</summary>
+            <div class='doc-tag-value'><% list.each do |el| %><p><%= linkify(el) %></p><% end %></div>
+          </details>
+        <% end %>
+      </div>
     <% end %>
   <% end %>
-</div>
 
+  <% if files_list.size > 0 %>
+    <div class='doc-tag' data-ruby-files='<%= files_list.map { |file, line| "#{ file }#L#{ line }"} .join(' ') %>'>
+      <% if files_list.size == 1 %>
+        <span class='doc-tag-type'>Defined in:</span>
+        <span class='doc-tag-value'>
+          <% path, line = files_list.first %>
+          <a href="<%= "#{ config[:repo_url] }/#{ path }#L#{ line }" %>" target='_blank' title="View Source" rel="help">
+            <%= "#{path}##{line}" %>
+          </a>
+        </span>
+      <% else %>
+        <details>
+          <summary class='doc-tag-type'>Defined in: <%= files_list.size %> files</summary>
+          <div class='doc-tag-value'>
+            <% files_list.each do |path, line| %>
+              <p><a href="<%= "#{ config[:repo_url] }/#{ path }#L#{ line }" %>" target='_blank' title="View Source" rel="help">
+                <%= "#{path}##{line}" %>
+              </a></p>
+            <% end %>
+          </div>
+        </details>
+      <% end %>
+    </div>
+  <% end %>
+
+</div>

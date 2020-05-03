@@ -44,13 +44,23 @@ h1, h2, h3, h4, h5 {
   letter-spacing: 1px;
 }
 
+.modules-header {
+  .object-type {
+    font-family: @monoFontFamily;
+    margin-left: 0.6em;
+    font-size:   0.6em;
+    font-weight: normal;
+    font-style:  italic;
+  }
+}
+
 .content-inner {
   h1 {
+    /*
     margin-bottom: 1em;
+    */
   }
-  h2 {
-    font-size: 1.5em;
-  }
+
   h1.section-heading {
     margin-top: 1em;
   }
@@ -58,6 +68,22 @@ h1, h2, h3, h4, h5 {
     &:hover {
       color: #666 !important;
     }
+  }
+}
+
+/* When there is no content between h1 and h2 */
+#moduledoc > h2:first-child {
+  margin-top: 0px;
+}
+
+.content-inner #moduledoc .docstring {
+  h2 {
+    font-size: 1.5em;
+  }
+
+  li p {
+      margin-block-start: 0.5em;
+      margin-block-end: 0.5em;
   }
 }
 
@@ -115,7 +141,6 @@ a {
 
 @import './kit/private-apis';
 @import './kit/hr';
-@import './kit/doc-properties';
 @import './kit/docstring';
 
 @import './kit/sidebar';

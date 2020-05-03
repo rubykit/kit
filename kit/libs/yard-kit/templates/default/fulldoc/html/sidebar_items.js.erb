@@ -7,7 +7,7 @@
     url_generator:   url_generator,
   })
 
-  modules_list = Yard::Kit::Services::Sidebar::Modules.get_all_modules_as_list({
+  modules_list = Yard::Kit::Services::Sidebar::Modules.get_all_namespaces_as_list({
     options:          options,
     url_generator:    url_generator,
     anchor_generator: anchor_generator,

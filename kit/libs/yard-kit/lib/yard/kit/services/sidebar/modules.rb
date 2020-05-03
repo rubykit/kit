@@ -1,8 +1,8 @@
 module Yard::Kit::Services::Sidebar::Modules
 
-  def self.get_all_modules_as_list(options:, url_generator:, anchor_generator:, verifier_runner:)
+  def self.get_all_namespaces_as_list(options:, url_generator:, anchor_generator:, verifier_runner:)
     config       = Yard::Kit::Config.config
-    modules_list = Yard::Kit::Services::Modules.get_all_modules_as_hash({
+    modules_list = Yard::Kit::Services::Modules.get_all_namespaces_as_hash({
       options:         options,
       verifier_runner: verifier_runner,
     })

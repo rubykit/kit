@@ -1,6 +1,7 @@
 <%
-  item         = @item
-  owner        = object
+  item           = @item
+  templates_path = @templates_path || ''
+  owner          = object
 
   synopsis     = Yard::Kit::Services::Docstring.summary(object: item)
 
@@ -15,6 +16,8 @@
 
   if item.is_a?(::YARD::CodeObjects::ConstantObject)
     link_href = anchor_for(item)
+  elsif [:class, :module].include? item.type
+    link_href = url_for(item)
   else
     link_target_method = alias_target_method || item
     link_target_object = alias_target_method ? alias_target_method.namespace : owner
@@ -33,24 +36,24 @@
   <a href="<%= link_href %>" title="<%= link_title %>">
     <div class="summary-signature">
       <% @signature_item = item %>
-      <%= erb(:_signature) %>
+      <%= erb("#{templates_path}_signature") %>
 
       <% if is_alias %>
         <span>&#x21d2;</span>
         <% if alias_target_method %>
           <% @signature_item = alias_target_method %>
-          <%= erb(:_signature) %>
+          <%= erb("#{templates_path}_signature") %>
         <% else %>
             Unknown
         <% end %>
       <% end %>
 
       <% @attributes_item = item %>
-      <%= erb(:_attributes_list) %>
+      <%= erb("#{templates_path}_attributes_list") %>
     </div>
 
     <% if !is_alias %>
-      <div class="summary-synopsis"><%= htmlify_line(synopsis) %></div>
+      <div class="summary-synopsis"><p><%= synopsis %></p></div>
     <% end %>
   </a>
 </div>

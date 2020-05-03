@@ -6,6 +6,7 @@ FILES_MODULES = {
     include: %w[
       kat.rb
       kat/**/*.rb
+      mixins/*.rb
     ],
   },
 }
@@ -56,7 +57,10 @@ def groups_for_modules
     'Services' => [
       %r{^Kat::Service*},
     ],
-    'All'      => [
+    'Mixins'   => [
+      %r{^Class*},
+    ],
+    'All Kat'  => [
       %r{^Kat::},
     ],
   }

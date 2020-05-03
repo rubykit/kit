@@ -1,6 +1,8 @@
 module Yard::Kit::Services::Modules
 
-  def self.get_all_modules_as_list(options:, verifier_runner:)
+  # Namespaces (modules + classes) ---------------------------------------------
+
+  def self.get_all_namespaces_as_list(options:, verifier_runner:)
     list = ::YARD::Registry.all(:class, :module)
     list = verifier_runner.call(list)
 
@@ -9,10 +11,116 @@ module Yard::Kit::Services::Modules
     list
   end
 
-  def self.get_all_modules_as_hash(options:, verifier_runner:)
-    get_all_modules_as_list(options: options, verifier_runner: verifier_runner)
+  def self.get_all_namespaces_as_hash(options:, verifier_runner:)
+    get_all_namespaces_as_list(options: options, verifier_runner: verifier_runner)
       .map { |el| ["#{ el.namespace.path.size > 0 ? "#{ el.namespace.path }::" : '' }#{ el.name }", el] }
       .sort_by { |name, el| name }
+  end
+
+
+  # Modules --------------------------------------------------------------------
+
+  # @ref https://github.com/lsegal/yard/blob/master/templates/default/module/setup.rb#L19
+  def self.get_object_modules(object:, options:, verifier_runner:)
+    list = object.children
+      .select  { |el| el.type == :module }
+      .sort_by { |el| el.name.to_s }
+
+    list = verifier_runner.call(list)
+
+    list
+  end
+
+  # Get the class / modules that have been included into object
+  def self.get_object_mixins_include(object:, verifier_runner:, **)
+    list = object.mixins(:instance)
+
+    list = verifier_runner.call(list)
+
+    list.sort_by { |el| el.path }
+  end
+
+  # Get the class / modules that have been extended into object
+  def self.get_object_mixins_extend(object:, verifier_runner:, **)
+    list = object.mixins(:class)
+
+    list = verifier_runner.call(list)
+
+    list.sort_by { |el| el.path }
+  end
+
+  # @ref https://github.com/lsegal/yard/blob/master/templates/default/module/setup.rb#L159
+  def self.get_object_included_into(object:, verifier_runner:, globals:, **)
+    if !globals.mixins_included_into
+      globals.mixins_included_into = {}
+
+      list = ::YARD::Registry.all(:class, :module)
+      list = verifier_runner.call(list)
+
+      list.each do |o|
+        o.mixins(:instance).each do |m|
+          globals.mixins_included_into[m.path] ||= []
+          globals.mixins_included_into[m.path] << o
+        end
+      end
+    end
+
+    (globals.mixins_included_into[object.path] || [])
+      .sort_by { |el| el.path }
+  end
+
+  # @ref https://github.com/lsegal/yard/blob/master/templates/default/module/setup.rb#L159
+  def self.get_object_extended_into(object:, verifier_runner:, globals:, **)
+    if !globals.mixins_extended_into
+      globals.mixins_extended_into = {}
+
+      list = ::YARD::Registry.all(:class, :module)
+      list = verifier_runner.call(list)
+
+      list.each do |o|
+        o.mixins(:class).each do |m|
+          globals.mixins_extended_into[m.path] ||= []
+          globals.mixins_extended_into[m.path] << o
+        end
+      end
+    end
+
+    (globals.mixins_extended_into[object.path] || [])
+      .sort_by { |el| el.path }
+  end
+
+  # Classes --------------------------------------------------------------------
+
+  # @ref https://github.com/lsegal/yard/blob/master/templates/default/module/setup.rb#L19
+  def self.get_object_classes(object:, options:, verifier_runner:)
+    list = object.children
+      .select  { |el| el.type == :class }
+      .sort_by { |el| el.name.to_s }
+
+    list = verifier_runner.call(list)
+
+    list
+  end
+
+  # @ref https://github.com/lsegal/yard/blob/master/templates/default/class/setup.rb#L18
+  def self.get_object_subclasses(object:, options:, verifier_runner:, globals:)
+    return [] if object.path == 'Object' # don't show subclasses for Object
+
+    if !globals.subclasses
+      globals.subclasses = {}
+      global_list = verifier_runner.call(::YARD::Registry.all(:class))
+      global_list.each do |o|
+        (globals.subclasses[o.superclass.path] ||= []) << o if o.superclass
+      end
+    end
+
+    subclasses = globals.subclasses[object.path] || []
+    return [] if subclasses.size == 0
+
+    list = subclasses
+      .sort_by(&:path)
+
+    list
   end
 
 
@@ -27,7 +135,6 @@ module Yard::Kit::Services::Modules
     list
   end
 
-  # @note Does not include `verifiers`
   def self.get_object_methods(object:, options:, verifier_runner:, include_aliases: true, include_attributes: false, include_inherited: false, include_specials: true, include_instance_methods: true, include_class_methods: true)
     list = object.meths(
       inherited: include_inherited,

@@ -1,5 +1,5 @@
 <%
-  list = Yard::Kit::Services::Modules.get_object_constants({
+  list = Yard::Kit::Services::Modules.get_object_classes({
     object:          object,
     options:         options,
     verifier_runner: ->(el) { run_verifier(el) },
@@ -7,9 +7,9 @@
 %>
 <% if list.size > 0 %>
 
-  <div class="summary summary-constants">
+  <div class="summary summary-classes">
     <h2 class='summary-heading'>
-      <a href="#constants" class='title'>Constants</a>
+      <a href="#classes" class='title'>Classes</a>
       <span class='list-count'><%= list.size %></span>
     </h2>
 

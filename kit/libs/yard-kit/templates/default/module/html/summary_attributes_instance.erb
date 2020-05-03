@@ -7,9 +7,10 @@
 %>
 <% if list.size > 0 %>
 
-  <div class="summary-attributes-instance summary">
-    <h2>
-      <a href="#attributes-instance">Instance attributes</a>
+  <div class="summary summary-attributes-instance">
+    <h2 class='summary-heading'>
+      <a href="#attributes-instance" class='title'>Instance attributes</a>
+      <span class='list-count'><%= list.size %></span>
     </h2>
 
     <% list.each do |item| %>
