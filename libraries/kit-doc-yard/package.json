@@ -1,0 +1,75 @@
+{
+  "name": "KitDocYard",
+  "description": "KitDocYard is a Yard plugin that produces ExDoc look-alike documentation for Ruby projects.",
+  "directories": {
+    "test": "test"
+  },
+  "engines": {
+    "node": ">= 10.0.0",
+    "npm": ">= 5.6.0"
+  },
+  "scripts": {
+    "lint": "npx eslint \"./assets/src/js/**/*.js\"",
+    "test": "npx karma start ./assets/src/karma.conf.js --single-run",
+    "build": "webpack --config ./assets/src/webpack.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rubykit/kit.git"
+  },
+  "author": "Rubykit",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rubykit/kit/issues"
+  },
+  "homepage": "https://github.com/rubykit/kit/tree/master/libraries/kit-doc-yard#readme",
+  "browserslist": "last 2 versions",
+  "devDependencies": {
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.0.1",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/runtime": "^7.0.0",
+    "autoprefixer": "^9.7.0",
+    "babel-eslint": "^9.0.0",
+    "babel-loader": "^8.0.2",
+    "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^5.1.1",
+    "css-loader": "^1.0.0",
+    "eslint": "^5.6.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^7.0.1",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "file-loader": "^2.0.0",
+    "flex.less": "^1.1.0",
+    "handlebars": "^4.3.0",
+    "handlebars-loader": "^1.7.0",
+    "highlight.js": "9.11.x",
+    "jquery": "^3.4.0",
+    "karma": "^3.0.0",
+    "karma-chai-plugins": "^0.6.0",
+    "karma-chrome-launcher": "^0.2.0",
+    "karma-firefox-launcher": "^0.1.6",
+    "karma-mocha": "^0.2.0",
+    "karma-sourcemap-loader": "^0.3.5",
+    "karma-webpack": "^4.0.0-rc.2",
+    "less": "^3.8.1",
+    "less-loader": "^4.1.0",
+    "less-plugin-autoprefix": "^1.4.2",
+    "less-plugin-npm-import": "^2.1.0",
+    "lodash.find": "^4.6.0",
+    "lodash.throttle": "^4.1.1",
+    "lunr": "^2.3.5",
+    "mini-css-extract-plugin": "^0.8.0",
+    "mocha": "^5.2.0",
+    "normalize.css": "^8.0.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.1",
+    "postcss-loader": "^3.0.0",
+    "style-loader": "^0.23.0",
+    "uglifyjs-webpack-plugin": "^2.0.0",
+    "webpack": "^4.19.0",
+    "webpack-command": "^0.4.1",
+    "webpack-merge": "^4.1.4"
+  }
+}

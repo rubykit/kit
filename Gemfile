@@ -11,6 +11,6 @@ gemspec
 #gem 'pry'
 
 #gem 'yard'
-gem 'kit-doc-yard', path: 'kit/libs/kit-doc-yard' # GEMSPEC
+gem 'kit-doc-yard', path: 'libraries/kit-doc-yard' # GEMSPEC
 
 #gem 'rubocop', '~> 0.81.0'

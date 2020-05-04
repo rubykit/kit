@@ -6,19 +6,19 @@ require 'git'
 require_relative '../version'
 
 FILES_MODULES = {
-  'kit/libs/kit-json-api'   => {
+  'libraries/kit-json-api'   => {
     include: %w[
       lib/**/*.rb
       app/**/*.rb
     ],
   },
-  'kit/libs/kit-organizer'  => {
+  'libraries/kit-organizer'  => {
     include: %w[
       lib/**/*.rb
       app/**/*.rb
     ],
   },
-  'kit/libs/kit-pagination' => {
+  'libraries/kit-pagination' => {
     include: %w[
       lib/**/*.rb
       app/**/*.rb

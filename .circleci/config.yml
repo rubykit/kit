@@ -109,7 +109,7 @@ commands:
 jobs:
 
   test-kit-json-api:
-    working_directory: ~/kit/kit/libs/kit-json-api
+    working_directory: ~/kit/libraries/kit-json-api
     <<: *docker_tests
     #executor: ruby/default
     steps:
