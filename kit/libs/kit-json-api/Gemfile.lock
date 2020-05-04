@@ -7,6 +7,16 @@ PATH
       sidekiq
 
 PATH
+  remote: ../kit-doc-yard
+  specs:
+    kit-doc-yard (0.0.2)
+      nokogiri
+      rake
+      redcarpet
+      rspec
+      yard
+
+PATH
   remote: ../kit-domain
   specs:
     kit-domain (0.1.0)
@@ -55,11 +65,6 @@ PATH
     kit-router (0.1.0)
       oj
       rails (~> 6.0)
-
-PATH
-  remote: ../yard-kit
-  specs:
-    yard-kit (0.1.0)
 
 PATH
   remote: .
@@ -130,13 +135,13 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
       zeitwerk (~> 2.2)
-    aggregate_root (0.43.0)
-      ruby_event_store (= 0.43.0)
+    aggregate_root (1.0.0)
+      ruby_event_store (= 1.0.0)
     arkency-command_bus (0.4.0)
       thread_safe
     ast (2.4.0)
     awesome_print (1.8.0)
-    bounded_context (0.43.0)
+    bounded_context (1.0.0)
     builder (3.2.4)
     coderay (1.1.2)
     concurrent-ruby (1.1.6)
@@ -182,7 +187,7 @@ GEM
     parallel (1.19.1)
     paranoia (2.4.2)
       activerecord (>= 4.0, < 6.1)
-    parser (2.7.1.1)
+    parser (2.7.1.2)
       ast (~> 2.4.0)
     pg (1.2.3)
     pry (0.13.1)
@@ -213,21 +218,21 @@ GEM
       nokogiri (>= 1.6)
     rails-html-sanitizer (1.3.0)
       loofah (~> 2.3)
-    rails_event_store (0.43.0)
+    rails_event_store (1.0.0)
       activejob (>= 3.0)
       activemodel (>= 3.0)
       activesupport (>= 3.0)
-      aggregate_root (= 0.43.0)
+      aggregate_root (= 1.0.0)
       arkency-command_bus (>= 0.4)
-      bounded_context (= 0.43.0)
-      rails_event_store_active_record (= 0.43.0)
-      ruby_event_store (= 0.43.0)
-      ruby_event_store-browser (= 0.43.0)
-    rails_event_store_active_record (0.43.0)
+      bounded_context (= 1.0.0)
+      rails_event_store_active_record (= 1.0.0)
+      ruby_event_store (= 1.0.0)
+      ruby_event_store-browser (= 1.0.0)
+    rails_event_store_active_record (1.0.0)
       activemodel (>= 3.0)
       activerecord-import (>= 1.0.2)
       activesupport (>= 3.0)
-      ruby_event_store (= 0.43.0)
+      ruby_event_store (= 1.0.0)
     railties (6.0.2.2)
       actionpack (= 6.0.2.2)
       activesupport (= 6.0.2.2)
@@ -236,13 +241,18 @@ GEM
       thor (>= 0.20.3, < 2.0)
     rainbow (3.0.0)
     rake (13.0.1)
-    rb-fsevent (0.10.3)
+    rb-fsevent (0.10.4)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
-    redis (4.1.3)
+    redcarpet (3.5.0)
+    redis (4.1.4)
     rexml (3.2.4)
-    rspec-core (3.9.1)
-      rspec-support (~> 3.9.1)
+    rspec (3.9.0)
+      rspec-core (~> 3.9.0)
+      rspec-expectations (~> 3.9.0)
+      rspec-mocks (~> 3.9.0)
+    rspec-core (3.9.2)
+      rspec-support (~> 3.9.3)
     rspec-expectations (3.9.1)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.9.0)
@@ -257,7 +267,7 @@ GEM
       rspec-expectations (~> 3.9)
       rspec-mocks (~> 3.9)
       rspec-support (~> 3.9)
-    rspec-support (3.9.2)
+    rspec-support (3.9.3)
     rubocop (0.81.0)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
@@ -268,11 +278,13 @@ GEM
       unicode-display_width (>= 1.4.0, < 2.0)
     ruby-progressbar (1.10.1)
     ruby2_keywords (0.0.2)
-    ruby_event_store (0.43.0)
+    ruby_event_store (1.0.0)
       concurrent-ruby (~> 1.0, >= 1.1.6)
-    ruby_event_store-browser (0.43.0)
-      ruby_event_store (= 0.43.0)
+    ruby_event_store-browser (1.0.0)
+      ruby_event_store (= 1.0.0)
       sinatra
+    sassc (2.3.0)
+      ffi (~> 1.9)
     seedbank (0.5.0)
       rake (>= 10.0)
     sidekiq (6.0.7)
@@ -309,7 +321,7 @@ GEM
     websocket-driver (0.7.1)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.4)
-    yard (0.9.24)
+    yard (0.9.25)
     zeitwerk (2.3.0)
 
 PLATFORMS
@@ -317,6 +329,7 @@ PLATFORMS
 
 DEPENDENCIES
   kit-app-container!
+  kit-doc-yard!
   kit-domain!
   kit-dotenv-rails!
   kit-dummy-app-container!
@@ -329,9 +342,9 @@ DEPENDENCIES
   rails
   rspec-rails
   rubocop (~> 0.81.0)
+  sassc
   seedbank
   yard
-  yard-kit!
 
 BUNDLED WITH
    2.1.3
