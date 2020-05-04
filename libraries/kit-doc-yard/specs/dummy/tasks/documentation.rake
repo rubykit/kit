@@ -70,7 +70,7 @@ def generate_config(output_dir:)
   {
     project:            'Kat',
     version:            '1.0.2',
-    source_url:         'https://github.com/rubykit/kit/tree/master/kit/libs/kit-doc-yard',
+    source_url:         'https://github.com/rubykit/kit/tree/master/libraries/kit-doc-yard',
     authors:            ['John Doe'],
     logo:               'https://avatars2.githubusercontent.com/u/63779174?s=200&v=4',
 

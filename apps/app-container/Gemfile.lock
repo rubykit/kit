@@ -1,5 +1,5 @@
 PATH
-  remote: ../../kit/domains/kit-auth
+  remote: ../../domains/kit-auth
   specs:
     kit-auth (0.1.0)
       bcrypt
@@ -11,17 +11,17 @@ PATH
       strong_password (~> 0.0.8)
 
 PATH
-  remote: ../../kit/domains/kit-geolocation
+  remote: ../../domains/kit-geolocation
   specs:
     kit-geolocation (0.1.0)
 
 PATH
-  remote: ../../kit/domains/kit-payment
+  remote: ../../domains/kit-payment
   specs:
     kit-payment (0.1.0)
 
 PATH
-  remote: ../../kit/libs/kit-app-container
+  remote: ../../libraries/kit-app-container
   specs:
     kit-app-container (0.1.0)
       activerecord-nulldb-adapter

@@ -12,8 +12,8 @@ gemspec
 # your gem to rubygems.org.
 
 gem 'rails'
-gem 'kit-organizer',     path: '../../libs/kit-organizer'
-gem 'kit-app-container', path: '../../libs/kit-app-container'
+gem 'kit-organizer',     path: '../../libraries/kit-organizer'
+gem 'kit-app-container', path: '../../libraries/kit-app-container'
 
 group :development do
   gem 'annotate', '~> 2.7', '>= 2.7.4'
@@ -33,7 +33,7 @@ group :development, :test do
 end
 
 group :development, :test do
-  #gem 'kit-app-container', path: '../../libs/kit-app-container'
+  #gem 'kit-app-container', path: '../../libraries/kit-app-container'
 
   gem 'factory_bot_rails'
   gem 'faker'

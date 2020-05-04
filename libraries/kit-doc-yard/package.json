@@ -22,7 +22,7 @@
   "bugs": {
     "url": "https://github.com/rubykit/kit/issues"
   },
-  "homepage": "https://github.com/rubykit/kit/tree/master/kit/libs/kit-doc-yard#readme",
+  "homepage": "https://github.com/rubykit/kit/tree/master/libraries/kit-doc-yard#readme",
   "browserslist": "last 2 versions",
   "devDependencies": {
     "@babel/cli": "^7.0.0",

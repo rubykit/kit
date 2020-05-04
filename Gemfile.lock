@@ -4,7 +4,7 @@ PATH
     Kit (0.1.0.alpha)
 
 PATH
-  remote: kit/libs/kit-doc-yard
+  remote: libraries/kit-doc-yard
   specs:
     kit-doc-yard (0.0.2)
       nokogiri

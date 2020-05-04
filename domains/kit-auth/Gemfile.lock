@@ -1,5 +1,5 @@
 PATH
-  remote: ../../libs/kit-active-admin
+  remote: ../../libraries/kit-active-admin
   specs:
     kit-active-admin (0.1.0)
       activeadmin (~> 2.2)
@@ -8,7 +8,7 @@ PATH
       popper_js
 
 PATH
-  remote: ../../libs/kit-app-container
+  remote: ../../libraries/kit-app-container
   specs:
     kit-app-container (0.1.0)
       activerecord-nulldb-adapter
@@ -16,7 +16,7 @@ PATH
       sidekiq
 
 PATH
-  remote: ../../libs/kit-domain
+  remote: ../../libraries/kit-domain
   specs:
     kit-domain (0.1.0)
       activerecord-nulldb-adapter (~> 0.4.0)
@@ -30,31 +30,31 @@ PATH
       slim-rails
 
 PATH
-  remote: ../../libs/kit-engine
+  remote: ../../libraries/kit-engine
   specs:
     kit-engine (0.1.0)
       activerecord-nulldb-adapter
       rails
 
 PATH
-  remote: ../../libs/kit-error
+  remote: ../../libraries/kit-error
   specs:
     kit-error (0.1.0)
 
 PATH
-  remote: ../../libs/kit-organizer
+  remote: ../../libraries/kit-organizer
   specs:
     kit-organizer (0.1.0)
       awesome_print
       rails (~> 6.0)
 
 PATH
-  remote: ../../libs/kit-pagination
+  remote: ../../libraries/kit-pagination
   specs:
     kit-pagination (0.1.0)
 
 PATH
-  remote: ../../libs/kit-router
+  remote: ../../libraries/kit-router
   specs:
     kit-router (0.1.0)
       oj

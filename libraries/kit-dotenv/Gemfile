@@ -19,4 +19,4 @@ group :test, :development do
   gem 'pry'
 end
 
-gem 'kit-doc-yard', path: '../../libs/kit-doc-yard'
+gem 'kit-doc-yard', path: '../../libraries/kit-doc-yard'
