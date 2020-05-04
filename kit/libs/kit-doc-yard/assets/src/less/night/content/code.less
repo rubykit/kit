@@ -1,0 +1,33 @@
+/* Highlight.js dark theme */
+@import (less) '~highlight.js/styles/monokai-sublime.css';
+
+.hljs {
+  background-color: @nightCodeBackground;
+  padding: 1em;
+}
+
+.hljs-comment, .hljs-deletion, .hljs-meta {
+  color: #b1b1b1;
+}
+
+code {
+  background-color: @nightCodeBackground;
+  border-color: lighten(@nightCodeBackground, 10%);
+}
+
+pre {
+  code {
+    background-color: @nightCodeBackground;
+  }
+
+  a, a:visited {
+    color: @white;
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: @main;
+  }
+
+}
+

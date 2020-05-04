@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%= erb(:headers) %>
+  </head>
+
+  <body data-type="<%= @body_data_type || ((object.is_a?(String) || file) ? 'extras' : 'modules') %>">
+    <script>
+      try {
+        let night_mode = localStorage.getItem('night-mode');
+        if (night_mode === 'true' || night_mode === true) {
+          document.body.className += ' night-mode';
+        }
+      } catch (e) {}
+    </script>
+
+    <div class="main">
+      <%= erb(:sidebar) %>
+
+      <section class="content">
+        <div class="content-outer">
+          <div id="content" class="content-inner">
+
+            <%= yieldall %>
+
+            <%= erb(:footer) %>
+
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>
+
+</html>
+

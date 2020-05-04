@@ -1,0 +1,21 @@
+<%
+  files = Kit::Doc::Services::Utils.cleanup_files(list: object.files)
+  if files.size == 1
+    url = "#{ config[:repo_url] }/#{ files[0][0] }#L#{ files[0][1] }"
+  else
+    url = nil
+  end
+%>
+<h1 class='modules-header'>
+  <small class="app-vsn"><%= config[:project] %> v<%= config[:version] %></small>
+
+  <span class='title'><%= object.title %></span>
+  <span class='object-type'><%= object.type %></span>
+
+  <% if url %>
+    <a href="<%= url %>" target='_blank' title="View Source" class="view-source" rel="help">
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+  <% end %>
+</h1>

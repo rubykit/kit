@@ -1,10 +1,18 @@
-# Transform a request into a fully actionable AST
+# Build a `Query` (a fully actionable AST) from a `Request`.
+#
+# Each `level` is a query node, even when there are 1:N or N:N scenarios.
+# For instance `Author -> Books -> Chapters` will be resolved as 3 corresponding query nodes total, eventhough there are many books, with many chapters.
+#
+# Each type of relationship generates a query node even if they target the same resource.
+# For instance `Author -> [Chapter | FirstChapter]` will generate 3 corresponding query nodes total, eventhough the two relationships `Chapter` and `FirstChapter` target the same Resource (Chapter)
 module Kit::JsonApi::Services::QueryBuilder
 
   include Kit::Contract
+  # @api hide
   Ct = Kit::JsonApi::Contracts
 
   before Ct::Hash[request: Ct::Request]
+  # Given a `Request`, creates the complete AST of the query.
   def self.build_query(request:, condition: nil)
     request[:related_resources] ||= {}
 
@@ -33,10 +41,7 @@ module Kit::JsonApi::Services::QueryBuilder
       #data_loader: Ct::Optional[Ct::Callable],
     ],
   ]
-  # Creates the AST of the query. Each `level` is a query node, even when there are 1:N or N:N scenarios.
-  # For instance "Author -> Books -> Chapters" will be resolved as 3 corresponding query nodes total, eventhough there are many books, with many chapters.
-  # Each type of relationship generates a query node even if they target the same resource.
-  # For instance "Author -> [Chapter | FirstChapter]" will generate 3 corresponding query nodes total, eventhough the two relationships "Chapter" and "FirstChapter" target the same Resource (Chapter)
+  # Creates a `QueryNode` for a given layer.
   def self.build_query_node(resource:, singular:, inclusion_level:, path:, request:, condition: nil, data_loader: nil)
     sorting = resource[:sort_fields].select { |_k, v| v[:default] == true }.first[1][:order]
 
@@ -75,6 +80,9 @@ module Kit::JsonApi::Services::QueryBuilder
     [:ok, query_node: query_node]
   end
 
+  # Resolves the relationships of each `QueryNode`.
+  #
+  # This calls back `build_query_node`, creating the AST.
   def self.build_nested_relationships(query_node:, inclusion_level:, path:, request:)
     resource = query_node[:resource]
 

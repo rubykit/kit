@@ -1,0 +1,32 @@
+<%
+  list = Kit::Doc::Services::Modules.get_all_namespaces_as_list({
+    options:         options,
+    verifier_runner: ->(el) { run_verifier(el) },
+  })
+
+  list = list.sort_by do |el|
+    "#{ (el.namespace.type != :root) ? "#{ el.namespace }::" : '' }#{ el.name }"
+  end
+%>
+<% if list.size > 0 %>
+  <div class="summary summary-namespaces">
+    <h2 class='summary-heading'>
+      <a href="#namespaces" class='title'>Namespaces</a>
+      <span class='list-count'><%= list.size %></span>
+    </h2>
+
+    <%
+      @templates_path      = '../../module/html/'
+      @signature_full_name = true
+    %>
+    <% list.each do |item| %>
+      <% @item = item %>
+      <%= erb "#{ @templates_path }item_summary" %>
+    <% end %>
+    <%
+      @templates_path      = nil
+      @signature_full_name = nil
+    %>
+
+  </div>
+<% end %>

@@ -49,8 +49,8 @@ module Kit::JsonApi::Services::Sql
     if foreign_key_column_name
       # @note Allow to query several subsets with their own ordering.
       # @note We use a nested query to avoid naming collisions with the added attribute (rank)
-      # @ref https://blog.jooq.org/2018/05/14/selecting-all-columns-except-one-in-postgresql/
-      # @ref http://sqlfiddle.com/#!17/378a3/10
+      # @see https://blog.jooq.org/2018/05/14/selecting-all-columns-except-one-in-postgresql/
+      # @see http://sqlfiddle.com/#!17/378a3/10
       sql = %(
           SELECT (#{ table_name }).*
             FROM (

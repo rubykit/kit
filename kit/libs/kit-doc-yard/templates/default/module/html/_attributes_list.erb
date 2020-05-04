@@ -1,0 +1,45 @@
+<%
+  item = @attributes_item
+
+  data_attr_list = Kit::Doc::Services::Properties.object_html_data_properties({
+    item:            item,
+    verifier_runner: ->(el) { run_verifier(el) },
+  })
+
+  whitelist = [
+    'data-tag-deprecated',
+    'data-tag-api',
+    'data-ruby-constructor',
+    'data-ruby-abstract',
+    'data-ruby-visibility',
+    'data-ruby-readonly',
+    'data-ruby-writeonly',
+  ]
+
+  data_attr_list.delete_if { |k, _| !whitelist.include?(k) }
+
+  list = data_attr_list.map do |k, v|
+    boolean_list = ['data-tag-deprecated', 'data-ruby-constructor', 'data-ruby-abstract', 'data-ruby-readonly', 'data-ruby-writeonly']
+
+    ks = k.split('-')
+    display = if boolean_list.include?(k)
+      [((ks[1] == 'tag') ? 'api' : ks[1]), ks[2]]
+    elsif k == 'data-tag-api' && v == 'private'
+      [:api, v]
+    elsif k == 'data-ruby-visibility' && ['protected', 'private'].include?(v)
+      [:ruby, v]
+    elsif ks[1] == 'tag'
+      [k[2], v]
+    else
+      ["#{k[1]}:#{k[2]}", v]
+    end
+
+    { data: [k, v], display: display }
+  end
+%>
+
+<span class='docstring-tags'>
+  <% list.each do |data:, display:| %>
+    <span class="docstring-tag" <%= data[0] %>="<%= data[1] %>"><span class='docstring-tag-type'><%= display[0].to_s.upcase %></span><span class='docstring-tag-value'><%= display[1].to_s.capitalize %></span></span>
+  <% end %>
+</span>

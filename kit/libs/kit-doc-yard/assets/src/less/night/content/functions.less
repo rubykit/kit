@@ -1,0 +1,24 @@
+@keyframes night-blink-background {
+  from {
+    background-color: @nightHeader;
+  }
+
+  to {
+    background-color: #444;
+  }
+}
+
+.detail {
+  &:target .detail-header {
+    animation-name: night-blink-background;
+  }
+}
+
+.detail-header {
+  background: @nightHeader;
+  color: @nightTextBody;
+}
+
+div.deprecated {
+  background-color: @nightDeprecated;
+}

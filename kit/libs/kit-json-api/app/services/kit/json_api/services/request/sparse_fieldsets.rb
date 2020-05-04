@@ -1,4 +1,4 @@
-# @ref https://jsonapi.org/format/1.1/#fetching-sparse-fieldsets
+# @see https://jsonapi.org/format/1.1/#fetching-sparse-fieldsets
 module Kit::JsonApi::Services::Request::SparseFieldsets
 
   include Kit::Contract

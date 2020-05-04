@@ -18,6 +18,8 @@ gem 'rails'
 
 gem 'kit-organizer',           path: '../../libs/kit-organizer' # GEMSPEC
 
+gem 'sassc'
+
 group :test, :development do
   gem 'pry'
 
@@ -33,6 +35,6 @@ group :test, :development do
 end
 
 group :development do
-  gem 'yard-kit',                path: '../../libs/yard-kit'
+  gem 'kit-doc-yard',            path: '../../libs/kit-doc-yard'
   gem 'rubocop', '~> 0.81.0'
 end

@@ -1,0 +1,72 @@
+<%
+  item           = @item
+  templates_path = @templates_path || ''
+  owner          = object
+
+  synopsis     = Kit::Doc::Services::Docstring.summary(object: item)
+
+  is_alias     = false
+  if !item.is_a?(YARD::CodeObjects::ConstantObject)
+    alias_data          = Kit::Doc::Services::Methods.get_alias_target(method: item)
+    is_alias            = alias_data[:is_alias]
+    alias_target_method = alias_data[:alias_target_method]
+  end
+
+  link_title = item.is_a?(YARD::CodeObjects::MethodObject) ? "#{ h(item.name(true)) } (#{ item.scope } #{ item.type })" : "#{ h(item.name) } (#{ item.type })"
+
+  if item.is_a?(::YARD::CodeObjects::ConstantObject)
+    link_href = anchor_for(item)
+  elsif [:class, :module].include? item.type
+    link_href = url_for(item)
+  else
+    link_target_method = alias_target_method || item
+    link_target_object = alias_target_method ? alias_target_method.namespace : owner
+
+    anchor      = anchor_for(link_target_method)
+    link_href   = url_for(link_target_object, anchor)
+  end
+
+  data_attr_list = Kit::Doc::Services::Properties.object_html_data_properties({
+    item:            item,
+    verifier_runner: ->(el) { run_verifier(el) },
+  })
+%>
+
+<div class="summary-row" data-doc-type="<%= item.type %>" <%= data_attr_list.map { |k, v| "#{k}=\"#{v}\"" }.join(' ') %>>
+  <a href="<%= link_href %>" title="<%= link_title %>">
+    <div class="summary-signature">
+      <% @signature_item = item %>
+      <%= erb("#{templates_path}_signature") %>
+
+      <% if is_alias %>
+        <span>&#x21d2;</span>
+        <% if alias_target_method %>
+          <% @signature_item = alias_target_method %>
+          <%= erb("#{templates_path}_signature") %>
+        <% else %>
+            Unknown
+        <% end %>
+      <% end %>
+
+      <% @attributes_item = item %>
+      <%= erb("#{templates_path}_attributes_list") %>
+    </div>
+
+    <% if !is_alias %>
+      <div class="summary-synopsis"><p><%= synopsis %></p></div>
+    <% end %>
+  </a>
+</div>
+
+<%
+<<-COMMENT
+%>
+  <% if object != item.namespace %>
+    <span class="note title not_defined_here">
+      <%= item.namespace.type == :class ? 'inherited' : (item.scope == :class ? 'extended' : 'included') %>
+      from <%= linkify item, object.relative_path(item.namespace) %>
+    </span>
+  <% end %>
+<%
+COMMENT
+%>

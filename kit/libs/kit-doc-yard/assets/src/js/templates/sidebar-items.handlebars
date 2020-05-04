@@ -1,0 +1,61 @@
+<ul id="full-list">
+  {{#each nodes as |node nodeId|}}
+    {{#groupChanged ../this node.group}}
+      <li class="group">{{node.group}}</li>
+    {{/groupChanged}}
+
+    {{#nestingChanged ../this node}}
+      <li class="nesting-context" aria-hidden="true">{{node.nested_context}}</li>
+    {{/nestingChanged}}
+
+    <li class="{{#isLocal node.url}}current-page open{{/isLocal}} {{#if node.nested_title}}nested{{/if}}">
+      {{! When visiting a module page, the link to this module page
+      in the menu should not link to a new page, instead should link
+      to the top of the page itself. }}
+      <a href="{{../relative_url_path}}{{node.url}}" class="expand">
+        {{#if node.nested_title}}
+          {{node.nested_title}}
+        {{else}}
+          {{node.title}}
+        {{/if}}
+
+        <span class="icon-goto" title="Go to {{node.title}}"></span>
+      </a>
+
+      <ul>
+        <li>
+          <a href="{{../relative_url_path}}{{node.url}}#content">Top</a>
+        </li>
+
+        {{#isArray node.headers}}
+          {{#each node.headers}}
+            <li>
+              <a href="{{../../relative_url_path}}{{node.url}}#{{{anchor}}}">{{{id}}}</a>
+            </li>
+          {{/each}}
+        {{else}}
+          {{#showSummary node}}
+            <li>
+              <a href="{{../relative_url_path}}{{node.url}}#summary">Summary</a>
+            </li>
+          {{/showSummary}}
+          {{#each node.nodeGroups as |group|}}
+            <li class="docs">
+              <a href="{{../../relative_url_path}}{{node.url}}#{{group.key}}" class="expand">
+                {{group.name}}
+                <span class="icon-goto" title="Go to {{group.name}}"></span>
+              </a>
+              <ul class="{{group.key}}-list deflist">
+                {{#each group.nodes}}
+                  <li>
+                    <a href="{{../../../relative_url_path}}{{node.url}}#{{anchor}}">{{{id}}}</a>
+                  </li>
+                {{/each}}
+              </ul>
+            </li>
+          {{/each}}
+        {{/isArray}}
+        </ul>
+    </li>
+  {{/each}}
+</ul>

@@ -1,0 +1,22 @@
+<%
+  list = Kit::Doc::Services::Modules.get_object_subclasses({
+    object:          object,
+    options:         options,
+    verifier_runner: ->(el) { run_verifier(el) },
+    globals:         globals,
+  })
+%>
+<% if list.size > 0 %>
+
+  <div class="summary summary-subclasses">
+    <h2 class='summary-heading'>
+      <a href="#subclasses" class='title'>Direct subclasses</a>
+      <span class='list-count'><%= list.size %></span>
+    </h2>
+
+    <% list.each do |item| %>
+      <%= yieldall item: item %>
+    <% end %>
+  </div>
+
+<% end %>

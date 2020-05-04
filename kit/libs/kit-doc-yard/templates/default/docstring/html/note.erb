@@ -1,0 +1,10 @@
+<span class="docstring-tag">
+  <span class='docstring-tag-type'><i>🗒</i> Notes:</span>
+  <span class='docstring-tag-value'>
+    <ul>
+      <% object.tags(:note).each do |tag| %>
+        <li><%= tag.text %></li>
+      <% end %>
+    </ul>
+  </span>
+</span>

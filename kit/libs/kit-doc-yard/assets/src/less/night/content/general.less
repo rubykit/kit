@@ -1,0 +1,31 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: @nightTextHeaders;
+}
+
+a {
+  color: @nightTextHeaders;
+  text-decoration: none;
+  .linkUnderlines(@nightTextHeaders);
+}
+
+a.no-underline {
+  text-decoration: none;
+}
+
+a.view-source {
+  text-decoration: none;
+
+  &:hover {
+    color: @white;
+  }
+}
+
+.summary h2 a {
+  text-decoration: none;
+}
+
