@@ -14,8 +14,8 @@
 
   link_title = item.is_a?(YARD::CodeObjects::MethodObject) ? "#{ h(item.name(true)) } (#{ item.scope } #{ item.type })" : "#{ h(item.name) } (#{ item.type })"
 
-  if item.is_a?(::YARD::CodeObjects::ConstantObject)
-    link_href = anchor_for(item)
+  if item.type == :constant
+    link_href = url_for(owner, item)
   elsif [:class, :module].include? item.type
     link_href = url_for(item)
   else
