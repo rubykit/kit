@@ -55,6 +55,14 @@ h1, h2, h3, h4, h5 {
   user-select: none;
 }
 
+.sidebar {
+  .sidebar-search {
+    .search-input {
+      background-color: @nightBackground;
+    }
+  }
+}
+
 /* Link behaviour ------------------------------------------------------------*/
 
 a {
@@ -86,8 +94,18 @@ a {
 .content-inner {
   pre {
     code {
+      border-color:  @groupGray;
       border-radius: 4px;
     }
+  }
+}
+
+/* Blockquote --------------------------------------------------------------- */
+
+body.night-mode {
+  .content-inner blockquote {
+    /* Same than code boder */
+    border-left-color: lighten(@nightCodeBackground, 10%);
   }
 }
 
