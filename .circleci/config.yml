@@ -11,14 +11,14 @@ docker_tests: &docker_tests
         RAILS_ENV: 'test'
         RUBYOPT: '-W:no-deprecated'
         # Todo: kill this
-        DATABASE_URL: 'postgres://root:password@127.0.0.1/kit_json_api_spec_TEST'
+        DATABASE_URL: 'postgres://root:password@127.0.0.1/kit_api_json_api_spec_TEST'
         PGHOST: localhost
 
     - image: circleci/postgres:12.2-ram
       environment:
         POSTGRES_USER: 'root'
         POSTGRES_PASSWORD: 'password'
-        POSTGRES_DB: 'kit_json_api_spec_TEST'
+        POSTGRES_DB: 'kit_api_json_api_spec_TEST'
 
 # Rspec ------------------------------------------------------------------------
 
@@ -86,15 +86,15 @@ commands:
         keys:
         - << parameters.key >>-{{ checksum "Gemfile.lock"  }}
 
-  kit-json-api__save-cache-gems:
+  kit-api-json-api__save-cache-gems:
     steps:
       - save-cache-gems:
-          key: kit-json-api@gems-v1
+          key: kit-api-json-api@gems-v1
 
-  kit-json-api__restore-cache-gems:
+  kit-api-json-api__restore-cache-gems:
     steps:
       - restore-cache-gems:
-          key: kit-json-api@gems-v1
+          key: kit-api-json-api@gems-v1
 
   prepare-database:
     description: 'Loading DBs schemas && running seed'
@@ -108,17 +108,17 @@ commands:
 
 jobs:
 
-  test-kit-json-api:
-    working_directory: ~/kit/libraries/kit-json-api
+  test-kit-api-json-api:
+    working_directory: ~/kit/libraries/kit-api-json-api
     <<: *docker_tests
     #executor: ruby/default
     steps:
       - checkout-code
       - show-bundler-version
       - install-bundler
-      - kit-json-api__restore-cache-gems
+      - kit-api-json-api__restore-cache-gems
       - install-gems
-      - kit-json-api__save-cache-gems
+      - kit-api-json-api__save-cache-gems
       - prepare-database
       - run-rspec
 
@@ -126,4 +126,4 @@ workflows:
 
   test-all:
     jobs:
-      - test-kit-json-api
+      - test-kit-api-json-api
