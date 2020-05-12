@@ -7,7 +7,7 @@ require 'json'
 require_relative '../version'
 
 FILES_MODULES = {
-  'libraries/kit-json-api'   => {
+  'libraries/kit-api-jsonapi'   => {
     include: %w[
       lib/**/*.rb
       app/**/*.rb
@@ -67,12 +67,12 @@ def groups_for_modules
     ],
     'Libs'       => [
       %r{^Kit::Organizer$},
-      %r{^Kit::JsonApi$},
+      %r{^Kit::Api::JsonApi$},
       %r{^Kit::Contract$},
       %r{^Kit::Pagination$},
     ],
 
-    'JSON:API'   =>  [%r{^Kit::JsonApi.*}],
+    'JSON:API'   =>  [%r{^Kit::Api::JsonApi.*}],
 
     'Contract'   => [%r{^Kit::Contract.*}],
     'Organizer'  => [%r{^Kit::Organizer.*}],
