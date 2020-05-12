@@ -12,17 +12,21 @@
     rel_asset_file = asset_file[(base_path.size + 1)..(-1)]
     files[key]     = rel_asset_file
   end
+
+  version = config[:version]
+  version = (version == 'edge') ? 'Edge' : "v#{ version }"
  %>
 
 <meta charset="<%= charset %>">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <meta name="generator" content="Yard v<%= YARD::VERSION %>">
-<meta name="project" content="<%= config[:project] %> v<%= config[:version] %>">
+<meta name="project" content="<%= config[:project] %> <%= version %>">
 <% if config[:authors].size > 0 %>
   <meta name="author" content="<%= config[:authors].join(', ') %>">
 <% end %>
-<title><%= @title || @page_title  %> — <%= config[:project] %> v<%= config[:version] %></title>
+
+<title><%= @title || @page_title  %> — <%= config[:project] %> <%= version %></title>
 
 <link rel="stylesheet" href="<%= url_for_file(files[:css_app]) %>" />
 

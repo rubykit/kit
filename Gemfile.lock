@@ -1,12 +1,13 @@
 PATH
   remote: .
   specs:
-    Kit (0.1.0.alpha)
+    kit (0.1.0.alpha)
 
 PATH
   remote: libraries/kit-doc-yard
   specs:
-    kit-doc-yard (0.0.2)
+    kit-doc-yard (0.0.1)
+      git
       nokogiri
       rake
       redcarpet
@@ -43,7 +44,7 @@ GEM
       rspec-mocks (~> 3.9.0)
     rspec-core (3.9.2)
       rspec-support (~> 3.9.3)
-    rspec-expectations (3.9.1)
+    rspec-expectations (3.9.2)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.9.0)
     rspec-mocks (3.9.1)
@@ -66,8 +67,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  Kit!
   git
+  kit!
   kit-doc-yard!
   pry
   rake
