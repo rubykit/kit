@@ -4,7 +4,7 @@ version = File.read(File.expand_path('KIT_VERSION', __dir__)).strip
 
 Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
-  s.name        = 'Kit'
+  s.name        = 'kit'
   s.version     = version
   s.summary     = 'Full-stack web application framework.'
   s.description = ''
