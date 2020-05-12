@@ -67,6 +67,9 @@ Style/WhileUntilDo:
 Style/RedundantInterpolation:
   Enabled: false
 
+Style/RegexpLiteral:
+  EnforcedStyle: percent_r
+
 # Gets it wrong when it's a no op
 Style/Next:
   Enabled: false
