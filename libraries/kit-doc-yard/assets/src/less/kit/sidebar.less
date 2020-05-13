@@ -1,3 +1,5 @@
+/* General overrides -------------------------------------------------------- */
+
 .sidebar {
   .sidebar-search {
     margin-top: 0px;
@@ -11,6 +13,10 @@
 
   .sidebar-listNav {
     padding-top: 0px;
+
+    a {
+      letter-spacing: 1px;
+    }
   }
 
   /* Project */
@@ -27,9 +33,59 @@
   .sidebar-projectVersionsDropdown {
     direction: ltr;
   }
+
+  li.group {
+    letter-spacing: 1px;
+  }
 }
 
-/* Width */
+
+/* Modules full-section ----------------------------------------------------- */
+
+ul#full-list[data-filter-type='modules'] > li:not(.group) {
+  font-family: @monoFontFamily;
+  font-weight: 300;
+  font-size:   15px;
+}
+
+
+/* Sub sections ul ---------------------------------------------------------- */
+
+ul#full-list > li > ul {
+  font-family:   @sansFontFamily;
+  font-style:    italic;
+  font-size:     14px;
+  margin-top:    0px !important;
+  margin-left:   15px !important;
+  margin-bottom: 0px  !important;
+
+  &> li {
+    padding-left: 0px !important;
+  }
+
+  a {
+    color: #a2a7b3;
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+}
+
+
+/* Indent helpers ------------------------------------------------------------*/
+
+.sidebar-pl-1 { padding-left:  15px !important; }
+.sidebar-pl-2 { padding-left:  30px !important; }
+.sidebar-pl-3 { padding-left:  45px !important; }
+.sidebar-pl-4 { padding-left:  60px !important; }
+.sidebar-pl-5 { padding-left:  75px !important; }
+.sidebar-pl-6 { padding-left:  90px !important; }
+.sidebar-pl-7 { padding-left: 105px !important; }
+.sidebar-pl-8 { padding-left: 120px !important; }
+.sidebar-pl-9 { padding-left: 135px !important; }
+
+
+/* Width ---------------------------------------------------------------------*/
 
 .sidebar {
   width: 400px;

@@ -65,6 +65,8 @@ function fillSidebarWithNodes (nodes, filter) {
   fullList.replaceWith(sidebarItemsTemplate({'nodes': filtered, 'group': '', 'relative_url_path': relative_url_path}))
   setupSelected(['#', filter, '-list'].join(''))
 
+  $('#full-list').attr('data-filter-type', filter)
+
   $('#full-list li a').on('click', e => {
     var $target = $(e.target)
     // the user might have clicked on the nesting indicator

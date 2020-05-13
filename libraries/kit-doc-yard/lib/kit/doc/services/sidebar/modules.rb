@@ -1,3 +1,4 @@
+# Data transformation logic for Modules sidebar content.
 module Kit::Doc::Services::Sidebar::Modules
 
   def self.get_all_namespaces_as_list(options:, url_generator:, anchor_generator:, verifier_runner:)
@@ -7,15 +8,16 @@ module Kit::Doc::Services::Sidebar::Modules
       verifier_runner: verifier_runner,
     })
 
-    modules_groups_lists = Kit::Doc::Services::Sidebar.get_groups_list(groups: config[:groups_for_modules])
+    modules_groups_lists = Kit::Doc::Services::Sidebar.get_ordered_groups_container(groups: config[:groups_for_modules])
 
     modules_list.each do |full_path, el|
       url  = url_generator.call(el: el)
       data = {
-        title:      full_path,
-        id:         el.name,
-        url:        url,
-        nodeGroups: generate_node_groups({
+        title:         full_path,
+        display_title: full_path,
+        id:            el.name,
+        url:           url,
+        nodeGroups:    generate_node_groups({
           object:           el,
           options:          options,
           anchor_generator: anchor_generator,
@@ -23,9 +25,17 @@ module Kit::Doc::Services::Sidebar::Modules
         }),
       }
 
-      el_groups = Kit::Doc::Services::Sidebar.match_groups(groups: config[:groups_for_modules], value: full_path)
-      el_groups.each do |group_name|
-        modules_groups_lists[group_name] << data.merge({ group: group_name })
+      el_groups = Kit::Doc::Services::Sidebar.find_element_groups(groups: config[:groups_for_modules], element_name: full_path)
+      el_groups.each do |group_name:, display_title:, css_classes:, display:|
+        next if !display
+
+        data_for_group = data.merge({
+          group:         group_name,
+          display_title: display_title,
+          css_classes:   css_classes,
+        })
+
+        modules_groups_lists[group_name] << data_for_group
       end
     end
 
