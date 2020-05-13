@@ -73,7 +73,7 @@ module Kit::Doc::Services::Tasks
     end
 
     if config[:git_project_path]
-      config.merge!(get_documentation_version({
+      config.merge!(get_git_version({
         git_project_path: config[:git_project_path],
         version:          config[:version],
         source_url:       config[:source_url],

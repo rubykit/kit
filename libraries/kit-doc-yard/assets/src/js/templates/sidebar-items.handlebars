@@ -8,13 +8,15 @@
       <li class="nesting-context" aria-hidden="true">{{node.nested_context}}</li>
     {{/nestingChanged}}
 
-    <li class="{{#isLocal node.url}}current-page open{{/isLocal}} {{#if node.nested_title}}nested{{/if}}">
+    <li class="{{#isLocal node.url}}current-page open{{/isLocal}} {{#if node.nested_title}}nested{{/if}} {{node.css_classes}}">
       {{! When visiting a module page, the link to this module page
       in the menu should not link to a new page, instead should link
       to the top of the page itself. }}
       <a href="{{../relative_url_path}}{{node.url}}" class="expand">
         {{#if node.nested_title}}
           {{node.nested_title}}
+        {{else if node.display_title}}
+          {{node.display_title}}
         {{else}}
           {{node.title}}
         {{/if}}
