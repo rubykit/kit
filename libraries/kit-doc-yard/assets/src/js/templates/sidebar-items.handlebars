@@ -28,36 +28,34 @@
         <li>
           <a href="{{../relative_url_path}}{{node.url}}#content">Top</a>
         </li>
-
         {{#isArray node.headers}}
           {{#each node.headers}}
             <li>
               <a href="{{../../relative_url_path}}{{node.url}}#{{{anchor}}}">{{{id}}}</a>
             </li>
           {{/each}}
-        {{else}}
-          {{#showSummary node}}
-            <li>
-              <a href="{{../relative_url_path}}{{node.url}}#summary">Summary</a>
-            </li>
-          {{/showSummary}}
-          {{#each node.nodeGroups as |group|}}
-            <li class="docs">
-              <a href="{{../../relative_url_path}}{{node.url}}#{{group.key}}" class="expand">
-                {{group.name}}
-                <span class="icon-goto" title="Go to {{group.name}}"></span>
-              </a>
-              <ul class="{{group.key}}-list deflist">
-                {{#each group.nodes}}
-                  <li>
-                    <a href="{{../../../relative_url_path}}{{node.url}}#{{anchor}}">{{{id}}}</a>
-                  </li>
-                {{/each}}
-              </ul>
-            </li>
-          {{/each}}
         {{/isArray}}
-        </ul>
+        {{#showSummary node}}
+          <li>
+            <a href="{{../relative_url_path}}{{node.url}}#summary">Summary</a>
+          </li>
+        {{/showSummary}}
+        {{#each node.nodeGroups as |group|}}
+          <li class="docs">
+            <a href="{{../../relative_url_path}}{{node.url}}#{{group.key}}" class="expand">
+              {{group.name}}
+              <span class="icon-goto" title="Go to {{group.name}}"></span>
+            </a>
+            <ul class="{{group.key}}-list deflist">
+              {{#each group.nodes}}
+                <li>
+                  <a href="{{../../../relative_url_path}}{{node.url}}#{{anchor}}">{{{id}}}</a>
+                </li>
+              {{/each}}
+            </ul>
+          </li>
+        {{/each}}
+      </ul>
     </li>
   {{/each}}
 </ul>

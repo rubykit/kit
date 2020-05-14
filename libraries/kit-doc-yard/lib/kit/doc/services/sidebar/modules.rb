@@ -17,6 +17,7 @@ module Kit::Doc::Services::Sidebar::Modules
         display_title: full_path,
         id:            el.name,
         url:           url,
+        headers:       generate_headers(object: el),
         nodeGroups:    generate_node_groups({
           object:           el,
           options:          options,
@@ -44,6 +45,17 @@ module Kit::Doc::Services::Sidebar::Modules
     modules_groups_lists
       .map { |_, list| list }
       .flatten
+  end
+
+  def self.generate_headers(object:)
+    toc      = Kit::Doc::Services::Docstring.toc(object: object)
+
+    toc.map do |h2|
+      {
+        id:     h2[:title],
+        anchor: h2[:anchor],
+      }
+    end
   end
 
   def self.generate_node_groups(options:, object:, anchor_generator:, verifier_runner:)
