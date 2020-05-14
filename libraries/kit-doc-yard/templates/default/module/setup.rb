@@ -7,10 +7,10 @@ def init
 
     :section_moduledoc, [
       T('docstring'),
-      :box_info,
     ],
 
     :section_summary, [
+      :box_info,
 
       :summary_modules, [
         :item_summary,
