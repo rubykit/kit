@@ -15,7 +15,7 @@ class ::YARD::CodeObjects::ExtraFileObject
 
   # Cache the TOC version (usefull for the file title)
   def contents_toc
-    @contents_toc ||= Kit::Doc::Services::Extras.get_toc(file: self)
+    @contents_toc ||= Kit::Doc::Services::Docstring.get_content_toc(content: self.contents)
   end
 
   # In the original code flow, the html rendering is done directly in templates.

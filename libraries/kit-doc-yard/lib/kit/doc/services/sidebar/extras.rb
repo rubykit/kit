@@ -17,12 +17,7 @@ module Kit::Doc::Services::Sidebar::Extras
         display_title: title,
         id:            url.gsub(%r{\.html$}, ''),
         url:           url,
-        headers:       (toc&.dig(0, :sections) || []).map do |h2|
-          {
-            id:     h2[:title],
-            anchor: h2[:anchor],
-          }
-        end,
+        headers:       generate_headers(object: el),
       }
 
       el_groups = Kit::Doc::Services::Sidebar.find_element_groups(groups: config[:groups_for_extras] || {}, element_name: el.filename)
@@ -61,6 +56,18 @@ module Kit::Doc::Services::Sidebar::Extras
     })
 
     extras_export_list
+  end
+
+  def self.generate_headers(object:)
+    toc      = object.contents_toc
+    sections = toc&.dig(0, :sections) || []
+
+    sections.map do |h2|
+      {
+        id:     h2[:title],
+        anchor: h2[:anchor],
+      }
+    end
   end
 
 end
