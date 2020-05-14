@@ -30,10 +30,12 @@ module Kit::Doc::Services::Sidebar::Modules
         next if !display
 
         data_for_group = data.merge({
-          group:         group_name,
-          display_title: display_title,
-          css_classes:   css_classes,
+          group:       group_name,
+          css_classes: css_classes,
         })
+        if display_title
+          data_for_group.merge!(display_title: display_title)
+        end
 
         modules_groups_lists[group_name] << data_for_group
       end

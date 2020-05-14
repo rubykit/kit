@@ -15,7 +15,7 @@ module Kit::Doc::Services::Sidebar::Extras
       data = {
         title:         title,
         display_title: title,
-        id:            url.gsub(/\.html$/, ''),
+        id:            url.gsub(%r{\.html$}, ''),
         url:           url,
         headers:       (toc&.dig(0, :sections) || []).map do |h2|
           {
@@ -30,10 +30,12 @@ module Kit::Doc::Services::Sidebar::Extras
         next if !display
 
         data_for_group = data.merge({
-          group:         group_name,
-          display_title: display_title,
-          css_classes:   css_classes,
+          group:       group_name,
+          css_classes: css_classes,
         })
+        if display_title
+          data_for_group.merge!(display_title: display_title)
+        end
 
         extras_groups_lists[group_name] << data_for_group
       end
@@ -44,10 +46,10 @@ module Kit::Doc::Services::Sidebar::Extras
       .flatten
 
     extras_export_list.unshift({
-      title:   'API Reference',
-      id:      'api_reference',
-      url:     'api_reference.html',
-      group:   '',
+      title: 'API Reference',
+      id:    'api_reference',
+      url:   'api_reference.html',
+      group: '',
 =begin
       headers: [
         {
