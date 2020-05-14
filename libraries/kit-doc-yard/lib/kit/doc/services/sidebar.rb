@@ -31,10 +31,8 @@ module Kit::Doc::Services::Sidebar
         next if !inclusion_fn.call(element_name)
 
         display_title = display_title.call(element_name) if display_title.respond_to?(:call)
-        display_title ||= element_name
-
-        css_classes   = css_classes.call(element_name) if css_classes.respond_to?(:call)
-        css_classes   ||= []
+        css_classes   = css_classes.call(element_name)   if css_classes.respond_to?(:call)
+        css_classes ||= []
 
         group_data = {
           group_name:    group_name,
@@ -51,7 +49,7 @@ module Kit::Doc::Services::Sidebar
     if result.size > 0
       result
     else
-      [{ group_name: '', display_title: element_name, css_classes: [], display: true }]
+      [{ group_name: '', display_title: nil, css_classes: [], display: true }]
     end
   end
 

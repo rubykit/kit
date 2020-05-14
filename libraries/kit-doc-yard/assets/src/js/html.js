@@ -4,7 +4,7 @@
 import $ from 'jquery'
 import Handlebars from 'handlebars/runtime'
 
-import hljs from 'highlight.js/lib/highlight'
+import hljs from 'highlight.js/lib/core'
 import bash from 'highlight.js/lib/languages/bash'
 import css from 'highlight.js/lib/languages/css'
 import diff from 'highlight.js/lib/languages/diff'
@@ -15,6 +15,7 @@ import markdown from 'highlight.js/lib/languages/markdown'
 import ruby from 'highlight.js/lib/languages/ruby'
 import sql from 'highlight.js/lib/languages/sql'
 import xml from 'highlight.js/lib/languages/xml'
+import kit_url from './highlight.js/languages/kit-url'
 
 import isArray from './template-helpers/isArray'
 import isLocal from './template-helpers/isLocal'
@@ -59,6 +60,7 @@ $(() => {
   hljs.registerLanguage('ruby', ruby)
   hljs.registerLanguage('sql', sql)
   hljs.registerLanguage('xml', xml)
+  hljs.registerLanguage('kit-url', kit_url)
 
   initNightMode()
   initPrivateApis()

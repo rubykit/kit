@@ -1,4 +1,4 @@
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin');
 const MiniCSSExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
@@ -33,9 +33,8 @@ module.exports = {
   },
   optimization: {
     minimizer: [
-      new UglifyJSPlugin({
-        cache: true,
-        parallel: true
+      new TerserPlugin({
+        extractComments: false,
       }),
       new OptimizeCSSAssetsPlugin({})
     ]
