@@ -6,7 +6,7 @@ module Kit::Doc::Services::Modules
     list = ::YARD::Registry.all(:class, :module)
     list = verifier_runner.call(list)
 
-    list.delete_if { |el| el.has_tag?(:api) && el.tag(:api).text == 'hide' }
+    list.delete_if { |el| el.has_tag?(:hide) && el.tag(:hide).text == 'true' }
 
     list
   end
@@ -130,7 +130,7 @@ module Kit::Doc::Services::Modules
     list = ::YARD::Registry.all(:method)
     list = verifier_runner.call(list)
 
-    list.delete_if { |el| el.has_tag?(:api) && el.tag(:api).text == 'hide' }
+    list.delete_if { |el| el.has_tag?(:hide) && el.tag(:hide).text == 'true' }
 
     list
   end
@@ -167,7 +167,7 @@ module Kit::Doc::Services::Modules
       list.delete_if { |el| options.embed_mixins_match?(el.namespace) == false }
     end
 
-    list.delete_if { |el| el.has_tag?(:api) && el.tag(:api).text == 'hide' }
+    list.delete_if { |el| el.has_tag?(:hide) && el.tag(:hide).text == 'true' }
 
     list
       .sort_by { |el| [el.scope.to_s, el.name.to_s.downcase] }
@@ -201,7 +201,7 @@ module Kit::Doc::Services::Modules
         sublist.delete_if { |el| el.scope == :class }
       end
 
-      sublist.delete_if { |el| el.has_tag?(:api) && el.tag(:api).text == 'hide' }
+      sublist.delete_if { |el| el.has_tag?(:hide) && el.tag(:hide).text == 'true' }
 
       next if sublist.size == 0
 
@@ -268,7 +268,7 @@ module Kit::Doc::Services::Modules
     list = ::YARD::Registry.all(:constant)
     list = verifier_runner.call(list)
 
-    list.delete_if { |el| el.has_tag?(:api) && el.tag(:api).text == 'hide' }
+    list.delete_if { |el| el.has_tag?(:hide) && el.tag(:hide).text == 'true' }
 
     list
   end
@@ -282,7 +282,7 @@ module Kit::Doc::Services::Modules
 
     list = verifier_runner.call(list)
 
-    list.delete_if { |el| el.has_tag?(:api) && el.tag(:api).text == 'hide' }
+    list.delete_if { |el| el.has_tag?(:hide) && el.tag(:hide).text == 'true' }
 
     list
       .sort_by { |el| el.name.to_s }
@@ -302,7 +302,7 @@ module Kit::Doc::Services::Modules
 
       sublist = verifier_runner.call(sublist)
 
-      sublist.delete_if { |el| el.has_tag?(:api) && el.tag(:api).text == 'hide' }
+      sublist.delete_if { |el| el.has_tag?(:hide) && el.tag(:hide).text == 'true' }
 
       list[superclass.name] = { superclass: superclass, list: sublist }
     end
