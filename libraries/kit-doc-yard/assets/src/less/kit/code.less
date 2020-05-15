@@ -1,0 +1,16 @@
+/* Add support for unselectable prompts in code snippets -------------------- */
+
+code {
+  .hljs-prompt {
+    .unselectable;
+    .hljs-comment;
+  }
+}
+
+body.night-mode .content-inner {
+  code {
+    .hljs-prompt {
+      color: #b1b1b1;
+    }
+  }
+}
