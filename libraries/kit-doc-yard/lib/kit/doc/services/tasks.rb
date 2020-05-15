@@ -51,7 +51,6 @@ module Kit::Doc::Services::Tasks
     config = {
       output_dir_base:   'docs/dist',
       extra_section:     'Guides',
-      assets:            'guides/assets',
       main:              'overview',
       main_redirect_url: 'index.html',
     }
