@@ -56,6 +56,13 @@ def handle_static_assets
     [File.join(File.expand_path('../../../..', __dir__), 'assets/dist'), 'assets'],
   ]
 
+  config = Kit::Doc::Services::Config.config
+  if config[:assets]
+    config[:assets].each do |el|
+      assets_list << el
+    end
+  end
+
   Kit::Doc::Services::Utils.copy_assets({
     basepath: options.serializer.basepath,
     list:     assets_list,
