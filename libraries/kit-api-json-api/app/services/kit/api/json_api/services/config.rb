@@ -1,8 +1,13 @@
 # Hold config data.
-# @todo DEPRECATE, as this should be per API instances.
+#
+# ### ☠️ Deprecate this
+#
+# This should be per API instance, using `Kit::Config` when available.
+#
 module Kit::Api::JsonApi::Services::Config
 
   include Kit::Contract
+  # @hide true
   Ct = Kit::Api::JsonApi::Contracts
 
   Ct::PositiveInt = Ct::And[Ct::Integer, ->(page_size) { page_size > 0 }]

@@ -1,26 +1,67 @@
-# @see https://jsonapi.org/format/1.1/#fetching-includes
+# ## Format
+#
+# The format to `include` related ressources is:
+# ```kit-url
+#  GET https://my.api/my-resource?include=relationship1,relationship2.nested_relationship
+# ```
+#
+# ### ⚠️ Warning
+#
+# This need to be ran first to be able to validate filters, sorting, pagination & sparse fieldsets.
+#
+# ## References
+# - https://jsonapi.org/format/1.1/#fetching-includes
+#
 module Kit::Api::JsonApi::Services::Request::RelatedResources
 
   include Kit::Contract
+  # @hide true
   Ct = Kit::Api::JsonApi::Contracts
 
+  # Entry point. Parse & validate include data before adding it to the `Request`.
   def self.handle_related_resources(config:, query_params:, request:)
     args = { config: config, query_params: query_params, request: request }
 
     Kit::Organizer.call({
       list: [
-        self.method(:validate_params),
+        self.method(:parse),
+        self.method(:validate_and_add_to_request),
       ],
       ctx:  args,
     })
   end
 
-  def self.validate_params(config:, query_params:, request:)
+  # Extract `include` query params and transform it into a normalized hash.
+  #
+  # ## Examples
+  #
+  # ```irb
+  # irb> ex_qp  = 'author?include=books.author.books,series.books'
+  # irb> _, ctx = Services::Url.parse_query_params(url: "scheme://my.api/my-resource?#{ ex_qp }")
+  # irb> ctx[:query_params]
+  # {
+  #   include: 'books.author.books,series.books',
+  # }
+  # irb> _, ctx = parse(query_params: ctx[:query_params])
+  # irb> ctx[:parsed_query_params_include]
+  # {
+  #   include: => ['books.author.books', 'series.books'],
+  # }
+  # ```
+  def self.parse(query_params:)
+    data = (query_params[:include] || '').split(',')
+
+    [:ok, parsed_query_params_include: data]
+  end
+
+  # Ensures that nested relationships are valid.
+  # When include data is valid, add it to the `Request`.
+  def self.validate_and_add_to_request(config:, parsed_query_params_include:, request:)
     errors = []
     top_level_resource = request[:top_level_resource]
     related_resources  = {}
 
-    query_params[:include].each do |path|
+    parsed_query_params_include.each do |path|
       resource     = top_level_resource
       current_path = ''
 

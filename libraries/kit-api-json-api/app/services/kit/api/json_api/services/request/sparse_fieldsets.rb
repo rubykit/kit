@@ -2,6 +2,7 @@
 module Kit::Api::JsonApi::Services::Request::SparseFieldsets
 
   include Kit::Contract
+  # @hide true
   Ct = Kit::Api::JsonApi::Contracts
 
   def self.handle_sparse_fieldsets(config:, query_params:, request:)
@@ -9,6 +10,7 @@ module Kit::Api::JsonApi::Services::Request::SparseFieldsets
 
     Kit::Organizer.call({
       list: [
+        self.method(:parse),
         self.method(:validate_params),
         self.method(:add_to_request),
       ],
@@ -16,10 +18,23 @@ module Kit::Api::JsonApi::Services::Request::SparseFieldsets
     })
   end
 
-  def self.validate_params(config:, query_params:)
+  # @example GET /authors?fields[authors]=name,date_of_birth&fields[books]=title
+  # @see https://jsonapi.org/format/1.1/#fetching-sparse-fieldsets
+  def self.parse(query_params:)
+    list = {}
+    data = query_params[:fields] || {}
+
+    data.each do |type_name, fields|
+      list[type_name] = fields.split(',').map(&:to_sym)
+    end
+
+    [:ok, parsed_query_params_fields: list]
+  end
+
+  def self.validate_params(config:, parsed_query_params_fields:)
     errors = []
 
-    query_params[:fields].each do |type_name, fields|
+    parsed_query_params_fields.each do |type_name, fields|
       resource = config[:resources][type_name]
 
       if !resource
@@ -40,8 +55,8 @@ module Kit::Api::JsonApi::Services::Request::SparseFieldsets
     end
   end
 
-  def self.add_to_request(config:, query_params:, request:)
-    request[:fields] = query_params[:fields]
+  def self.add_to_request(config:, parsed_query_params_fields:, request:)
+    request[:fields] = parsed_query_params_fields
 
     [:ok, request: request]
   end

@@ -2,6 +2,7 @@
 module Kit::Api::JsonApi::Services::Sql::Sorting
 
   include Kit::Contract
+  # @hide true
   Ct = Kit::Api::JsonApi::Contracts
 
   before Ct::Hash[sorting: Ct::Optional[Ct::SortOrders], table_name: Ct::String]

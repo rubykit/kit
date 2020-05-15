@@ -53,9 +53,13 @@ CONFIG = Kit::Doc::Services::Tasks.get_default_config(
         css_classes:   css_padding_helper.call('Kit::Api::JsonApi::Contracts'),
       },
       {
-        inclusion:     %r{^Kit::Api::JsonApi::Types},
+        inclusion:     %r{^Kit::Api::JsonApi::(Types|TypesHint)$},
         display_title: display_title_last,
         css_classes:   css_padding_helper.call('Kit::Api::JsonApi::Types'),
+      },
+      {
+        inclusion:     %r{^Kit::Api::JsonApi::Types::.*},
+        display:       false,
       },
     ],
     'Various'           => [
@@ -74,6 +78,10 @@ CONFIG = Kit::Doc::Services::Tasks.get_default_config(
     },
   }),
   groups_for_extras:  {},
+
+  assets: [
+    [File.expand_path('../docs/assets', __dir__), 'assets'],
+  ],
 )
 
 Kit::Doc::Services::Tasks.create_rake_documentation_task!({

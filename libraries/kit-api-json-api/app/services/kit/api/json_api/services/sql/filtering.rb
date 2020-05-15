@@ -2,6 +2,7 @@
 module Kit::Api::JsonApi::Services::Sql::Filtering
 
   include Kit::Contract
+  # @hide true
   Ct = Kit::Api::JsonApi::Contracts
 
   OPERATORS_STR = {

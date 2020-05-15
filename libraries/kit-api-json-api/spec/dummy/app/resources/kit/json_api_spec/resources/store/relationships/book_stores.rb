@@ -1,6 +1,7 @@
 module Kit::JsonApiSpec::Resources::Store::Relationships::BookStores
 
   include Kit::Contract
+  # @hide true
   Ct = Kit::Api::JsonApi::Contracts
 
   after Ct::Relationship

@@ -2,6 +2,7 @@
 module Kit::Api::JsonApi::Services::Sql::Limit
 
   include Kit::Contract
+  # @hide true
   Ct = Kit::Api::JsonApi::Contracts
 
   before Ct::Hash[limit: Ct::Optional[Ct::Integer]]

@@ -12,7 +12,7 @@ describe Kit::Api::JsonApi::Services::Request::SparseFieldsets do
     ]
   end
 
-  let(:query_params) { Kit::Api::JsonApi::Services::Url::Parser.parse_url(url: url)[1][:query_params] }
+  let(:query_params) { Kit::Api::JsonApi::Services::Url.parse_query_params(url: url)[1][:query_params] }
   let(:request)      { Kit::Api::JsonApi::Types::Request[] }
 
   context 'with sparse fieldsets' do

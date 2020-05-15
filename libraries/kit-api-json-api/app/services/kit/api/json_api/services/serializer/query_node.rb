@@ -2,6 +2,7 @@
 module Kit::Api::JsonApi::Services::Serializer::QueryNode
 
   include Kit::Contract
+  # @hide true
   Ct = Kit::Api::JsonApi::Contracts
 
   before Ct::Hash[query_node: Ct::QueryNode, document: Ct::Document]

@@ -1,6 +1,7 @@
 module Kit::JsonApiSpec::Resources::Author
 
   include Kit::Contract
+  # @hide true
   Ct = Kit::Api::JsonApi::Contracts
 
   include Kit::Api::JsonApi::Resources::Resource

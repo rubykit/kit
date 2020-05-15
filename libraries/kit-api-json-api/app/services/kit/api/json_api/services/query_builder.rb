@@ -8,7 +8,7 @@
 module Kit::Api::JsonApi::Services::QueryBuilder
 
   include Kit::Contract
-  # @api hide
+  # @hide true
   Ct = Kit::Api::JsonApi::Contracts
 
   before Ct::Hash[request: Ct::Request]

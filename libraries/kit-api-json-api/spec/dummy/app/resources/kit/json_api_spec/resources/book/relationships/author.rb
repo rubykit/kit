@@ -1,6 +1,7 @@
 module Kit::JsonApiSpec::Resources::Book::Relationships::Author
 
   include Kit::Contract
+  # @hide true
   Ct = Kit::Api::JsonApi::Contracts
 
   after Ct::Relationship

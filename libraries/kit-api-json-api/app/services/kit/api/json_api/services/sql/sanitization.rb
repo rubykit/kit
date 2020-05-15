@@ -2,6 +2,7 @@
 module Kit::Api::JsonApi::Services::Sql::Sanitization
 
   include Kit::Contract
+  # @hide true
   Ct = Kit::Api::JsonApi::Contracts
 
 =begin
