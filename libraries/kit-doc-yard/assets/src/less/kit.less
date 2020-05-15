@@ -4,23 +4,52 @@ h1, h2, h3, h4, h5 {
   letter-spacing: 1px;
 }
 
-/* Header */
-.modules-header {
-  .object-type {
-    font-family: @monoFontFamily;
-    margin-left: 0.6em;
-    font-size:   0.6em;
-    font-weight: normal;
-    font-style:  italic;
-  }
+.app-vsn {
+  font-family: @monoFontFamily;
+  margin:      -1em 0 0;
+  padding:     0;
+  font-size:   1.2em !important;
 }
 
+/* Reduce Summary h1 since we now use HRs as separator */
 .content-inner {
-  /* Reduce Summary h1 since we now use HRs as separator */
   h1.section-heading {
     margin-top: 1em;
   }
 }
+
+/* Header */
+.modules-header {
+  font-family:   @monoFontFamily;
+  display:       flex;
+  flex-wrap:     wrap;
+  margin-bottom: 1em !important;
+
+  .module-name {
+    font-family: @monoFontFamily;
+  }
+
+  .module-full-name {
+    font-family: @monoFontFamily;
+    font-size:   0.5em;
+    font-weight: 300;
+    line-height: 100%;
+  }
+
+  .object-type {
+    font-family: @monoFontFamily;
+    margin-left: 0.5em;
+    font-size:   0.5em;
+    font-weight: normal;
+    text-transform: uppercase;
+  }
+
+  a.view-source {
+    float: none;
+  }
+}
+
+
 
 /* When there is no content between h1 and h2 */
 #moduledoc > h2:first-child {
@@ -55,14 +84,6 @@ h1, h2, h3, h4, h5 {
   user-select: none;
 }
 
-.sidebar {
-  .sidebar-search {
-    .search-input {
-      background-color: @nightBackground;
-    }
-  }
-}
-
 /* Link behaviour ------------------------------------------------------------*/
 
 a {
@@ -89,22 +110,11 @@ a {
   }
 }
 
-/* Code ----------------------------------------------------------------------*/
-
-.content-inner {
-  pre {
-    code {
-      border-color:  @groupGray;
-      border-radius: 4px;
-    }
-  }
-}
-
 /* Blockquote --------------------------------------------------------------- */
 
 body.night-mode {
   .content-inner blockquote {
-    /* Same than code boder */
+    /* Same than code border */
     border-left-color: lighten(@nightCodeBackground, 10%);
   }
 }

@@ -5,12 +5,24 @@
   else
     url = nil
   end
-%>
-<h1 class='modules-header'>
-  <small class="app-vsn"><%= config[:project] %> v<%= config[:version] %></small>
 
-  <span class='title'><%= object.title %></span>
-  <span class='object-type'><%= object.type %></span>
+  version = config[:version]
+  version = (version == 'edge') ? 'Edge' : "v#{ version }"
+
+  object_name      = object.title.split('::')[-1]
+  object_full_name = object.title
+%>
+<small class="app-vsn"><b><%= config[:project] %></b> <%= version %></small>
+
+<h1 class='modules-header'>
+  <div style='flex-grow: 1;'>
+
+    <span class='title module-name'><%= object_name %></span>
+    <span class='object-type'><%= object.type %></span>
+    <% if object_full_name != object_name %>
+      <div class='module-full-name'><%= object_full_name %></div>
+    <% end %>
+  </div>
 
   <% if url %>
     <a href="<%= url %>" target='_blank' title="View Source" class="view-source" rel="help">

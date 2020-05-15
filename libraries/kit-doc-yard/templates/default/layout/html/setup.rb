@@ -14,8 +14,12 @@ end
 # Use our extended ExtraFile properties
 def diskfile
   if @file.respond_to?(:contents_rendered)
-    @file.contents_rendered
+    data = @file.contents_rendered
   else
-    super
+    #super
+    @file.attributes[:markup] ||= markup_for_file('', @file.filename)
+    data = htmlify(@file.contents, @file.attributes[:markup])
   end
+
+  erb(:extra) { data }
 end

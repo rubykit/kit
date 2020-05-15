@@ -117,7 +117,7 @@ end
 
 # Generate `objects` files
 def generate_objects_files
-  options.objects = objects = run_verifier(options.objects)
+  options.objects = run_verifier(options.objects)
 
   options.objects.each do |object|
     serialize(object)
