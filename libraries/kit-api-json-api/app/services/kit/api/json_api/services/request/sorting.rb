@@ -1,10 +1,37 @@
-# @see https://jsonapi.org/format/1.1/#fetching-sorting
+# `Kit::Api::JsonApi` supports:
+# - sorting on the top level collection and any to-many nested relationship
+# - multiple sorting criterias per path
+#
+# A relationship that is traversed through multiple paths can have per-path sorting.
+#
+# Sorting criterias do not necessarily need to correspond to resource attribute and relationship names.
+#
+# ## URL format
+#
+# The format for sorting is:
+# ```kit-url
+#  GET https://my.api/my-resource?sort=(+|-)(resource_path.)sorting_criteria
+# ```
+#
+# If the `resource_path` is omitted, the sorting criteria applies to the top level resource.
+#
+# If the sign is omitted, is defaults to `+`
+# ```kit-url
+# # The two following are equal
+# GET /authors?sort=name
+# GET /authors?sort=+name
+# ```
+#
+# ## References
+# - https://jsonapi.org/format/1.1/#fetching-sorting
+#
 module Kit::Api::JsonApi::Services::Request::Sorting
 
   include Kit::Contract
   # @hide true
   Ct = Kit::Api::JsonApi::Contracts
 
+  # Entry point. Parse & validate sorting data before adding it to the `Request`.
   def self.handle_sorting(config:, query_params:, request:)
     args = { config: config, query_params: query_params, request: request }
 
@@ -18,9 +45,30 @@ module Kit::Api::JsonApi::Services::Request::Sorting
     })
   end
 
-  # For the given example, the following sorting is applied: { authors: [name DESC, date_of_birt ASC], books: [date_published ASC, title DESC] }
-  # @example GET /authors?sort=-name,books.date_published,date_of_birth,-books.title
-  # @see https://jsonapi.org/format/1.1/#fetching-sorting
+  # Extract `sort` query-param and transform it into a normalized hash.
+  #
+  # ## Examples
+  #
+  # ```irb
+  # irb> ex_qp  = 'authors?sort=-name,books.date_published,date_of_birth,-books.title'
+  # irb> _, ctx = Services::Url.parse_query_params(url: "scheme://my.api/my-resource?#{ ex_qp }")
+  # irb> ctx[:query_params]
+  # {
+  #   sort: '-name,books.date_published,date_of_birth,-books.title',
+  # }
+  # irb> _, ctx = parse(query_params: ctx[:query_params])
+  # irb> ctx[:parsed_query_params_include]
+  # {
+  #   authors: [
+  #     { sort_name: 'name',           direction: :desc },
+  #     { sort_name: 'date_of_birth',  direction: :asc  },
+  #   ],
+  #   :'authors.books' => [
+  #     { sort_name: 'date_published', direction: :asc  },
+  #     { sort_name: 'title',          direction: :desc },
+  #   ],
+  # }
+  # ```
   def self.parse(query_params:)
     data = (query_params[:sort] || '').split(',')
     list = {}
@@ -42,12 +90,17 @@ module Kit::Api::JsonApi::Services::Request::Sorting
       end
 
       list[path] ||= []
-      list[path] << { direction: direction, sort_name: sid.to_sym }
+      list[path] << { sort_name: sid.to_sym, direction: direction }
     end
 
     [:ok, parsed_query_params_sort: list]
   end
 
+  # Ensure that:
+  # - nested relationships are included when sorted on
+  # - sort criterias exist
+  #
+  # **⚠️ Warning**: in order to validate inclusion, the related resources need to have been run first.
   def self.validate(config:, parsed_query_params_sort:, request:)
     errors = []
 
@@ -85,6 +138,7 @@ module Kit::Api::JsonApi::Services::Request::Sorting
     end
   end
 
+  # When sorting data is valid, add it to the `Request`.
   def self.add_to_request(config:, parsed_query_params_sort:, request:)
     request[:sorting] = parsed_query_params_sort
 

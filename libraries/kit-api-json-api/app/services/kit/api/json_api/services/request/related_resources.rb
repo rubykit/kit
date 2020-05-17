@@ -1,13 +1,13 @@
-# ## Format
+# ## URL format
 #
-# The format to `include` related ressources is:
+# The format to include related ressources is:
 # ```kit-url
 #  GET https://my.api/my-resource?include=relationship1,relationship2.nested_relationship
 # ```
 #
 # ### ⚠️ Warning
 #
-# This need to be ran first to be able to validate filters, sorting, pagination & sparse fieldsets.
+# Filtering, Sorting & Pagination potentially depend on `include` if they describe related resources, so this need to be ran first.
 #
 # ## References
 # - https://jsonapi.org/format/1.1/#fetching-includes
@@ -25,13 +25,14 @@ module Kit::Api::JsonApi::Services::Request::RelatedResources
     Kit::Organizer.call({
       list: [
         self.method(:parse),
-        self.method(:validate_and_add_to_request),
+        self.method(:validate_and_parse),
+        self.method(:add_to_request),
       ],
       ctx:  args,
     })
   end
 
-  # Extract `include` query params and transform it into a normalized hash.
+  # Extract `include` query-param and transform it into a normalized array.
   #
   # ## Examples
   #
@@ -44,9 +45,7 @@ module Kit::Api::JsonApi::Services::Request::RelatedResources
   # }
   # irb> _, ctx = parse(query_params: ctx[:query_params])
   # irb> ctx[:parsed_query_params_include]
-  # {
-  #   include: => ['books.author.books', 'series.books'],
-  # }
+  # ['books.author.books', 'series.books']
   # ```
   def self.parse(query_params:)
     data = (query_params[:include] || '').split(',')
@@ -54,9 +53,27 @@ module Kit::Api::JsonApi::Services::Request::RelatedResources
     [:ok, parsed_query_params_include: data]
   end
 
-  # Ensures that nested relationships are valid.
-  # When include data is valid, add it to the `Request`.
-  def self.validate_and_add_to_request(config:, parsed_query_params_include:, request:)
+  # Ensure that:
+  #  - top level resource is valid
+  #  - nested relationships are valid
+  #
+  # This resolve the Resource object for every path requested and replace `parsed_query_params_include` with a normalized hash.
+  #
+  # ## Examples
+  #
+  # ```irb
+  # irb> parsed_query_params_include = ['books.author.books', 'series.books']
+  # irb> _, ctx = validate_and_add_to_request(parsed_query_params_include: parsed_query_params_include)
+  # irb> ctx[:parsed_query_params_include]
+  # {
+  #   'books'              => BookResource,
+  #   'books.author'       => AuthorResource,
+  #   'books.author.books' => BookResource,
+  #   'series'             => SerieResource,
+  #   'series.books'       => BookResource,
+  # }
+  # ```
+  def self.validate_and_parse(config:, parsed_query_params_include:, request:)
     errors = []
     top_level_resource = request[:top_level_resource]
     related_resources  = {}
@@ -85,9 +102,16 @@ module Kit::Api::JsonApi::Services::Request::RelatedResources
     if errors.size > 0
       [:error, errors: errors]
     else
-      request[:related_resources] = related_resources
-      [:ok, request: request]
+      parsed_query_params_include = related_resources
+      [:ok, parsed_query_params_include: parsed_query_params_include]
     end
+  end
+
+  # When inclusion data is valid, add it to the `Request`.
+  def self.add_to_request(config:, parsed_query_params_include:, request:)
+    request[:related_resources] = parsed_query_params_include
+
+    [:ok, request: request]
   end
 
 end

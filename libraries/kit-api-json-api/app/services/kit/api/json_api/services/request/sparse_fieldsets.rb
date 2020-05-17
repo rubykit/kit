@@ -1,10 +1,24 @@
-# @see https://jsonapi.org/format/1.1/#fetching-sparse-fieldsets
+# `JSON:API` allows endpoint to return only specific fields in a response.
+#
+# **⚠️ Warning**: this is done on a per-type (`Resource`) basis, not on a per-relationship.
+#
+# ## URL format
+#
+# The format for sparse fieldsets is:
+# ```kit-url
+#  GET https://my.api/my-resource?fields[resource]=field1,field2
+# ```
+#
+# ## References
+# - https://jsonapi.org/format/1.1/#fetching-sparse-fieldsets
+#
 module Kit::Api::JsonApi::Services::Request::SparseFieldsets
 
   include Kit::Contract
   # @hide true
   Ct = Kit::Api::JsonApi::Contracts
 
+  # Entry point. Parse & validate sparse-fieldsets data before adding it to the `Request`.
   def self.handle_sparse_fieldsets(config:, query_params:, request:)
     args = { config: config, query_params: query_params, request: request }
 
@@ -18,8 +32,27 @@ module Kit::Api::JsonApi::Services::Request::SparseFieldsets
     })
   end
 
-  # @example GET /authors?fields[authors]=name,date_of_birth&fields[books]=title
-  # @see https://jsonapi.org/format/1.1/#fetching-sparse-fieldsets
+  # Extract `fields` query params and transform it into a normalized hash.
+  #
+  # ## Examples
+  #
+  # ```irb
+  # irb> ex_qp  = "fields[author]=name,date_of_birth&fields[book]=title"
+  # irb> _, ctx = Services::Url.parse_query_params(url: "scheme://my.api/my-resource?#{ ex_qp }")
+  # irb> ctx[:query_params]
+  # {
+  #   fields: {
+  #     author: 'name,date_of_birth',
+  #     book:   'title',
+  #   },
+  # }
+  # irb> _, ctx = parse(query_params: ctx[:query_params])
+  # irb> ctx[:parsed_query_params_fields]
+  # {
+  #   author: ['name', 'date_of_birth'],
+  #   book:   ['title'],
+  # }
+  # ```
   def self.parse(query_params:)
     list = {}
     data = query_params[:fields] || {}
@@ -31,6 +64,9 @@ module Kit::Api::JsonApi::Services::Request::SparseFieldsets
     [:ok, parsed_query_params_fields: list]
   end
 
+  # Ensures that:
+  # - types (`Resources`) exist
+  # - fields exist
   def self.validate_params(config:, parsed_query_params_fields:)
     errors = []
 
@@ -55,6 +91,7 @@ module Kit::Api::JsonApi::Services::Request::SparseFieldsets
     end
   end
 
+  # When sparse fieldsets data is valid, add it to the `Request`.
   def self.add_to_request(config:, parsed_query_params_fields:, request:)
     request[:fields] = parsed_query_params_fields
 

@@ -1,19 +1,20 @@
-# JSON:API base specification is agnostic about filtering strategies supported by a server.
+# `JSON:API` base specification is agnostic about filtering strategies supported by a server.
 #
-# Kit::APi::JsonApi supports:
+# `Kit::Api::JsonApi` supports:
 # - filtering on the top level collection and any to-many relationship
 # - multiple operators per field, defined per field type
 #
+# `Kit::Api::JsonApi` supports pagination on each included relationship.
 # A relationship that is traversed through multiple paths can have per-path filters.
 #
-# ## Filter format
+# ## URL format
 #
 # The format of a filter is:
 # ```kit-url
 #  GET https://my.api/my-resource?filter[(resource_path.)filter_name]([operator])=value(s)
 # ```
 #
-# If the resource_path is omitted, the filter applies to the top level resource.
+# If the `resource_path` is omitted, the filter applies to the top level resource.
 # ```kit-url
 # # Implicit: the filter `name` is applied on `authors`
 # GET /authors?filter[name]=Dan
@@ -130,12 +131,11 @@ module Kit::Api::JsonApi::Services::Request::Filtering
     [:ok, parsed_query_params_filters: list]
   end
 
-  # Ensures that:
-  # - filter relationship are properly included
+  # Ensure that:
+  # - nested relationships are included when filtered on
   # - filters types are supported on the fields
   #
-  # ### ⚠️ Warning
-  # In order to validate inclusion, the related resources need to have been run first.
+  # **⚠️ Warning**: in order to validate inclusion, the related resources need to have been run first.
   def self.validate(config:, parsed_query_params_filters:, request:)
     errors = []
 

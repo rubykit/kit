@@ -1,5 +1,5 @@
-# Exemple of how to organize the code that describes Resource.
-# @note: only the Resource contract truly matters.
+# A Resource is simply a module that defines certain methods to configure proper rendering of your JSONAPI documents.
+# @todo: Make this the source of thruth instead of the Resource contracy?
 module Kit::Api::JsonApi::Resources::Resource
 
   extend ActiveSupport::Concern

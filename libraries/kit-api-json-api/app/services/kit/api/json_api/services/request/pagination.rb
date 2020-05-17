@@ -1,11 +1,41 @@
-# @see https://jsonapi.org/format/1.1/#fetching-pagination
-# @see https://jsonapi.org/extensions/##profiles-category-pagination
+# `JSON:API` base specification is agnostic about pagination strategies supported by a server, it only reserves the `page` query parameter family for pagination.
+#
+# `Kit::Api::JsonApi` supports:
+# - pagination on the top level collection and any to-many relationship
+# - [x] cursor based pagination strategy (add link)
+# - [ ] offset based pagination strategy (add link)
+#
+# A relationship that is traversed through multiple paths can have per-path pagination data.
+#
+# ## URL format
+#
+# Regardless of the pagination strategy, the expected format is:
+# ```kit-url
+#  GET https://my.api/my-resource?page[(resource_path.)pagination_keyword]=cursor_data
+# ```
+# If the `resource_path` is omitted, pagination applies to the top level resource.
+#
+# With the cursor based strategy, `pagination_keyword` could be any of `[:size, :after, :before]`.
+#
+# ### ⚠️ Warning for the cursor based strategy
+#
+# Cursor based pagination is about identifying the boundaries of a subset.
+#
+# This step is entirely independant of sorting & filtering.
+#
+# Once the target subset is identified, it can be sorted, filtered, and limited (page_size).
+#
+# ## References
+# - https://jsonapi.org/format/1.1/#fetching-pagination
+# - https://jsonapi.org/profiles/ethanresnick/cursor-pagination/
+#
 module Kit::Api::JsonApi::Services::Request::Pagination
 
   include Kit::Contract
   # @hide true
   Ct = Kit::Api::JsonApi::Contracts
 
+  # Entry point. Parse & validate pagination data before adding it to the `Request`.
   def self.handle_pagination(config:, query_params:, request:)
     args = { config: config, query_params: query_params, request: request }
 
