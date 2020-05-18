@@ -40,8 +40,8 @@ describe Kit::Api::JsonApi::Services::Request::Sorting do
         expect(status).to eq :ok
         expect(ctx[:request][:related_resources].keys).to eq ['books']
         expect(ctx[:request][:sorting]).to eq({
-          :top_level => [{ direction: :desc, sort_name: :name,           }, { direction: :asc,  sort_name: :date_of_birth, }],
-          'books'    => [{ direction: :asc,  sort_name: :date_published, }, { direction: :desc, sort_name: :title, }]
+          :top_level => [{ direction: :desc, sort_name: :name           }, { direction: :asc,  sort_name: :date_of_birth }],
+          'books'    => [{ direction: :asc,  sort_name: :date_published }, { direction: :desc, sort_name: :title }],
         })
       end
     end
@@ -52,7 +52,7 @@ describe Kit::Api::JsonApi::Services::Request::Sorting do
       it 'generates the proper errors' do
         status, ctx = subject
         expect(status).to eq :error
-        expect(ctx[:errors][0][:detail]).to eq "Sort: `books` is not an included relationship"
+        expect(ctx[:errors][0][:detail]).to eq 'Sort: `books` is not an included relationship'
       end
     end
 
@@ -62,7 +62,7 @@ describe Kit::Api::JsonApi::Services::Request::Sorting do
       it 'generates the proper errors' do
         status, ctx = subject
         expect(status).to eq :error
-        expect(ctx[:errors][0][:detail]).to eq "Sort: `books.random` is not a valid sorting criteria"
+        expect(ctx[:errors][0][:detail]).to eq 'Sort: `books.random` is not a valid sorting criteria'
       end
     end
 

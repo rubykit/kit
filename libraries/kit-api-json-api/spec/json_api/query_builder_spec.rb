@@ -3,6 +3,7 @@ require_relative '../rails_helper'
 describe Kit::Api::JsonApi::Services::QueryBuilder do
   let(:service)  { described_class }
   let(:singular) { false }
+  let(:config)   { Kit::Api::JsonApi::Services::Config.default_config }
 
   let(:request) do
     {
@@ -11,9 +12,11 @@ describe Kit::Api::JsonApi::Services::QueryBuilder do
     }
   end
 
-  shared_examples "a valid query plan is generated" do
-    it "generates a valid query plan" do
-      status, ctx = service.build_query(request: request)
+  let(:subject) { service.build_query(config: config, request: request) }
+
+  shared_examples 'a valid query plan is generated' do
+    it 'generates a valid query plan' do
+      status, ctx = subject
       query       = ctx[:query]
       query_node  = query[:entry_query_node]
 
@@ -36,37 +39,37 @@ describe Kit::Api::JsonApi::Services::QueryBuilder do
 
     context 'that is an Author' do
       let(:top_level_resource) { Kit::JsonApiSpec::Resources::Author.resource }
-      it_behaves_like "a valid query plan is generated"
+      it_behaves_like 'a valid query plan is generated'
     end
 
     context 'that is a Book' do
       let(:top_level_resource) { Kit::JsonApiSpec::Resources::Book.resource }
-      it_behaves_like "a valid query plan is generated"
+      it_behaves_like 'a valid query plan is generated'
     end
 
     context 'that is a BookStore' do
       let(:top_level_resource) { Kit::JsonApiSpec::Resources::BookStore.resource }
-      it_behaves_like "a valid query plan is generated"
+      it_behaves_like 'a valid query plan is generated'
     end
 
     context 'that is a Chapter' do
       let(:top_level_resource) { Kit::JsonApiSpec::Resources::Chapter.resource }
-      it_behaves_like "a valid query plan is generated"
+      it_behaves_like 'a valid query plan is generated'
     end
 
     context 'that is a Photo' do
       let(:top_level_resource) { Kit::JsonApiSpec::Resources::Photo.resource }
-      it_behaves_like "a valid query plan is generated"
+      it_behaves_like 'a valid query plan is generated'
     end
 
     context 'that is a Serie' do
       let(:top_level_resource) { Kit::JsonApiSpec::Resources::Serie.resource }
-      it_behaves_like "a valid query plan is generated"
+      it_behaves_like 'a valid query plan is generated'
     end
 
     context 'that is a Store' do
       let(:top_level_resource) { Kit::JsonApiSpec::Resources::Store.resource }
-      it_behaves_like "a valid query plan is generated"
+      it_behaves_like 'a valid query plan is generated'
     end
 
   end

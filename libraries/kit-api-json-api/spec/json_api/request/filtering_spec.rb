@@ -46,13 +46,13 @@ describe Kit::Api::JsonApi::Services::Request::Filtering do
         expect(ctx[:request][:related_resources].keys).to eq ['books']
         expect(ctx[:request][:filters]).to eq({
           :top_level => [
-            { name: :name,           op: :in, value: ['Tolkien', 'Rowling'] },
+            { name: :name,           op: :in, value: %w[Tolkien Rowling] },
             { name: :date_of_birth,  op: :gt, value: ['1950'] },
           ],
           'books'    => [
             { name: :date_published, op: :lt, value: ['2002'] },
             { name: :title,          op: :eq, value: ['Title'] },
-          ]
+          ],
         })
       end
     end
@@ -63,27 +63,27 @@ describe Kit::Api::JsonApi::Services::Request::Filtering do
       it 'generates the proper errors' do
         status, ctx = subject
         expect(status).to eq :error
-        expect(ctx[:errors][0][:detail]).to eq "Filter: `books` is not an included relationship"
+        expect(ctx[:errors][0][:detail]).to eq 'Filter: `books` is not an included relationship'
       end
     end
 
     context 'with valid include && non existing filter' do
-      let(:url) { "https://domain.com/author?filter[lol]=Tolkien" }
+      let(:url) { 'https://domain.com/author?filter[lol]=Tolkien' }
 
       it 'generates the proper errors' do
         status, ctx = subject
         expect(status).to eq :error
-        expect(ctx[:errors][0][:detail]).to eq "Filter: `lol` is not a valid filter"
+        expect(ctx[:errors][0][:detail]).to eq 'Filter: `lol` is not a valid filter'
       end
     end
 
     context 'with valid include && non existing operator' do
-      let(:url) { "https://domain.com/author?filter[name][lol]=Tolkien" }
+      let(:url) { 'https://domain.com/author?filter[name][lol]=Tolkien' }
 
       it 'generates the proper errors' do
         status, ctx = subject
         expect(status).to eq :error
-        expect(ctx[:errors][0][:detail]).to eq "Filter: `name` does not support operator `lol`"
+        expect(ctx[:errors][0][:detail]).to eq 'Filter: `name` does not support operator `lol`'
       end
     end
 

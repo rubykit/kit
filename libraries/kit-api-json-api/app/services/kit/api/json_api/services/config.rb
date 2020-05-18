@@ -1,8 +1,14 @@
 # Hold config data.
 #
-# ### ☠️ Deprecate this
+# ## Example
+# ```ruby
+# {
+#   page_size:     50,
+#   max_page_size: 100,
+# }
+# ```
 #
-# This should be per API instance, using `Kit::Config` when available.
+# ### Todo: rewrite this with `Kit::Config` when available!
 #
 module Kit::Api::JsonApi::Services::Config
 
@@ -10,39 +16,37 @@ module Kit::Api::JsonApi::Services::Config
   # @hide true
   Ct = Kit::Api::JsonApi::Contracts
 
-  Ct::PositiveInt = Ct::And[Ct::Integer, ->(page_size) { page_size > 0 }]
+  PAGE_SIZE_MAX_DEFAULT = 200
+  PAGE_SIZE_DEFAULT     = 100
 
-  DEFAULT_MAX_PAGE_SIZE = 200
-  DEFAULT_PAGE_SIZE     = 100
-
-  before Ct::Hash[page_size: Ct::PositiveInt]
-  def self.max_page_size=(page_size:)
-    @max_page_size = page_size
-  end
-
-  after Ct::PositiveInt
-  def self.max_page_size
-    page_size = @max_page_size
-    if !page_size.is_a?(Integer)
-      page_size = DEFAULT_MAX_PAGE_SIZE
+  # Returns an api config object.
+  # This is per API.
+  def self.default_config(options = {})
+    # Max page size
+    page_size_max = options[:page_size_max]
+    if !page_size_max.is_a?(Integer)
+      page_size_max = PAGE_SIZE_MAX_DEFAULT
     end
 
-    page_size
-  end
-
-  before Ct::Hash[page_size: Ct::PositiveInt]
-  def self.default_page_size=(page_size:)
-    @default_page_size = page_size
-  end
-
-  after Ct::PositiveInt
-  def self.default_page_size
-    page_size = @default_page_size
+    # Default page size
+    page_size = options[:page_size]
     if !page_size.is_a?(Integer) || page_size < 1
-      page_size = DEFAULT_PAGE_SIZE
+      page_size = PAGE_SIZE_DEFAULT
+    end
+    if page_size > page_size_max
+      page_size = page_size_max
     end
 
-    page_size
+    config = {
+      paginator:             nil,
+      page_size:             page_size,
+      page_size_max:         page_size_max,
+
+      field_transformation: :underscore,
+      linker:                nil,
+    }
+
+    config
   end
 
 end

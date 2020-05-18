@@ -47,12 +47,12 @@ describe Kit::Api::JsonApi::Services::Request::RelatedResources do
     end
 
     context 'with an invalid relationship' do
-      let(:url) { 'https://domain.com/author?include=books.author.cars'}
+      let(:url) { 'https://domain.com/author?include=books.author.cars' }
 
       it 'generates the proper errors' do
         status, ctx = subject
         expect(status).to eq :error
-        expect(ctx[:errors][0][:detail]).to eq "Related resource: `books.author.cars` is not a valid relationship"
+        expect(ctx[:errors][0][:detail]).to eq 'Related resource: `books.author.cars` is not a valid relationship'
       end
     end
 

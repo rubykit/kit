@@ -13,10 +13,11 @@ module Kit::Api::JsonApi::Services::QueryBuilder
 
   before Ct::Hash[request: Ct::Request]
   # Given a `Request`, creates the complete AST of the query.
-  def self.build_query(request:, condition: nil)
+  def self.build_query(config:, request:, condition: nil)
     request[:related_resources] ||= {}
 
     _, ctx = build_query_node(
+      config:          config,
       resource:        request[:top_level_resource],
       singular:        request[:singular],
       inclusion_level: 0,
@@ -42,7 +43,7 @@ module Kit::Api::JsonApi::Services::QueryBuilder
     ],
   ]
   # Creates a `QueryNode` for a given layer.
-  def self.build_query_node(resource:, singular:, inclusion_level:, path:, request:, condition: nil, data_loader: nil)
+  def self.build_query_node(config:, resource:, singular:, inclusion_level:, path:, request:, condition: nil, data_loader: nil)
     sorting = resource[:sort_fields].select { |_k, v| v[:default] == true }.first[1][:order]
 
     if singular == true
@@ -52,11 +53,11 @@ module Kit::Api::JsonApi::Services::QueryBuilder
     end
 
     if !limit.is_a?(Integer) || limit < 1
-      limit = Kit::Api::JsonApi::Services::Config.default_page_size
+      limit = config[:page_size]
     end
 
-    if limit > Kit::Api::JsonApi::Services::Config.max_page_size
-      limit = Kit::Api::JsonApi::Services::Config.max_page_size
+    if limit > config[:page_size_max]
+      limit = config[:page_size_max]
     end
 
     query_node = Kit::Api::JsonApi::Types::QueryNode[
@@ -71,6 +72,7 @@ module Kit::Api::JsonApi::Services::QueryBuilder
     ]
 
     build_nested_relationships(
+      config:          config,
       query_node:      query_node,
       inclusion_level: inclusion_level,
       request:         request,
@@ -83,7 +85,7 @@ module Kit::Api::JsonApi::Services::QueryBuilder
   # Resolves the relationships of each `QueryNode`.
   #
   # This calls back `build_query_node`, creating the AST.
-  def self.build_nested_relationships(query_node:, inclusion_level:, path:, request:)
+  def self.build_nested_relationships(config:, query_node:, inclusion_level:, path:, request:)
     resource = query_node[:resource]
 
     inclusion_level += 1
@@ -97,6 +99,7 @@ module Kit::Api::JsonApi::Services::QueryBuilder
       end
 
       _, ctx = build_query_node(
+        config:          config,
         resource:        nested_resource,
         inclusion_level: inclusion_level,
         condition:       relationship[:inherited_filter],

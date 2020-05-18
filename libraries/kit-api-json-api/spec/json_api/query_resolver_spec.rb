@@ -3,6 +3,7 @@ require_relative '../rails_helper'
 describe Kit::Api::JsonApi::Services::QueryResolver do
   let(:service)  { described_class }
   let(:singular) { false }
+  let(:config)   { Kit::Api::JsonApi::Services::Config.default_config }
 
   context 'for a top level resource' do
     list = [
@@ -16,10 +17,10 @@ describe Kit::Api::JsonApi::Services::QueryResolver do
     ]
 
     list.each do |resource:|
-      it "generates a valid query plan for #{resource[:name]}" do
+      it "generates a valid query plan for #{ resource[:name] }" do
         request     = { top_level_resource: resource, singular: singular, }
 
-        query_node  = Kit::Api::JsonApi::Services::QueryBuilder.build_query(request: request)[1][:query][:entry_query_node]
+        query_node  = Kit::Api::JsonApi::Services::QueryBuilder.build_query(config: config, request: request)[1][:query][:entry_query_node]
 
         status, ctx = service.resolve_query_node(query_node: query_node)
 
