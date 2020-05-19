@@ -17,8 +17,7 @@ gemspec
 gem 'rails'
 
 gem 'kit-organizer',           path: '../../libraries/kit-organizer' # GEMSPEC
-
-gem 'sassc'
+gem 'kit-error',               path: '../../libraries/kit-error' # GEMSPEC
 
 group :test, :development do
   gem 'pry'

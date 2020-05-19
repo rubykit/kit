@@ -1,30 +1,54 @@
+# Exemple type for dummy app.
 module Kit::JsonApiSpec::Resources::Chapter
 
-  include Kit::Contract
-  # @hide true
-  Ct = Kit::Api::JsonApi::Contracts
+  include Kit::Api::JsonApi::Resources::ActiveRecordResource
 
-  include Kit::Api::JsonApi::Resources::Resource
-
-  def self.resource_name
+  def self.name
     :chapter
   end
 
-  def self.resource_url(resource_id:)
-    "/chapters/#{ resource_id }"
+  def self.model
+    Kit::JsonApiSpec::Models::Write::Chapter
   end
 
-  def self.relationship_url(resource_id:, relationship_id:)
-    "/chapters/#{ resource_id }/relationships/#{ relationship_id }"
-  end
-
-  def self.available_fields
+  def self.fields_setup
     {
-      id:       Kit::Api::JsonApi::TypesHint::IdNumeric,
-      title:    Kit::Api::JsonApi::TypesHint::String,
-      ordering: Kit::Api::JsonApi::TypesHint::Numeric,
+      id:       { type: :id_numeric, sort_field: { default: true, tie_breaker: true } },
+      title:    { type: :string },
+      ordering: { type: :numeric },
     }
   end
+
+  def self.relationships
+    {
+      book:   {
+        resource:          :book,
+        relationship_type: :to_one,
+        resolver:          [:active_record, foreign_key_field: :kit_json_api_spec_book_id],
+      },
+      photos: {
+        resource:          :photo,
+        relationship_type: :to_many,
+        resolver:          [:active_record, foreign_key_field: [:imageable_id, :imageable_type, 'Kit::JsonApiSpec::Models::Write::Chapter']],
+      },
+    }
+  end
+
+  def self.record_serializer(record:)
+    query_node = record[:query_node]
+    resource   = query_node[:resource]
+    raw_data   = record[:raw_data]
+
+    resource_object = {
+      type:       resource[:name],
+      id:         raw_data[:id].to_s,
+      attributes: raw_data.slice(resource[:fields] - [:id, :ordering]).merge(ordering: raw_data[:index]),
+    }
+
+    [:ok, resource_object: resource_object]
+  end
+
+=begin
 
   def self.available_relationships
     list = [
@@ -34,6 +58,14 @@ module Kit::JsonApiSpec::Resources::Chapter
     list
       .map { |el| [el.relationship[:name], el.relationship] }
       .to_h
+  end
+
+  def self.resource_url(resource_id:)
+    "/chapters/#{ resource_id }"
+  end
+
+  def self.relationship_url(resource_id:, relationship_id:)
+    "/chapters/#{ resource_id }/relationships/#{ relationship_id }"
   end
 
   before [
@@ -55,18 +87,8 @@ module Kit::JsonApiSpec::Resources::Chapter
     [:ok, data: data]
   end
 
-  def self.serialize(record:)
-    query_node = record[:query_node]
-    resource   = query_node[:resource]
-    raw_data   = record[:raw_data]
+=end
 
-    resource_object = {
-      type:       resource[:name],
-      id:         raw_data[:id].to_s,
-      attributes: raw_data.slice(resource[:fields] - [:id, :ordering]).merge(ordering: raw_data[:index]),
-    }
 
-    [:ok, resource_object: resource_object]
-  end
 
 end

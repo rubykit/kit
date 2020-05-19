@@ -19,8 +19,8 @@ module Kit::Api::JsonApi::Services::Request::RelatedResources
   Ct = Kit::Api::JsonApi::Contracts
 
   # Entry point. Parse & validate include data before adding it to the `Request`.
-  def self.handle_related_resources(config:, query_params:, request:)
-    args = { config: config, query_params: query_params, request: request }
+  def self.handle_related_resources(query_params:, request:)
+    args = { query_params: query_params, request: request }
 
     Kit::Organizer.call({
       list: [
@@ -73,7 +73,7 @@ module Kit::Api::JsonApi::Services::Request::RelatedResources
   #   'series.books'       => BookResource,
   # }
   # ```
-  def self.validate_and_parse(config:, parsed_query_params_include:, request:)
+  def self.validate_and_parse(parsed_query_params_include:, request:)
     errors = []
     top_level_resource = request[:top_level_resource]
     related_resources  = {}
@@ -108,7 +108,7 @@ module Kit::Api::JsonApi::Services::Request::RelatedResources
   end
 
   # When inclusion data is valid, add it to the `Request`.
-  def self.add_to_request(config:, parsed_query_params_include:, request:)
+  def self.add_to_request(parsed_query_params_include:, request:)
     request[:related_resources] = parsed_query_params_include
 
     [:ok, request: request]

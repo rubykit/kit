@@ -1,40 +1,85 @@
+# Exemple type for dummy app.
 module Kit::JsonApiSpec::Resources::Book
 
-  include Kit::Contract
-  # @hide true
-  Ct = Kit::Api::JsonApi::Contracts
+  include Kit::Api::JsonApi::Resources::ActiveRecordResource
 
-  include Kit::Api::JsonApi::Resources::Resource
-
-  def self.resource_name
+  def self.name
     :book
   end
 
-  def self.resource_url(resource_id:)
-    "/books/#{ resource_id }"
+  def self.model
+    Kit::JsonApiSpec::Models::Write::Book
   end
 
-  def self.relationship_url(resource_id:, relationship_id:)
-    "/books/#{ resource_id }/relationships/#{ relationship_id }"
-  end
-
-  def self.available_fields
+  def self.fields_setup
     {
-      id:             Kit::Api::JsonApi::TypesHint::IdNumeric,
-      created_at:     Kit::Api::JsonApi::TypesHint::Date,
-      updated_at:     Kit::Api::JsonApi::TypesHint::Date,
-      title:          Kit::Api::JsonApi::TypesHint::String,
-      date_published: Kit::Api::JsonApi::TypesHint::Date,
+      id:             { type: :id_numeric, sort_field: { default: true, tie_breaker: true } },
+      created_at:     { type: :date },
+      updated_at:     { type: :date },
+      title:          { type: :string },
+      date_published: { type: :date, sort_field: { order: :desc } },
     }
   end
+
+  def self.relationships
+    {
+      author:        {
+        resource:          :author,
+        relationship_type: :to_one,
+        resolver:          [:active_record, foreign_key_field: :kit_json_api_spec_author_id],
+      },
+      book_stores:   {
+        resource:          :book_store,
+        relationship_type: :to_many,
+        resolver:          [:active_record, foreign_key_field: :kit_json_api_spec_book_id],
+      },
+      chapters:      {
+        resource:          :chapter,
+        relationship_type: :to_many,
+        resolver:          [:active_record, foreign_key_field: :kit_json_api_spec_book_id],
+      },
+      first_chapter: {
+        resource:          :chapter,
+        relationship_type: :to_one,
+        resolver:          {
+          inherited_filter: ->(query_node:) do
+            values = (query_node.dig(:parent_relationship, :parent_query_node, :records) || [])
+              .map { |el| el[:raw_data] }
+              .map { |el| el[:id] }
+            if values.size > 0
+              { op: :and, values: [
+                { op: :in, column: :kit_json_api_spec_book_id, values: values, upper_relationship: true },
+                { op: :eq, column: :index, values: 1 },
+              ],}
+            else
+              nil
+            end
+          end,
+          records_selector: Kit::Api::JsonApi::Services::Resolvers::Data::ActiveRecord.records_selector_to_one(field_name: :kit_json_api_spec_book_id),
+        },
+      },
+      photos:        {
+        resource:          :photo,
+        relationship_type: :to_many,
+        resolver:          [:active_record, foreign_key_field: [:imageable_id, :imageable_type, 'Kit::JsonApiSpec::Models::Write::Book']],
+      },
+      serie:         {
+        resource:          :serie,
+        relationship_type: :to_one,
+        resolver:          [:active_record, foreign_key_field: :kit_json_api_spec_serie_id],
+      },
+    }
+  end
+
+=begin
 
   def self.available_relationships
     list = [
       Kit::JsonApiSpec::Resources::Book::Relationships::Author,
-      #Kit::JsonApiSpec::Resources::Book::Relationships::BookStores,
-      #Kit::JsonApiSpec::Resources::Book::Relationships::Chapters,
-      #Kit::JsonApiSpec::Resources::Book::Relationships::FirstChapter,
-      #Kit::JsonApiSpec::Resources::Book::Relationships::Serie,
+      Kit::JsonApiSpec::Resources::Book::Relationships::BookStores,
+      Kit::JsonApiSpec::Resources::Book::Relationships::Chapters,
+      Kit::JsonApiSpec::Resources::Book::Relationships::FirstChapter,
+      Kit::JsonApiSpec::Resources::Book::Relationships::Serie,
     ]
 
     list
@@ -60,5 +105,14 @@ module Kit::JsonApiSpec::Resources::Book
 
     [:ok, data: data]
   end
+
+  def self.resource_url(resource_id:)
+    "/books/#{ resource_id }"
+  end
+
+  def self.relationship_url(resource_id:, relationship_id:)
+    "/books/#{ resource_id }/relationships/#{ relationship_id }"
+  end
+=end
 
 end

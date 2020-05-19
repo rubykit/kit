@@ -7,7 +7,7 @@ module Kit::Api::JsonApi::Services::Sql
 
   # Given an ActiveRecord model and some options, generate the sql query.
   # ⚠️ Warning: the SQL is generated for Postgres.
-  def self.sql_query(ar_model:, filtering: nil, sorting: [], limit: nil)
+  def self.sql_query(ar_model:, filtering: nil, sorting: [], limit: nil, assemble_sql_query: nil)
     args = { ar_model: ar_model, filtering: filtering, sorting: sorting, limit: limit }
 
     status, ctx = Kit::Organizer.call({
@@ -15,7 +15,7 @@ module Kit::Api::JsonApi::Services::Sql
         Kit::Api::JsonApi::Services::Sql::Filtering.method(:filtering_to_sql_str),
         Kit::Api::JsonApi::Services::Sql::Sorting.method(:sorting_to_sql_str),
         self.method(:detect_relationship),
-        self.method(:assemble_sql_query),
+        (assemble_sql_query || self.method(:assemble_sql_query)),
       ],
       ctx:  args.merge({
         ar_connection:       ar_model.connection,

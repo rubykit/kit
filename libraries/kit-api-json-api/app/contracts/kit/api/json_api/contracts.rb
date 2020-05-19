@@ -41,7 +41,6 @@ module Kit::Api::JsonApi::Contracts
   ]
 
   ResourceName = Symbol
-  #Resource      = IsA[::Kit::Api::JsonApi::Types::Resource]
   Resource     = Hash[
     name:          ResourceName,
     fields:        FieldNames,
@@ -52,35 +51,24 @@ module Kit::Api::JsonApi::Contracts
   ]
   Resources = Array.of(Resource)
 
-  QueryNodeType = IsA[::Kit::Api::JsonApi::Types::QueryNode]
-
-  # @note QueryNodeType is used on purpose in order to avoid creating circular checks in contracts
-  QueryNode     = And[
-    QueryNodeType,
-    Hash[
-      resource:            Resource,
-      condition:           Optional[Or[Condition, Callable]],
-      sorting:             Optional[SortOrders],
-      records:             Optional[Array],
-      limit:               Numeric,
-      meta:                Optional[Hash],
-      data_loader:         Callable,
-      relationships:       Hash.of(RelationshipName => Relationship),
-      parent_relationship: Optional[Relationship],
-    ]
+  QueryNode = Hash[
+    resource:            Resource,
+    condition:           Optional[Or[Condition, Callable]],
+    sorting:             Optional[SortOrders],
+    records:             Optional[Array],
+    limit:               Numeric,
+    meta:                Optional[Hash],
+    data_loader:         Callable,
+    relationships:       Hash.of(RelationshipName => Relationship),
+    parent_relationship: Optional[Relationship],
   ]
 
-  DocumentType = IsA[::Kit::Api::JsonApi::Types::Document]
-
-  Document = And[
-    DocumentType,
-    Hash[
-      cache:    Hash,
-      included: Hash,
-      response: Hash[
-        data:     Or[Array, Hash],
-        included: Array,
-      ],
+  Document = Hash[
+    cache:    Hash,
+    included: Hash,
+    response: Hash[
+      data:     Or[Array, Hash],
+      included: Array,
     ],
   ]
 

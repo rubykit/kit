@@ -1,11 +1,8 @@
 # `JSON:API` base specification is agnostic about pagination strategies supported by a server, it only reserves the `page` query parameter family for pagination.
 #
 # `Kit::Api::JsonApi` supports:
-# - pagination on the top level collection and any to-many relationship
 # - [x] cursor based pagination strategy (add link)
 # - [ ] offset based pagination strategy (add link)
-#
-# A relationship that is traversed through multiple paths can have per-path pagination data.
 #
 # ## URL format
 #
@@ -13,17 +10,72 @@
 # ```kit-url
 #  GET https://my.api/my-resource?page[(resource_path.)pagination_keyword]=cursor_data
 # ```
-# If the `resource_path` is omitted, pagination applies to the top level resource.
-#
+# When the `resource_path` is omitted, pagination applies to the top level resource.
 # With the cursor based strategy, `pagination_keyword` could be any of `[:size, :after, :before]`.
 #
-# ### ⚠️ Warning for the cursor based strategy
+# Note that `resource_path` only reference `relationship` names, and not `Resource` name.
+# ```kit-url
+#  # Here the pagination data apply to the top level Resource (books)
+#  GET https://my.api/books?page[next]=cursor_data
+#  # Here the pagination data apply to a relationship on the top level Resource (books),
+#  #  with the name `books`, that can potentially map to any Resource type.
+#  #  As this is quite confusing, it is recommended not to do it.
+#  GET https://my.api/books?page[books.next]=cursor_data
+# ```
 #
-# Cursor based pagination is about identifying the boundaries of a subset.
+# ## On nested pagination
 #
-# This step is entirely independant of sorting & filtering.
+# `Kit::Api::Json` supports pagination on:
+# - the top level resource when it a collection
+# - any to-many relationships as long as **every** ancestor is singular (either a singular resource or a to-one relationship).
 #
-# Once the target subset is identified, it can be sorted, filtered, and limited (page_size).
+# Pagination data is provider per path, like: `page[author.books.next]`
+#
+# So it only has meaning when that path maps to a **single** collection.
+#
+# Here are a few examples:
+# ```kit-url
+#  # VALID: the top level resource is singular (author A.id=a1), so pagination data can apply
+#  #  to `books`, because there can only be one books collection.
+#  GET https://my.api/authors/a1?page[books.next]=cursor_data
+#
+#  # VALID: the top level resource is singular (book B.id=b1), it's author relationship is
+#  #  singular (to-one relationship), so pagination can apply to `author.books`.
+#  #  Again, there is only be one books collection.
+#  GET https://my.api/books/1?page[author.books.next]=cursor_data
+#
+#  # INVALID: the top level resource is a collection (authors), so pagination data CAN NOT
+#  #  apply to `books`, because there are multiple books collections (one for author A.id=a1,
+#  #  one for author A.id=a2, etc). Except for luck, that pagination data is meaningless.
+#  GET https://my.api/authors?page[books.next]=cursor_data
+# ```
+#
+# As a result, an error is returned when trying to paginate on nested collections.
+#
+# ## Considerations for different strategies
+# *Todo: move this somewhere else*
+#
+# Pagination strategies have different implications for data Resolvers.
+#
+# ### Cursor based strategy
+#
+# A `cursor` is what we call pagination data when it allows to identify precisely at least one boundary of a subset.
+#
+# For the following pagination data `page[size]=10&page[next]=gt|Author.id=1000`, steps will happen in a specific order:
+#  1. Add a boundary condition with the cursor data, `Author.id > 1000`
+#  2. Apply filters & sorting
+#  3. Apply page size limit
+#
+# **The boundary condition takes precedence on the filtering, sorting & page size limit.**
+#
+# ### Offset based strategy
+#
+# For the following pagination data `page[size]=10&page[offset]=2`, steps will happen in a specific order:
+#  1. Apply filters & sorting
+#  2. Add an offset of `offset_value * page_size`
+#  2. Apply page size limit
+#
+# **The filters & sorting take precedence on the offset condition.**
 #
 # ## References
 # - https://jsonapi.org/format/1.1/#fetching-pagination
@@ -36,7 +88,7 @@ module Kit::Api::JsonApi::Services::Request::Pagination
   Ct = Kit::Api::JsonApi::Contracts
 
   # Entry point. Parse & validate pagination data before adding it to the `Request`.
-  def self.handle_pagination(config:, query_params:, request:)
+  def self.handle_pagination(query_params:, request:)
     args = { config: config, query_params: query_params, request: request }
 
     Kit::Organizer.call({
@@ -73,7 +125,7 @@ module Kit::Api::JsonApi::Services::Request::Pagination
     [:ok, parsed_query_params_page: list]
   end
 
-  def self.validate(config:, parsed_query_params_page:)
+  def self.validate(parsed_query_params_page:)
     errors = []
 
     parsed_query_params_page.each do |path, list|
@@ -103,7 +155,7 @@ module Kit::Api::JsonApi::Services::Request::Pagination
   end
 
   def self.add_to_request(config:, parsed_query_params_page:, request:)
-    request[:pages] = parsed_query_params_page
+    request[:pagination] = parsed_query_params_page
 
     [:ok, request: request]
   end

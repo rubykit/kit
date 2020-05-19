@@ -54,6 +54,11 @@ PATH
       rails
 
 PATH
+  remote: ../kit-error
+  specs:
+    kit-error (0.1.0)
+
+PATH
   remote: ../kit-organizer
   specs:
     kit-organizer (0.1.0)
@@ -287,8 +292,6 @@ GEM
     ruby_event_store-browser (1.0.0)
       ruby_event_store (= 1.0.0)
       sinatra
-    sassc (2.3.0)
-      ffi (~> 1.9)
     seedbank (0.5.0)
       rake (>= 10.0)
     sidekiq (6.0.7)
@@ -339,6 +342,7 @@ DEPENDENCIES
   kit-dotenv-rails!
   kit-dummy-app-container!
   kit-engine!
+  kit-error!
   kit-organizer!
   kit-router!
   listen
@@ -346,7 +350,6 @@ DEPENDENCIES
   rails
   rspec-rails
   rubocop (~> 0.81.0)
-  sassc
   seedbank
   yard
 

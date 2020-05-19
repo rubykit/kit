@@ -1,14 +1,52 @@
+# Exemple type for dummy app.
 module Kit::JsonApiSpec::Resources::Photo
 
-  include Kit::Contract
-  # @hide true
-  Ct = Kit::Api::JsonApi::Contracts
+  include Kit::Api::JsonApi::Resources::ActiveRecordResource
 
-  include Kit::Api::JsonApi::Resources::Resource
-
-  def self.resource_name
+  def self.name
     :photo
   end
+
+  def self.model
+    Kit::JsonApiSpec::Models::Write::Photo
+  end
+
+  def self.fields_setup
+    {
+      id:         { type: :id_numeric, sort_field: { default: true, tie_breaker: true } },
+      created_at: { type: :date },
+      updated_at: { type: :date },
+      title:      { type: :string },
+      uri:        { type: :string },
+    }
+  end
+
+  def self.relationships
+    {
+      author:  {
+        resource:          :author,
+        relationship_type: :to_one,
+        resolver:          [:active_record, foreign_key_field: { column_name_id: :imageable_id, column_name_type: :imageable_type, model_name: 'Kit::JsonApiSpec::Models::Write::Author' }],
+      },
+      book:    {
+        resource:          :book,
+        relationship_type: :to_one,
+        resolver:          [:active_record, foreign_key_field: { column_name_id: :imageable_id, column_name_type: :imageable_type, model_name: 'Kit::JsonApiSpec::Models::Write::Book' }],
+      },
+      chapter: {
+        resource:          :chapter,
+        relationship_type: :to_one,
+        resolver:          [:active_record, foreign_key_field: { column_name_id: :imageable_id, column_name_type: :imageable_type, model_name: 'Kit::JsonApiSpec::Models::Write::Chapter' }],
+      },
+      serie:   {
+        resource:          :serie,
+        relationship_type: :to_one,
+        resolver:          [:active_record, foreign_key_field: { column_name_id: :imageable_id, column_name_type: :imageable_type, model_name: 'Kit::JsonApiSpec::Models::Write::Serie' }],
+      },
+    }
+  end
+
+=begin
 
   def self.resource_url(resource_id:)
     "/photos/#{ resource_id }"
@@ -16,16 +54,6 @@ module Kit::JsonApiSpec::Resources::Photo
 
   def self.relationship_url(resource_id:, relationship_id:)
     "/photos/#{ resource_id }/relationships/#{ relationship_id }"
-  end
-
-  def self.available_fields
-    {
-      id:         Kit::Api::JsonApi::TypesHint::IdNumeric,
-      created_at: Kit::Api::JsonApi::TypesHint::Date,
-      updated_at: Kit::Api::JsonApi::TypesHint::Date,
-      title:      Kit::Api::JsonApi::TypesHint::String,
-      uri:        Kit::Api::JsonApi::TypesHint::String,
-    }
   end
 
   def self.available_relationships
@@ -59,5 +87,7 @@ module Kit::JsonApiSpec::Resources::Photo
 
     [:ok, data: data]
   end
+
+=end
 
 end

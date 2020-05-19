@@ -38,15 +38,39 @@ module Kit::Api::JsonApi::Services::Config
     end
 
     config = {
-      paginator:             nil,
-      page_size:             page_size,
-      page_size_max:         page_size_max,
+      resources:            {},
+
+      paginator:            nil,
+      page_size:            page_size,
+      page_size_max:        page_size_max,
 
       field_transformation: :underscore,
-      linker:                nil,
+      linker:               nil,
     }
 
     config
+  end
+
+  # Ensure that used Types are registered on the config object, including relationship resources.
+  def self.validate_config_resources(config:)
+    if config[:resources].empty?
+      return [:error, 'Kit::Api::JsonApi - Error: no resources defined for config object']
+    end
+
+    config[:resources].each do |resource_name, resource|
+      resource[:relationships].each do |relationship_name, relationship|
+        relationship_resource = relationship[:resource]
+        if !relationship_resource
+          return Kit::Error("Kit::Api::JsonApi - Error: missing resource for relationship `#{ resource_name }.#{ relationship_name }`")
+        end
+
+        if !config[:resources][relationship_resource]
+          return Kit::Error("Kit::Api::JsonApi - Error: unregistered resource `#{ relationship_resource }` for relationship `#{ resource_name }.#{ relationship_name }`")
+        end
+      end
+    end
+
+    [:ok]
   end
 
 end

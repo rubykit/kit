@@ -1,14 +1,36 @@
+# Exemple type for dummy app.
 module Kit::JsonApiSpec::Resources::Store
 
-  include Kit::Contract
-  # @hide true
-  Ct = Kit::Api::JsonApi::Contracts
+  include Kit::Api::JsonApi::Resources::ActiveRecordResource
 
-  include Kit::Api::JsonApi::Resources::Resource
-
-  def self.resource_name
+  def self.name
     :store
   end
+
+  def self.model
+    Kit::JsonApiSpec::Models::Write::Store
+  end
+
+  def self.fields_setup
+    {
+      id:         { type: :id_numeric, sort_field: { default: true, tie_breaker: true } },
+      created_at: { type: :date },
+      updated_at: { type: :date },
+      name:       { type: :string },
+    }
+  end
+
+  def self.relationships
+    {
+      book_store: {
+        resource:          :book_store,
+        relationship_type: :to_many,
+        resolver:          [:active_record, foreign_key_field: :kit_json_api_spec_store_id],
+      },
+    }
+  end
+
+=begin
 
   def self.resource_url(resource_id:)
     "/stores/#{ resource_id }"
@@ -16,15 +38,6 @@ module Kit::JsonApiSpec::Resources::Store
 
   def self.relationship_url(resource_id:, relationship_id:)
     "/stores/#{ resource_id }/relationships/#{ relationship_id }"
-  end
-
-  def self.available_fields
-    {
-      id:         Kit::Api::JsonApi::TypesHint::IdNumeric,
-      created_at: Kit::Api::JsonApi::TypesHint::Date,
-      updated_at: Kit::Api::JsonApi::TypesHint::Date,
-      name:       Kit::Api::JsonApi::TypesHint::String,
-    }
   end
 
   def self.available_relationships
@@ -55,5 +68,7 @@ module Kit::JsonApiSpec::Resources::Store
 
     [:ok, data: data]
   end
+
+=end
 
 end

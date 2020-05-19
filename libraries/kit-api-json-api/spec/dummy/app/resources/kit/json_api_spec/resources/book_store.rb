@@ -1,43 +1,41 @@
+# Exemple type for dummy app.
 module Kit::JsonApiSpec::Resources::BookStore
 
-  include Kit::Contract
-  # @hide true
-  Ct = Kit::Api::JsonApi::Contracts
+  include Kit::Api::JsonApi::Resources::ActiveRecordResource
 
-  include Kit::Api::JsonApi::Resources::Resource
-
-  def self.resource_name
+  def self.name
     :book_store
   end
 
-  def self.resource_url(resource_id:)
-    "/book_stores/#{ resource_id }"
+  def self.model
+    Kit::JsonApiSpec::Models::Write::BookStore
   end
 
-  def self.relationship_url(resource_id:, relationship_id:)
-    "/book_stores/#{ resource_id }/relationships/#{ relationship_id }"
-  end
-
-  def self.available_fields
+  def self.fields_setup
     {
-      id:         Kit::Api::JsonApi::TypesHint::IdNumeric,
-      created_at: Kit::Api::JsonApi::TypesHint::Date,
-      updated_at: Kit::Api::JsonApi::TypesHint::Date,
-      in_stock:   Kit::Api::JsonApi::TypesHint::Boolean,
+      id:         { type: :id_numeric, sort_field: { default: true, tie_breaker: true } },
+      created_at: { type: :date },
+      updated_at: { type: :date },
+      in_stock:   { type: :boolean },
     }
   end
 
-  def self.available_sort_fields
-    available_fields
-      .map { |name, _| [name, { order: [[name, :asc]], default: (name == :id) }] }
-      .to_h
+  def self.relationships
+    {
+      book:  {
+        resource:          :book,
+        relationship_type: :to_one,
+        resolver:          [:active_record, foreign_key_field: :kit_json_api_spec_book_id],
+      },
+      store: {
+        resource:          :store,
+        relationship_type: :to_one,
+        resolver:          [:active_record, foreign_key_field: :kit_json_api_spec_store_id],
+      },
+    }
   end
 
-  def self.available_filters
-    available_fields
-      .map { |name, type| [name, Kit::Api::JsonApi::TypesHint.defaults[type]] }
-      .to_h
-  end
+=begin
 
   def self.available_relationships
     list = [
@@ -48,6 +46,14 @@ module Kit::JsonApiSpec::Resources::BookStore
     list
       .map { |el| [el.relationship[:name],  el.relationship] }
       .to_h
+  end
+
+  def self.resource_url(resource_id:)
+    "/book_stores/#{ resource_id }"
+  end
+
+  def self.relationship_url(resource_id:, relationship_id:)
+    "/book_stores/#{ resource_id }/relationships/#{ relationship_id }"
   end
 
   before [
@@ -68,5 +74,6 @@ module Kit::JsonApiSpec::Resources::BookStore
 
     [:ok, data: data]
   end
+=end
 
 end
