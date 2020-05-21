@@ -3,22 +3,6 @@ module Kit::Contract::BuiltInContracts
   # Array validation logic that does not need to live in the Class.
   module ArrayHelper
 
-    def self.run_contracts(list:, args:, contract:)
-      list.each do |local_contract|
-        status, ctx = result = local_contract.call(*args)
-
-        if status == :error
-          if ctx[:contracts_stack]
-            ctx[:contracts_stack] << contract
-          end
-
-          return result
-        end
-      end
-
-      [:ok]
-    end
-
     def self.get_index_contract(contract:, index:)
       ->(array) do
         Kit::Contract::Services::Validation.valid?(contract: contract, args: [array[index]])
@@ -69,9 +53,21 @@ module Kit::Contract::BuiltInContracts
       with(index_contracts || [])
     end
 
-    def call(args)
+    def call(*args)
       debug(args: args)
-      ArrayHelper.run_contracts(list: @state[:contracts_list], args: [args], contract: self)
+
+      safe_nested_call(list: @state[:contracts_list], args: args, contract: self) do |local_contract|
+        #status, ctx = result = local_contract.call(*args)
+        status, ctx = result = Kit::Contract::Services::Validation.valid?(contract: local_contract, args: args)
+        if status == :error
+          if ctx[:contracts_stack]
+            ctx[:contracts_stack] << contract
+          end
+          return result
+        end
+      end
+
+      [:ok]
     end
 
     def self.call(*args)

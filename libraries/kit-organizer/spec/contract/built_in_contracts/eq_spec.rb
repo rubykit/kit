@@ -12,9 +12,9 @@ describe Kit::Contract::BuiltInContracts::Eq do
   end
   let(:args_invalid) do
     {
-      ['1']        => 'EQ failed: expected `1`, got `1`',
-      [2]          => 'EQ failed: expected `1`, got `2`',
-      [{ c: :ok }] => 'EQ failed: expected `1`, got `{:c=>:ok}`',
+      ['1']        => 'EQ failed: expected `1` got `1`',
+      [2]          => 'EQ failed: expected `1` got `2`',
+      [{ c: :ok }] => 'EQ failed: expected `1` got `{:c=>:ok}`',
     }
   end
 

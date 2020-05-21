@@ -3,7 +3,9 @@ require_relative '../shared/signature_exemples'
 require_relative '../../../lib/kit/contract'
 
 module TestClasses
+
   module ArrayTests
+
     include Kit::Contract
     Ct = Kit::Contract::BuiltInContracts
 
@@ -20,7 +22,6 @@ module TestClasses
   end
 end
 
-
 describe ::Kit::Contract::BuiltInContracts::Array do
 
   context 'for a signature contract that expects a single array' do
@@ -36,7 +37,7 @@ describe ::Kit::Contract::BuiltInContracts::Array do
 
     let(:args_invalid) do
       {
-        [1, 2] => [ArgumentError, "wrong number of arguments (given 2, expected 1)"],
+        [1, 2] => [ArgumentError, 'wrong number of arguments (given 2, expected 1)'],
       }
     end
 
@@ -56,7 +57,7 @@ describe ::Kit::Contract::BuiltInContracts::Array do
 
     let(:args_invalid) do
       {
-        [[1, 2]] => [ArgumentError, "wrong number of arguments (given 1, expected 2)"],
+        [[1, 2]] => [ArgumentError, 'wrong number of arguments (given 1, expected 2)'],
       }
     end
 

@@ -14,13 +14,13 @@ describe Kit::Organizer::Services::Callable::Alias do
       let(:alias_name) { :undefined_alias }
 
       it 'fails' do
-        expect { subject }.to raise_error("Kit::Organizer::Services::Callable::Alias | unknown alias `#{alias_name}`")
+        expect { subject }.to raise_error("Kit::Organizer::Services::Callable::Alias | unknown alias `#{ alias_name }`")
       end
     end
 
     context 'with a registered alias' do
       let(:alias_name) { :registered_alias }
-      let(:target)     { ->() {} }
+      let(:target)     { -> {} }
 
       before { described_class.register(store: store, id: alias_name, target: target) }
       it 'returns the aliased target' do

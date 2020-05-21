@@ -22,8 +22,8 @@ describe Kit::Contract::BuiltInContracts::Delayed do
   end
   let(:args_invalid) do
     {
-      [{ v: 2, obj2: { v: 2 }, }] => 'EQ failed: expected `1`, got `2`',
-      [{ v: 1, obj2: { v: 3 }, }] => 'EQ failed: expected `2`, got `3`',
+      [{ v: 2, obj2: { v: 2 }, }] => 'EQ failed: expected `1` got `2`',
+      [{ v: 1, obj2: { v: 3 }, }] => 'EQ failed: expected `2` got `3`',
     }
   end
 

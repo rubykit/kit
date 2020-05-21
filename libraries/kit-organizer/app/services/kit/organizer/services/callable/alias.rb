@@ -24,7 +24,7 @@ module Kit::Organizer::Services::Callable::Alias
     record = store[id.to_sym]
 
     if !record
-      raise "Kit::Organizer::Services::Callable::Alias | unknown alias `#{id}`"
+      raise "Kit::Organizer::Services::Callable::Alias | unknown alias `#{ id }`"
     end
 
     record[:target]

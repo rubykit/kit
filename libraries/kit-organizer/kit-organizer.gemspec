@@ -1,26 +1,30 @@
-$:.push File.expand_path("lib", __dir__)
+$LOAD_PATH.push File.expand_path('lib', __dir__)
+require 'kit/organizer/version'
 
-# Maintain your gem's version:
-require "kit/organizer/version"
+version = Kit::Organizer::VERSION
 
-# Describe your gem and declare its dependencies:
-Gem::Specification.new do |spec|
-  spec.name        = "kit-organizer"
-  spec.version     = Kit::Organizer::VERSION
-  spec.authors     = ["Nathan Appere"]
-  spec.email       = ["nathan.appere@gmail.com"]
-  spec.homepage    = "https://ruby-kit-organizer.localhost.com"
-  spec.summary     = "Organizer gem to allow railway programming in ruby"
-  spec.description = ""
-  spec.license     = "MIT"
+Gem::Specification.new do |s|
+  s.name        = 'kit-organizer'
+  s.version     = version
+  s.summary     = 'Handles code flow.'
+  s.description = ''
+  s.license     = 'MIT'
+  s.author      = 'Nathan Appere'
+  s.email       = 'nathan@rubykit.org'
+  s.homepage    = 'https://github.com/rubykit/kit/tree/master/libraries/kit-organizer'
 
-  spec.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
+  s.metadata = {
+    'source_code_base_uri' => 'https://github.com/rubykit/kit',
+    'source_code_uri'      => "https://github.com/rubykit/kit/tree/v#{ version }/libraries/kit-organizer",
+    'documentation_uri'    => "https://docs.rubykit.org/v#{ version }",
+  }
 
-  spec.add_dependency "rails", "~> 6.0"
-  spec.add_dependency "awesome_print"
+  s.files = Dir['{app,config,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
 
-  spec.add_development_dependency 'rspec-rails'
-  spec.add_development_dependency 'yard'
-  spec.add_development_dependency 'redcarpet'
-  spec.add_development_dependency 'listen'
+  s.add_dependency 'awesome_print'
+  s.add_dependency 'concurrent-ruby'
+  s.add_dependency 'rails', '~> 6.0'
+
+  s.add_development_dependency 'rspec-rails'
+
 end

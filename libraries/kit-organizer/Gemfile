@@ -15,6 +15,7 @@ gemspec
 # gem 'byebug', group: [:development, :test]
 
 gem 'rails'
+gem 'concurrent-ruby', require: 'concurrent'
 
 group :test, :development do
   gem 'pry'

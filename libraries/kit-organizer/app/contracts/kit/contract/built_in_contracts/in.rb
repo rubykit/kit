@@ -34,7 +34,9 @@ class Kit::Contract::BuiltInContracts::In < Kit::Contract::BuiltInContracts::Ins
   end
 
   def beautified_values
-    values = @expected_values.map do |expected_value|
+    expected_values = @state[:expected_values]
+
+    values = expected_values.map do |expected_value|
       if expected_value.is_a?(self.class)
         "In#{ expected_value.beautified_values }"
       else

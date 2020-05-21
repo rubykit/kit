@@ -5,7 +5,7 @@ module Kit::Contract::BuiltInContracts
 
     # Receives the list of arguments as an array, and forwards it the first argument.
     def call(*args)
-      ArrayHelper.run_contracts(list: @contracts_list, args: [args])
+      super(args)
     end
 
   end

@@ -1,4 +1,4 @@
-# Shortcut to specify Tupple[:ok, Hash[values]] || Tupple[:errors, Any]
+# Shortcut to specify Tupple[:ok, Hash[values]] || Tupple[:errors, Any] with specific valid keyword arguments.
 class Kit::Organizer::Contracts::Result < Kit::Organizer::Contracts::InstanciableType
 
   # @hide true
@@ -6,9 +6,15 @@ class Kit::Organizer::Contracts::Result < Kit::Organizer::Contracts::Instanciabl
 
   def setup(keyword_args_contracts = nil)
     @state[:contract] = Ct::Or[
-      Ct::Tupple[Ct::Eq[:ok], Ct::Hash[keyword_args_contracts]],
-      Ct::Tupple[Ct::Eq[:error], Ct::Any],
-    ]
+      Ct::Tupple[
+        Ct::SuccessStatus,
+        Ct::Hash[keyword_args_contracts].named('Result::SuccessTupple:Ctx'),
+      ].named('Result:SuccessTupple'),
+      Ct::Tupple[
+        Ct::ErrorStatus,
+        Ct::Any,
+      ].named('Result:ErrorTupple'),
+    ].named('Result:Or')
   end
 
   def call(*args)

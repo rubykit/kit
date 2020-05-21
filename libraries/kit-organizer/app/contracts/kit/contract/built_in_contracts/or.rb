@@ -2,17 +2,17 @@
 class Kit::Contract::BuiltInContracts::Or < Kit::Contract::BuiltInContracts::InstanciableType
 
   def setup(*contracts)
-    @state[:contracts] = contracts
+    @state[:contracts_list] = contracts
   end
 
   def call(*args)
-    results = @state[:contracts].map do |contract|
-      Kit::Contract::Services::Validation.valid?(contract: contract, args: args)
+    results = safe_nested_call(list: @state[:contracts_list], args: args, contract: self) do |local_contract|
+      Kit::Contract::Services::Validation.valid?(contract: local_contract, args: args)
     end
 
     failed = results.select { |status, _| status == :error }
 
-    if failed.size != @state[:contracts].size
+    if failed.size != @state[:contracts_list].size
       [:ok]
     else
       errors = [{ detail: 'OR failed' }]

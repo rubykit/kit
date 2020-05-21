@@ -2,15 +2,19 @@
 class Kit::Contract::BuiltInContracts::And < Kit::Contract::BuiltInContracts::InstanciableType
 
   def setup(*contracts)
-    @state[:contracts] = contracts
+    @state[:contracts_list] = contracts
   end
 
   def call(*args)
-    failed_list = []
-    @state[:contracts].each do |contract|
-      status, res = Kit::Contract::Services::Validation.valid?(contract: contract, args: args)
+    debug(args: args)
 
-      if status != :ok
+=begin
+    failed_list = []
+
+    safe_nested_call(list: @state[:contracts_list], args: args, contract: self) do |local_contract|
+      status, res = Kit::Contract::Services::Validation.valid?(contract: local_contract, args: args)
+
+      if status == :err
         failed_list << res
       end
     end
@@ -20,6 +24,22 @@ class Kit::Contract::BuiltInContracts::And < Kit::Contract::BuiltInContracts::In
     else
       [:ok]
     end
+=end
+
+    safe_nested_call(list: @state[:contracts_list], args: args, contract: self) do |local_contract|
+      status, ctx = result = Kit::Contract::Services::Validation.valid?(contract: local_contract, args: args)
+      if status == :error
+        if ctx[:contracts_stack]
+          ctx[:contracts_stack] << contract
+        end
+
+        ctx[:errors].unshift({ detail: 'AND failed.' })
+
+        return result
+      end
+    end
+
+    [:ok]
   end
 
 end

@@ -3,20 +3,6 @@ module Kit::Contract::BuiltInContracts
   # Hash validation logic that does not need to live in the Class.
   module HashHelper
 
-    def self.run_contracts(list:, args:, contract:)
-      list.each do |local_contract|
-        status, ctx = result = local_contract.call(*args)
-        if status == :error
-          if ctx[:contracts_stack]
-            ctx[:contracts_stack] << contract
-          end
-          return result
-        end
-      end
-
-      [:ok]
-    end
-
     def self.get_keyword_arg_contract(key:, contract:)
       ->(hash) do
         result      = Kit::Contract::Services::Validation.valid?(contract: contract, args: [hash[key]])
@@ -102,7 +88,19 @@ module Kit::Contract::BuiltInContracts
 
     def call(*args)
       debug(args: args)
-      HashHelper.run_contracts(list: @state[:contracts_list], args: args, contract: self)
+
+      safe_nested_call(list: @state[:contracts_list], args: args, contract: self) do |local_contract|
+        #status, ctx = result = local_contract.call(*args)
+        status, ctx = result = Kit::Contract::Services::Validation.valid?(contract: local_contract, args: args)
+        if status == :error
+          if ctx[:contracts_stack]
+            ctx[:contracts_stack] << contract
+          end
+          return result
+        end
+      end
+
+      [:ok]
     end
 
     def self.call(*value)
