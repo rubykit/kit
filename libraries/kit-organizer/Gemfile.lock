@@ -9,7 +9,8 @@ PATH
 PATH
   remote: ../kit-doc-yard
   specs:
-    kit-doc-yard (0.0.2)
+    kit-doc-yard (0.0.1)
+      git
       nokogiri
       rake
       redcarpet
@@ -21,6 +22,11 @@ PATH
   specs:
     kit-dummy-app-container (0.1.0)
       rails
+
+PATH
+  remote: ../kit-error
+  specs:
+    kit-error (0.1.0)
 
 PATH
   remote: .
@@ -106,6 +112,8 @@ GEM
     diff-lcs (1.3)
     erubi (1.9.0)
     ffi (1.12.2)
+    git (1.7.0)
+      rchardet (~> 1.8)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     i18n (1.8.2)
@@ -183,6 +191,7 @@ GEM
     rb-fsevent (0.10.4)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
+    rchardet (1.8.0)
     redcarpet (3.5.0)
     redis (4.1.4)
     rspec (3.9.0)
@@ -250,6 +259,7 @@ DEPENDENCIES
   kit-app-container!
   kit-doc-yard!
   kit-dummy-app-container!
+  kit-error!
   kit-organizer!
   listen
   pry

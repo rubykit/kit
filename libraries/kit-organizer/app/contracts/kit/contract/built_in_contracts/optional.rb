@@ -1,16 +1,15 @@
-module Kit::Contract::BuiltInContracts
+# Ensure that Contract is obeyed when not nil.
+class Kit::Contract::BuiltInContracts::Optional < Kit::Contract::BuiltInContracts::InstanciableType
 
-  class Optional < InstanciableType
-    def initialize(contract)
-      @contract = contract
-    end
+  def setup(contract)
+    @state[:contract] = contract
+  end
 
-    def call(value = nil)
-      if value == nil
-        [:ok]
-      else
-        Kit::Contract::Services::Validation.valid?(contract: @contract, args: [value])
-      end
+  def call(value = nil)
+    if value == nil
+      [:ok]
+    else
+      Kit::Contract::Services::Validation.valid?(contract: @state[:contract], args: [value])
     end
   end
 

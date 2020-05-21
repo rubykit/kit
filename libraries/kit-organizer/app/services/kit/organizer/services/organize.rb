@@ -45,9 +45,10 @@
 # ```ruby
 # [:ok] || [:ok, context_update] || [:error] || [:error, context_update]
 # ```
-
 module Kit::Organizer::Services::Organize
+
   include Kit::Contract
+  # @hide true
   Ct = Kit::Organizer::Contracts
 
   # Run a `list` of `operations` (callable) in order. Each results update the initial `ctx` which is then sent to the next operation.

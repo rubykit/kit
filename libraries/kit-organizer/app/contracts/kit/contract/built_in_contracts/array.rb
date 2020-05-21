@@ -1,30 +1,19 @@
 module Kit::Contract::BuiltInContracts
 
-=begin
-  Contract types:
-    of:          alias of `every_value`, for types
-    with:        run on the value of specific indeces (this is the default when using Hash[data])
-    at:          here ordering matters
-
-    every:       run on every value
-    instance:    run on the hash instance itself
-
-    size:        instance contract about size
-=end
-
-=begin
-  Internal types of behaviour:
-    every_value: run on every value
-    index:       run on value at index N
-    instance:    run on the hash instance itself
-=end
-
+  # Array validation logic that does not need to live in the Class.
   module ArrayHelper
 
-    def self.run_contracts(list:, args:)
-      list.each do |contract|
-        status, _ = result = contract.call(*args)
-        return result if status == :error
+    def self.run_contracts(list:, args:, contract:)
+      list.each do |local_contract|
+        status, ctx = result = local_contract.call(*args)
+
+        if status == :error
+          if ctx[:contracts_stack]
+            ctx[:contracts_stack] << contract
+          end
+
+          return result
+        end
       end
 
       [:ok]
@@ -45,8 +34,8 @@ module Kit::Contract::BuiltInContracts
     def self.get_every_value_contract(contract:)
       ->(array) do
         array.each do |value|
-          result      = Kit::Contract::Services::Validation.valid?(contract: contract, args: [value])
-          status, ctx = result
+          result       = Kit::Contract::Services::Validation.valid?(contract: contract, args: [value])
+          status, _ctx = result
           return result if status == :error
         end
         [:ok]
@@ -54,17 +43,35 @@ module Kit::Contract::BuiltInContracts
     end
   end
 
-  class Array < InstanciableType
+  # Enable Contracts on Array instances, and on elements at specific indeces.
+  #
+  # ## Supported contract types:
+  # - `of`:          alias of `every_value`, for types
+  # - `with`:        run on the value of specific indeces (this is the default when using Hash[data])
+  # - `at`:          here ordering matters
+  # - `every`:       run on every value
+  # - `instance`:    run on the hash instance itself
+  # - `size`:        instance contract about size
+  #
+  # ## Supported internal types of behaviour:
+  # - `every_value`: run on every value
+  # - `index`:       run on value at index N
+  # - `instance`:    run on the hash instance itself
+  #
+  # ## Todo: add exemples.
+  #
+  class Array < Kit::Contract::BuiltInContracts::InstanciableType
 
-    def initialize(*index_contracts)
-      @contracts_list = []
+    def setup(*index_contracts)
+      @state[:contracts_list] = []
 
       instance(IsA[::Array])
       with(index_contracts || [])
     end
 
     def call(args)
-      ArrayHelper.run_contracts(list: @contracts_list, args: [args])
+      debug(args: args)
+      ArrayHelper.run_contracts(list: @state[:contracts_list], args: [args], contract: self)
     end
 
     def self.call(*args)
@@ -72,22 +79,28 @@ module Kit::Contract::BuiltInContracts
     end
 
     def add_contract(contract)
-      @contracts_list << contract
+      @state[:contracts_list] << contract
     end
 
     # NOTE: this will only be useful when Organizer can handle any signature
     def to_contracts
-      @contracts_list
+      @state[:contracts_list]
     end
 
-    # Convenience methods. They provide a slighly terser external API.
-    def self.at(*contracts);       self.new.at(*contracts);       end;
-    def self.of(*contracts);       self.new.of(*contracts);       end;
-    def self.with(*contracts);     self.new.with(*contracts);     end;
-    def self.every(*contracts);    self.new.every(*contracts);    end;
-    def self.instance(*contracts); self.new.instance(*contracts); end;
-    def self.size(size);           self.new.size(size);           end;
+    # Convenience methods. They provide a slighly terser external API to instantiate contracts.
+    def self.at(*contracts);       self.new.at(*contracts);       end
 
+    def self.of(*contracts);       self.new.of(*contracts);       end
+
+    def self.with(*contracts);     self.new.with(*contracts);     end
+
+    def self.every(*contracts);    self.new.every(*contracts);    end
+
+    def self.instance(*contracts); self.new.instance(*contracts); end
+
+    def self.meta(opts);           self.new.meta(opts);           end
+
+    def self.size(size);           self.new.size(size);           end
 
     # contract Array.of(Contract).size(1)
     def of(contract)
@@ -98,10 +111,10 @@ module Kit::Contract::BuiltInContracts
     def at(contracts)
       contracts.each do |index, contract|
         if !index.is_a?(::Integer) || index < 0
-          raise "Invalid contract usage: Array.at keys must be valid array indices (callable)"
+          raise 'Invalid contract usage: Array.at keys must be valid array indices (callable).'
         end
         if !contract.respond_to?(:call)
-          raise "Invalid contract usage: Array.at values must be contracts (callable)"
+          raise 'Invalid contract usage: Array.at values must be contracts (callable).'
         end
 
         add_contract ArrayHelper.get_index_contract(contract: contract, index: index)
@@ -124,7 +137,7 @@ module Kit::Contract::BuiltInContracts
     # contract Array.of(Contract).size(1)
     def every(contract)
       if !contract.respond_to?(:call)
-        raise "Invalid contract usage: Array.every only accepts contracts (callable)"
+        raise 'Invalid contract usage: Array.every only accepts contracts (callable).'
       end
 
       add_contract ArrayHelper.get_every_value_contract(contract: contract)
@@ -138,7 +151,7 @@ module Kit::Contract::BuiltInContracts
         .flatten
         .each do |contract|
           if !contract.respond_to?(:call)
-            raise "Invalid contract usage: Array.instance values must be contracts (callable)"
+            raise 'Invalid contract usage: Array.instance values must be contracts (callable).'
           end
 
           add_contract ArrayHelper.get_instance_contract(contract: contract)

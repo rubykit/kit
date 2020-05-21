@@ -1,4 +1,4 @@
-require "awesome_print"
+require 'awesome_print'
 
 # When using contracts on method signatures (through `before`, `after`, `contract`) a `Kit::Contract::Error` exception is raised when a contract failure happens.
 class Kit::Contract::Error < ::StandardError
@@ -19,15 +19,33 @@ class Kit::Contract::Error < ::StandardError
     super
   end
 
-  # Attempts to load the source of the contract that failed (it can be difficult to understand what is happening without it).
+  # Display informations about the the contract that failed.
   # @api private
   def backtrace
     list = []
 
     if @contract_error
+      if @contract_error[:contracts_stack]
+        list << 'Kit::Contract'.red
+
+        contracts = []
+        @contract_error[:contracts_stack].each do |el|
+          name = el.respond_to?(:get_meta) ? el.get_meta[:name] : nil
+          if name
+            name = name.yellow
+          else
+            name = "Unnamed #{ el.class.name }"
+          end
+          contracts << name
+          #contracts << [name, el.inspect].to_s
+        end
+
+        list << '  Hierarchy: ' + contracts.join(' > ')
+      end
+
       if @contract_error[:args]
         arguments = @contract_error[:args].ai
-        list << "Arguments used: #{arguments}"
+        list << "  Arguments used: #{ arguments }"
       end
       error_callable = @contract_error[:callable]
       if error_callable.respond_to?(:source_location)
@@ -38,7 +56,7 @@ class Kit::Contract::Error < ::StandardError
 
           # NOTE: naive way to detect one-liner predicates
           if source.count('{') > 0 && source.count('{') == source.count('}')
-            list << "#{file_name}:#{line_number}:src `#{source}`"
+            list << "#{ file_name }:#{ line_number }:src `#{ source }`"
           end
         end
       end
@@ -50,15 +68,20 @@ class Kit::Contract::Error < ::StandardError
   # Generates an error message that can be displayed.
   # @api private
   def message
-    method = "#{@target_class.name}#{(@method_type == :singleton_method) ? '#' : '.' }#{@method_name}"
-    str    = "Contract failure #{@type} `#{method}`"
+    contract = @contract_error[:callable]
+
+    method   = "#{ @target_class.name }#{ (@method_type == :singleton_method) ? '#' : '.' }#{ @method_name }"
+    str      = "Contract failure #{ @type } `#{ method }`"
+    if contract&.respond_to?(:get_name)
+      str += " - Name: `#{ contract.get_name }`"
+    end
 
     if @errors
       errors = @errors
         .map    { |e| e[:detail] }
         .select { |e| e != 'Invalid result type for contract' }
       if errors.size > 0
-        str += ": #{errors}"
+        str += ": #{ errors }"
       end
     end
 

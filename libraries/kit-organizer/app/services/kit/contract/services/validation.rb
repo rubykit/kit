@@ -34,7 +34,12 @@ module Kit::Contract::Services::Validation
 
     if status == :error
       (ctx[:errors] ||= []) << { detail: "Invalid result type for contract" }
-      ctx[:contract_error] = { callable: contract, args: args, }
+
+      if !ctx[:contract_error]
+        ctx[:contract_error] = { callable: contract, args: args, contracts_stack: [contract], }
+      else
+        ctx[:contract_error][:contracts_stack] << contract
+      end
     end
 
     result = [status]
