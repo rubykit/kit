@@ -86,6 +86,10 @@ commands:
         keys:
         - << parameters.key >>-{{ checksum "Gemfile.lock"  }}
 
+
+
+# kit-api-json-api -------------------------------------------------------------
+
   kit-api-json-api__save-cache-gems:
     steps:
       - save-cache-gems:
@@ -96,13 +100,38 @@ commands:
       - restore-cache-gems:
           key: kit-api-json-api@gems-v1
 
-  prepare-database:
+  kit-api-json-api__prepare-database:
     description: 'Loading DBs schemas && running seed'
     steps:
       - run:
           command: |
             bundle exec rails db:schema:load:primary --trace
             bundle exec rails db:seed:fantasy_data
+
+# kit-organizer ----------------------------------------------------------------
+
+  kit-organizer__save-cache-gems:
+    steps:
+      - save-cache-gems:
+          key: kit-organizer@gems-v1
+
+  kit-organizer__restore-cache-gems:
+    steps:
+      - restore-cache-gems:
+          key: kit-organizer@gems-v1
+
+# kit-pagination ---------------------------------------------------------------
+
+  kit-pagination__save-cache-gems:
+    steps:
+      - save-cache-gems:
+          key: kit-pagination@gems-v1
+
+  kit-pagination__restore-cache-gems:
+    steps:
+      - restore-cache-gems:
+          key: kit-pagination@gems-v1
+
 
 # Jobs -------------------------------------------------------------------------
 
@@ -119,7 +148,33 @@ jobs:
       - kit-api-json-api__restore-cache-gems
       - install-gems
       - kit-api-json-api__save-cache-gems
-      - prepare-database
+      - kit-api-json-api__prepare-database
+      - run-rspec
+
+  test-kit-organizer:
+    working_directory: ~/kit/libraries/kit-organizer
+    <<: *docker_tests
+    #executor: ruby/default
+    steps:
+      - checkout-code
+      - show-bundler-version
+      - install-bundler
+      - kit-organizer__restore-cache-gems
+      - install-gems
+      - kit-organizer__save-cache-gems
+      - run-rspec
+
+  test-kit-pagination:
+    working_directory: ~/kit/libraries/kit-organizer
+    <<: *docker_tests
+    #executor: ruby/default
+    steps:
+      - checkout-code
+      - show-bundler-version
+      - install-bundler
+      - kit-pagination__restore-cache-gems
+      - install-gems
+      - kit-pagination__save-cache-gems
       - run-rspec
 
 workflows:
@@ -127,3 +182,5 @@ workflows:
   test-all:
     jobs:
       - test-kit-api-json-api
+      - test-kit-organizer
+      - test-kit-pagination
