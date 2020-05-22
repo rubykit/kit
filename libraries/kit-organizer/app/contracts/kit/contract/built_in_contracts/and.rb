@@ -1,5 +1,5 @@
 # Ensure all contracts are successful
-class Kit::Contract::BuiltInContracts::And < Kit::Contract::BuiltInContracts::InstanciableType
+class Kit::Contract::BuiltInContracts::And < Kit::Contract::BuiltInContracts::InstantiableContract
 
   def setup(*contracts)
     @state[:contracts_list] = contracts

@@ -5,14 +5,8 @@ module Kit::Contract::BuiltInContracts
 
     def self.get_keyword_arg_contract(key:, contract:)
       ->(hash) do
-        result      = Kit::Contract::Services::Validation.valid?(contract: contract, args: [hash[key]])
-        status, ctx = result
-
-        if status == :error
-          ctx[:contract_error]
-        end
-
-        result
+        # TODO: add key in errors?
+        Kit::Contract::Services::Validation.valid?(contract: contract, args: [hash[key]])
       end
     end
 
@@ -77,12 +71,12 @@ module Kit::Contract::BuiltInContracts
   #
   # ## Todo: add exemples.
   #
-  class Hash < Kit::Contract::BuiltInContracts::InstanciableType
+  class Hash < Kit::Contract::BuiltInContracts::InstantiableContract
 
     def setup(keyword_args_contracts = nil)
       @state[:contracts_list] = []
 
-      instance(IsA[::Hash])
+      instance(IsA[::Hash], safe: true)
       with(keyword_args_contracts || [])
     end
 
@@ -107,8 +101,9 @@ module Kit::Contract::BuiltInContracts
       IsA[::Hash].call(*value)
     end
 
-    def add_contract(contract)
-      @state[:contracts_list] << contract
+    def add_contract(contract, safe: false)
+      el = safe ? { contract: contract, safe: true } : contract
+      @state[:contracts_list] << el
     end
 
     # NOTE: this will only be useful when Organizer can handle any signature
@@ -134,20 +129,20 @@ module Kit::Contract::BuiltInContracts
     def self.size(size);              self.new.size(size);              end
 
     # contract Hash.of(Any => Contract)
-    def with(contracts)
+    def with(contracts, safe: false)
       contracts.each do |key, contract|
         if !contract.respond_to?(:call)
           raise 'Invalid contract usage: Hash.with values must be contracts (callable).'
         end
 
-        add_contract HashHelper.get_keyword_arg_contract(key: key, contract: contract)
+        add_contract(contract: HashHelper.get_keyword_arg_contract(key: key, contract: contract), safe: safe)
       end
 
       self
     end
 
     # contract Or[Contract, Array.of(Contract)]
-    def every(contracts)
+    def every(contracts, safe: false)
       [contracts]
         .flatten
         .each do |contract|
@@ -157,14 +152,14 @@ module Kit::Contract::BuiltInContracts
 
           # TODO: check signature compatibility here ?
 
-          add_contract HashHelper.get_every_key_value_contract(contract: contract)
+          add_contract(contract: HashHelper.get_every_key_value_contract(contract: contract), safe: safe)
         end
 
       self
     end
 
     # contract Or[Contract, Array.of(Contract)]
-    def every_key(contracts)
+    def every_key(contracts, safe: false)
       [contracts]
         .flatten
         .each do |contract|
@@ -172,14 +167,14 @@ module Kit::Contract::BuiltInContracts
             raise 'Invalid contract usage: Hash.every_key values must be contracts (callable).'
           end
 
-          add_contract HashHelper.get_every_key_contract(contract: contract)
+          add_contract(contract: HashHelper.get_every_key_contract(contract: contract), safe: safe)
         end
 
       self
     end
 
     # contract Or[Contract, Array.of(Contract)]
-    def every_value(contracts)
+    def every_value(contracts, safe: false)
       [contracts]
         .flatten
         .each do |contract|
@@ -187,14 +182,14 @@ module Kit::Contract::BuiltInContracts
             raise 'Invalid contract usage: Hash.every_value values must be contracts (callable).'
           end
 
-          add_contract HashHelper.get_every_value_contract(contract: contract)
+          add_contract(contract: HashHelper.get_every_value_contract(contract: contract), safe: safe)
         end
 
       self
     end
 
     # contract Hash.of(Type1 => Type2).size(1)
-    def of(contracts)
+    def of(contracts, safe: false)
       if contracts.keys.size > 1
         raise 'Invalid contract usage: Hash.every can only accept one key <> value.'
       end
@@ -206,7 +201,7 @@ module Kit::Contract::BuiltInContracts
     end
 
     # contract Or[Contract, Array.of(Contract)]
-    def instance(contracts)
+    def instance(contracts, safe: false)
       [contracts]
         .flatten
         .each do |contract|
@@ -214,7 +209,7 @@ module Kit::Contract::BuiltInContracts
             raise 'Invalid contract usage: Hash.instance values must be contracts (callable).'
           end
 
-          add_contract HashHelper.get_instance_contract(contract: contract)
+          add_contract(contract: HashHelper.get_instance_contract(contract: contract), safe: safe)
         end
 
       self
@@ -222,7 +217,7 @@ module Kit::Contract::BuiltInContracts
 
     # contract And[Integer, ->(x) { x > 0 }]
     def size(size)
-      instance(->(i) { i.size == size })
+      instance(->(i) { i.size == size }, safe: true)
       self
     end
 

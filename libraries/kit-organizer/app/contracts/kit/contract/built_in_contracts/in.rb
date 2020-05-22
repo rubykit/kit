@@ -7,7 +7,7 @@
 # In[:ok, :error]
 # Or[Eq[:ok], Eq[:error]]
 # ```
-class Kit::Contract::BuiltInContracts::In < Kit::Contract::BuiltInContracts::InstanciableType
+class Kit::Contract::BuiltInContracts::In < Kit::Contract::BuiltInContracts::InstantiableContract
 
   def setup(*expected_values)
     @state[:expected_values] = expected_values

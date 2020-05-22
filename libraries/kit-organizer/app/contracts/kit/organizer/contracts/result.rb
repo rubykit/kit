@@ -1,5 +1,5 @@
 # Shortcut to specify Tupple[:ok, Hash[values]] || Tupple[:errors, Any] with specific valid keyword arguments.
-class Kit::Organizer::Contracts::Result < Kit::Organizer::Contracts::InstanciableType
+class Kit::Organizer::Contracts::Result < Kit::Organizer::Contracts::InstantiableContract
 
   # @hide true
   Ct = Kit::Organizer::Contracts

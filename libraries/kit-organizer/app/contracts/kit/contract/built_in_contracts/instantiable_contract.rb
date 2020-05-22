@@ -1,7 +1,7 @@
 require 'awesome_print'
 
 # Helper class to memoize Contract values.
-class Kit::Contract::BuiltInContracts::InstanciableType
+class Kit::Contract::BuiltInContracts::InstantiableContract
 
   class << self
 
@@ -16,9 +16,9 @@ class Kit::Contract::BuiltInContracts::InstanciableType
   def initialize(state: nil, args: nil, bypass_setup: false)
     @state = state || { meta: {} }
 
-    if !bypass_setup
-      self.setup(*args)
-    end
+    return if bypass_setup
+
+    self.setup(*args)
   end
 
   # Convenience use of the `[]` operator as an implicit `.new`.
@@ -38,7 +38,7 @@ class Kit::Contract::BuiltInContracts::InstanciableType
     self.new(state: { meta: { name: name } }, args: [])
   end
 
-  # Handles initialization logic for `InstanciableType`s
+  # Handles initialization logic for `InstantiableContract`s
   def setup(*args)
     raise 'Implement me!'
   end
@@ -68,7 +68,7 @@ class Kit::Contract::BuiltInContracts::InstanciableType
   end
 
   # Meta accessor
-  def get_meta
+  def get_meta # rubocop:disable Naming/AccessorMethodName
     @state[:meta] || {}
   end
 
@@ -91,7 +91,7 @@ class Kit::Contract::BuiltInContracts::InstanciableType
   def safe_nested_call(list:, args:, contract:)
     # Purely for spec purpose. This allows to check that the safe mechanism actually does something.
     if self.class.disable_safe_nesting == true
-      list.each { |local_contract| yield local_contract }
+      list.each { |local_contract| yield(local_contract.is_a?(Hash) ? local_contract[:contract] : local_contract) }
       return
     end
 
@@ -99,19 +99,33 @@ class Kit::Contract::BuiltInContracts::InstanciableType
     cache_ref = @cache_ref
     cache_removal = []
 
-    result = list.map do |local_contract|
-      contract_oid = local_contract.object_id
-      args_oid     = args.map(&:object_id)
-      cache_value  = cache_ref.value
-      cache_value[contract_oid] ||= []
-      if !cache_value[contract_oid].include?(args_oid)
-        cache_value[contract_oid] << args_oid
-        cache_ref.value = cache_value
-        cache_removal << [contract_oid, args_oid]
+    result = list.filter_map do |local_contract|
+      safe = false
+      if local_contract.is_a?(Hash)
+        safe           = local_contract[:safe] || false
+        local_contract = local_contract[:contract]
+      end
 
+      if !safe && local_contract.respond_to?(:contract_safe?)
+        safe = local_contract.contract_safe?
+      end
+
+      if safe
         yield local_contract
       else
-        nil
+        contract_oid = local_contract.object_id
+        args_oid     = args.map(&:object_id)
+        cache_value  = cache_ref.value
+        cache_value[contract_oid] ||= {}
+        if !cache_value[contract_oid].include?(args_oid)
+          cache_value[contract_oid][args_oid] = args_oid
+          cache_ref.value = cache_value
+          cache_removal << [contract_oid, args_oid]
+
+          yield local_contract
+        else
+          [:ok]
+        end
       end
     end
 

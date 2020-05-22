@@ -1,6 +1,6 @@
 # The actual contract is wrapped in a Callable and resolved on `call`.
 # This enable circular reference on declaration.
-class Kit::Contract::BuiltInContracts::Delayed < Kit::Contract::BuiltInContracts::InstanciableType
+class Kit::Contract::BuiltInContracts::Delayed < Kit::Contract::BuiltInContracts::InstantiableContract
 
   def setup(callable)
     @state[:callable] = callable

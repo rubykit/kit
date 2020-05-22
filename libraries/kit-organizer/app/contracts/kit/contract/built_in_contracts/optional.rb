@@ -1,5 +1,5 @@
 # Ensure that Contract is obeyed when not nil.
-class Kit::Contract::BuiltInContracts::Optional < Kit::Contract::BuiltInContracts::InstanciableType
+class Kit::Contract::BuiltInContracts::Optional < Kit::Contract::BuiltInContracts::InstantiableContract
 
   def setup(contract)
     @state[:contract] = contract

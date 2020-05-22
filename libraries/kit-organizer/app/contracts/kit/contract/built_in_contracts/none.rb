@@ -1,4 +1,4 @@
-class Kit::Contract::BuiltInContracts::None < Kit::Contract::BuiltInContracts::InstanciableType
+class Kit::Contract::BuiltInContracts::None < Kit::Contract::BuiltInContracts::InstantiableContract
 
   def setup(*contracts)
     @state[:contracts] = contracts

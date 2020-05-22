@@ -44,12 +44,12 @@ module Kit::Contract::BuiltInContracts
   #
   # ## Todo: add exemples.
   #
-  class Array < Kit::Contract::BuiltInContracts::InstanciableType
+  class Array < Kit::Contract::BuiltInContracts::InstantiableContract
 
     def setup(*index_contracts)
       @state[:contracts_list] = []
 
-      instance(IsA[::Array])
+      instance(IsA[::Array], safe: true)
       with(index_contracts || [])
     end
 
@@ -74,8 +74,9 @@ module Kit::Contract::BuiltInContracts
       IsA[::Array].call(*args)
     end
 
-    def add_contract(contract)
-      @state[:contracts_list] << contract
+    def add_contract(contract:, safe: false)
+      el = safe ? { contract: contract, safe: true } : contract
+      @state[:contracts_list] << el
     end
 
     # NOTE: this will only be useful when Organizer can handle any signature
@@ -99,12 +100,12 @@ module Kit::Contract::BuiltInContracts
     def self.size(size);           self.new.size(size);           end
 
     # contract Array.of(Contract).size(1)
-    def of(contract)
-      every(contract)
+    def of(contract, safe: false)
+      every(contract, safe: safe)
     end
 
     # contract Hash.of(And[Integer, Gt[0]] => Contract)
-    def at(contracts)
+    def at(contracts, safe: false)
       contracts.each do |index, contract|
         if !index.is_a?(::Integer) || index < 0
           raise 'Invalid contract usage: Array.at keys must be valid array indices (callable).'
@@ -113,7 +114,7 @@ module Kit::Contract::BuiltInContracts
           raise 'Invalid contract usage: Array.at values must be contracts (callable).'
         end
 
-        add_contract ArrayHelper.get_index_contract(contract: contract, index: index)
+        add_contract(contract: ArrayHelper.get_index_contract(contract: contract, index: index), safe: safe)
       end
 
       self
@@ -121,28 +122,28 @@ module Kit::Contract::BuiltInContracts
 
     # Position matters on this one
     # contract Array.of(Contract)
-    def with(contracts)
-      at(contracts.map.with_index { |val, idx| [idx, val] }.to_h)
+    def with(contracts, safe: false)
+      at(contracts.map.with_index { |val, idx| [idx, val] }.to_h, safe: false)
     end
 
     # contract And[Integer, ->(x) { x > 0 }]
-    def size(size)
-      instance(->(i) { i.size == size })
+    def size(size, safe: true)
+      instance(->(i) { i.size == size }, safe: true)
     end
 
     # contract Array.of(Contract).size(1)
-    def every(contract)
+    def every(contract, safe: false)
       if !contract.respond_to?(:call)
         raise 'Invalid contract usage: Array.every only accepts contracts (callable).'
       end
 
-      add_contract ArrayHelper.get_every_value_contract(contract: contract)
+      add_contract(contract: ArrayHelper.get_every_value_contract(contract: contract), safe: safe)
 
       self
     end
 
     # contract Or[Contract, Array.of(Contract)]
-    def instance(contracts)
+    def instance(contracts, safe: false)
       [contracts]
         .flatten
         .each do |contract|
@@ -150,7 +151,7 @@ module Kit::Contract::BuiltInContracts
             raise 'Invalid contract usage: Array.instance values must be contracts (callable).'
           end
 
-          add_contract ArrayHelper.get_instance_contract(contract: contract)
+          add_contract(contract: ArrayHelper.get_instance_contract(contract: contract), safe: safe)
         end
 
       self

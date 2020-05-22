@@ -1,5 +1,5 @@
 # Ensure that the argument equals the saved Contract value
-class Kit::Contract::BuiltInContracts::Eq < Kit::Contract::BuiltInContracts::InstanciableType
+class Kit::Contract::BuiltInContracts::Eq < Kit::Contract::BuiltInContracts::InstantiableContract
 
   def setup(expected_value)
     @state[:expected_value] = expected_value
