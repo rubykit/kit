@@ -39,16 +39,18 @@ module Kit::Api::JsonApi::Services::Config
 
     config = {
       resources:            {},
-
       paginator:            nil,
-      page_size:            page_size,
-      page_size_max:        page_size_max,
-
       field_transformation: :underscore,
       linker:               nil,
+      inclusion_level:      2,
     }
 
     config
+      .merge(options)
+      .merge({
+        page_size:     page_size,
+        page_size_max: page_size_max,
+      })
   end
 
   # Ensure that used Types are registered on the config object, including relationship resources.

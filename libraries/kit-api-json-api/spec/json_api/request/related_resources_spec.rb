@@ -4,27 +4,27 @@ describe Kit::Api::JsonApi::Services::Request::RelatedResources do
   let(:service)  { described_class }
 
   let(:config) do
-    Kit::Api::JsonApi::Types::Config[
+    {
       resources: {
-        books:   Kit::JsonApiSpec::Resources::Book.resource,
-        authors: Kit::JsonApiSpec::Resources::Author.resource,
-        series:  Kit::JsonApiSpec::Resources::Serie.resource,
+        book:   Kit::JsonApiSpec::Resources::Book.to_h,
+        author: Kit::JsonApiSpec::Resources::Author.to_h,
+        serie:  Kit::JsonApiSpec::Resources::Serie.to_h,
       },
-    ]
+    }
   end
 
   let(:query_params) { Kit::Api::JsonApi::Services::Url.parse_query_params(url: url)[1][:query_params] }
   let(:request) do
-    Kit::Api::JsonApi::Types::Request[
-      top_level_resource: Kit::JsonApiSpec::Resources::Author.resource,
-    ]
+    {
+      config:             config,
+      top_level_resource: Kit::JsonApiSpec::Resources::Author.to_h,
+    }
   end
 
   context 'with related resources' do
 
     subject do
       service.handle_related_resources(
-        config:       config,
         query_params: query_params,
         request:      request,
       )

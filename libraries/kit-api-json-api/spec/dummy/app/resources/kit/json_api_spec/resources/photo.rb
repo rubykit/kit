@@ -1,7 +1,5 @@
 # Exemple type for dummy app.
-module Kit::JsonApiSpec::Resources::Photo
-
-  include Kit::Api::JsonApi::Resources::ActiveRecordResource
+class Kit::JsonApiSpec::Resources::Photo < Kit::Api::JsonApi::Resources::ActiveRecordResource
 
   def self.name
     :photo
@@ -26,22 +24,22 @@ module Kit::JsonApiSpec::Resources::Photo
       author:  {
         resource:          :author,
         relationship_type: :to_one,
-        resolver:          [:active_record, foreign_key_field: { column_name_id: :imageable_id, column_name_type: :imageable_type, model_name: 'Kit::JsonApiSpec::Models::Write::Author' }],
+        resolvers:         [:active_record, parent_field: { id: :imageable_id, type: :imageable_type, model_name: 'Kit::JsonApiSpec::Models::Write::Author' }],
       },
       book:    {
         resource:          :book,
         relationship_type: :to_one,
-        resolver:          [:active_record, foreign_key_field: { column_name_id: :imageable_id, column_name_type: :imageable_type, model_name: 'Kit::JsonApiSpec::Models::Write::Book' }],
+        resolvers:         [:active_record, parent_field: { id: :imageable_id, type: :imageable_type, model_name: 'Kit::JsonApiSpec::Models::Write::Book' }],
       },
       chapter: {
         resource:          :chapter,
         relationship_type: :to_one,
-        resolver:          [:active_record, foreign_key_field: { column_name_id: :imageable_id, column_name_type: :imageable_type, model_name: 'Kit::JsonApiSpec::Models::Write::Chapter' }],
+        resolvers:         [:active_record, parent_field: { id: :imageable_id, type: :imageable_type, model_name: 'Kit::JsonApiSpec::Models::Write::Chapter' }],
       },
       serie:   {
         resource:          :serie,
         relationship_type: :to_one,
-        resolver:          [:active_record, foreign_key_field: { column_name_id: :imageable_id, column_name_type: :imageable_type, model_name: 'Kit::JsonApiSpec::Models::Write::Serie' }],
+        resolvers:         [:active_record, parent_field: { id: :imageable_id, type: :imageable_type, model_name: 'Kit::JsonApiSpec::Models::Write::Serie' }],
       },
     }
   end

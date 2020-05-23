@@ -1,7 +1,5 @@
 # Exemple type for dummy app.
-module Kit::JsonApiSpec::Resources::BookStore
-
-  include Kit::Api::JsonApi::Resources::ActiveRecordResource
+class Kit::JsonApiSpec::Resources::BookStore < Kit::Api::JsonApi::Resources::ActiveRecordResource
 
   def self.name
     :book_store
@@ -25,12 +23,12 @@ module Kit::JsonApiSpec::Resources::BookStore
       book:  {
         resource:          :book,
         relationship_type: :to_one,
-        resolver:          [:active_record, foreign_key_field: :kit_json_api_spec_book_id],
+        resolvers:         [:active_record, parent_field: :kit_json_api_spec_book_id],
       },
       store: {
         resource:          :store,
         relationship_type: :to_one,
-        resolver:          [:active_record, foreign_key_field: :kit_json_api_spec_store_id],
+        resolvers:         [:active_record, parent_field: :kit_json_api_spec_store_id],
       },
     }
   end

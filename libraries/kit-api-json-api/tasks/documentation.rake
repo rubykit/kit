@@ -24,6 +24,7 @@ CONFIG = Kit::Doc::Services::Tasks.get_default_config(
       include: %w[
         lib/**/*.rb
         app/**/*.rb
+        spec/dummy/app/resources/kit/json_api_spec/resources/*.rb
       ],
     },
   }),
@@ -34,7 +35,7 @@ CONFIG = Kit::Doc::Services::Tasks.get_default_config(
         display:       false,
       },
       {
-        inclusion:     %r{^(Kit::Api::JsonApi::Controllers::JsonApi|Kit::Api::JsonApi::Resources::Resource|Kit::Api::JsonApi::Services)$},
+        inclusion:     %r{^(Kit::Api::JsonApi::Controllers::JsonApi|Kit::Api::JsonApi::Resources::ActiveRecordResource|Kit::Api::JsonApi::Services|Kit::Api::JsonApi::Contracts)$},
         display_title: ->(name) { name.gsub('Kit::Api::JsonApi::', '') },
         css_classes:   ['sidebar-pl-1'],
       },
@@ -46,25 +47,15 @@ CONFIG = Kit::Doc::Services::Tasks.get_default_config(
         css_classes:   css_padding_helper.call('Kit::Api::JsonApi::Services::'),
       },
     ],
-    'Contracts & Types' => [
-      {
-        inclusion:     %r{^Kit::Api::JsonApi::Contracts},
-        display_title: display_title_last,
-        css_classes:   css_padding_helper.call('Kit::Api::JsonApi::Contracts'),
-      },
-      {
-        inclusion:     %r{^Kit::Api::JsonApi::(Types|TypesHint)$},
-        display_title: display_title_last,
-        css_classes:   css_padding_helper.call('Kit::Api::JsonApi::Types'),
-      },
-      {
-        inclusion:     %r{^Kit::Api::JsonApi::Types::.*},
-        display:       false,
-      },
-    ],
     'Various'           => [
       {
         inclusion:     %r{^Kit::Api::JsonApi::(Engine|Railtie)},
+        display_title: display_title_last,
+      },
+    ],
+    'Exemple resources' => [
+      {
+        inclusion:     %r{^Kit::JsonApiSpec::Resources::},
         display_title: display_title_last,
       },
     ],

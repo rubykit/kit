@@ -11,7 +11,7 @@ module Kit::Api::JsonApi::Services::QueryResolver
     Kit::Organizer.call({
       list: [
         self.method(:resolve_query_node_condition),
-        self.method(:load_records),
+        self.method(:resolve_data),
         self.method(:resolve_relationships_query_nodes),
         self.method(:resolve_relationships_records),
       ],
@@ -22,23 +22,27 @@ module Kit::Api::JsonApi::Services::QueryResolver
   before Ct::Hash[query_node: Ct::QueryNode]
   after  Ct::Result[query_node: Ct::QueryNode]
   def self.resolve_query_node_condition(query_node:)
-    query_node[:condition] = resolve_condition(
-      condition:  query_node[:condition],
-      query_node: query_node,
-    )
+    if query_node[:condition]
+      query_node[:condition] = resolve_condition(
+        condition:  query_node[:condition],
+        query_node: query_node,
+      )
+    end
 
     [:ok, query_node: query_node]
   end
 
   def self.resolve_condition(condition:, query_node:)
-    if condition.is_a?(Kit::Api::JsonApi::Types::Condition)
+    if condition.respond_to?(:call)
+      condition = condition.call(query_node: query_node)
+    end
+
+    if condition[:op]
       if condition[:op].in?([:or, :and])
         condition[:values] = condition[:values].map do |value|
           resolve_condition(condition: value, query_node: query_node)
         end
       end
-    elsif condition.respond_to?(:call)
-      condition = condition.call(query_node: query_node)
     end
 
     condition
@@ -46,18 +50,18 @@ module Kit::Api::JsonApi::Services::QueryResolver
 
   before Ct::Hash[query_node: Ct::QueryNode]
   after  Ct::Result[query_node: Ct::QueryNode]
-  def self.load_records(query_node:)
-    result      = query_node[:data_loader].call(query_node: query_node)
+  def self.resolve_data(query_node:)
+    result      = query_node[:resolvers][:data_resolver].call(query_node: query_node)
     status, ctx = result
 
     if status == :ok
       query_node[:records] = ctx[:data].map do |raw_data|
-        Kit::Api::JsonApi::Types::Record[
+        {
           query_node:    query_node,
           raw_data:      raw_data,
           meta:          {},
           relationships: {},
-        ]
+        }
       end
 
       [:ok, query_node: query_node]
@@ -88,8 +92,12 @@ module Kit::Api::JsonApi::Services::QueryResolver
       child_records    = child_query_node[:records]
 
       query_node[:records].each do |parent_record|
-        selector = relationship[:select_relationship_record].call(parent_record: parent_record)
+      begin
+        selector = relationship[:resolvers][:records_selector].call(parent_record: parent_record)
         parent_record[:relationships][relationship_name] = child_records.select(&selector)
+      rescue => e
+        binding.pry
+      end
       end
     end
 

@@ -5,65 +5,135 @@ module Kit::Api::JsonApi::Services::Resolvers::Data::ActiveRecord
   # @hide true
   Ct = Kit::Api::JsonApi::Contracts
 
-  # Return a generic condition generator for a nested relationship QueryNode
-  # If field_name is a tupple, this is a polymorphic field.
-  def self.generate_inherited_filters(relationship_type:, field_name:)
+  ClassicField     = Ct::Hash[id: Ct::Symbol].without(:type).named('ClassicField')
+  PolymorphicField = Ct::Hash[id: Ct::Symbol, type: Ct::Symbol, model_name: Ct::String].named('PolymorphicField')
+
+  #before Ct::Hash[config: Ct::Config, relationship: Ct::Relationship, options: Ct::Hash[foreign_key_field: Ct::NotEq[nil]]]
+  before Ct::Hash[relationship: Ct::Relationship]
+  after  Ct::Result[resolvers: Ct::Resolvers]
+  def self.generate_resolvers(config:, relationship:, options:)
+    child_field      = options[:child_field]  || :id
+    parent_field     = options[:parent_field] || :id
+    inherited_filter = options[:inherited_filter]
+    records_selector = options[:records_selector]
+    data_resolver    = options[:data_resolver]
+
+    if !child_field.is_a?(Hash)
+      child_field = { id: child_field }
+    end
+    if !parent_field.is_a?(Hash)
+      parent_field = { id: parent_field }
+    end
+
+    relationship_type = relationship[:relationship_type]
+
+    if !inherited_filter
+      inherited_filter = generate_inherited_filters(relationship_type: relationship_type, child_field: child_field, parent_field: parent_field)
+    end
+    if !records_selector
+      records_selector = generate_records_selector(relationship_type: relationship_type, child_field: child_field, parent_field: parent_field)
+    end
+    if !data_resolver
+      _, ctx = generate_data_resolver({
+        model: config[:resources][relationship[:resource]][:extra][:model],
+      })
+
+      data_resolver = ctx[:data_resolver]
+    end
+
+    [:ok, resolvers: {
+      data_resolver:    data_resolver,
+      inherited_filter: inherited_filter,
+      records_selector: records_selector,
+    },]
+
+=begin
+    [:ok, resolvers: {
+      inherited_filter: inherited_filter_to_many(child_field: child_field, parent_field: parent_field),
+      records_selector: records_selector_to_many(child_field: child_field, parent_field: parent_field),
+      data_resolver:    ctx[:data_resolver],
+    },]
+=end
+  end
+
+  # Return a generic condition Callable for a nested relationship QueryNode
+  def self.generate_inherited_filters(relationship_type:, child_field:, parent_field:)
     if relationship_type == :to_many
-      inherited_filter_to_many(field_name: field_name)
+      if child_field[:type]
+        inherited_filter_to_many_polymorphic(child_field: child_field, parent_field: parent_field)
+      else
+        inherited_filter_classic(child_field: child_field, parent_field: parent_field)
+      end
     else
-      inherited_filter_to_one(field_name: field_name)
-      # ?
+      if parent_field[:type] # rubocop:disable Style/IfInsideElse
+        inherited_filter_to_one_polymorphic(child_field: child_field, parent_field: parent_field)
+      else
+        inherited_filter_classic(child_field: child_field, parent_field: parent_field)
+      end
     end
   end
 
-  def self.inherited_filter_to_one(field_name:)
-    if field_name.is_a?(Symbol) || field_name.is_a?(String)
-      inherited_filter_to_one_classic(field_name: field_name)
-    else
-      inherited_filter_to_one_polymorphic(field_name)
-    end
-  end
-
-  after Ct::Callable
-  def self.inherited_filter_to_one_classic
+  before Ct::Hash[child_field: ClassicField, parent_field: ClassicField]
+  after  Ct::Callable
+  def self.inherited_filter_classic(child_field:, parent_field:)
     ->(query_node:) do
       values = (query_node.dig(:parent_relationship, :parent_query_node, :records) || [])
         .map { |el| el[:raw_data] }
-        .map { |el| el[field_name] }
-      if values.size > 0
-        { op: :in, column: :id, values: values, upper_relationship: true }
-      else
-        nil
-      end
+        .map { |el| el[parent_field[:id]] }
+
+      next nil if values.size == 0
+
+      { op: :in, column: child_field[:id], values: values, upper_relationship: true }
     end
   end
 
-  after Ct::Callable
-  def self.inherited_filter_to_one_polymorphic(column_name_id:, column_name_type:, model_name:)
+  before Ct::Hash[child_field: PolymorphicField, parent_field: ClassicField]
+  after  Ct::Callable
+  def self.inherited_filter_to_many_polymorphic(child_field:, parent_field:)
+    ->(query_node:) do
+      values = (query_node.dig(:parent_relationship, :parent_query_node, :records) || [])
+        .map { |el| el[:raw_data] }
+        .map { |el| el[parent_field[:id]] }
+
+      next nil if values.size == 0
+
+      {
+        op:     :and,
+        values: [
+          { op: :in, column: child_field[:id],   values: values, upper_relationship: true },
+          { op: :eq, column: child_field[:type], values: [child_field[:model_name]] },
+        ],
+      }
+    end
+  end
+
+  before Ct::Hash[child_field: ClassicField, parent_field: PolymorphicField]
+  after  Ct::Callable
+  def self.inherited_filter_to_one_polymorphic(child_field:, parent_field:)
     ->(query_node:) do
       values = (query_node.dig(:parent_relationship, :parent_query_node, :records) || [])
         .map    { |el| el[:raw_data] }
-        .select { |el| el[column_name_type] == model_name }
-        .map    { |el| el[column_name_id] }
-      if values.size > 0
-        { op: :in, column: :id, values: values, upper_relationship: true }
-      else
-        nil
-      end
+        .select { |el| el[parent_field[:type]] == parent_field[:model_name] }
+        .map    { |el| el[parent_field[:id]] }
+
+      next nil if values.size == 0
+
+      { op: :in, column: child_field[:id], values: values, upper_relationship: true }
     end
   end
 
-  after Ct::Callable
-  def self.inherited_filter_to_many(field_name:)
+=begin
+  #after Ct::Callable
+  def self.inherited_filter_to_many(child_field:, parent_field:)
     ->(query_node:) do
       values = (query_node.dig(:parent_relationship, :parent_query_node, :records) || [])
         .map { |el| el[:raw_data] }
         .map { |el| el[:id] }
       if values.size > 0
         if field_name.is_a?(Symbol) || field_name.is_a?(String)
-          Kit::Api::JsonApi::Services::Resolvers::Data::ActiveRecord.condition_to_many(column_name: field_name)
+          Kit::Api::JsonApi::Services::Resolvers::Data::ActiveRecord.condition_to_many(column_name: field_name, values: values)
         else
-          Kit::Api::JsonApi::Services::Resolvers::Data::ActiveRecord.condition_to_many_polymorphic(field_name)
+          Kit::Api::JsonApi::Services::Resolvers::Data::ActiveRecord.condition_to_many_polymorphic(**field_name, values: values)
         end
       else
         nil
@@ -72,38 +142,25 @@ module Kit::Api::JsonApi::Services::Resolvers::Data::ActiveRecord
   end
 
   after Ct::Condition
-  def self.condition_to_many(column_name:)
-    { op: :in, column_name: column, values: values, upper_relationship: true }
+  def self.condition_to_many(column_name:, values:)
+    { op: :in, column: column_name, values: values, upper_relationship: true }
   end
 
-  def self.condition_to_many_polymorphic(column_name_id:, column_name_type:, model_name:)
+  def self.condition_to_many_polymorphic(column_name_id:, column_name_type:, model_name:, values:)
     { op: :and, values: [
       { op: :in, column: column_name_id,   values: values, upper_relationship: true },
       { op: :eq, column: column_name_type, values: [model_name] },
-    ],}
+    ], }
   end
+=end
 
   # ----------------------------------------------------------------------------
 
-  def self.generate_records_selector(relationship_type:, field_name:)
-    if relationship_type == :to_many
-      records_selector_to_many(field_name: field_name)
-    else
-      records_selector_to_one(field_name: field_name)
-    end
-  end
-
   # Note: we use read_attribute for JOINs where we added the data on the element.
-  def self.records_selector_to_many(field_name:)
+  after Ct::Callable
+  def self.generate_records_selector(relationship_type:, child_field:, parent_field:)
     ->(parent_record:) do
-      ->(child_record) { parent_record[:raw_data].id == child_record[:raw_data].read_attribute(field_name) }
-    end
-  end
-
-  # Note: we use read_attribute for JOINs where we added the data on the element.
-  def self.records_selector_to_one(field_name:)
-    ->(parent_record:) do
-      ->(child_record) { parent_record[:raw_data].read_attribute(field_name) == child_record[:raw_data].id }
+      ->(child_record) { parent_record[:raw_data].read_attribute(parent_field[:id]) == child_record[:raw_data].read_attribute(child_field[:id]) }
     end
   end
 
@@ -123,6 +180,8 @@ module Kit::Api::JsonApi::Services::Resolvers::Data::ActiveRecord
     puts "LOAD DATA #{ model.name.upcase }: #{ data.size }"
 
     [:ok, data: data]
+  rescue => e
+    binding.pry
   end
 
   def self.generate_data_resolver(model:, assemble_sql_query: nil)

@@ -1,7 +1,5 @@
 # Exemple type for dummy app.
-module Kit::JsonApiSpec::Resources::Chapter
-
-  include Kit::Api::JsonApi::Resources::ActiveRecordResource
+class Kit::JsonApiSpec::Resources::Chapter < Kit::Api::JsonApi::Resources::ActiveRecordResource
 
   def self.name
     :chapter
@@ -24,12 +22,12 @@ module Kit::JsonApiSpec::Resources::Chapter
       book:   {
         resource:          :book,
         relationship_type: :to_one,
-        resolver:          [:active_record, foreign_key_field: :kit_json_api_spec_book_id],
+        resolvers:         [:active_record, parent_field: :kit_json_api_spec_book_id],
       },
       photos: {
         resource:          :photo,
         relationship_type: :to_many,
-        resolver:          [:active_record, foreign_key_field: [:imageable_id, :imageable_type, 'Kit::JsonApiSpec::Models::Write::Chapter']],
+        resolvers:         [:active_record, child_field: { id: :imageable_id, type: :imageable_type, model_name: 'Kit::JsonApiSpec::Models::Write::Chapter' }],
       },
     }
   end

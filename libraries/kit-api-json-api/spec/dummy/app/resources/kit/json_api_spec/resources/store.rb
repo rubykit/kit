@@ -1,7 +1,5 @@
 # Exemple type for dummy app.
-module Kit::JsonApiSpec::Resources::Store
-
-  include Kit::Api::JsonApi::Resources::ActiveRecordResource
+class Kit::JsonApiSpec::Resources::Store < Kit::Api::JsonApi::Resources::ActiveRecordResource
 
   def self.name
     :store
@@ -25,7 +23,7 @@ module Kit::JsonApiSpec::Resources::Store
       book_store: {
         resource:          :book_store,
         relationship_type: :to_many,
-        resolver:          [:active_record, foreign_key_field: :kit_json_api_spec_store_id],
+        resolvers:         [:active_record, child_field: :kit_json_api_spec_store_id],
       },
     }
   end

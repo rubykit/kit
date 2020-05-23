@@ -5,6 +5,7 @@ module Kit::Api::JsonApi::Services::Sql
   # @hide true
   Ct = Kit::Api::JsonApi::Contracts
 
+  before Ct::Hash[filtering: Ct::Optional[Ct::Condition]]
   # Given an ActiveRecord model and some options, generate the sql query.
   # ⚠️ Warning: the SQL is generated for Postgres.
   def self.sql_query(ar_model:, filtering: nil, sorting: [], limit: nil, assemble_sql_query: nil)
@@ -54,7 +55,7 @@ module Kit::Api::JsonApi::Services::Sql
   # As only one query is done per `QueryNode`, we sometime need to retrieve several subsets with their own ordering.
   # We use a nested query to avoid naming collisions with the added attribute (rank)
   # #### References
-  #  - https://blog.jooq.org/2018/05/14/selecting-all-columns-except-one-in-postgresql/
+  # - https://blog.jooq.org/2018/05/14/selecting-all-columns-except-one-in-postgresql/
   # - http://sqlfiddle.com/#!17/378a3/10
   #
   # ### Single collection

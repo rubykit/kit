@@ -1,7 +1,5 @@
 # Exemple type for dummy app.
-module Kit::JsonApiSpec::Resources::Book
-
-  include Kit::Api::JsonApi::Resources::ActiveRecordResource
+class Kit::JsonApiSpec::Resources::Book < Kit::Api::JsonApi::Resources::ActiveRecordResource
 
   def self.name
     :book
@@ -26,22 +24,23 @@ module Kit::JsonApiSpec::Resources::Book
       author:        {
         resource:          :author,
         relationship_type: :to_one,
-        resolver:          [:active_record, foreign_key_field: :kit_json_api_spec_author_id],
+        resolvers:         [:active_record, parent_field: :kit_json_api_spec_author_id],
       },
       book_stores:   {
         resource:          :book_store,
         relationship_type: :to_many,
-        resolver:          [:active_record, foreign_key_field: :kit_json_api_spec_book_id],
+        resolvers:         [:active_record, child_field: :kit_json_api_spec_book_id],
       },
       chapters:      {
         resource:          :chapter,
         relationship_type: :to_many,
-        resolver:          [:active_record, foreign_key_field: :kit_json_api_spec_book_id],
+        resolvers:         [:active_record, child_field: :kit_json_api_spec_book_id],
       },
+=begin
       first_chapter: {
         resource:          :chapter,
         relationship_type: :to_one,
-        resolver:          {
+        resolvers:         {
           inherited_filter: ->(query_node:) do
             values = (query_node.dig(:parent_relationship, :parent_query_node, :records) || [])
               .map { |el| el[:raw_data] }
@@ -50,23 +49,27 @@ module Kit::JsonApiSpec::Resources::Book
               { op: :and, values: [
                 { op: :in, column: :kit_json_api_spec_book_id, values: values, upper_relationship: true },
                 { op: :eq, column: :index, values: 1 },
-              ],}
+              ], }
             else
               nil
             end
           end,
           records_selector: Kit::Api::JsonApi::Services::Resolvers::Data::ActiveRecord.records_selector_to_one(field_name: :kit_json_api_spec_book_id),
+          data_resolver:    Kit::Api::JsonApi::Services::Resolvers::Data::ActiveRecord.generate_data_resolver({
+            model: Kit::JsonApiSpec::Models::Write::Chapter,
+          })[1][:data_resolver],
         },
       },
+=end
       photos:        {
         resource:          :photo,
         relationship_type: :to_many,
-        resolver:          [:active_record, foreign_key_field: [:imageable_id, :imageable_type, 'Kit::JsonApiSpec::Models::Write::Book']],
+        resolvers:         [:active_record, foreign_key_field: [:imageable_id, :imageable_type, 'Kit::JsonApiSpec::Models::Write::Book']],
       },
       serie:         {
         resource:          :serie,
         relationship_type: :to_one,
-        resolver:          [:active_record, foreign_key_field: :kit_json_api_spec_serie_id],
+        resolvers:         [:active_record, foreign_key_field: :kit_json_api_spec_serie_id],
       },
     }
   end

@@ -5,10 +5,11 @@ describe Kit::Api::JsonApi::Services::QueryBuilder do
   let(:singular) { false }
   let(:config)   { Kit::Api::JsonApi::Services::Config.default_config }
 
-  let(:top_level_resource) { Kit::JsonApiSpec::Resources::Author.resource }
+  let(:top_level_resource) { Kit::JsonApiSpec::Resources::Author.to_h }
 
   let(:request) do
     {
+      config:             config,
       top_level_resource: top_level_resource,
       singular:           singular,
       related_resources:  {
@@ -25,7 +26,7 @@ describe Kit::Api::JsonApi::Services::QueryBuilder do
 
   context 'for a ' do
     it 'generates a valid nested query plan' do
-      status, ctx = service.build_query(config: config, request: request)
+      status, ctx = service.build_query(request: request)
       query       = ctx[:query]
       query_node  = query[:entry_query_node]
 

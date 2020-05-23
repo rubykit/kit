@@ -1,7 +1,5 @@
 # Exemple type for dummy app.
-module Kit::JsonApiSpec::Resources::Author
-
-  include Kit::Api::JsonApi::Resources::ActiveRecordResource
+class Kit::JsonApiSpec::Resources::Author < Kit::Api::JsonApi::Resources::ActiveRecordResource
 
   def self.name
     :author
@@ -34,25 +32,29 @@ module Kit::JsonApiSpec::Resources::Author
       books:  {
         resource:          :book,
         relationship_type: :to_many,
-        resolver:          [:active_record, foreign_key_field: :kit_json_api_spec_author_id],
+        resolvers:         [:active_record, child_field: :kit_json_api_spec_author_id],
       },
       photos: {
         resource:          :photo,
         relationship_type: :to_many,
-        resolver:          [:active_record, foreign_key_field: [:imageable_id, :imageable_type, 'Kit::JsonApiSpec::Models::Write::Author']],
+        resolvers:         [:active_record, child_field: { id: :imageable_id, type: :imageable_type, model_name: 'Kit::JsonApiSpec::Models::Write::Author' }],
       },
+=begin
       series: {
         resource:          :serie,
         relationship_type: :to_many,
-        resolver:          {
+        resolvers:         [:active_record, {
+          child_field: {}
+        }
           inherited_filter: Kit::Api::JsonApi::Services::Resolvers::Data::ActiveRecord.inherited_filter_to_many(field_name: 'kit_json_api_spec_books.kit_json_api_spec_author_id'),
           records_selector: Kit::Api::JsonApi::Services::Resolvers::Data::ActiveRecord.records_selector_to_many(field_name: :kit_json_api_spec_author_id),
           data_resolver:    Kit::Api::JsonApi::Services::Resolvers::Data::ActiveRecord.generate_data_resolver({
             model:              Kit::JsonApiSpec::Models::Write::Serie,
             assemble_sql_query: self.method(:assemble_series_relationship_sql_query),
-          }),
+          })[1][:data_resolver],
         },
       },
+=end
     }
   end
 

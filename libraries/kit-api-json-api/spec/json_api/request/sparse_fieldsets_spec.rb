@@ -4,16 +4,18 @@ describe Kit::Api::JsonApi::Services::Request::SparseFieldsets do
   let(:service)  { described_class }
 
   let(:config) do
-    Kit::Api::JsonApi::Types::Config[
+    {
       resources: {
-        books:   Kit::JsonApiSpec::Resources::Book.resource,
-        authors: Kit::JsonApiSpec::Resources::Author.resource,
+        book:   Kit::JsonApiSpec::Resources::Book.to_h,
+        author: Kit::JsonApiSpec::Resources::Author.to_h,
       },
-    ]
+    }
   end
 
   let(:query_params) { Kit::Api::JsonApi::Services::Url.parse_query_params(url: url)[1][:query_params] }
-  let(:request)      { Kit::Api::JsonApi::Types::Request[] }
+  let(:request) do
+    {}
+  end
 
   context 'with sparse fieldsets' do
 

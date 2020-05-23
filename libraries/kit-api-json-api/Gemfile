@@ -21,6 +21,7 @@ gem 'kit-error',               path: '../../libraries/kit-error' # GEMSPEC
 
 group :test, :development do
   gem 'pry'
+  gem 'pry-stack_explorer'
 
   gem 'kit-dotenv-rails',        path: '../../libraries/kit-dotenv', require: "kit/dotenv/rails-now"
 

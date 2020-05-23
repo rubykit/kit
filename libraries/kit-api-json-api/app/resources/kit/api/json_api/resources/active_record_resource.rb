@@ -1,9 +1,7 @@
 # The `ActiveRecordResource` module is a helper to generate a Hash that will pass the `Contract::Resource` requirements.
 #
 # While you can always generate a Resource yourself, this helps do it in a less verbose way.
-module Kit::Api::JsonApi::Resources::ActiveRecordResource
-
-  extend ActiveSupport::Concern
+class Kit::Api::JsonApi::Resources::ActiveRecordResource
 
   # Default filter configuration based on field type
   def self.default_filters
@@ -50,136 +48,140 @@ module Kit::Api::JsonApi::Resources::ActiveRecordResource
     }
   end
 
-  class_methods do
-    # Returns a Resource we actualy depend on, everything else is syntaxic sugar.
-    # after Ct::Resource # TODO: in order for this to work, add `ActiveSupport::Concern` support in `Kit::Contract`
-    def to_h
-      {
-        name:              name,
+  # Returns a Resource we actualy depend on, everything else is syntaxic sugar.
+  # after Ct::Resource # TODO: in order for this to work, add `ActiveSupport::Concern` support in `Kit::Contract`
+  def self.to_h
+    {
+      name:              name,
 
-        fields:            fields,
-        sort_fields:       sort_fields,
-        filters:           filters,
-        relationships:     relationships,
+      fields:            fields,
+      sort_fields:       sort_fields,
+      filters:           filters,
+      relationships:     relationships,
 
-        data_resolver:     self.method(:data_resolver),
-        record_serializer: self.method(:record_serializer),
-        linker:            self.method(:linker),
-      }
+      data_resolver:     self.method(:data_resolver),
+      record_serializer: self.method(:record_serializer),
+      linker:            self.method(:linker),
+
+      extra:             {
+        model: self.model,
+      },
+    }
+  end
+
+  # Should contain the name (type) of the Resource
+  def self.name
+    raise 'ActiveRecordResource - Please implement the `name` module method.'
+  end
+
+  # Should contain the ActiveRecord model
+  def self.model
+    raise 'ActiveRecordResource - Please implement the `model` module method.'
+  end
+
+  # Hold data to generate `fields`, `filters` && `sort_fields`.
+  #
+  # ### Example
+  #
+  # The following:
+  # ```ruby
+  # def self.fields_setup
+  #   {
+  #     id:            { type: :id_numeric, sort_field: { default: true, tie_breaker: true } },
+  #     created_at:    { type: :date },
+  #     updated_at:    { type: :date },
+  #     name:          { type: :string },
+  #     date_of_birth: { type: :date },
+  #     date_of_death: { type: :date, sort_field: { order: :desc } },
+  #   }
+  # end
+  #```
+  #
+  # Is equivalent to declarings:
+  # ```ruby
+  # def self.fields
+  #  [:id, :created_at, :updated_at, :name, :date_of_birth, :date_of_death]
+  # end
+  #
+  # def self.filters
+  #   {
+  #     id:            [:eq, :in],
+  #     created_at:    [:eq, :in, :gt, :gte, :lt, :lte],
+  #     updated_at:    [:eq, :in, :gt, :gte, :lt, :lte],
+  #     name:          [:eq, :in, :contain, :start_with, :end_with],
+  #     date_of_birth: [:eq, :in, :gt, :gte, :lt, :lte],
+  #     date_of_death: [:eq, :in, :gt, :gte, :lt, :lte],
+  #   }
+  # end
+  #
+  # def self.sort_fields
+  #   {
+  #     id:            { order: [[:id,            :asc]],              default: true },
+  #     created_at:    { order: [[:created_at,    :asc],  [:id, :asc]] },
+  #     updated_at:    { order: [[:updated_at,    :asc],  [:id, :asc]] },
+  #     name:          { order: [[:name,          :asc],  [:id, :asc]] },
+  #     date_of_birth: { order: [[:date_of_birth, :asc],  [:id, :asc]] },
+  #     date_of_death: { order: [[:date_of_death, :desc], [:id, :asc]] },
+  #   }
+  # end
+  # ```
+  def self.fields_setup
+    raise 'ActiveRecordResource - Please implement the `fields_setup` module method.'
+  end
+
+  def self.fields
+    fields_setup&.keys
+  end
+
+  def self.sort_fields
+    list = fields_setup.map do |name, data|
+      [name, {}
+        .merge(Kit::Api::JsonApi::Resources::ActiveRecordResource.default_sort_fields[data[:type]] || {})
+        .merge(data[:sort_field] || {}),
+      ]
+    end.to_h
+
+    if !list.any? { |_, data| data[:default] == true }
+      raise "ActiveRecordResource - No default sort for Resource `#{ self.class.name }`"
     end
 
-    # Should contain the name (type) of the Resource
-    def name
-      raise 'ActiveRecordResource - Please implement the `name` module method.'
+    tie_breaker_sort = list.filter_map { |name, data| [name, (data[:order] == :asc) ? :asc : :desc] if data[:tie_breaker] }
+    if tie_breaker_sort.size != 1
+      raise "ActiveRecordResource - No tie-breaker or too many for Resource `#{ self.class.name }`"
     end
+    tie_breaker_sort = tie_breaker_sort[0]
 
-    # Should contain the ActiveRecord model
-    def model
-      raise 'ActiveRecordResource - Please implement the `model` module method.'
-    end
-
-    # Hold data to generate `fields`, `filters` && `sort_fields`.
-    #
-    # ### Example
-    #
-    # The following:
-    # ```ruby
-    # def self.fields_setup
-    #   {
-    #     id:            { type: :id_numeric, sort_field: { default: true, tie_breaker: true } },
-    #     created_at:    { type: :date },
-    #     updated_at:    { type: :date },
-    #     name:          { type: :string },
-    #     date_of_birth: { type: :date },
-    #     date_of_death: { type: :date, sort_field: { order: :desc } },
-    #   }
-    # end
-    #```
-    #
-    # Is equivalent to declarings:
-    # ```ruby
-    # def self.fields
-    #  [:id, :created_at, :updated_at, :name, :date_of_birth, :date_of_death]
-    # end
-    #
-    # def self.filters
-    #   {
-    #     id:            [:eq, :in],
-    #     created_at:    [:eq, :in, :gt, :gte, :lt, :lte],
-    #     updated_at:    [:eq, :in, :gt, :gte, :lt, :lte],
-    #     name:          [:eq, :in, :contain, :start_with, :end_with],
-    #     date_of_birth: [:eq, :in, :gt, :gte, :lt, :lte],
-    #     date_of_death: [:eq, :in, :gt, :gte, :lt, :lte],
-    #   }
-    # end
-    #
-    # def self.sort_fields
-    #   {
-    #     id:            { order: [[:id,            :asc]],              default: true },
-    #     created_at:    { order: [[:created_at,    :asc],  [:id, :asc]] },
-    #     updated_at:    { order: [[:updated_at,    :asc],  [:id, :asc]] },
-    #     name:          { order: [[:name,          :asc],  [:id, :asc]] },
-    #     date_of_birth: { order: [[:date_of_birth, :asc],  [:id, :asc]] },
-    #     date_of_death: { order: [[:date_of_death, :desc], [:id, :asc]] },
-    #   }
-    # end
-    # ```
-    def fields_setup
-      raise 'ActiveRecordResource - Please implement the `fields_setup` module method.'
-    end
-
-    def fields
-      fields_setup&.keys
-    end
-
-    def sort_fields
-      list = fields_setup.map do |name, data|
-        [name, {}
-          .merge(Kit::Api::JsonApi::Resources::ActiveRecordResource.default_sort_fields[data[:type]] || {})
-          .merge(data[:sort_field] || {}),
-        ]
-      end.to_h
-
-      if !list.any? { |_, data| data[:default] == true }
-        raise "ActiveRecordResource - No default sort for Resource `#{ self.class.name }`"
+    list
+      .map do |name, data|
+        [name, {
+          order:   [[name, (data[:order] == :asc) ? :asc : :desc], (!data[:unique] ? tie_breaker_sort : nil)].compact,
+          default: (data[:default] == true),
+        },]
       end
+      .to_h
+  end
 
-      tie_breaker_sort = list.filter_map { |name, data| [name, (data[:order] == :asc) ? :asc : :desc] if data[:tie_breaker] }
-      if tie_breaker_sort.size != 1
-        raise "ActiveRecordResource - No tie-breaker or too many for Resource `#{ self.class.name }`"
-      end
+  def self.filters
+    fields_setup
+      .filter_map { |name, data| [name, Kit::Api::JsonApi::Resources::ActiveRecordResource.default_filters[data[:type]]] if data[:type] }
+      .to_h
+  end
 
-      list
-        .map do |name, data|
-          [name, {
-            order:   [[name, (data[:order] == :asc) ? :asc : :desc], (!data[:unique] ? tie_breaker_sort : nil)].compact,
-            default: (data[:default] == true),
-          },]
-        end
-        .to_h
-    end
+  def self.relationships
+    raise 'ActiveRecordResource - Please implement the `relationships` module method.'
+  end
 
-    def filters
-      fields_setup
-        .filter_map { |name, data| [name, Kit::Api::JsonApi::Resources::ActiveRecordResource.default_filters[data[:type]]] if data[:type] }
-        .to_h
-    end
+  def self.data_resolver(query_node:)
+    Kit::Api::JsonApi::Services::Resolvers::Data::ActiveRecord.data_resolver(model: model, query_node: query_node)
+  end
 
-    def relationships
-      raise 'ActiveRecordResource - Please implement the `relationships` module method.'
-    end
+  def self.record_serializer(record:)
+    Kit::Api::JsonApi::Services::Resolvers::Serializers::ActiveRecord.record_serializer(record: record)
+  end
 
-    def data_resolver(query_node:)
-      Kit::Api::JsonApi::Services::Resolvers::Data::ActiveRecord.data_resolver(model: model, query_node: query_node)
-    end
-
-    def record_serializer(record:)
-      Kit::Api::JsonApi::Services::Resolvers::Serializers::ActiveRecord.record_serializer(record: record)
-    end
-
-    def linker
-      nil
-    end
+  def self.linker
+    nil
+  end
 
 =begin
     def resource_url(resource_id:)
@@ -232,7 +234,5 @@ module Kit::Api::JsonApi::Resources::ActiveRecordResource
       [:ok, links: links]
     end
 =end
-
-  end
 
 end
