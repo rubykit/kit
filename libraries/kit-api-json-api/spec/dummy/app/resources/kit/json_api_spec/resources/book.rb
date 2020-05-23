@@ -36,31 +36,39 @@ class Kit::JsonApiSpec::Resources::Book < Kit::Api::JsonApi::Resources::ActiveRe
         relationship_type: :to_many,
         resolvers:         [:active_record, child_field: :kit_json_api_spec_book_id],
       },
-=begin
       first_chapter: {
         resource:          :chapter,
         relationship_type: :to_one,
         resolvers:         {
           inherited_filter: ->(query_node:) do
+            filter = Kit::Api::JsonApi::Services::Resolvers::Data::ActiveRecord
+              .inherited_filter_classic(parent_field: { id: :id }, child_field: { id: :kit_json_api_spec_book_id })
+              .call(query_node: query_node)
+
+            if filter[:values].size > 0
+              { op: :and, values: [
+                filter,
+                { op: :eq, column: :index, values: 1 },
+              ], } # rubocop:disable all
+            else
+              nil
+            end
+
             values = (query_node.dig(:parent_relationship, :parent_query_node, :records) || [])
               .map { |el| el[:raw_data] }
               .map { |el| el[:id] }
             if values.size > 0
-              { op: :and, values: [
-                { op: :in, column: :kit_json_api_spec_book_id, values: values, upper_relationship: true },
-                { op: :eq, column: :index, values: 1 },
-              ], }
+
             else
               nil
             end
           end,
-          records_selector: Kit::Api::JsonApi::Services::Resolvers::Data::ActiveRecord.records_selector_to_one(field_name: :kit_json_api_spec_book_id),
+          records_selector: Kit::Api::JsonApi::Services::Resolvers::Data::ActiveRecord.generate_records_selector(relationship_type: :to_many, parent_field: { id: :id }, child_field: { id: :kit_json_api_spec_book_id }),
           data_resolver:    Kit::Api::JsonApi::Services::Resolvers::Data::ActiveRecord.generate_data_resolver({
             model: Kit::JsonApiSpec::Models::Write::Chapter,
           })[1][:data_resolver],
         },
       },
-=end
       photos:        {
         resource:          :photo,
         relationship_type: :to_many,

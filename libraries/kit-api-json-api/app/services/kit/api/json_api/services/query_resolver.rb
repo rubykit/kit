@@ -37,7 +37,7 @@ module Kit::Api::JsonApi::Services::QueryResolver
       condition = condition.call(query_node: query_node)
     end
 
-    if condition[:op]
+    if condition&.dig(:op)
       if condition[:op].in?([:or, :and])
         condition[:values] = condition[:values].map do |value|
           resolve_condition(condition: value, query_node: query_node)
@@ -92,12 +92,8 @@ module Kit::Api::JsonApi::Services::QueryResolver
       child_records    = child_query_node[:records]
 
       query_node[:records].each do |parent_record|
-      begin
         selector = relationship[:resolvers][:records_selector].call(parent_record: parent_record)
         parent_record[:relationships][relationship_name] = child_records.select(&selector)
-      rescue => e
-        binding.pry
-      end
       end
     end
 

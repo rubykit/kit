@@ -6,10 +6,10 @@ describe Kit::Api::JsonApi::Services::QueryBuilder do
   let(:service)  { described_class }
   let(:singular) { false }
 
-  let(:max_level) { 2 }
+  let(:inclusion_level) { 3 }
   let(:config) do
     config_dummy_app.merge(
-      inclusion_level: max_level,
+      inclusion_level: inclusion_level,
     )
   end
 
@@ -27,6 +27,8 @@ describe Kit::Api::JsonApi::Services::QueryBuilder do
     it 'generates a valid query plan' do
       status, ctx = subject
       query_node  = ctx[:entry_query_node]
+
+      #Kit::Api::JsonApi::Services::Debug.print_query(query_node: qn)
 
       expect(status).to eq :ok
       expect(query_node[:resource]).to eq top_level_resource

@@ -5,8 +5,8 @@ module Kit::Api::JsonApi::Services::Resolvers::Data::ActiveRecord
   # @hide true
   Ct = Kit::Api::JsonApi::Contracts
 
-  ClassicField     = Ct::Hash[id: Ct::Symbol].without(:type).named('ClassicField')
-  PolymorphicField = Ct::Hash[id: Ct::Symbol, type: Ct::Symbol, model_name: Ct::String].named('PolymorphicField')
+  ClassicField     = Ct::Hash[id: Ct::SymbolOrString].without(:type).named('ClassicField')
+  PolymorphicField = Ct::Hash[id: Ct::SymbolOrString, type: Ct::SymbolOrString, model_name: Ct::SymbolOrString].named('PolymorphicField')
 
   #before Ct::Hash[config: Ct::Config, relationship: Ct::Relationship, options: Ct::Hash[foreign_key_field: Ct::NotEq[nil]]]
   before Ct::Hash[relationship: Ct::Relationship]
@@ -81,7 +81,7 @@ module Kit::Api::JsonApi::Services::Resolvers::Data::ActiveRecord
         .map { |el| el[:raw_data] }
         .map { |el| el[parent_field[:id]] }
 
-      next nil if values.size == 0
+      return nil if values.size == 0
 
       { op: :in, column: child_field[:id], values: values, upper_relationship: true }
     end
@@ -95,7 +95,7 @@ module Kit::Api::JsonApi::Services::Resolvers::Data::ActiveRecord
         .map { |el| el[:raw_data] }
         .map { |el| el[parent_field[:id]] }
 
-      next nil if values.size == 0
+      return nil if values.size == 0
 
       {
         op:     :and,
@@ -116,7 +116,7 @@ module Kit::Api::JsonApi::Services::Resolvers::Data::ActiveRecord
         .select { |el| el[parent_field[:type]] == parent_field[:model_name] }
         .map    { |el| el[parent_field[:id]] }
 
-      next nil if values.size == 0
+      return nil if values.size == 0
 
       { op: :in, column: child_field[:id], values: values, upper_relationship: true }
     end
@@ -175,13 +175,11 @@ module Kit::Api::JsonApi::Services::Resolvers::Data::ActiveRecord
       assemble_sql_query: assemble_sql_query,
     )
 
-    puts ctx[:sql_str]
+    #puts ctx[:sql_str]
     data = model.find_by_sql(ctx[:sql_str])
-    puts "LOAD DATA #{ model.name.upcase }: #{ data.size }"
+    #puts "LOAD DATA #{ model.name.upcase }: #{ data.size }"
 
     [:ok, data: data]
-  rescue => e
-    binding.pry
   end
 
   def self.generate_data_resolver(model:, assemble_sql_query: nil)

@@ -39,22 +39,18 @@ class Kit::JsonApiSpec::Resources::Author < Kit::Api::JsonApi::Resources::Active
         relationship_type: :to_many,
         resolvers:         [:active_record, child_field: { id: :imageable_id, type: :imageable_type, model_name: 'Kit::JsonApiSpec::Models::Write::Author' }],
       },
-=begin
       series: {
         resource:          :serie,
         relationship_type: :to_many,
-        resolvers:         [:active_record, {
-          child_field: {}
-        }
-          inherited_filter: Kit::Api::JsonApi::Services::Resolvers::Data::ActiveRecord.inherited_filter_to_many(field_name: 'kit_json_api_spec_books.kit_json_api_spec_author_id'),
-          records_selector: Kit::Api::JsonApi::Services::Resolvers::Data::ActiveRecord.records_selector_to_many(field_name: :kit_json_api_spec_author_id),
+        resolvers:         {
+          inherited_filter: Kit::Api::JsonApi::Services::Resolvers::Data::ActiveRecord.generate_inherited_filters(relationship_type: :to_many, parent_field: { id: :id }, child_field: { id: 'kit_json_api_spec_books.kit_json_api_spec_author_id' }),
+          records_selector: Kit::Api::JsonApi::Services::Resolvers::Data::ActiveRecord.generate_records_selector(relationship_type:  :to_many, parent_field: { id: :id }, child_field: { id: :kit_json_api_spec_author_id }),
           data_resolver:    Kit::Api::JsonApi::Services::Resolvers::Data::ActiveRecord.generate_data_resolver({
             model:              Kit::JsonApiSpec::Models::Write::Serie,
             assemble_sql_query: self.method(:assemble_series_relationship_sql_query),
           })[1][:data_resolver],
         },
       },
-=end
     }
   end
 
@@ -75,7 +71,7 @@ class Kit::JsonApiSpec::Resources::Author < Kit::Api::JsonApi::Resources::Active
        WHERE ranked_data.rank <= #{ sanitized_limit_sql }
     }
 
-    puts sql
+    #puts sql
 
     [:ok, sql_str: sql]
   end

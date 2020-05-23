@@ -4,25 +4,27 @@ module Kit::Api::JsonApi::Contracts
   #include Kit::Contract::BuiltInContracts
   include Kit::Organizer::Contracts
 
-  FieldName     = IsA[::Symbol].named('FieldName')
+  SymbolOrString = Or[Symbol, String].named('SymbolOrString')
+
+  FieldName     = SymbolOrString.named('FieldName')
   FieldNames    = Array.of(FieldName).named('FieldNames')
 
-  ColumnName    = IsA[::Symbol].named('ColumnName')
+  ColumnName    = SymbolOrString.named('ColumnName')
 
   ConditionOp   = In[:eq, :gt, :gte, :lt, :lte, :in, :contain, :start_with, :end_with]
   ConditionOps  = Array.of(ConditionOp).named('ConditionOps')
   ExtendedConditionOp = In[:and, :or, ConditionOp].named('ExtendedConditionOp')
   Condition     = Hash[op: ExtendedConditionOp, column: Optional[ColumnName], values: Any].named('Condition')
-  FilterName    = IsA[::Symbol].named('FilterName')
+  FilterName    = SymbolOrString.named('FilterName')
 
   SortOrderType  = In[:asc, :desc].named('SortOrderType')
-  SortOrderField = IsA[::Symbol].named('SortOrderField')
+  SortOrderField = SymbolOrString.named('SortOrderField')
   SortOrder      = Tupple[SortOrderField, SortOrderType].named('SortOrder')
   SortOrders     = Array.of(SortOrder).named('SortOrders')
 
-  ResourceName   = IsA[::Symbol].named('ResourceName')
+  ResourceName   = SymbolOrString.named('ResourceName')
 
-  RelationshipName = IsA[::Symbol].named('RelationshipName')
+  RelationshipName = SymbolOrString.named('RelationshipName')
 
   Relationship = Hash[
     name:              Optional[RelationshipName],
@@ -61,7 +63,7 @@ module Kit::Api::JsonApi::Contracts
 
   QueryNode = Hash[
     resource:            Resource,
-    condition:           Optional[Or[Callable, Condition]],
+    condition:           Or[Nil, Callable, Condition].named('QueryNode[:condition]'),
     sorting:             Optional[SortOrders],
     records:             Optional[Array],
     limit:               Numeric,

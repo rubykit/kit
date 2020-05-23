@@ -5,15 +5,37 @@ describe Kit::Api::JsonApi::Services::QueryResolver do
 
   let(:service)  { described_class }
   let(:singular) { false }
-  let(:config)   { config_dummy_app }
+
+  let(:inclusion_level) { 3 }
+  let(:config) do
+    config_dummy_app.merge(
+      inclusion_level: inclusion_level,
+    )
+  end
+
+  let(:request) do
+    {
+      config:             config,
+      top_level_resource: top_level_resource,
+      singular:           singular,
+    }
+  end
+
+  let(:query_node) do
+    Kit::Api::JsonApi::Services::QueryBuilder.build_query(request: request)[1][:entry_query_node]
+  end
+
+  let(:subject) { service.resolve_query_node(query_node: query_node) }
 
   shared_examples 'a valid query plan is resolved' do
     it 'resolves the query plan' do
-      request      = { config: config, top_level_resource: top_level_resource, singular: singular }
-      query_node   = Kit::Api::JsonApi::Services::QueryBuilder.build_query(request: request)[1][:entry_query_node]
-      status, _ctx = service.resolve_query_node(query_node: query_node)
+      status, ctx = subject
+      qn          = ctx[:query_node]
+
+      #Kit::Api::JsonApi::Services::Debug.print_query(query_node: qn)
 
       expect(status).to eq :ok
+      expect(qn[:records].size).to be > 0
     end
   end
 

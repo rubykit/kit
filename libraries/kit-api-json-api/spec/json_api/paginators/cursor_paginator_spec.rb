@@ -1,4 +1,4 @@
-require_relative '../rails_helper'
+require_relative '../../rails_helper'
 
 =begin
 describe Kit::Api::JsonApi::Services::QueryBuilder do

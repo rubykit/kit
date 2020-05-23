@@ -35,35 +35,6 @@ module Kit::JsonApiSpec::Resources::Author::Relationships::Series
     }
   end
 
-  before [
-    ->(query_node:) { query_node[:resource][:name] == :serie },
-  ]
-  def self.load_series_relationship_data(query_node:)
-    ar_model = Kit::JsonApiSpec::Models::Write::Serie
-
-    _, ctx = Kit::Organizer.call({
-      list: [
-        Kit::Api::JsonApi::Services::Sql::Filtering.method(:filtering_to_sql_str),
-        Kit::Api::JsonApi::Services::Sql::Sorting.method(:sorting_to_sql_str),
-        Kit::Api::JsonApi::Services::Sql.method(:detect_relationship),
-        self.method(:generate_series_relationship_sql_query),
-      ],
-      ctx:  {
-        filtering:           query_node[:condition],
-        sorting:             query_node[:sorting],
-        ar_connection:       ar_model.connection,
-        table_name:          ar_model.table_name,
-        sanitized_limit_sql: query_node[:limit].to_i.to_s,
-      },
-    })
-
-    puts ctx[:sql_str]
-    data = ar_model.find_by_sql(ctx[:sql_str])
-    puts "LOAD DATA RS SERIE: #{ data.size }"
-
-    [:ok, data: data]
-  end
-
   def self.generate_series_relationship_sql_query(table_name:, sanitized_filtering_sql:, sanitized_sorting_sql:, sanitized_limit_sql:, foreign_key_column_name: nil)
     joined_table = 'kit_json_api_spec_books'
     sql = %{
