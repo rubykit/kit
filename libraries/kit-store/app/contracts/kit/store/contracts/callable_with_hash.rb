@@ -1,7 +1,7 @@
 module Kit::Store::Contracts
 
   # Ensures that the object is a Callable that can receive specific keyword arguments
-  class CallableWithHash < InstanciableType
+  class CallableWithHash < InstantiableContract
     def initialize(*expected_key_names)
       @expected_key_names = expected_key_names
     end

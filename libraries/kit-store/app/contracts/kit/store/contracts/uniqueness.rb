@@ -1,4 +1,4 @@
-  class Kit::Store::Contracts::Unique < Kit::Contract::Types::InstanciableType
+  class Kit::Store::Contracts::Unique < Kit::Contract::Types::InstantiableContract
 
   def initialize(*index_contracts)
     @contracts_list = []
