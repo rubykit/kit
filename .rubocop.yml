@@ -10,6 +10,9 @@ Metrics:
 Layout/LineLength:
   Enabled: false
 
+Style/AsciiComments:
+  Enabled: false
+
 Style/ClassAndModuleChildren:
   EnforcedStyle: compact
 
@@ -44,6 +47,9 @@ Style/BlockComments:
   Enabled: false
 
 Style/EmptyMethod:
+  Enabled: false
+
+Style/SingleLineMethods:
   Enabled: false
 
 Style/MutableConstant:
