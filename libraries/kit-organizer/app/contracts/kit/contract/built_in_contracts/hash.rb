@@ -128,7 +128,8 @@ module Kit::Contract::BuiltInContracts
 
     def self.size(size);              self.new.size(size);              end
 
-    # contract Hash.of(Any => Contract)
+    # before Ct::Args[Ct::Hash.of(Ct::NonNil => Ct::Contract)]
+    # Add contracts on specific keys.
     def with(contracts, safe: false)
       contracts.each do |key, contract|
         if !contract.respond_to?(:call)
@@ -136,6 +137,18 @@ module Kit::Contract::BuiltInContracts
         end
 
         add_contract(contract: HashHelper.get_keyword_arg_contract(key: key, contract: contract), safe: safe)
+      end
+
+      self
+    end
+
+    # before Ct::Args[Ct::Array.of(Ct::NonNil)]
+    # Add keys that must not exist on the hash.
+    def without(keys, safe: false)
+      keys = [keys] if !keys.is_a?(Array)
+
+      keys.each do |key|
+        instance(->(hash) { !hash.key?(key) }, safe: true)
       end
 
       self
