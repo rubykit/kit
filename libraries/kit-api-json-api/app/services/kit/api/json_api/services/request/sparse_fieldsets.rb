@@ -19,8 +19,8 @@ module Kit::Api::JsonApi::Services::Request::SparseFieldsets
   Ct = Kit::Api::JsonApi::Contracts
 
   # Entry point. Parse & validate sparse-fieldsets data before adding it to the `Request`.
-  def self.handle_sparse_fieldsets(config:, query_params:, request:)
-    args = { config: config, query_params: query_params, request: request }
+  def self.handle_sparse_fieldsets(query_params:, request:)
+    args = { query_params: query_params, request: request }
 
     Kit::Organizer.call({
       list: [
@@ -67,7 +67,8 @@ module Kit::Api::JsonApi::Services::Request::SparseFieldsets
   # Ensures that:
   # - types (`Resources`) exist
   # - fields exist
-  def self.validate_params(config:, parsed_query_params_fields:)
+  def self.validate_params(request:, parsed_query_params_fields:)
+    config = request[:config]
     errors = []
 
     parsed_query_params_fields.each do |type_name, fields|
@@ -92,7 +93,7 @@ module Kit::Api::JsonApi::Services::Request::SparseFieldsets
   end
 
   # When sparse fieldsets data is valid, add it to the `Request`.
-  def self.add_to_request(config:, parsed_query_params_fields:, request:)
+  def self.add_to_request(request:, parsed_query_params_fields:)
     request[:fields] = parsed_query_params_fields
 
     [:ok, request: request]

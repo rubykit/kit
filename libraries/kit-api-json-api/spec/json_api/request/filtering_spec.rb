@@ -1,20 +1,16 @@
 require_relative '../../rails_helper'
 
 describe Kit::Api::JsonApi::Services::Request::Filtering do
+  include_context 'config dummy app'
+  
   let(:service)  { described_class }
 
-  let(:config) do
-    {
-      resources: {
-        book:   Kit::JsonApiSpec::Resources::Book.to_h,
-        author: Kit::JsonApiSpec::Resources::Author.to_h,
-      },
-    }
-  end
+  let(:config)   { config_dummy_app }
 
   let(:query_params) { Kit::Api::JsonApi::Services::Url.parse_query_params(url: url)[1][:query_params] }
   let(:request) do
     {
+      config:             config,
       top_level_resource: Kit::JsonApiSpec::Resources::Author.to_h,
     }
   end
@@ -23,7 +19,6 @@ describe Kit::Api::JsonApi::Services::Request::Filtering do
 
     subject do
       params = {
-        config:       config,
         query_params: query_params,
         request:      request,
       }

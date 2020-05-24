@@ -74,6 +74,7 @@ module Kit::Api::JsonApi::Services::Request::RelatedResources
   # }
   # ```
   def self.validate_and_parse(parsed_query_params_include:, request:)
+    config = request[:config]
     errors = []
     top_level_resource = request[:top_level_resource]
     related_resources  = {}
@@ -91,7 +92,7 @@ module Kit::Api::JsonApi::Services::Request::RelatedResources
           break
         end
 
-        child_resource = relationship[:child_resource].call()
+        child_resource = config[:resources][relationship[:resource]]
 
         related_resources[current_path.dup] = child_resource
 

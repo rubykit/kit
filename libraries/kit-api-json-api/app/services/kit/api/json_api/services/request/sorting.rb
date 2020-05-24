@@ -32,8 +32,8 @@ module Kit::Api::JsonApi::Services::Request::Sorting
   Ct = Kit::Api::JsonApi::Contracts
 
   # Entry point. Parse & validate sorting data before adding it to the `Request`.
-  def self.handle_sorting(config:, query_params:, request:)
-    args = { config: config, query_params: query_params, request: request }
+  def self.handle_sorting(query_params:, request:)
+    args = { query_params: query_params, request: request }
 
     Kit::Organizer.call({
       list: [
@@ -101,7 +101,7 @@ module Kit::Api::JsonApi::Services::Request::Sorting
   # - sort criterias exist
   #
   # **⚠️ Warning**: in order to validate inclusion, the related resources need to have been run first.
-  def self.validate(config:, parsed_query_params_sort:, request:)
+  def self.validate(parsed_query_params_sort:, request:)
     errors = []
 
     parsed_query_params_sort.each do |path, list|
@@ -139,7 +139,7 @@ module Kit::Api::JsonApi::Services::Request::Sorting
   end
 
   # When sorting data is valid, add it to the `Request`.
-  def self.add_to_request(config:, parsed_query_params_sort:, request:)
+  def self.add_to_request(parsed_query_params_sort:, request:)
     request[:sorting] = parsed_query_params_sort
 
     [:ok, request: request]

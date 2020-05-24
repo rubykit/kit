@@ -16,6 +16,9 @@ Style/AsciiComments:
 Style/ClassAndModuleChildren:
   EnforcedStyle: compact
 
+Style/DoubleNegation:
+  Enabled: false
+
 Lint/UnusedMethodArgument:
   Enabled: false
 

@@ -53,12 +53,15 @@ module Kit::Api::JsonApi::Services::Serializer::QueryNode
   def self.if_top_level_add_links(query_node:, document:)
     return [:ok] if query_node[:parent_relationship]
 
+=begin
     if query_node[:singular]
       links = query_node[:records][0][:resource_object].dig(:links)
     else
       links = query_node[:resource][:links_collection].call(query_node: query_node, records: query_node[:records])[1][:links]
     end
     document[:response][:links] = links
+=end
+    document[:response][:links] = {}
 
     [:ok, document: document]
   end

@@ -27,7 +27,7 @@ class Kit::JsonApiSpec::Resources::Serie < Kit::Api::JsonApi::Resources::ActiveR
           inherited_filter: Kit::Api::JsonApi::Services::Resolvers::Data::ActiveRecord.generate_inherited_filters(relationship_type: :to_many, parent_field: { id: :id }, child_field: { id: 'kit_json_api_spec_books.kit_json_api_spec_serie_id' }),
           records_selector: Kit::Api::JsonApi::Services::Resolvers::Data::ActiveRecord.generate_records_selector(relationship_type:  :to_many, parent_field: { id: :id }, child_field: { id: :kit_json_api_spec_serie_id }),
           data_resolver:    Kit::Api::JsonApi::Services::Resolvers::Data::ActiveRecord.generate_data_resolver({
-            model:              Kit::JsonApiSpec::Models::Write::Serie,
+            model:              Kit::JsonApiSpec::Models::Write::Author,
             assemble_sql_query: self.method(:assemble_authors_relationship_sql_query),
           })[1][:data_resolver],
         },
