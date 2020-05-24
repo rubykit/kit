@@ -47,17 +47,6 @@ class Kit::JsonApiSpec::Resources::Chapter < Kit::Api::JsonApi::Resources::Activ
   end
 
 =begin
-
-  def self.available_relationships
-    list = [
-      Kit::JsonApiSpec::Resources::Chapter::Relationships::Book,
-    ]
-
-    list
-      .map { |el| [el.relationship[:name], el.relationship] }
-      .to_h
-  end
-
   def self.resource_url(resource_id:)
     "/chapters/#{ resource_id }"
   end
@@ -65,28 +54,6 @@ class Kit::JsonApiSpec::Resources::Chapter < Kit::Api::JsonApi::Resources::Activ
   def self.relationship_url(resource_id:, relationship_id:)
     "/chapters/#{ resource_id }/relationships/#{ relationship_id }"
   end
-
-  before [
-    ->(query_node:) { query_node[:resource][:name] == :chapter },
-  ]
-  def self.load_data(query_node:)
-    model  = Kit::JsonApiSpec::Models::Write::Chapter
-    _, ctx = Kit::Api::JsonApi::Services::Sql.sql_query(
-      ar_model:  model,
-      filtering: query_node[:condition],
-      sorting:   query_node[:sorting],
-      limit:     query_node[:limit],
-    )
-
-    puts ctx[:sql_str]
-    data = model.find_by_sql(ctx[:sql_str])
-    puts "LOAD DATA CHAPTER: #{ data.size }"
-
-    [:ok, data: data]
-  end
-
 =end
-
-
 
 end

@@ -71,24 +71,12 @@ class Kit::JsonApiSpec::Resources::Author < Kit::Api::JsonApi::Resources::Active
        WHERE ranked_data.rank <= #{ sanitized_limit_sql }
     }
 
-    #puts sql
+    puts sql if ENV['KIT_API_DEBUG'] 
 
     [:ok, sql_str: sql]
   end
 
 =begin
-  def self.available_relationships
-    list = [
-      Kit::JsonApiSpec::Resources::Author::Relationships::Books,
-      Kit::JsonApiSpec::Resources::Author::Relationships::Photos,
-      Kit::JsonApiSpec::Resources::Author::Relationships::Series,
-    ]
-
-    list
-      .map { |el| [el.relationship[:name], el.relationship] }
-      .to_h
-  end
-
   def self.resource_url(resource_id:)
     "/authors/#{ resource_id }"
   end
