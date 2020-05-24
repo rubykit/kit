@@ -32,7 +32,7 @@ describe Kit::Api::JsonApi::Services::QueryResolver do
       status, ctx = subject
       qn          = ctx[:query_node]
 
-      #Kit::Api::JsonApi::Services::Debug.print_query(query_node: qn)
+      Kit::Api::JsonApi::Services::Debug.print_query(query_node: qn) if ENV['KIT_API_DEBUG']
 
       expect(status).to eq :ok
       expect(qn[:records].size).to be > 0

@@ -28,7 +28,7 @@ describe Kit::Api::JsonApi::Services::QueryBuilder do
       status, ctx = subject
       query_node  = ctx[:entry_query_node]
 
-      #Kit::Api::JsonApi::Services::Debug.print_query(query_node: qn)
+      Kit::Api::JsonApi::Services::Debug.print_query(query_node: qn) if ENV['KIT_API_DEBUG']
 
       expect(status).to eq :ok
       expect(query_node[:resource]).to eq top_level_resource
@@ -37,7 +37,7 @@ describe Kit::Api::JsonApi::Services::QueryBuilder do
 
         current_resource = current_query_node[:resource]
 
-        if level < max_level
+        if level < inclusion_level
           expect(current_query_node[:relationships].count).to eq(current_resource[:relationships].count)
         else
           expect(current_query_node[:relationships].count).to eq 0
@@ -54,6 +54,7 @@ describe Kit::Api::JsonApi::Services::QueryBuilder do
           expect(qn_relationship[:name]).to eq(relationship_name)
           expect(parent_query_node).to      eq(current_query_node)
           expect(child_query_node[:resource][:name]).to eq(request[:config][:resources][relationship[:resource]][:name])
+
           expect(child_query_node[:condition]).not_to be nil
         end
 

@@ -89,7 +89,7 @@ module Kit::Api::JsonApi::Services::QueryBuilder
       # Other related_resources were specified, but not this one
       next if !request[:related_resources][nested_path] && request[:related_resources].size > 0
       # If there is a relationship specific inclusion_level, use it, otherwise default to config.
-      next if (relationship[:inclusion_level] ? relationship[:inclusion_level] : request[:config][:inclusion_level]) < inclusion_level
+      next if (relationship[:inclusion_level] || request[:config][:inclusion_level]) < inclusion_level
 
       resolvers = relationship[:resolvers]
       # Add resolver store
@@ -106,7 +106,7 @@ module Kit::Api::JsonApi::Services::QueryBuilder
         resource:  nested_resource,
         condition: resolvers[:inherited_filter],
         resolvers: resolvers,
-        singular:  relationship[:type] == :to_one,
+        singular:  relationship[:relationship_type] == :to_one,
         path:      nested_path,
         request:   request,
       )
