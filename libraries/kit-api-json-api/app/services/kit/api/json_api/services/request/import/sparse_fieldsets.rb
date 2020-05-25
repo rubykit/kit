@@ -12,7 +12,7 @@
 # ## References
 # - https://jsonapi.org/format/1.1/#fetching-sparse-fieldsets
 #
-module Kit::Api::JsonApi::Services::Request::SparseFieldsets
+module Kit::Api::JsonApi::Services::Request::Import::SparseFieldsets
 
   include Kit::Contract
   # @hide true

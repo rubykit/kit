@@ -1,6 +1,6 @@
-require_relative '../../rails_helper'
+require_relative '../../../rails_helper'
 
-describe Kit::Api::JsonApi::Services::Request::RelatedResources do
+describe Kit::Api::JsonApi::Services::Request::Import::RelatedResources do
   include_context 'config dummy app'
 
   let(:service)  { described_class }

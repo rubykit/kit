@@ -47,7 +47,7 @@
 # - https://jsonapi.org/format/1.1/#fetching-filtering
 # - https://jsonapi.org/recommendations/#filtering
 #
-module Kit::Api::JsonApi::Services::Request::Filtering
+module Kit::Api::JsonApi::Services::Request::Import::Filtering
 
   include Kit::Contract
   # @hide true

@@ -61,7 +61,9 @@ class Kit::Api::JsonApi::Resources::ActiveRecordResource
 
       data_resolver:     self.method(:data_resolver),
       record_serializer: self.method(:record_serializer),
-      linker:            self.method(:linker),
+
+      linker:            self.linker,
+      paginator:         self.paginator,
 
       extra:             {
         model: self.model,
@@ -149,6 +151,7 @@ class Kit::Api::JsonApi::Resources::ActiveRecordResource
     if tie_breaker_sort.size != 1
       raise "ActiveRecordResource - No tie-breaker or too many for Resource `#{ self.class.name }`"
     end
+
     tie_breaker_sort = tie_breaker_sort[0]
 
     list
@@ -180,7 +183,11 @@ class Kit::Api::JsonApi::Resources::ActiveRecordResource
   end
 
   def self.linker
-    nil
+    Kit::Api::JsonApi::Services::Resolvers::Linker.to_h
+  end
+
+  def self.paginator
+    Kit::Api::JsonApi::Services::Resolvers::Paginators::Cursor.to_h
   end
 
 =begin

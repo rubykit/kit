@@ -12,7 +12,7 @@
 # ## References
 # - https://jsonapi.org/format/1.1/#fetching-includes
 #
-module Kit::Api::JsonApi::Services::Request::RelatedResources
+module Kit::Api::JsonApi::Services::Request::Import::RelatedResources
 
   include Kit::Contract
   # @hide true

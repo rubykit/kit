@@ -53,6 +53,15 @@ module Kit::Api::JsonApi::Services::Config
       })
   end
 
+  def validate_config(config:)
+    contract = Ct::And[
+      Ct::Hash[config: Ct::Config],
+      self.method(:validate_config_resources),
+    ]
+
+    Kit::Contract::Services::Validation.valid?(contract: contract, args: [{ config: config }])
+  end
+
   # Ensure that used Types are registered on the config object, including relationship resources.
   def self.validate_config_resources(config:)
     if config[:resources].empty?

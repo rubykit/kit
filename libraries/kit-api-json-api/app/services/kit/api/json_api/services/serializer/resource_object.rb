@@ -70,7 +70,7 @@ module Kit::Api::JsonApi::Services::Serializer::ResourceObject
   def self.add_resource_object_links(record:)
     resource = record[:query_node][:resource]
 
-    #record[:resource_object][:links] = resource[:links_single].call(record: record)[1][:links]
+    record[:resource_object][:links] = resource[:linker][:single].call(record: record)[1][:links]
 
     [:ok, record: record]
   end

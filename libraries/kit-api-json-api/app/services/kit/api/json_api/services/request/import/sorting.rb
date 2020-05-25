@@ -25,7 +25,7 @@
 # ## References
 # - https://jsonapi.org/format/1.1/#fetching-sorting
 #
-module Kit::Api::JsonApi::Services::Request::Sorting
+module Kit::Api::JsonApi::Services::Request::Import::Sorting
 
   include Kit::Contract
   # @hide true

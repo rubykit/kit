@@ -1,6 +1,6 @@
-require_relative '../../rails_helper'
+require_relative '../../../rails_helper'
 
-describe Kit::Api::JsonApi::Services::Request::Sorting do
+describe Kit::Api::JsonApi::Services::Request::Import::Sorting do
   include_context 'config dummy app'
 
   let(:service)  { described_class }
@@ -22,7 +22,7 @@ describe Kit::Api::JsonApi::Services::Request::Sorting do
         query_params: query_params,
         request:      request,
       }
-      Kit::Api::JsonApi::Services::Request::RelatedResources.handle_related_resources(params)
+      Kit::Api::JsonApi::Services::Request::Import::RelatedResources.handle_related_resources(params)
       service.handle_sorting(params)
     end
 

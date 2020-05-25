@@ -46,9 +46,10 @@ module Kit::Api::JsonApi::Contracts
   RelationshipHash = Hash.of(RelationshipName => Relationship).named('RelationshipHash')
 
   Record = Hash[
-    query_node:    Delayed[-> { QueryNode }],
-    raw_data:      Any,
-    relationships: Hash.of(RelationshipName => Array.of(Delayed[-> { Record }])).named('Record[:relationships]'),
+    query_node:      Delayed[-> { QueryNode }],
+    raw_data:        Any,
+    relationships:   Hash.of(RelationshipName => Array.of(Delayed[-> { Record }])).named('Record[:relationships]'),
+    resource_object: Or[Nil, Hash],
   ].named('Record')
 
   Resource = Hash[

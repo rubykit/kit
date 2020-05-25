@@ -23,6 +23,9 @@ Current status:
 - [ ] Top level meta data
 - [ ] Errors
 
+Not supported:
+- Polymorphic relationships. Nothing in the spec prevents them, but I have yet to find a good usecase.
+
 ## Steps
 
 - Parsing a JSON:API request: transform the data inside an `HTTP request` to a `Request` (high level representation of the requested data).

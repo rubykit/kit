@@ -1,8 +1,8 @@
-require_relative '../../rails_helper'
+require_relative '../../../rails_helper'
 
-describe Kit::Api::JsonApi::Services::Request::Filtering do
+describe Kit::Api::JsonApi::Services::Request::Import::Pagination do
   include_context 'config dummy app'
-  
+
   let(:service)  { described_class }
 
   let(:config)   { config_dummy_app }
@@ -22,13 +22,14 @@ describe Kit::Api::JsonApi::Services::Request::Filtering do
         query_params: query_params,
         request:      request,
       }
-      Kit::Api::JsonApi::Services::Request::RelatedResources.handle_related_resources(params)
-      service.handle_filtering(params)
+      Kit::Api::JsonApi::Services::Request::Import::RelatedResources.handle_related_resources(params)
+      service.handle_pagination(params)
     end
 
     let(:valid_include)   { 'include=books' }
     let(:invalid_include) { 'include=series' }
 
+=begin
     let(:valid_filters)   { 'filter[name][eq]=Tolkien,Rowling&filter[books.date_published][lt]=2002&filter[date_of_birth][gt]=1950&filter[books.title]=Title' }
 
     context 'with valid include && valid filter criteria' do
@@ -81,6 +82,7 @@ describe Kit::Api::JsonApi::Services::Request::Filtering do
         expect(ctx[:errors][0][:detail]).to eq 'Filter: `name` does not support operator `lol`'
       end
     end
+=end
 
   end
 

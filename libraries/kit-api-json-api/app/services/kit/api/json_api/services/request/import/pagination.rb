@@ -81,7 +81,7 @@
 # - https://jsonapi.org/format/1.1/#fetching-pagination
 # - https://jsonapi.org/profiles/ethanresnick/cursor-pagination/
 #
-module Kit::Api::JsonApi::Services::Request::Pagination
+module Kit::Api::JsonApi::Services::Request::Import::Pagination
 
   include Kit::Contract
   # @hide true

@@ -53,15 +53,16 @@ module Kit::Api::JsonApi::Services::Serializer::QueryNode
   def self.if_top_level_add_links(query_node:, document:)
     return [:ok] if query_node[:parent_relationship]
 
-=begin
     if query_node[:singular]
       links = query_node[:records][0][:resource_object].dig(:links)
     else
-      links = query_node[:resource][:links_collection].call(query_node: query_node, records: query_node[:records])[1][:links]
+      links = query_node[:resource][:linker][:collection].call(
+        query_node: query_node,
+        records:    query_node[:records],
+        paginator:  query_node[:resource][:paginator],
+      )[1][:links]
     end
     document[:response][:links] = links
-=end
-    document[:response][:links] = {}
 
     [:ok, document: document]
   end
@@ -95,6 +96,8 @@ module Kit::Api::JsonApi::Services::Serializer::QueryNode
   def self.generate_records_relationships(document:, query_node:)
     query_node[:records].each do |record|
       query_node[:relationships].each do |_relationship_name, relationship|
+        next if record[:relationships][_relationship_name].size == 0
+
         Kit::Api::JsonApi::Services::Serializer::Relationship.serialize_record_relationship(
           document:     document,
           relationship: relationship,

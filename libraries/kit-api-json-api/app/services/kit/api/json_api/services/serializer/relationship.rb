@@ -72,16 +72,23 @@ module Kit::Api::JsonApi::Services::Serializer::Relationship
   def self.add_record_relationship_links(document:, record:, relationship:, relationship_container:)
     resource = record[:query_node][:resource]
 
-=begin
     if relationship[:relationship_type] == :to_one
-      links = resource[:links_relationship_single].call(record: record, relationship: relationship)[1][:links]
+      links = resource[:linker][:relationship_single].call(
+        parent_record: record,
+        record:        record[:relationships][relationship[:name]][0],
+        relationship:  relationship,
+      )[1][:links]
     else
-      links = resource[:links_relationship_collection].call(record: record, relationship: relationship)[1][:links]
+      links = resource[:linker][:relationship_collection].call(
+        parent_record: record,
+        records:       record[:relationships][relationship[:name]],
+        relationship:  relationship,
+        paginator:     resource[:paginator],
+      )[1][:links]
     end
 
     # NOTE: not sure this is needed / links can change anyway
     relationship_container[:links].deep_merge!(links)
-=end
 
     [:ok, document: document]
   end
