@@ -38,3 +38,9 @@ group :development do
   gem 'kit-doc-yard',            path: '../../libraries/kit-doc-yard'
   gem 'rubocop', '~> 0.81.0'
 end
+
+group :test do
+  gem 'test-prof'
+  gem 'stackprof'
+  gem 'ruby-prof'
+end

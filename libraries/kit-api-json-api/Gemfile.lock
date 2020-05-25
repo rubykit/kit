@@ -269,7 +269,7 @@ GEM
       rspec-mocks (~> 3.9.0)
     rspec-core (3.9.2)
       rspec-support (~> 3.9.3)
-    rspec-expectations (3.9.1)
+    rspec-expectations (3.9.2)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.9.0)
     rspec-mocks (3.9.1)
@@ -292,6 +292,7 @@ GEM
       rexml
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 2.0)
+    ruby-prof (1.4.1)
     ruby-progressbar (1.10.1)
     ruby2_keywords (0.0.2)
     ruby_event_store (1.0.0)
@@ -325,7 +326,9 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+    stackprof (0.2.15)
     temple (0.8.2)
+    test-prof (0.11.3)
     thor (1.0.1)
     thread_safe (0.3.6)
     tilt (2.0.10)
@@ -358,7 +361,10 @@ DEPENDENCIES
   rails
   rspec-rails
   rubocop (~> 0.81.0)
+  ruby-prof
   seedbank
+  stackprof
+  test-prof
   yard
 
 BUNDLED WITH
