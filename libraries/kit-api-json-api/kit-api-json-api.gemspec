@@ -21,8 +21,9 @@ Gem::Specification.new do |s|
 
   s.files = Dir['{app,config,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
 
-  s.add_dependency 'oj',    '~> 3.3', '>= 3.3.5'
-  s.add_dependency 'rails', '~> 6.0'
+  s.add_dependency 'oj',       '~> 3.3', '>= 3.3.5'
+  s.add_dependency 'rails',    '~> 6.0'
+  s.add_dependency 'urlcrypt', '~> 0.1.1'
 
   s.add_development_dependency 'listen'
   s.add_development_dependency 'rspec-rails'
