@@ -13,6 +13,11 @@ RSpec.shared_context 'config dummy app' do
       },
       page_size:     3,
       page_size_max: 5,
+      meta:          {
+        kit_api_paginator_cursor: {
+          encrypt_secret: '72b035a267ac10c7b5e3c0893c395ab0',
+        },
+      },
     })
   end
 

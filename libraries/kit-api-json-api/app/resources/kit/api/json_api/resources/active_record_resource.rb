@@ -187,7 +187,7 @@ class Kit::Api::JsonApi::Resources::ActiveRecordResource
   end
 
   def self.paginator
-    Kit::Api::JsonApi::Services::Resolvers::Paginators::Cursor.to_h
+    Kit::Api::JsonApi::Services::Paginators::Cursor.to_h
   end
 
 =begin

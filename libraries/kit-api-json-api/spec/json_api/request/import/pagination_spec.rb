@@ -11,78 +11,103 @@ describe Kit::Api::JsonApi::Services::Request::Import::Pagination do
   let(:request) do
     {
       config:             config,
-      top_level_resource: Kit::JsonApiSpec::Resources::Author.to_h,
+      top_level_resource: config[:resources][:author],
     }
   end
 
-  context 'with sort order' do
+  subject do
+    params = {
+      query_params: query_params,
+      request:      request,
+    }
+    Kit::Api::JsonApi::Services::Request::Import::RelatedResources.handle_related_resources(params)
+    service.handle_pagination(params)
+  end
 
-    subject do
-      params = {
-        query_params: query_params,
-        request:      request,
-      }
-      Kit::Api::JsonApi::Services::Request::Import::RelatedResources.handle_related_resources(params)
-      service.handle_pagination(params)
+  let(:url) { "https://domain.com/author?#{ include_param }&#{ page_param }" }
+
+  context 'with invalid include && valid page criteria' do
+    let(:include_param) { 'include=books.serie' }
+    let(:page_param)    { 'page[size]=1&page[books.chapters.size]=3' }
+
+    it 'generates the proper errors' do
+      status, ctx = subject
+      expect(status).to eq :error
+      expect(ctx[:errors][0][:detail]).to eq 'Page: `books.chapters` is not an included relationship'
     end
+  end
 
-    let(:valid_include)   { 'include=books' }
-    let(:invalid_include) { 'include=series' }
+  context 'with valid include && valid page criteria' do
 
-=begin
-    let(:valid_filters)   { 'filter[name][eq]=Tolkien,Rowling&filter[books.date_published][lt]=2002&filter[date_of_birth][gt]=1950&filter[books.title]=Title' }
+    context 'with two different paginators' do
 
-    context 'with valid include && valid filter criteria' do
-      let(:url) { "https://domain.com/author?#{ valid_include }&#{ valid_filters }" }
+      let(:config) do
+        config    = config_dummy_app
+        resources = config[:resources]
 
-      it 'add the expected data to the request' do
+        resources[:author][:paginator]  = fake_paginator_1
+        resources[:book][:paginator]    = fake_paginator_2
+        resources[:chapter][:paginator] = fake_paginator_1
+        resources[:serie][:paginator]   = fake_paginator_2
+
+        config
+      end
+
+      let(:fake_paginator_1) do
+        {
+          type:   :fake_paginator_1,
+          import: ->(request:, parsed_query_params_page:) do
+            parsed_query_params_page.each do |_path, hash|
+              hash[:fp1] = hash[:fp1][0].to_i + 1
+              if hash[:fp2] # Meant to catch failure
+                hash[:fp2] = hash[:fp2][0].to_i + 10
+              end
+            end
+
+            [:ok, parsed_query_params_page: parsed_query_params_page]
+          end,
+        }
+      end
+
+      let(:fake_paginator_2) do
+        {
+          type:   :fake_paginator_2,
+          import: ->(request:, parsed_query_params_page:) do
+            parsed_query_params_page.each do |_path, hash|
+              hash[:fp2] = hash[:fp2][0].to_i + 2
+              if hash[:fp1] # Meant to catch failure
+                hash[:fp1] = hash[:fp1][0].to_i + 20
+              end
+            end
+
+            [:ok, parsed_query_params_page: parsed_query_params_page]
+          end,
+        }
+      end
+
+      let(:include_param) { 'include=books.serie,books.chapters' }
+      let(:page_param) do
+        {
+          'page[fp1]'                => 10,
+          'page[books.fp2]'          => 20,
+          'page[books.chapters.fp1]' => 10,
+          'page[books.serie.fp2]'    => 20,
+        }.map { |k, v| "#{ k }=#{ v }" }.join('&')
+      end
+
+      it 'add the expected pagination data to the request' do
         status, ctx = subject
 
         expect(status).to eq :ok
-        expect(ctx[:request][:related_resources].keys).to eq ['books']
-        expect(ctx[:request][:filters]).to eq({
-          :top_level => [
-            { name: :name,           op: :in, value: %w[Tolkien Rowling] },
-            { name: :date_of_birth,  op: :gt, value: ['1950'] },
-          ],
-          'books'    => [
-            { name: :date_published, op: :lt, value: ['2002'] },
-            { name: :title,          op: :eq, value: ['Title'] },
-          ],
+        expect(ctx[:request][:pagination]).to eq({
+          :top_level       => { fp1: 11 },
+          'books'          => { fp2: 22 },
+          'books.chapters' => { fp1: 11 },
+          'books.serie'    => { fp2: 22 },
         })
       end
+
     end
-
-    context 'with invalid include && valid filter criteria' do
-      let(:url) { "https://domain.com/author?#{ invalid_include }&#{ valid_filters }" }
-
-      it 'generates the proper errors' do
-        status, ctx = subject
-        expect(status).to eq :error
-        expect(ctx[:errors][0][:detail]).to eq 'Filter: `books` is not an included relationship'
-      end
-    end
-
-    context 'with valid include && non existing filter' do
-      let(:url) { 'https://domain.com/author?filter[lol]=Tolkien' }
-
-      it 'generates the proper errors' do
-        status, ctx = subject
-        expect(status).to eq :error
-        expect(ctx[:errors][0][:detail]).to eq 'Filter: `lol` is not a valid filter'
-      end
-    end
-
-    context 'with valid include && non existing operator' do
-      let(:url) { 'https://domain.com/author?filter[name][lol]=Tolkien' }
-
-      it 'generates the proper errors' do
-        status, ctx = subject
-        expect(status).to eq :error
-        expect(ctx[:errors][0][:detail]).to eq 'Filter: `name` does not support operator `lol`'
-      end
-    end
-=end
 
   end
 
