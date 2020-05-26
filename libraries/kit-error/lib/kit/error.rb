@@ -10,7 +10,7 @@ module Kit
   # irb> Kit::Error("Error message")
   # [:error, errors: ["Error message"]]
   # ```
-  def self.Error(msg)
+  def self.Error(msg) # rubocop:disable Naming/MethodName
     [:error, ErrorCtx(msg)]
   end
 
@@ -23,10 +23,12 @@ module Kit
   # irb> Kit::ErrorCtx(["Error message 1", "Error message 2"])
   # { errors: ["Error message 1", "Error message 2"] }
   # ```
-  def self.ErrorCtx(msg)
-    if !msg.is_a?(::Array)
+  def self.ErrorCtx(msg) # rubocop:disable Naming/MethodName
+    if !msg.is_a?(Array)
       msg = [msg]
     end
+
+    msg = msg.map { |el| el.is_a?(String) ? { detail: el } : el }
 
     { errors: msg.flatten }
   end
