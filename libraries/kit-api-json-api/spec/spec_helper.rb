@@ -41,7 +41,12 @@ class KitFormatter < RSpec::Core::Formatters::BaseTextFormatter
       pending: '❔',
     }
 
-    output.print "\r#{ statuses[exr.status] }  #{ wrap(ex.location, :bold) }  #{ wrap(ex.description, :italic) }  #{ wrap("#{ exr.run_time }s", :bold) }\n"
+    location = wrap(ex.location, :bold)
+    if exr.status == :failed
+      location = wrap(wrap(ex.location, :bold), :red)
+    end
+
+    output.print "\r#{ statuses[exr.status] }  #{ location }  #{ wrap(ex.description, :italic) }  #{ wrap("#{ exr.run_time }s", :bold) }\n"
   end
 
   alias_method :example_passed,  :example_done

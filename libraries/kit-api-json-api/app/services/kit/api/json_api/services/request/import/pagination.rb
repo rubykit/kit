@@ -108,8 +108,9 @@ module Kit::Api::JsonApi::Services::Request::Import::Pagination
       end
       keyword = keyword.to_sym
 
-      list[path]           ||= {}
-      (list[path][keyword] ||= []) << value
+      list[path]          ||= {}
+      list[path][keyword] ||= []
+      list[path][keyword] += value.split(',')
     end
 
     [:ok, parsed_query_params_page: list]

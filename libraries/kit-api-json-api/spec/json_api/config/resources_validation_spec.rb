@@ -27,7 +27,7 @@ describe Kit::Api::JsonApi::Services::Config do
       it 'fails' do
         status, ctx = subject
         expect(status).to eq :error
-        expect(ctx[:errors][0]).to eq 'Kit::Api::JsonApi - Error: missing resource for relationship `author.books`'
+        expect(ctx[:errors][0][:detail]).to eq 'Kit::Api::JsonApi - Error: missing resource for relationship `author.books`'
       end
     end
 
@@ -41,7 +41,7 @@ describe Kit::Api::JsonApi::Services::Config do
       it 'fails' do
         status, ctx = subject
         expect(status).to eq :error
-        expect(ctx[:errors][0]).to eq 'Kit::Api::JsonApi - Error: unregistered resource `book` for relationship `author.books`'
+        expect(ctx[:errors][0][:detail]).to eq 'Kit::Api::JsonApi - Error: unregistered resource `book` for relationship `author.books`'
       end
     end
 
