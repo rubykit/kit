@@ -1,14 +1,16 @@
 # https://bugs.ruby-lang.org/issues/12648
 
 module Comparable
+
   class SortableTuple < Array
+
     include Comparable
 
     attr_reader :orderings
 
     def initialize(orderings)
       # Adding keyword options like `allow_nil` (`:first`/`:last`) would be great.
-      replace orderings.map { |key, dir|
+      replace(orderings.map do |key, dir|
         desc =
           case dir
           when :desc
@@ -19,7 +21,7 @@ module Comparable
             raise ArgumentError, "direction must be either :asc or :desc: #{dir.inspect}"
           end
         [key, desc]
-      }
+      end)
     end
 
     def <=>(other)
@@ -40,4 +42,5 @@ module Comparable
   def self.[](*args)
     SortableTuple.new(*args)
   end
+
 end

@@ -1,21 +1,26 @@
-$:.push File.expand_path("lib", __dir__)
+$LOAD_PATH.push File.expand_path('lib', __dir__)
+require 'kit/pagination/version'
 
-# Maintain your gem's version:
-require "kit/pagination/version"
+version = Kit::Pagination::VERSION
 
-# Describe your gem and declare its dependencies:
-Gem::Specification.new do |spec|
-  spec.name        = "kit-pagination"
-  spec.version     = Kit::Pagination::VERSION
-  spec.authors     = ["Nathan Appere"]
-  spec.email       = ["nathan.appere@gmail.com"]
-  spec.homepage    = "https://ruby-kit-pagination.localhost.com"
-  spec.summary     = "Pagination gem to handle cursor logic"
-  spec.description = ""
-  spec.license     = "MIT"
+Gem::Specification.new do |s|
+  s.name        = 'kit-pagination'
+  s.version     = version
+  s.summary     = 'Set pagination.'
+  s.description = ''
+  s.license     = 'MIT'
+  s.author      = 'Nathan Appere'
+  s.email       = 'nathan@rubykit.org'
+  s.homepage    = 'https://github.com/rubykit/kit/tree/master/libraries/kit-pagination'
 
-  spec.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
+  s.metadata = {
+    'source_code_base_uri' => 'https://github.com/rubykit/kit',
+    'source_code_uri'      => "https://github.com/rubykit/kit/tree/v#{ version }/libraries/kit-pagination",
+    'documentation_uri'    => "https://docs.rubykit.org/v#{ version }",
+  }
 
-  spec.add_development_dependency 'rspec'
+  s.files = Dir['{lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
+
+  s.add_development_dependency 'rspec'
 
 end

@@ -3,16 +3,16 @@ require 'ostruct'
 
 require_relative 'support/spec_db'
 
-describe "Pagination page access" do
+describe 'Pagination page access' do
   let(:records)          { records_base.map { |el| OpenStruct.new(el) } }
 
   let(:sorted_records)   { SpecDb.order(set: records, ordering: ordering) }
 
-  let(:r1_cursor_data)   { Kit::Pagination::Cursor.cursor_data_for_element(ordering: ordering, element: sorted_records.first) }
-  let(:r8_cursor_data)   { Kit::Pagination::Cursor.cursor_data_for_element(ordering: ordering, element: sorted_records.last) }
+  let(:r1_cursor_data)   { Kit::Pagination::Cursor.cursor_data_for_element(ordering: ordering, element: sorted_records.first)[1][:cursor_data] }
+  let(:r8_cursor_data)   { Kit::Pagination::Cursor.cursor_data_for_element(ordering: ordering, element: sorted_records.last)[1][:cursor_data] }
 
-  let(:conditions_page1) { Kit::Pagination::Conditions.conditions_for_after(ordering:  ordering, cursor_data: r1_cursor_data) }
-  let(:conditions_page2) { Kit::Pagination::Conditions.conditions_for_before(ordering: ordering, cursor_data: r8_cursor_data) }
+  let(:conditions_page1) { Kit::Pagination::Condition.condition_for_after(ordering:  ordering, cursor_data: r1_cursor_data)[1][:condition] }
+  let(:conditions_page2) { Kit::Pagination::Condition.condition_for_before(ordering: ordering, cursor_data: r8_cursor_data)[1][:condition] }
 
   let(:page_size) { 3 }
 
