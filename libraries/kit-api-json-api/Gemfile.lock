@@ -67,6 +67,11 @@ PATH
       rails (~> 6.0)
 
 PATH
+  remote: ../kit-pagination
+  specs:
+    kit-pagination (0.1.0)
+
+PATH
   remote: ../kit-router
   specs:
     kit-router (0.1.0)
@@ -356,6 +361,7 @@ DEPENDENCIES
   kit-engine!
   kit-error!
   kit-organizer!
+  kit-pagination!
   kit-router!
   listen
   pry

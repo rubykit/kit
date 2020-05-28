@@ -11,11 +11,11 @@ module Kit::Api::JsonApi::Contracts
 
   ColumnName    = SymbolOrString.named('ColumnName')
 
-  ConditionOp   = In[:eq, :gt, :gte, :lt, :lte, :in, :contain, :start_with, :end_with]
-  ConditionOps  = Array.of(ConditionOp).named('ConditionOps')
+  ConditionOp         = In[:eq, :gt, :gte, :lt, :lte, :in, :contain, :start_with, :end_with]
+  ConditionOps        = Array.of(ConditionOp).named('ConditionOps')
   ExtendedConditionOp = In[:and, :or, ConditionOp].named('ExtendedConditionOp')
-  Condition     = Hash[op: ExtendedConditionOp, column: Optional[ColumnName], values: Any].named('Condition')
-  FilterName    = SymbolOrString.named('FilterName')
+  Condition           = Hash[op: ExtendedConditionOp, column: Optional[ColumnName], values: Any].named('Condition')
+  FilterName          = SymbolOrString.named('FilterName')
 
   SortOrderType  = In[:asc, :desc].named('SortOrderType')
   SortOrderField = SymbolOrString.named('SortOrderField')

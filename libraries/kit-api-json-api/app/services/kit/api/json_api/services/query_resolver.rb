@@ -44,9 +44,11 @@ module Kit::Api::JsonApi::Services::QueryResolver
 
     if condition&.dig(:op)
       if condition[:op].in?([:or, :and])
-        condition[:values] = condition[:values].map do |value|
+        condition[:values] = condition[:values].filter_map do |value|
           resolve_condition(condition: value, query_node: query_node)
         end
+
+        return nil if condition[:values].size == 0
       end
     end
 

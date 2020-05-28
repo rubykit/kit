@@ -35,14 +35,29 @@ module Kit::Api::JsonApi::Services::QueryBuilder
   # Creates a `QueryNode` for a given layer.
   def self.build_query_node(request:, resource:, singular:, path:, condition: nil, resolvers: nil)
     # Filters
-    # add to conditions
+    if (filters_condition = resource.dig(:filters, path))
+      condition = add_condition(initial_condition: condition, new_condition: filters_condition)
+    end
 
-    # Sorting
-    sorting = resource[:sort_fields].select { |_k, v| v[:default] == true }.first[1][:order]
+    # Ordering
+    ordering = nil
+    if (path_ordering = resource.dig(:sorting, path))
+      # TODO: reverse if negative order
+      ordering = resource.dig(:sort_fields, path_ordering[:sort_name], :order)
+    end
+    # If none, select Resource default.
+    if !ordering
+      ordering = resource[:sort_fields].select { |_k, v| v[:default] == true }.first[1][:order]
+    end
 
     # Limit
     _, ctx  = get_limit(request: request, path: path, singular: singular)
     limit   = ctx[:limit]
+
+    # Pagination
+    if (pagination_condition = resource.dig(:paginator, :condition))
+      condition = add_condition(initial_condition: condition, new_condition: pagination_condition)
+    end
 
     # Create QueryNode
     query_node = {
@@ -50,7 +65,7 @@ module Kit::Api::JsonApi::Services::QueryBuilder
       resource:      resource,
       singular:      singular,
       condition:     condition,
-      sorting:       sorting,
+      sorting:       ordering,
       limit:         limit,
       relationships: {},
 
@@ -58,12 +73,8 @@ module Kit::Api::JsonApi::Services::QueryBuilder
 
       #data_resolver: data_resolver || resource[:data_resolver],
       data:          nil,
+      request:       request,
     }
-
-    # Pagination
-    if (paginator = request.dig(:config, :paginator))
-      paginator.add_pagination_data_to_query_node(query_node: query_node)
-    end
 
     # Add relationships
     build_nested_relationships(
@@ -133,6 +144,7 @@ module Kit::Api::JsonApi::Services::QueryBuilder
     if singular == true
       limit = 1
     elsif limit == nil
+      # Note: this is kind of cheating, not sure where it belongs.
       limit = request.dig(:pagination, path, :size)
     end
 
@@ -145,6 +157,19 @@ module Kit::Api::JsonApi::Services::QueryBuilder
     end
 
     [:ok, limit: limit]
+  end
+
+  def self.add_condition(initial_condition:, new_condition:)
+    if initial_condition
+      if initial_condition.is_a?(Hash) && initial_condition[:op] == :and
+        initial_condition[:values] << pagination_condition
+        initial_condition
+      else
+        { op: :and, values: [initial_condition, new_condition] }
+      end
+    else
+      new_condition
+    end
   end
 
 end

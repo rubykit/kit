@@ -82,8 +82,6 @@ module Kit::Api::JsonApi::Services::Sql
       )
     end
 
-    puts sql if ENV['KIT_API_DEBUG']
-
     [:ok, sql_str: sql]
   end
 

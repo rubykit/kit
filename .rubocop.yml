@@ -10,6 +10,9 @@ Metrics:
 Layout/LineLength:
   Enabled: false
 
+Style/Alias:
+  EnforcedStyle: prefer_alias_method
+
 Style/AsciiComments:
   Enabled: false
 

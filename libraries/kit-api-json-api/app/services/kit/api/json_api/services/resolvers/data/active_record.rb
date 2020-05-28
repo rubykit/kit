@@ -175,9 +175,9 @@ module Kit::Api::JsonApi::Services::Resolvers::Data::ActiveRecord
       assemble_sql_query: assemble_sql_query,
     )
 
-    #puts ctx[:sql_str]
+    puts ctx[:sql_str] if ENV['KIT_API_DEBUG']
+
     data = model.find_by_sql(ctx[:sql_str])
-    #puts "LOAD DATA #{ model.name.upcase }: #{ data.size }"
 
     [:ok, data: data]
   end

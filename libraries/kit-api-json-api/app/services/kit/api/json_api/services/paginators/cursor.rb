@@ -68,98 +68,61 @@ module Kit::Api::JsonApi::Services::Paginators::Cursor
     }
   end
 
-=begin
-  # Add validation on Request creation.
-  # TODO: rewrite this with a single Contract? Need to figure out how to generate the proper error messages.
-  def self.pagination_import(request:, parsed_query_params_page:)
-    config = request[:config]
-
-    parsed_query_params_page.map do |path, list|
-      path_prefix = path.size > 0 ? "#{ path }." : ''
-      list.each do |key, value|
-        # Only accepts :size, :after, :before keywords
-        if ![:size, :after, :before].include?(key)
-          return Kit::Error("Pagination error - Unsupported keyword `#{ key }` in `page[#{ path_prefix }#{ key }]`")
-        end
-
-        # Only accept single values
-        if value.size > 1
-          return Kit::Error("Paginator error - Multiple values for `page[#{ path_prefix }#{ key }]`")
-        end
-      end
-
-      # :size needs to be a positive integer
-      if list[:size]
-        list[:size] = list[:size].to_i
-        if list[:size] < 0
-          return Kit::Error("Paginator error - Invalid value for `page[#{ path_prefix }size]`")
-        end
-      end
-
-      # :after & :before need to be Strings, and to succesfully pass decryption
-      [:after, :before].each do |key|
-        value = list[key]
-        if !value.is_a?(String)
-          return Kit::Error("Paginator error - Invalid cursor value for `page[#{ path_prefix }#{ key }]`")
-        end
-
-        status, ctx = Kit::Api::JsonApi::Services::Crypt.decrypt_object(
-          encrypted_data: value,
-          key:            config[:meta][:kit_api_paginator_cursor][:encrypt_secret],
-        )
-        if status == :error
-          return Kit::Error("Paginator error - Invalid cursor `page[#{ path_prefix }#{ key }]`")
-        end
-
-        list[key] = ctx[:data]
-      end
-    end
-
-    # Detect nested pagination (pagination that targets a nested to_many).
-    # This is probably never what API developers want because the a cursor only target one subset.
-    # See `Nested pagination` in the module doc.
-    #
-    # Traverse every request path and count the collection nesting level. If > 1, not paginateable.
-    parsed_query_params_page.map do |path, _list|
-      level    = (request[:singular] == false) ? 1 : 0
-      resource = request[:top_level_resource]
-
-      path.split('.').each do |name|
-        relationship = config[:resources][resource[:relationships][name]]
-        level       += (relationship[:relationship_type] == :to_many) ? 1 : 0
-
-        if level > 1 && (parsed_query_params_page[path][:before] || parsed_query_params_page[path][:after])
-          return Kit::Error("Pagination error: can not use cursor pagination on path `#{ path }`")
-        end
-
-        resource = config[:resources][relationship[:resource]]
-      end
-    end
-
-    [:ok, parsed_query_params_page: parsed_query_params_page]
-  end
-=end
-
   # Add condition on QueryNode.
-  def self.pagination_condition(request:, query_node:)
-    pagination_data = request[:pagination][query_node[:path]]
+  def self.pagination_condition(query_node:)
+    request         = query_node[:request]
+    pagination_data = request.dig(:pagination, query_node[:path])
+
+    return nil if !pagination_data
+
     after_cursor    = pagination_data[:after]
     before_cursor   = pagination_data[:before]
-    size            = pagination_data[:size]
+    ordering        = query_node[:sorting]
 
-    # TODO: plug Kit::Pagination
+    if after_cursor && after_cursor.size > 0
+      after_condition = Kit::Pagination::Condition.condition_for_after(ordering: ordering, cursor_data: after_cursor)[1][:condition]
+    end
 
-    [:ok]
+    if before_cursor && before_cursor.size > 0
+      before_condition = Kit::Pagination::Condition.condition_for_before(ordering: ordering, cursor_data: before_cursor)[1][:condition]
+    end
+
+    if after_condition && before_condition
+      { op: :and, values: [after_condition, before_condition] }
+    elsif after_condition
+      after_condition
+    elsif before_condition
+      before_condition
+    else
+      nil
+    end
   end
 
   # Generate query_params from collection
   def self.pagination_export(query_node:, records:)
-    # TODO: plug Kit::Pagination
+    return { current: {}, prev: {}, next: {} } if records.size == 0
+
+    config         = query_node[:request][:config]
+    ordering       = query_node[:sorting]
+    enc_key        = config[:meta][:kit_api_paginator_cursor][:encrypt_secret]
+
+    fe_data        = records.first[:raw_data].attributes.symbolize_keys
+    le_data        = records.last[:raw_data].attributes.symbolize_keys
+
+    fe_cursor_data_included = Kit::Pagination::Cursor.cursor_data_for_element(ordering: ordering, element: fe_data, included: true)[1][:cursor_data]
+    fe_cursor_data_excluded = Kit::Pagination::Cursor.cursor_data_for_element(ordering: ordering, element: fe_data)[1][:cursor_data]
+    le_cursor_data_included = Kit::Pagination::Cursor.cursor_data_for_element(ordering: ordering, element: le_data, included: true)[1][:cursor_data]
+    le_cursor_data_excluded = Kit::Pagination::Cursor.cursor_data_for_element(ordering: ordering, element: le_data)[1][:cursor_data]
+
+    fe_cursor_included = Kit::Api::JsonApi::Services::Encryption.encrypt(data: fe_cursor_data_included, key: enc_key)[1][:encrypted_data]
+    fe_cursor_excluded = Kit::Api::JsonApi::Services::Encryption.encrypt(data: fe_cursor_data_excluded, key: enc_key)[1][:encrypted_data]
+    le_cursor_included = Kit::Api::JsonApi::Services::Encryption.encrypt(data: le_cursor_data_included, key: enc_key)[1][:encrypted_data]
+    le_cursor_excluded = Kit::Api::JsonApi::Services::Encryption.encrypt(data: le_cursor_data_excluded, key: enc_key)[1][:encrypted_data]
 
     {
-      current: { page: { before: 'v', after: 'w' } },
-      prev:    { page: { before: 'x' } },
-      next:    { page: { after: 'y' } },
+      current: { page: { after:  fe_cursor_included, before: le_cursor_included } },
+      prev:    { page: { before: fe_cursor_excluded } },
+      next:    { page: { after:  le_cursor_excluded } },
     }
   end
 
