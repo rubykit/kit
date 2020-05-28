@@ -1,6 +1,9 @@
 ENV['RAILS_ENV'] ||= 'test'
 
 ENV['DATABASE_ADAPTER'] = 'nulldb'
+# Note: somehow having a DATABASE_URL in the config env of `dummy-app-container` bypasses the `nulldb` adapter.
+#  `primary` gets registered as `nulldb` a first time, then a second as `postgres`
+ENV['DATABASE_URL']     = nil
 ENV['EVENT_STORE']      = 'false'
 
 KIT_APP_PATHS ||= {}
