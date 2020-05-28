@@ -50,7 +50,7 @@ commands:
     steps:
       - run:
           command: |
-            sudo gem install bundler:2.1.3
+            sudo gem install bundler:2.1.4
 
   install-gems:
     description: Install gems with Bundler.
@@ -93,12 +93,12 @@ commands:
   kit-api-json-api__save-cache-gems:
     steps:
       - save-cache-gems:
-          key: kit-api-json-api@gems-v1
+          key: kit-api-json-api|gems|{{ checksum "Gemfile.lock" }}
 
   kit-api-json-api__restore-cache-gems:
     steps:
       - restore-cache-gems:
-          key: kit-api-json-api@gems-v1
+          key: kit-api-json-api|gems|{{ checksum "Gemfile.lock" }}
 
   kit-api-json-api__prepare-database:
     description: 'Loading DBs schemas && running seed'
@@ -113,24 +113,24 @@ commands:
   kit-organizer__save-cache-gems:
     steps:
       - save-cache-gems:
-          key: kit-organizer@gems-v1
+          key: kit-organizer|gems|{{ checksum "Gemfile.lock" }}
 
   kit-organizer__restore-cache-gems:
     steps:
       - restore-cache-gems:
-          key: kit-organizer@gems-v1
+          key: kit-organizer|gems|{{ checksum "Gemfile.lock" }}
 
 # kit-pagination ---------------------------------------------------------------
 
   kit-pagination__save-cache-gems:
     steps:
       - save-cache-gems:
-          key: kit-pagination@gems-v1
+          key: kit-pagination|gems|{{ checksum "Gemfile.lock" }}
 
   kit-pagination__restore-cache-gems:
     steps:
       - restore-cache-gems:
-          key: kit-pagination@gems-v1
+          key: kit-pagination|gems|{{ checksum "Gemfile.lock" }}
 
 
 # Jobs -------------------------------------------------------------------------
@@ -143,8 +143,8 @@ jobs:
     #executor: ruby/default
     steps:
       - checkout-code
-      - show-bundler-version
       - install-bundler
+      - show-bundler-version
       - kit-api-json-api__restore-cache-gems
       - install-gems
       - kit-api-json-api__save-cache-gems
@@ -157,21 +157,21 @@ jobs:
     #executor: ruby/default
     steps:
       - checkout-code
-      - show-bundler-version
       - install-bundler
+      - show-bundler-version
       - kit-organizer__restore-cache-gems
       - install-gems
       - kit-organizer__save-cache-gems
       - run-rspec
 
   test-kit-pagination:
-    working_directory: ~/kit/libraries/kit-organizer
+    working_directory: ~/kit/libraries/kit-pagination
     <<: *docker_tests
     #executor: ruby/default
     steps:
       - checkout-code
-      - show-bundler-version
       - install-bundler
+      - show-bundler-version
       - kit-pagination__restore-cache-gems
       - install-gems
       - kit-pagination__save-cache-gems

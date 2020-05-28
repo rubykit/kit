@@ -1,5 +1,5 @@
 require 'openssl'
-require 'urlcrypt'
+require 'URLcrypt'
 require 'oj'
 
 # Symmetric 256-bit AES encryption for strings.

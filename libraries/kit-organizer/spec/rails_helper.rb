@@ -1,5 +1,8 @@
 ENV['RAILS_ENV'] ||= 'test'
 
+ENV['DATABASE_ADAPTER'] = 'nulldb'
+ENV['EVENT_STORE']      = 'false'
+
 KIT_APP_PATHS ||= {}
 KIT_APP_PATHS['GEM_ROOT'] = File.expand_path('..', __dir__)
 KIT_APP_PATHS['GEM_APP']  = File.expand_path('../app', __dir__)
