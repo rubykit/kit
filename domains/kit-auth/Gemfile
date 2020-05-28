@@ -1,40 +1,24 @@
 source 'https://rubygems.org'
-git_source(:github) { |repo| "https://github.com/#{repo}.git" }
+git_source(:github) { |repo| "https://github.com/#{ repo }.git" }
 
-# Declare your gem's dependencies in kit-auth.gemspec.
-# Bundler will treat runtime dependencies like base dependencies, and
-# development dependencies will be added by default to the :development group.
 gemspec
 
-# Declare any dependencies that are still in development here instead of in
-# your gemspec. These might include edge Rails or gems from your path or
-# Git. Remember to move these dependencies to your gemspec before releasing
-# your gem to rubygems.org.
-
-# To use a debugger
-# gem 'byebug', group: [:development, :test]
-
 gem 'dotenv-rails', require: 'dotenv/rails-now'
+gem 'jsonapi-rails' # DEV MODE ?
 
-gem 'paranoia', require: 'paranoia'
-gem 'doorkeeper', require: 'doorkeeper'
-
-gem 'kit-engine', path: '../../libraries/kit-engine' # DEV MODE
-gem 'kit-domain', path: '../../libraries/kit-domain' # DEV MODE
-gem 'contracts', require: 'contracts' # DEV MODE
-
-gem 'kit-organizer', path: '../../libraries/kit-organizer' # DEV MODE
-gem 'kit-pagination', path: '../../libraries/kit-pagination' # DEV MODE
-gem 'kit-router', path: '../../libraries/kit-router' # DEV MODE
-gem 'kit-error', path: '../../libraries/kit-error' # DEV MODE
 gem 'kit-active-admin', path: '../../libraries/kit-active-admin', require: 'kit/active_admin' # DEV MODE
+gem 'kit-domain',       path: '../../libraries/kit-domain' # DEV MODE
+gem 'kit-engine',       path: '../../libraries/kit-engine' # DEV MODE
+gem 'kit-error',        path: '../../libraries/kit-error' # DEV MODE
+gem 'kit-organizer',    path: '../../libraries/kit-organizer' # DEV MODE
+gem 'kit-pagination',   path: '../../libraries/kit-pagination' # DEV MODE
+gem 'kit-router',       path: '../../libraries/kit-router' # DEV MODE
 
-gem "slim-rails" # DEV MODE ? doesn't get loaded otherwise
-
-gem "browser"  # DEV MODE ? doesn't get loaded otherwise
-gem "sidekiq"  # DEV MODE ? doesn't get loaded otherwise
-
-gem "jsonapi-rails" # DEV MODE ?
+gem 'browser'  # DEV MODE ? doesn't get loaded otherwise
+gem 'doorkeeper', require: 'doorkeeper'
+gem 'paranoia',   require: 'paranoia'
+gem 'sidekiq'  # DEV MODE ? doesn't get loaded otherwise
+gem 'slim-rails' # DEV MODE ? doesn't get loaded otherwise
 
 group :development do
   gem 'annotate', '~> 2.7', '>= 2.7.4'
@@ -47,8 +31,8 @@ group :development, :test do
   gem 'better_errors'
 
   gem 'pry'
-  gem 'pry-stack_explorer'
   gem 'pry-byebug'
+  gem 'pry-stack_explorer'
 
   gem 'listen'
 end

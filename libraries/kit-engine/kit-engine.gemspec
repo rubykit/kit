@@ -1,26 +1,29 @@
-$:.push File.expand_path("lib", __dir__)
+$LOAD_PATH.push File.expand_path('lib', __dir__)
+require 'kit/engine/version'
 
-# Maintain your gem's version:
-require "kit/engine/version"
+version = Kit::Engine::VERSION
 
-# Describe your gem and declare its dependencies:
-Gem::Specification.new do |spec|
-  spec.name        = "kit-engine"
-  spec.version     = Kit::Engine::VERSION
-  spec.authors     = ["Nathan Appere"]
-  spec.email       = ["nathan.appere@gmail.com"]
-  spec.homepage    = "https://ruby-kit-engines.localhost.com"
-  spec.summary     = "Hold shared logic for all Kit Engines"
-  spec.description = ""
-  spec.license     = "MIT"
+Gem::Specification.new do |s|
+  s.name        = 'kit-engine'
+  s.version     = version
+  s.summary     = 'Shared logic for engines.'
+  s.description = ''
+  s.license     = 'MIT'
+  s.author      = 'Nathan Appere'
+  s.email       = 'nathan@rubykit.org'
+  s.homepage    = 'https://github.com/rubykit/kit/tree/master/libraries/kit-engine'
 
+  s.metadata = {
+    'source_code_base_uri' => 'https://github.com/rubykit/kit',
+    'source_code_uri'      => "https://github.com/rubykit/kit/tree/v#{ version }/libraries/kit-engine",
+    'documentation_uri'    => "https://docs.rubykit.org/v#{ version }",
+  }
 
-  spec.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
+  s.files = Dir['{app,config,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
 
-  spec.add_dependency "rails"
+  s.add_dependency 'activerecord-nulldb-adapter'
+  s.add_dependency 'rails',                       '~> 6.0.3.1'
 
-  spec.add_dependency "activerecord-nulldb-adapter"
-
-  spec.add_development_dependency 'yard'
+  s.add_development_dependency 'rspec-rails'
 
 end

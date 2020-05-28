@@ -1,26 +1,28 @@
-$:.push File.expand_path("lib", __dir__)
+$LOAD_PATH.push File.expand_path('lib', __dir__)
+require 'kit/store/version'
 
-# Maintain your gem's version:
-require "kit/store/version"
+version = Kit::Store::VERSION
 
-# Describe your gem and declare its dependencies:
-Gem::Specification.new do |spec|
-  spec.name        = "kit-store"
-  spec.version     = Kit::Store::VERSION
-  spec.authors     = ["Nathan Appere"]
-  spec.email       = ["nathan.appere@gmail.com"]
-  spec.homepage    = "https://ruby-kit-store.localhost.com"
-  spec.summary     = "Store gem to handle path overrides between engines"
-  spec.description = ""
-  spec.license     = "MIT"
+Gem::Specification.new do |s|
+  s.name        = 'kit-store'
+  s.version     = version
+  s.summary     = 'In-memory database. Brings Microsoft LINQ features to Ruby.'
+  s.description = ''
+  s.license     = 'MIT'
+  s.author      = 'Nathan Appere'
+  s.email       = 'nathan@rubykit.org'
+  s.homepage    = 'https://github.com/rubykit/kit/tree/master/libraries/kit-store'
 
-  spec.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
+  s.metadata = {
+    'source_code_base_uri' => 'https://github.com/rubykit/kit',
+    'source_code_uri'      => "https://github.com/rubykit/kit/tree/v#{ version }/libraries/kit-store",
+    'documentation_uri'    => "https://docs.rubykit.org/v#{ version }",
+  }
 
-  spec.add_dependency "rails", "~> 6.0"
+  s.files = Dir['{app,config,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
 
-  spec.add_development_dependency 'rspec-rails'
-  spec.add_development_dependency 'listen'
+  s.add_dependency             'rails', '~> 6.0.3.1'
 
-  spec.add_development_dependency 'yard'
+  s.add_development_dependency 'rspec-rails'
 
 end

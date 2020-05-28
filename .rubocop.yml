@@ -1,8 +1,8 @@
 AllCops:
   TargetRubyVersion: 2.7
 
-  Exclude:
-    - '**/Gemfile'
+  #Exclude:
+  #  - '**/Gemfile'
 
 Metrics:
   Enabled: false
