@@ -28,6 +28,9 @@ Lint/UnusedMethodArgument:
 Style/IfUnlessModifier:
   Enabled: false
 
+Style/MultipleComparison:
+  Enabled: false
+
 Style/FrozenStringLiteralComment:
   Enabled: false
 
@@ -82,9 +85,15 @@ Style/RedundantInterpolation:
 Style/RegexpLiteral:
   EnforcedStyle: percent_r
 
+Style/MultilineBlockChain:
+  Enabled: false
+
 # Gets it wrong when it's a no op
 Style/Next:
   Enabled: false
+
+Style/RaiseArgs:
+  EnforcedStyle: compact
 
 # Gets it wrong when you want to avoid usage of **
 Lint/UnusedBlockArgument:
@@ -212,3 +221,19 @@ Style/HashTransformKeys:
 
 Style/HashTransformValues:
   Enabled: false
+
+Layout/EmptyLinesAroundAttributeAccessor:
+  Enabled: false
+
+Layout/SpaceAroundMethodCallOperator:
+  Enabled: true
+
+Lint/DeprecatedOpenSSLConstant:
+  Enabled: true
+
+Style/ExponentialNotation:
+  Enabled: false
+
+Style/SlicingWithRange:
+  Enabled: true
+
