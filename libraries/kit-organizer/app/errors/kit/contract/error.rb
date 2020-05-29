@@ -12,8 +12,8 @@ class Kit::Contract::Error < ::StandardError
     @method_type    = method_type
     @type           = type
     @args           = args
-
     @backtrace      = caller
+
     @backtrace.shift()
 
     super

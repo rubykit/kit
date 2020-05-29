@@ -1,8 +1,3 @@
-module Kit
-  module Contract
-    # The Engine is mainly used to handle all autoloading.
-    class Engine < ::Rails::Engine
-
-    end
-  end
+# The Engine is mainly used to handle all autoloading.
+class Kit::Contract::Engine < ::Rails::Engine
 end

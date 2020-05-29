@@ -1,22 +1,27 @@
 require_relative '../rails_helper'
 require_relative '../../lib/kit/organizer'
 
-describe Kit::Organizer do
+# Namespace for test dummy modules.
+module TestModules
+end
 
-  module TestModules
-    module Organizer
-      def self.m1(b:, c: {})
-        [:ok, b.merge(c)]
-      end
-    end
+# Dummy module.
+module TestModules::Organizer
+
+  def self.m1(b:, c: {}) # rubocop:disable Naming/MethodParameterName
+    [:ok, b.merge(c)]
   end
+
+end
+
+describe Kit::Organizer do
 
   context 'with different types of callable' do
 
     let(:list) do
       [
         ->(a:) { [:ok, a] },
-        ->(**)  { [:ok] },
+        ->(**) { [:ok] },
         TestModules::Organizer.method(:m1),
       ]
     end
@@ -24,10 +29,10 @@ describe Kit::Organizer do
     context 'and a valid ctx' do
 
       tests = {
-        { a: { b: { d: 4, }, }, }                   => { a: { b: { d: 4, }, }, b: { d: 4, }, d: 4, },
-        { a: { b: { d: 4, }, c: { f: 6 }, }, }      => { a: { b: { d: 4, }, c: { f: 6 }, }, b: { d: 4, }, c: { f: 6 }, d: 4, f: 6, },
-        { a: { d: 4, }, b: { e: 5 }, }              => { a: { d: 4, }, b: { e: 5 }, d: 4, e: 5, },
-        { a: { d: 4, }, b: { e: 5 }, c: { f: 6 }, } => { a: { d: 4, }, b: { e: 5 }, c: { f: 6 }, d: 4, e: 5, f: 6, },
+        { a: { b: { d: 4 } } }                    => { a: { b: { d: 4 } }, b: { d: 4 }, d: 4 },
+        { a: { b: { d: 4 }, c: { f: 6 } } }       => { a: { b: { d: 4 }, c: { f: 6 } }, b: { d: 4 }, c: { f: 6 }, d: 4, f: 6 },
+        { a: { d: 4 }, b: { e: 5 } }              => { a: { d: 4 }, b: { e: 5 }, d: 4, e: 5 },
+        { a: { d: 4 }, b: { e: 5 }, c: { f: 6 } } => { a: { d: 4 }, b: { e: 5 }, c: { f: 6 }, d: 4, e: 5, f: 6 },
       }
 
       tests.each do |ctx_in, expected_ctx_out|
@@ -44,15 +49,15 @@ describe Kit::Organizer do
     context 'and an invalid flow' do
 
       tests = {
-        { a: { c: 2 }, } => [ArgumentError, 'missing keyword: :b'],
-        { b: { c: 2 }, } => [ArgumentError, 'missing keyword: :a'],
+        { a: { c: 2 } } => [ArgumentError, 'missing keyword: :b'],
+        { b: { c: 2 } } => [ArgumentError, 'missing keyword: :a'],
       }
 
       tests.each do |ctx_in, expected_exception|
         expected_exception_class, expected_exception_msg = expected_exception
         it 'fails' do
           expect { described_class.call(list: list, ctx: ctx_in) }.to raise_error(
-            an_instance_of(expected_exception_class).and(having_attributes(message: expected_exception_msg))
+            an_instance_of(expected_exception_class).and(having_attributes(message: expected_exception_msg)),
           )
         end
       end

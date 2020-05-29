@@ -1,5 +1,8 @@
+# Handle context operations.
 module Kit::Organizer::Services::Context
+
   include Kit::Contract
+  # @hide true
   Ct = Kit::Organizer::Contracts
 
   # Performs a 1 level deep merge on the organizer context.
@@ -31,7 +34,7 @@ module Kit::Organizer::Services::Context
     by_type    = parameters.group_by { |el| el[0] }
 
     if (by_type.keys - [:keyreq, :key, :keyrest]).size > 0
-      raise Kit::Organizer::Error.new("Unsupported parameter type in organized callable")
+      raise Kit::Organizer::Error.new('Unsupported parameter type in organized callable')
     end
 
     if by_type[:keyrest]

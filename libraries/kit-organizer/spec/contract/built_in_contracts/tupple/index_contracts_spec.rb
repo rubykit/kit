@@ -8,7 +8,7 @@ describe Kit::Contract::BuiltInContracts::Tupple do
     contract0 = ->(v) { v.is_a?(Symbol) }
     contract1 = ->(v) { v == 3 }
 
-    contracts   = [
+    contracts = [
       described_class[contract0, contract1],
     ]
 
@@ -20,8 +20,8 @@ describe Kit::Contract::BuiltInContracts::Tupple do
 
     let(:args_invalid) do
       {
-        [[:a, 2]]      => 'Invalid result type for contract',
-        [[:a, 3, :c]]  => 'Invalid result type for contract',
+        [[:a, 2]]     => 'Invalid result type for contract',
+        [[:a, 3, :c]] => 'Invalid result type for contract',
       }
     end
 

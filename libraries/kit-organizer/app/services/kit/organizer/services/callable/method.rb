@@ -1,6 +1,8 @@
 # Allows delayed generation of a callable in case of forward declaration.
 module Kit::Organizer::Services::Callable::Method
+
   include Kit::Contract
+  # @hide true
   Ct = Kit::Organizer::Contracts
 
   # @note The expected format is `[:method, 'ModuleName', 'method_name']`. `ModuleName` can be a reference, string or symbol. `method_name` can be a string or symbol.

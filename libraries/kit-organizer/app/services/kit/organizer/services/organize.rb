@@ -66,14 +66,14 @@ module Kit::Organizer::Services::Organize
     begin
       list
         .map do |el|
-          local_callable_status, local_callable_ctx = Kit::Organizer::Services::Callable.resolve(target: el)
+          _local_callable_status, local_callable_ctx = Kit::Organizer::Services::Callable.resolve(target: el)
           # TODO: handle :error status
           local_callable_ctx[:callable]
         end
         .each do |callable|
           local_ctx = Kit::Organizer::Services::Context.generate_callable_ctx(callable: callable, ctx: ctx)
 
-          _log("# Calling `#{callable}` with keys |#{local_ctx&.keys}|", :yellow)
+          _log("# Calling `#{ callable }` with keys |#{ local_ctx&.keys }|", :yellow)
 
           if !local_ctx
             result = callable.call()
@@ -85,21 +85,19 @@ module Kit::Organizer::Services::Organize
 
           status, local_ctx = result
 
-          _log("#   Result |#{status}|#{local_ctx}|", :blue)
+          _log("#   Result |#{ status }|#{ local_ctx }|", :blue)
 
           ctx = Kit::Organizer::Services::Context.update_context(ctx: ctx, local_ctx: local_ctx)
 
-          _log("#   Ctx keys post |#{ctx.keys}|", :yellow)
-          _log("#   Errors |#{ctx[:errors]}|", :red) if ctx[:errors]
+          _log("#   Ctx keys post |#{ ctx.keys }|", :yellow)
+          _log("#   Errors |#{ ctx[:errors] }|", :red) if ctx[:errors]
           _log("\n\n")
 
-          if status == :error || status == :ok_stop
-            break
-          end
+          break if [:error, :ok_stop].include?(status)
         end
-    #rescue StandardException => e
-    #  status = :error
-    #  # Todo: use event bus to notify error handlers ?
+      #rescue StandardException => e
+      # status = :error
+      # # TODO: use event bus to notify error handlers ?
     end
 
     # TODO: audit usefulness

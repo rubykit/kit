@@ -20,8 +20,8 @@ describe Kit::Contract::BuiltInContracts::Array do
 
     let(:args_invalid) do
       {
-        [['a']] => 'Invalid result type for contract',
-        [[:a, 'b']]  => 'Invalid result type for contract',
+        [['a']]     => 'Invalid result type for contract',
+        [[:a, 'b']] => 'Invalid result type for contract',
       }
     end
 

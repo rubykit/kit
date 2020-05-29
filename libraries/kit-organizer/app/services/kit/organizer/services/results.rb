@@ -1,4 +1,6 @@
+# Utility methods around Contract result payloads.
 module Kit::Organizer::Services::Results
+
   include Kit::Contract
   Ct = Kit::Organizer::Contracts
 
@@ -7,14 +9,14 @@ module Kit::Organizer::Services::Results
   def self.merge(results:)
     status = results.map { |el| el[0] }.uniq
 
-    if status.size == 1
-      if status[0] == :error
-        handle_error(results: results)
-      else
-        handle_ok(results: results)
-      end
+    if status.size != 1
+      raise 'ResultTupple can only be merged if they have the same status'
+    end
+
+    if status[0] == :error
+      handle_error(results: results)
     else
-      raise "ResultTupple can only be merged if they have the same status"
+      handle_ok(results: results)
     end
   end
 
@@ -26,7 +28,7 @@ module Kit::Organizer::Services::Results
         if !res[k]
           res[k] = v
         elsif res[k] != v
-          raise "Handle me"
+          raise 'Handle me'
         end
       end
     end

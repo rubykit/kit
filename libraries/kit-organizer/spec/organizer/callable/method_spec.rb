@@ -1,15 +1,20 @@
 require_relative '../../rails_helper'
 require_relative '../../../lib/kit/organizer'
 
-describe Kit::Organizer::Services::Callable::Method do
+# Namespace for test dummy modules.
+module TestModules
+end
 
-  module TestModules
-    module CallableMethod
-      def self.m1(b:, c: {})
-        [:ok, b.merge(c)]
-      end
-    end
+# Dummy module.
+module TestModules::CallableMethod
+
+  def self.m1(b:, c: {}) # rubocop:disable Naming/MethodParameterName
+    [:ok, b.merge(c)]
   end
+
+end
+
+describe Kit::Organizer::Services::Callable::Method do
 
   describe '.resolve' do
     subject { described_class.resolve(args: payload) }

@@ -1,9 +1,11 @@
 # Allows registration of a callable in a local store and reference it by an alias.
 module Kit::Organizer::Services::Callable::Alias
+
   include Kit::Contract
+  # @hide = true
   Ct = Kit::Organizer::Contracts
 
-  # ALlows to 
+  # ALlows to ?
   # @note The expected format is `[:alias, :alias_name]`.
   contract Ct::Hash[args: Ct::Tupple[Ct::Eq[:alias], Ct::Symbol]]
   def self.resolve(store: local_store, args:)
@@ -31,7 +33,7 @@ module Kit::Organizer::Services::Callable::Alias
   end
 
   def self.local_store
-    @store ||= create_store
+    @local_store ||= create_store
   end
 
   def self.create_store

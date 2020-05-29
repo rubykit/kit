@@ -1,6 +1,8 @@
 # Allows to wrap a callable in order to adapt the input & output contexts
 module Kit::Organizer::Services::Callable::Wrap
+
   include Kit::Contract
+  # @hide true
   Ct = Kit::Organizer::Contracts
 
   before Ct::Hash[args: Ct::Array[Ct::Eq[:wrap], Ct::Callable, Ct::Hash[in: Ct::Optional[Ct::Hash], out: Ct::Optional[Ct::Hash]]]]
@@ -18,7 +20,7 @@ module Kit::Organizer::Services::Callable::Wrap
 
       status, ctx_out = Kit::Organizer.call({
         list: [callable],
-        ctx: ctx_in,
+        ctx:  ctx_in,
       })
 
       if opts_out
