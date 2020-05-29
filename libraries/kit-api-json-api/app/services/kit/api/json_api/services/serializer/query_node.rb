@@ -95,8 +95,8 @@ module Kit::Api::JsonApi::Services::Serializer::QueryNode
 
   def self.generate_records_relationships(document:, query_node:)
     query_node[:records].each do |record|
-      query_node[:relationships].each do |_relationship_name, relationship|
-        next if record[:relationships][_relationship_name].size == 0
+      query_node[:relationships].each do |relationship_name, relationship|
+        next if record[:relationships][relationship_name].size == 0
 
         Kit::Api::JsonApi::Services::Serializer::Relationship.serialize_record_relationship(
           document:     document,

@@ -15,6 +15,6 @@ data[:photos].each do |el_data|
   el_data[:imageable] = model_class.find(id)
 
   Kit::JsonApiSpec::Models::Write::Photo.create!(el_data)
-rescue Exception => e
+rescue StandardError => e
   puts e
 end

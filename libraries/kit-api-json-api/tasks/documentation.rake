@@ -31,8 +31,8 @@ CONFIG = Kit::Doc::Services::Tasks.get_default_config(
   groups_for_modules: {
     ''                  => [
       {
-        inclusion:     %r{^(Kit|Kit::Api)$},
-        display:       false,
+        inclusion: %r{^(Kit|Kit::Api)$},
+        display:   false,
       },
       {
         inclusion:     %r{^(Kit::Api::JsonApi::Controllers::JsonApi|Kit::Api::JsonApi::Resources::ActiveRecordResource|Kit::Api::JsonApi::Services|Kit::Api::JsonApi::Contracts)$},
@@ -70,7 +70,7 @@ CONFIG = Kit::Doc::Services::Tasks.get_default_config(
   }),
   groups_for_extras:  {},
 
-  assets: [
+  assets:             [
     [File.expand_path('../docs/assets', __dir__), 'assets'],
   ],
 )

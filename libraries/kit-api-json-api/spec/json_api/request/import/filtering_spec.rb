@@ -2,7 +2,7 @@ require_relative '../../../rails_helper'
 
 describe Kit::Api::JsonApi::Services::Request::Import::Filtering do
   include_context 'config dummy app'
-  
+
   let(:service)  { described_class }
 
   let(:config)   { config_dummy_app }

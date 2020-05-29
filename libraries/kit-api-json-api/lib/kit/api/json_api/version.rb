@@ -1,9 +1,11 @@
-module Kit
-  module Api
-    module JsonApi
+module Kit # rubocop:disable Style/Documentation
+end
 
-      VERSION = '0.1.0'
+module Kit::Api # rubocop:disable Style/Documentation
+end
 
-    end
-  end
+module Kit::Api::JsonApi
+
+  VERSION = '0.1.0'
+
 end

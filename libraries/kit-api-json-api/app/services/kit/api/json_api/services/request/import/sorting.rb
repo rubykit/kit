@@ -76,7 +76,7 @@ module Kit::Api::JsonApi::Services::Request::Import::Sorting
     data.each do |sid|
       if sid[0] == '-' || sid[0] == '+'
         sign = sid[0]
-        sid  = sid[1..-1]
+        sid  = sid[1..]
       else
         sign = '+'
       end

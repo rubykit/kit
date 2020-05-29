@@ -1,3 +1,4 @@
+# Logic to generate `sort` query_params for links
 module Kit::Api::JsonApi::Services::Request::Export::Sorting
 
   include Kit::Contract

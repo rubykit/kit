@@ -74,7 +74,7 @@ module Kit::Api::JsonApi::Services::Paginators::Cursor::Validation
 
     parsed_query_params_page.map do |path, list|
       [:after, :before].each do |key|
-        next if !list.has_key?(key)
+        next if !list.key?(key)
 
         value = list.dig(key, 0)
 

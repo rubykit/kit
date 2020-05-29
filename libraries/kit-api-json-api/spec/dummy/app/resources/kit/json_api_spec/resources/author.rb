@@ -71,7 +71,7 @@ class Kit::JsonApiSpec::Resources::Author < Kit::Api::JsonApi::Resources::Active
        WHERE ranked_data.rank <= #{ sanitized_limit_sql }
     }
 
-    puts sql if ENV['KIT_API_DEBUG'] 
+    puts sql if ENV['KIT_API_DEBUG']
 
     [:ok, sql_str: sql]
   end

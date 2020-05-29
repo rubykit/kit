@@ -1,5 +1,5 @@
 inherit_from: ../../.rubocop.yml
 
 AllCops:
-  Include:
-    - 'spec/dummy/app/**/*.rb'
+  Exclude:
+    - spec/dummy/db/schema.rb

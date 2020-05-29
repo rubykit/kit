@@ -1,10 +1,11 @@
-module Kit
-  module Api
-  end
+module Kit # rubocop:disable Style/Documentation
+end
+
+module Kit::Api # rubocop:disable Style/Documentation
 end
 
 if ENV['RAILS_ENV'] == 'development' || ENV['RAILS_ENV'] == 'test'
-  require "kit/api/json_api/engine"
+  require 'kit/api/json_api/engine'
 else
-  require "kit/api/json_api/railtie"
+  require 'kit/api/json_api/railtie'
 end

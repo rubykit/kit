@@ -14,8 +14,6 @@ gemspec
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
 
-gem 'rails'
-
 gem 'kit-error',               path: '../../libraries/kit-error' # GEMSPEC
 gem 'kit-organizer',           path: '../../libraries/kit-organizer' # GEMSPEC
 gem 'kit-pagination',          path: '../../libraries/kit-pagination' # GEMSPEC
@@ -24,7 +22,10 @@ group :test, :development do
   gem 'pry'
   gem 'pry-stack_explorer'
 
-  gem 'kit-dotenv-rails',        path: '../../libraries/kit-dotenv', require: 'kit/dotenv/rails-now'
+  gem 'pg'
+
+  gem 'kit-dotenv',        path: '../../libraries/kit-dotenv'
+  gem 'kit-dotenv-rails',  path: '../../libraries/kit-dotenv', require: 'kit/dotenv/rails-now'
 
   gem 'kit-app-container',       path: '../../libraries/kit-app-container' # DEV MODE
   gem 'kit-domain',              path: '../../libraries/kit-domain' # DEV MODE
@@ -37,7 +38,6 @@ end
 
 group :development do
   gem 'kit-doc-yard',            path: '../../libraries/kit-doc-yard'
-  gem 'rubocop', '~> 0.81.0'
 end
 
 group :test do

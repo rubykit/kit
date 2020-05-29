@@ -1,3 +1,4 @@
+# Logic to generate `filter` query_params for links
 module Kit::Api::JsonApi::Services::Request::Export::Filtering
 
   include Kit::Contract

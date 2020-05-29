@@ -1,3 +1,4 @@
+# Logic to generate `fields` query_params for links
 module Kit::Api::JsonApi::Services::Request::Export::SparseFieldsets
 
   include Kit::Contract
