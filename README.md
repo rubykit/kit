@@ -21,4 +21,4 @@ Currently working towards [v0.1.0](https://github.com/rubykit/kit/projects/1), s
 
 Copyright (c) 2020, Nathan Appere.
 
-Kit source code is licensed under the [MIT License](LICENSE.md).
+Kit source code is licensed under the [MIT License](MIT-LICENSE).
