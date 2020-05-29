@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'kit/api/json_api/version'
-
 version = File.read(File.expand_path('KIT_VERSION', __dir__)).strip
 
 Gem::Specification.new do |s|

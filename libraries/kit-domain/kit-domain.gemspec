@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'activerecord-nulldb-adapter', '~> 0.4.0'
   s.add_dependency 'multiverse',                  '~> 0.2.1'
-  s.add_dependency 'pg',                          '~> 1.1.4'
+  s.add_dependency 'pg',                          '~> 1.2.3'
   s.add_dependency 'paranoia',                    '~> 2.4.1'
   s.add_dependency 'rails',                       '~> 6.0.3.1'
   s.add_dependency 'rails_event_store'

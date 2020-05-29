@@ -1,5 +1,3 @@
-inherit_from: ../../.rubocop.yml
+# Reference: https://github.com/rubocop-hq/rubocop/blob/master/config/default.yml
 
-AllCops:
-  Exclude:
-    - spec/dummy/db/schema.rb
+inherit_from: ../../.rubocop_shared.yml
