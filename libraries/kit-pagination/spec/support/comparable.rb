@@ -1,7 +1,7 @@
 # https://bugs.ruby-lang.org/issues/12648
-
 module Comparable
 
+  # Add sortable tupples.
   class SortableTuple < Array
 
     include Comparable
@@ -18,25 +18,26 @@ module Comparable
           when :asc
             false
           else
-            raise ArgumentError, "direction must be either :asc or :desc: #{dir.inspect}"
+            raise ArgumentError.new("direction must be either :asc or :desc: #{ dir.inspect }")
           end
         [key, desc]
       end)
     end
 
     def <=>(other)
-      if other.instance_of?(self.class)
-        other.each_with_index { |(b, desc), i|
-          a, = self[i]
-          case cmp = a <=> b
-          when Integer
-            return desc ? -cmp : cmp unless cmp.zero?
-          else
-            return cmp
-          end
-        }
+      return if !other.instance_of?(self.class)
+
+      other.each_with_index do |(b, desc), i|
+        a, = self[i]
+        case cmp = a <=> b
+        when Integer
+          return desc ? -cmp : cmp unless cmp.zero?
+        else
+          return cmp
+        end
       end
     end
+
   end
 
   def self.[](*args)

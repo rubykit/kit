@@ -1,9 +1,8 @@
-module Kit # rubocop:disable Style/ClassAndModuleChildren
+module Kit # rubocop:disable Style/Documentation
+end
 
-  # Pagination logic for sets.
-  module Pagination
-  end
-
+# Pagination logic for sets.
+module Kit::Pagination
 end
 
 require 'kit/pagination/condition'

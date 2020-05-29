@@ -21,6 +21,10 @@ Gem::Specification.new do |s|
 
   s.files = Dir['{lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
 
+  #s.add_development_dependency 'kit-doc-yard'
+
+  s.add_development_dependency 'rake'
   s.add_development_dependency 'rspec'
+  s.add_development_dependency 'rubocop'
 
 end
