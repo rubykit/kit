@@ -1,21 +1,26 @@
-$:.push File.expand_path("lib", __dir__)
+$LOAD_PATH.push File.expand_path('lib', __dir__)
+require 'kit/error/version'
 
-# Maintain your gem's version:
-require "kit/error/version"
+version = Kit::Error::VERSION
 
-# Describe your gem and declare its dependencies:
-Gem::Specification.new do |spec|
-  spec.name        = "kit-error"
-  spec.version     = Kit::Error::VERSION
-  spec.authors     = ["Nathan Appere"]
-  spec.email       = ["nathan.appere@gmail.com"]
-  spec.homepage    = "https://ruby-kit-error.localhost.com"
-  spec.summary     = "Error gem to handle error logic"
-  spec.description = ""
-  spec.license     = "MIT"
+Gem::Specification.new do |s|
+  s.name        = 'kit-error'
+  s.version     = version
+  s.summary     = 'Generic error handling logic for Kit.'
+  s.description = ''
+  s.license     = 'MIT'
+  s.author      = 'Nathan Appere'
+  s.email       = 'nathan@rubykit.org'
+  s.homepage    = 'https://github.com/rubykit/kit/tree/master/libraries/kit-error'
 
-  spec.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
+  s.metadata = {
+    'source_code_base_uri' => 'https://github.com/rubykit/kit',
+    'source_code_uri'      => "https://github.com/rubykit/kit/tree/v#{ version }/libraries/kit-error",
+    'documentation_uri'    => "https://docs.rubykit.org/v#{ version }",
+  }
 
-  spec.add_development_dependency 'rspec'
+  s.files = Dir['{app,config,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
+
+  s.add_development_dependency 'rspec'
 
 end

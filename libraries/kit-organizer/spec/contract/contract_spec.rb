@@ -2,10 +2,16 @@ require_relative '../rails_helper'
 require_relative '../../lib/kit/contract'
 require_relative 'shared/signature_exemples'
 
-module TestModule
+# Namespace for test dummy modules.
+module TestModules
+end
+
+# Dummy module.
+module TestModules::Contract
+
   include Kit::Contract
 
-  contract (->(input) { input < 10 }) => (->(output) { output > 10 })
+  contract((->(input) { input < 10 }) => (->(output) { output > 10 }))
   def self.test_contract_hash(input)
     input + 10
   end
@@ -17,10 +23,10 @@ module TestModule
 
 end
 
-describe "contract" do
+describe 'contract' do
 
   context 'with a hash as a parameter' do
-    subject { TestModule.method(:test_contract_hash) }
+    subject { TestModules::Contract.method(:test_contract_hash) }
 
     let(:args_valid) do
       {
@@ -32,8 +38,8 @@ describe "contract" do
 
     let(:args_invalid) do
       {
-        [15] => "Contract failure before `TestModule#test_contract_hash`",
-        [-5] => "Contract failure after `TestModule#test_contract_hash`",
+        [15] => 'Contract failure before `TestModules::Contract#test_contract_hash`',
+        [-5] => 'Contract failure after `TestModules::Contract#test_contract_hash`',
       }
     end
 
@@ -41,7 +47,7 @@ describe "contract" do
   end
 
   context 'with a callable as a parameter' do
-    subject { TestModule.method(:test_contract_callable) }
+    subject { TestModules::Contract.method(:test_contract_callable) }
 
     let(:args_valid) do
       {
@@ -53,7 +59,7 @@ describe "contract" do
 
     let(:args_invalid) do
       {
-        [10] => "Contract failure before `TestModule#test_contract_callable`",
+        [10] => 'Contract failure before `TestModules::Contract#test_contract_callable`',
       }
     end
 

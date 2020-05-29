@@ -1,39 +1,36 @@
-$:.push File.expand_path("lib", __dir__)
+$LOAD_PATH.push File.expand_path('lib', __dir__)
+require 'kit/domain/version'
 
-# Maintain your gem's version:
-require "kit/domain/version"
+version = Kit::Domain::VERSION
 
-# Describe your gem and declare its dependencies:
-Gem::Specification.new do |spec|
-  spec.name        = "kit-domain"
-  spec.version     = Kit::Domain::VERSION
-  spec.authors     = ["Nathan Appere"]
-  spec.email       = ["nathan.appere@gmail.com"]
-  spec.homepage    = "https://ruby-kit-domains.localhost.com"
-  spec.summary     = "Hold shared logic for all Kit Domains"
-  spec.description = ""
-  spec.license     = "MIT"
+Gem::Specification.new do |s|
+  s.name        = 'kit-domain'
+  s.version     = version
+  s.summary     = 'Hold shared logic for all Kit Domains.'
+  s.description = ''
+  s.license     = 'MIT'
+  s.author      = 'Nathan Appere'
+  s.email       = 'nathan@rubykit.org'
+  s.homepage    = 'https://github.com/rubykit/kit/tree/master/libraries/kit-domain'
 
-  spec.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
+  s.metadata = {
+    'source_code_base_uri' => 'https://github.com/rubykit/kit',
+    'source_code_uri'      => "https://github.com/rubykit/kit/tree/v#{ version }/libraries/kit-domain",
+    'documentation_uri'    => "https://docs.rubykit.org/v#{ version }",
+  }
 
-  spec.add_dependency "rails", "~> 6.0"
+  s.files = Dir['{app,config,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
 
-  spec.add_dependency "slim-rails"
+  s.add_dependency 'activerecord-nulldb-adapter', '~> 0.4.0'
+  s.add_dependency 'multiverse',                  '~> 0.2.1'
+  s.add_dependency 'pg',                          '~> 1.2.3'
+  s.add_dependency 'paranoia',                    '~> 2.4.1'
+  s.add_dependency 'rails',                       '~> 6.0.3.1'
+  s.add_dependency 'rails_event_store'
+  s.add_dependency 'slim-rails'
 
-  spec.add_dependency "multiverse", "~> 0.2.1"
-
-  spec.add_dependency "pg", "~> 1.1", ">= 1.1.4"
-  spec.add_dependency "activerecord-nulldb-adapter", "~> 0.4.0"
-  spec.add_dependency "paranoia", "~> 2.4", ">= 2.4.1"
-
-  #spec.add_dependency "dotenv-rails", "~> 2.1", ">= 2.1.1"
-
-  spec.add_dependency "rubocop"
-
-  spec.add_dependency "rails_event_store"
-
-  spec.add_dependency "seedbank"
-
-  spec.add_development_dependency "annotate"
+  s.add_development_dependency 'rubocop'
+  s.add_development_dependency 'seedbank'
+  s.add_development_dependency 'annotate'
 
 end

@@ -2,16 +2,26 @@ require_relative '../../rails_helper'
 require_relative '../shared/types_exemples'
 require_relative '../../../lib/kit/contract'
 
-module TestModule
-  def self.callable_method()
+# Namespace for test dummy modules.
+module TestModules
+end
+
+# Dummy module.
+module TestModules::FunctorContainer
+
+  def self.callable_method
     true
   end
 
-  class Functor
-    def call()
-      true
-    end
+end
+
+# Dummy module.
+class TestModules::FunctorContainer::Functor
+
+  def call
+    true
   end
+
 end
 
 describe Kit::Contract::BuiltInContracts::Callable do
@@ -19,9 +29,9 @@ describe Kit::Contract::BuiltInContracts::Callable do
   let(:contract) { described_class }
   let(:args_valid) do
     [
-      [->(v) { true }],
-      [TestModule.method(:callable_method)],
-      [TestModule::Functor.new],
+      [->(_v) { true }],
+      [TestModules::FunctorContainer.method(:callable_method)],
+      [TestModules::FunctorContainer::Functor.new],
     ]
   end
   let(:args_invalid) do

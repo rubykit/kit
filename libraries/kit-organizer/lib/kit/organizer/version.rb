@@ -1,5 +1,8 @@
-module Kit
-  module Organizer
-    VERSION = '0.1.0'
-  end
+module Kit # rubocop:disable Style/Documentation
+end
+
+module Kit::Organizer
+
+  VERSION = '0.1.0'
+
 end

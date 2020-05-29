@@ -1,15 +1,26 @@
-$:.push File.expand_path("lib", __dir__)
-require "kit/dotenv/version"
+$LOAD_PATH.push File.expand_path('lib', __dir__)
+require 'kit/dotenv/version'
 
-Gem::Specification.new "kit-dotenv", Kit::Dotenv::VERSION do |gem|
-  gem.authors     = ["Nathan Appere"]
-  gem.email       = ["nathan.appere@gmail.com"]
-  gem.homepage    = "https://ruby-kit-dotenv.localhost.com"
-  gem.description = gem.summary = "DotEnv config for Kit projects"
-  gem.license     = "MIT"
+version = Kit::Dotenv::VERSION
 
-  gem.files       = Dir["{lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
+Gem::Specification.new do |s|
+  s.name        = 'kit-dotenv'
+  s.version     = version
+  s.summary     = 'DotEnv config for Kit projects.'
+  s.description = ''
+  s.license     = 'MIT'
+  s.author      = 'Nathan Appere'
+  s.email       = 'nathan@rubykit.org'
+  s.homepage    = 'https://github.com/rubykit/kit/tree/master/libraries/kit-dotenv'
 
-  gem.add_dependency "dotenv"
+  s.metadata = {
+    'source_code_base_uri' => 'https://github.com/rubykit/kit',
+    'source_code_uri'      => "https://github.com/rubykit/kit/tree/v#{ version }/libraries/kit-dotenv",
+    'documentation_uri'    => "https://docs.rubykit.org/v#{ version }",
+  }
+
+  s.files = Dir['{lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
+
+  s.add_dependency 'dotenv'
 
 end

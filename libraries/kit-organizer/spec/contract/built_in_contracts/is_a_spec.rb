@@ -13,9 +13,9 @@ describe Kit::Contract::BuiltInContracts::IsA do
   let(:expected_type) { String }
   let(:args_invalid) do
     {
-      [nil]         => nil,
-      [1]           => nil,
-      [{ c: :ok, }] => nil,
+      [nil]        => nil,
+      [1]          => nil,
+      [{ c: :ok }] => nil,
     }
   end
 

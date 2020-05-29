@@ -7,7 +7,7 @@ describe Kit::Contract::BuiltInContracts::String do
   let(:contract) { described_class }
   let(:args_valid) do
     [
-      ["a"],
+      ['a'],
     ]
   end
   let(:expected_type) { String }

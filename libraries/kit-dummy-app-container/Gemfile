@@ -1,19 +1,10 @@
 source 'https://rubygems.org'
-git_source(:github) { |repo| "https://github.com/#{repo}.git" }
+git_source(:github) { |repo| "https://github.com/#{ repo }.git" }
 
-# Declare your gem's dependencies in kit-dummy-app-container.gemspec.
-# Bundler will treat runtime dependencies like base dependencies, and
-# development dependencies will be added by default to the :development group.
 gemspec
 
-# Declare any dependencies that are still in development here instead of in
-# your gemspec. These might include edge Rails or gems from your path or
-# Git. Remember to move these dependencies to your gemspec before releasing
-# your gem to rubygems.org.
-
-gem 'rails'
-gem 'kit-organizer',     path: '../../libraries/kit-organizer'
 gem 'kit-app-container', path: '../../libraries/kit-app-container'
+gem 'kit-organizer',     path: '../../libraries/kit-organizer'
 
 group :development do
   gem 'annotate', '~> 2.7', '>= 2.7.4'
@@ -26,15 +17,13 @@ group :development, :test do
   gem 'better_errors'
 
   gem 'pry'
-  gem 'pry-stack_explorer'
   gem 'pry-byebug'
+  gem 'pry-stack_explorer'
 
   gem 'listen'
 end
 
 group :development, :test do
-  #gem 'kit-app-container', path: '../../libraries/kit-app-container'
-
   gem 'factory_bot_rails'
   gem 'faker'
   gem 'rspec-rails'

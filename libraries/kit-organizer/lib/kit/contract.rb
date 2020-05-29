@@ -1,9 +1,7 @@
-module Kit
-  # Forward declaration of the namespace, the actual logic lives in `app`
+module Kit # rubocop:disable Style/Documentation
+end
 
-
-  module Contract
-  end
+module Kit::Contract # rubocop:disable Style/Documentation
 end
 
 require 'kit/contract/engine'

@@ -2,6 +2,7 @@
 module Kit::Api::JsonApi::Services::Serializer::QueryNode
 
   include Kit::Contract
+  # @hide true
   Ct = Kit::Api::JsonApi::Contracts
 
   before Ct::Hash[query_node: Ct::QueryNode, document: Ct::Document]
@@ -55,7 +56,11 @@ module Kit::Api::JsonApi::Services::Serializer::QueryNode
     if query_node[:singular]
       links = query_node[:records][0][:resource_object].dig(:links)
     else
-      links = query_node[:resource][:links_collection].call(query_node: query_node, records: query_node[:records])[1][:links]
+      links = query_node[:resource][:linker][:collection].call(
+        query_node: query_node,
+        records:    query_node[:records],
+        paginator:  query_node[:resource][:paginator],
+      )[1][:links]
     end
     document[:response][:links] = links
 
@@ -90,7 +95,9 @@ module Kit::Api::JsonApi::Services::Serializer::QueryNode
 
   def self.generate_records_relationships(document:, query_node:)
     query_node[:records].each do |record|
-      query_node[:relationships].each do |_relationship_name, relationship|
+      query_node[:relationships].each do |relationship_name, relationship|
+        next if record[:relationships][relationship_name].size == 0
+
         Kit::Api::JsonApi::Services::Serializer::Relationship.serialize_record_relationship(
           document:     document,
           relationship: relationship,

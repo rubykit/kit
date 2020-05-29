@@ -12,9 +12,10 @@ import http from 'highlight.js/lib/languages/http'
 import javascript from 'highlight.js/lib/languages/javascript'
 import json from 'highlight.js/lib/languages/json'
 import markdown from 'highlight.js/lib/languages/markdown'
-import ruby from 'highlight.js/lib/languages/ruby'
 import sql from 'highlight.js/lib/languages/sql'
 import xml from 'highlight.js/lib/languages/xml'
+
+import ruby from './highlight.js/languages/ruby'
 import kit_url from './highlight.js/languages/kit-url'
 
 import isArray from './template-helpers/isArray'

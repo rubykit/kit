@@ -1,30 +1,32 @@
-$:.push File.expand_path("lib", __dir__)
+$LOAD_PATH.push File.expand_path('lib', __dir__)
+require 'kit/auth/version'
 
-# Maintain your gem's version:
-require "kit/auth/version"
+version = Kit::Auth::VERSION
 
-# Describe your gem and declare its dependencies:
-Gem::Specification.new do |spec|
-  spec.name        = "kit-auth"
-  spec.version     = Kit::Auth::VERSION
-  spec.authors     = ["Nathan Appere"]
-  spec.email       = ["nathan.appere@gmail.com"]
-  spec.homepage    = "https://ruby-kit-auth.localhost.com"
-  spec.summary     = "Summary of Kit::Auth."
-  spec.description = "Description of Kit::Auth."
-  spec.license     = "MIT"
+Gem::Specification.new do |s|
+  s.name        = 'kit-auth'
+  s.version     = version
+  s.summary     = 'Authentication & authorization out of the box.'
+  s.description = ''
+  s.license     = 'MIT'
+  s.author      = 'Nathan Appere'
+  s.email       = 'nathan@rubykit.org'
+  s.homepage    = 'https://github.com/rubykit/kit/tree/master/domains/kit-auth'
 
-  spec.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
+  s.metadata = {
+    'source_code_base_uri' => 'https://github.com/rubykit/kit',
+    'source_code_uri'      => "https://github.com/rubykit/kit/tree/v#{ version }/domains/kit-auth",
+    'documentation_uri'    => "https://docs.rubykit.org/v#{ version }",
+  }
 
-  spec.add_dependency "doorkeeper", "~> 5.2.0.rc2"
-  spec.add_dependency "omniauth", "~> 1.6", ">= 1.6.1"
-  spec.add_dependency "oauth2", "~> 1.4", ">= 1.4.1"
+  s.files = Dir['{app,config,db,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
 
-  spec.add_dependency "strong_password", "~> 0.0.8"
-  spec.add_dependency "email_inquire", "~> 0.10.0"
-
-  spec.add_dependency "bcrypt"
-
-  spec.add_dependency "browser"
+  s.add_dependency 'bcrypt'
+  s.add_dependency 'browser'
+  s.add_dependency 'doorkeeper',      '~> 5.2.0.rc2'
+  s.add_dependency 'email_inquire',   '~> 0.10.0'
+  s.add_dependency 'oauth2',          '~> 1.4.1'
+  s.add_dependency 'omniauth',        '~> 1.6.1'
+  s.add_dependency 'strong_password', '~> 0.0.8'
 
 end

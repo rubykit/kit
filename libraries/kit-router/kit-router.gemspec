@@ -1,27 +1,31 @@
-$:.push File.expand_path("lib", __dir__)
+$LOAD_PATH.push File.expand_path('lib', __dir__)
+require 'kit/router/version'
 
-# Maintain your gem's version:
-require "kit/router/version"
+version = Kit::Router::VERSION
 
-# Describe your gem and declare its dependencies:
-Gem::Specification.new do |spec|
-  spec.name        = "kit-router"
-  spec.version     = Kit::Router::VERSION
-  spec.authors     = ["Nathan Appere"]
-  spec.email       = ["nathan.appere@gmail.com"]
-  spec.homepage    = "https://ruby-kit-router.localhost.com"
-  spec.summary     = "Router gem to handle path overrides between engines"
-  spec.description = ""
-  spec.license     = "MIT"
+Gem::Specification.new do |s|
+  s.name        = 'kit-router'
+  s.version     = version
+  s.summary     = 'Decouples transport from your controllers.'
+  s.description = ''
+  s.license     = 'MIT'
+  s.author      = 'Nathan Appere'
+  s.email       = 'nathan@rubykit.org'
+  s.homepage    = 'https://github.com/rubykit/kit/tree/master/libraries/kit-router'
 
-  spec.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
+  s.metadata = {
+    'source_code_base_uri' => 'https://github.com/rubykit/kit',
+    'source_code_uri'      => "https://github.com/rubykit/kit/tree/v#{ version }/libraries/kit-router",
+    'documentation_uri'    => "https://docs.rubykit.org/v#{ version }",
+  }
 
-  spec.add_dependency "rails", "~> 6.0"
+  s.files = Dir['{app,config,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
 
-  spec.add_dependency "oj"
+  s.add_dependency             'oj'
+  s.add_dependency             'rails', '~> 6.0.3.1'
 
-  spec.add_development_dependency 'rspec-rails'
-  spec.add_development_dependency 'listen'
+  s.add_development_dependency 'listen'
+  s.add_development_dependency 'rspec-rails'
+  s.add_development_dependency 'yard'
 
-  spec.add_development_dependency 'yard'
 end

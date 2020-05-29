@@ -2,6 +2,7 @@
 module Kit::Api::JsonApi::Services::Serializer::ResourceObject
 
   include Kit::Contract
+  # @hide true
   Ct = Kit::Api::JsonApi::Contracts
 
   before Ct::Hash[document: Ct::Document, record: Ct::Record]
@@ -10,7 +11,7 @@ module Kit::Api::JsonApi::Services::Serializer::ResourceObject
   def self.serialize_resource_object(document:, record:)
     _, ctx = Kit::Organizer.call({
       list: [
-        record[:query_node][:resource][:serializer],
+        record[:query_node][:resource][:record_serializer],
         self.method(:add_record_to_cache),
         self.method(:ensure_uniqueness_in_document),
         self.method(:add_resource_object_links),
@@ -69,7 +70,7 @@ module Kit::Api::JsonApi::Services::Serializer::ResourceObject
   def self.add_resource_object_links(record:)
     resource = record[:query_node][:resource]
 
-    record[:resource_object][:links] = resource[:links_single].call(record: record)[1][:links]
+    record[:resource_object][:links] = resource[:linker][:single].call(record: record)[1][:links]
 
     [:ok, record: record]
   end

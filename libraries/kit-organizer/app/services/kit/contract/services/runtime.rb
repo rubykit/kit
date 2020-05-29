@@ -1,3 +1,4 @@
+# Namespace for runtime logic.
 module Kit::Contract::Services::Runtime
 
   def self.instrument(args:, block: nil, target:, target_class:, method_name:, method_type:, aliased_name:, contracts_before_uid:, contracts_after_uid:)
@@ -54,7 +55,7 @@ module Kit::Contract::Services::Runtime
   end
 
   # TODO: add different categories of contracts that can be disabled by category
-  def self.is_active?
+  def self.active?
     @active ||= (ENV['KIT_CONTRACTS'] != 'false' && ENV['KIT_CONTRACTS'] != false)
   end
 

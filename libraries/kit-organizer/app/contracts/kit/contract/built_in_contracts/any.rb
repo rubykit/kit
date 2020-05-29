@@ -1,9 +1,8 @@
-module Kit::Contract::BuiltInContracts
+# Always succeeds.
+class Kit::Contract::BuiltInContracts::Any
 
-  class Any
-    def self.call(value = nil)
-      [:ok]
-    end
+  def self.call(value = nil)
+    [:ok]
   end
 
 end

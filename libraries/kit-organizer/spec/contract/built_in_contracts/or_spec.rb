@@ -13,9 +13,9 @@ describe Kit::Contract::BuiltInContracts::Or do
   end
   let(:args_invalid) do
     {
-      [nil]         => 'OR failed',
-      [2]           => 'OR failed',
-      [{ c: :ok, }] => 'OR failed',
+      [nil]        => 'OR failed',
+      [2]          => 'OR failed',
+      [{ c: :ok }] => 'OR failed',
     }
   end
 

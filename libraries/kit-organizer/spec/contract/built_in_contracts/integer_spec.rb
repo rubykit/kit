@@ -8,7 +8,7 @@ describe Kit::Contract::BuiltInContracts::Integer do
   let(:args_valid) do
     [
       [1],
-      [9000000000000000000000000000],
+      [9_000_000_000_000_000_000_000_000_000],
     ]
   end
   let(:expected_type) { Integer }

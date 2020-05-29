@@ -6,7 +6,7 @@ after :'fantasy_data:books' do
     el_data[:kit_json_api_spec_book_id] = el_data.delete(:book_id)
     el_data[:index]                     = el_data.delete(:ordering)
     Kit::JsonApiSpec::Models::Write::Chapter.create!(el_data)
-  rescue Exception => e
+  rescue StandardError => e
     puts e
   end
 

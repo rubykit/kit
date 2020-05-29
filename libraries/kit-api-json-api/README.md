@@ -23,13 +23,16 @@ Current status:
 - [ ] Top level meta data
 - [ ] Errors
 
+Not supported:
+- Polymorphic relationships. Nothing in the spec prevents them, but I have yet to find a good usecase.
+
 ## Steps
 
-- Parsing a JSON:API request: transform the data inside an `HTTP request` to a `Kit::Api::JsonApi::Types::Query` (high level representation of the requested data).
-- Validating the `Kit::Api::JsonApi::Types::Query`
-- Loading the `Resources` data using `pagination` (subset), `sort` (ordering), `filtering` (conditions). Every `Resource` can be loaded in isolation, regardless of the level of nesting.
-- Applying `Sparse fieldsets`
-- Serialization
+- Parsing a JSON:API request: transform the data inside an `HTTP request` to a `Request` (high level representation of the requested data).
+- Generate a `Query` from that `Request`
+- Validating the `Query`
+- Resolving the `Query`: loading the `Resources` data using `pagination` (subset), `sort` (ordering), `filtering` (conditions). Every `Resource` can be loaded in isolation, regardless of the level of nesting.
+- Serialize the `Query`: generate `links`, apply `sparse fieldsets`
 
 ## Client
 
@@ -65,9 +68,7 @@ query.relationships[1].comments.data
 - [jsonapi-grader](https://github.com/beauby/jsonapi-grader)
 - [fantasy-dabatase](https://github.com/endpoints/fantasy-database)
 - [endpoints-example](https://github.com/endpoints/endpoints-example)
-
-## Contributing
-Contribution directions go here.
+- [Elixir implementation](https://github.com/jeregrine/jsonapi)
 
 ## License
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).

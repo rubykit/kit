@@ -2,6 +2,7 @@
 module Kit::Api::JsonApi::Services::Serializer::Query
 
   include Kit::Contract
+  # @hide true
   Ct = Kit::Api::JsonApi::Contracts
 
   before Ct::Hash[query_node: Ct::QueryNode]
@@ -20,7 +21,7 @@ module Kit::Api::JsonApi::Services::Serializer::Query
   after Ct::Result[document: Ct::Document]
   # Create a Document object that contains the json response and various caches
   def self.create_document
-    document = Kit::Api::JsonApi::Types::Document[{
+    document = {
       cache:    {
         resource_objects: {},
         records:          {},
@@ -30,7 +31,7 @@ module Kit::Api::JsonApi::Services::Serializer::Query
         data:     [],
         included: [],
       },
-    }]
+    }
 
     [:ok, document: document]
   end

@@ -1,4 +1,5 @@
-# Helpers methods to manipulate function signatures. This should be part of the language in one form or another.
+# Helpers methods to manipulate function signatures.
+# This should be part of the language in one form or another.
 module Kit::Contract::Services::RubyHelpers
 
 =begin
@@ -48,13 +49,13 @@ module Kit::Contract::Services::RubyHelpers
     else
       # NOTE: not sure what this leaves ?
       # binding.pry
-      raise "Unsupported callable #{callable.class} `#{callable}`"
+      raise "Unsupported callable #{ callable.class } `#{ callable }`"
     end
   end
 
   # Given a `hash` and some callable `parameters`, attempts to generate a compatible version of that `hash`.
   def self.handle_key_args(hash:, parameters:)
-    raise "Expected hash" if !hash.is_a?(::Hash)
+    raise 'Expected hash' if !hash.is_a?(::Hash)
 
     payload    = []
     keys       = hash.keys
@@ -64,7 +65,7 @@ module Kit::Contract::Services::RubyHelpers
 
     if named_keys.size > 0
       arg_available_keys = named_keys
-        .select { |name| hash.has_key?(name) }
+        .select { |name| hash.key?(name) }
 
       payload << hash.slice(*arg_available_keys)
     end
@@ -72,7 +73,7 @@ module Kit::Contract::Services::RubyHelpers
     if parameters.last[0] == :keyrest
       rest_keys          = keys - named_keys
       arg_available_keys = rest_keys
-        .select { |name| hash.has_key?(name) }
+        .select { |name| hash.key?(name) }
 
       if arg_available_keys.size > 0
         payload << hash.slice(*arg_available_keys)
@@ -125,19 +126,19 @@ module Kit::Contract::Services::RubyHelpers
         when :req
           name
         when :rest
-          "*#{name || '_kc_rest'}"
+          "*#{ name || '_kc_rest' }"
         when :opt
           # Unknown default argument.
-          "#{name} = nil"
+          "#{ name } = nil"
         when :key
           # Unknown default argument.
-          "#{name}: nil"
+          "#{ name }: nil"
         when :keyreq
-          "#{name}:"
+          "#{ name }:"
         when :keyrest
-          "**#{name || '_kc_keyrest'}"
+          "**#{ name || '_kc_keyrest' }"
         when :block # NOTE: name can not be nil for block
-          "&#{name}"
+          "&#{ name }"
         end
       end
       .join(', ')
@@ -157,9 +158,9 @@ module Kit::Contract::Services::RubyHelpers
     named = parameters
       .map do |type, name|
         if type == :req || name == :opt
-          "#{name}"
+          "#{ name }"
         elsif type == :rest
-          "#{name || '_kc_rest'}"
+          "#{ name || '_kc_rest' }"
         else
           nil
         end
@@ -171,22 +172,22 @@ module Kit::Contract::Services::RubyHelpers
     end
 
     keys = parameters
-      .select { |t, n| t == :key || t == :keyreq }
-      .map    { |t, n| "#{n}: #{n}" }
+      .select { |t, _n| t == :key || t == :keyreq }
+      .map    { |_t, n| "#{ n }: #{ n }" }
 
     if keys.count > 0
-      keys_str = "{ #{keys.join(', ')} }"
+      keys_str = "{ #{ keys.join(', ') } }"
     end
 
     if keyrest_name
       if keys_str
-        keys_str = "#{keys_str}.merge(#{keyrest_name})"
+        keys_str = "#{ keys_str }.merge(#{ keyrest_name })"
       else
         keys_str = keyrest_name
       end
     end
 
-    "[#{ named_str ? "#{named_str}, " : '' }#{ keys_str ? "#{keys_str}, " : '' }#{ block_name }]"
+    "[#{ named_str ? "#{ named_str }, " : '' }#{ keys_str ? "#{ keys_str }, " : '' }#{ block_name }]"
   end
 
 end

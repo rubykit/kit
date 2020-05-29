@@ -6,7 +6,7 @@ describe Kit::Contract::BuiltInContracts::Delayed do
 
   Contract1 = Kit::Contract::BuiltInContracts::Hash[
     v:    Kit::Contract::BuiltInContracts::Eq[1],
-    obj2: Kit::Contract::BuiltInContracts::Optional[described_class[->{ Contract2 }]],
+    obj2: Kit::Contract::BuiltInContracts::Optional[described_class[-> { Contract2 }]],
   ]
 
   Contract2 = Kit::Contract::BuiltInContracts::Hash[
@@ -17,13 +17,13 @@ describe Kit::Contract::BuiltInContracts::Delayed do
 
   let(:args_valid) do
     [
-      [{ v: 1, obj2: { v: 2 }, }],
+      [{ v: 1, obj2: { v: 2 } }],
     ]
   end
   let(:args_invalid) do
     {
-      [{ v: 2, obj2: { v: 2 }, }] => 'EQ failed: expected `1`, got `2`',
-      [{ v: 1, obj2: { v: 3 }, }] => 'EQ failed: expected `2`, got `3`',
+      [{ v: 2, obj2: { v: 2 } }] => 'EQ failed: expected `1` got `2`',
+      [{ v: 1, obj2: { v: 3 } }] => 'EQ failed: expected `2` got `3`',
     }
   end
 

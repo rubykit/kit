@@ -1,5 +1,11 @@
 ENV['RAILS_ENV'] ||= 'test'
 
+ENV['DATABASE_ADAPTER'] = 'nulldb'
+# Note: somehow having a DATABASE_URL in the config env of `dummy-app-container` bypasses the `nulldb` adapter.
+#  `primary` gets registered as `nulldb` a first time, then a second as `postgres`
+ENV['DATABASE_URL']     = nil
+ENV['EVENT_STORE']      = 'false'
+
 KIT_APP_PATHS ||= {}
 KIT_APP_PATHS['GEM_ROOT'] = File.expand_path('..', __dir__)
 KIT_APP_PATHS['GEM_APP']  = File.expand_path('../app', __dir__)
@@ -14,7 +20,7 @@ require 'kit/dummy-app-container/rails_rspec'
 
 require_relative 'spec_helper'
 
-Dir[Rails.root.join('../support/**/*.rb')].each { |f| require f }
+Dir[Rails.root.join('../support/**/*.rb')].sort.each { |f| require f }
 
 RSpec.configure do |config|
   config.use_transactional_fixtures = false

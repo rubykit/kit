@@ -35,8 +35,8 @@ module SpecDb
     def obeys?(element:, condition:)
       condition = condition.dup
 
-      if condition.is_a?(Kit::Pagination::Conditions::Set)
-        values = condition.values.map do |value|
+      if [:and, :or].include?(condition[:op])
+        values = condition[:values].map do |value|
           # Boolean (condition has already been checked)
           if [true, false].include?(value)
             value
@@ -46,17 +46,17 @@ module SpecDb
           end
         end
 
-        if condition.operator == :and
+        if condition[:op] == :and
           values.uniq == [true]
         else
           values.include?(true)
         end
 
-      elsif condition.is_a?(Kit::Pagination::Conditions::Single)
-        value    = condition.value
-        el_value = element.send(condition.name)
+      else
+        value    = condition[:values]
+        el_value = element.send(condition[:name])
 
-        case condition.operator
+        case condition[:op]
         when :lt
           el_value < value
         when :lte

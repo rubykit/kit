@@ -8,7 +8,7 @@ describe Kit::Contract::BuiltInContracts::Array do
     contract0 = ->(v) { v.is_a?(Symbol) }
     contract1 = ->(v) { v == 3 }
 
-    contracts   = [
+    contracts = [
       described_class[contract0, contract1],
       described_class.with([contract0, contract1]),
       described_class.at(0 => contract0, 1 => contract1),

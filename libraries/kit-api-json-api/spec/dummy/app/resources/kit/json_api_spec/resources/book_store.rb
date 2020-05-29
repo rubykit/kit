@@ -1,14 +1,39 @@
-module Kit::JsonApiSpec::Resources::BookStore
+# Exemple type for dummy app.
+class Kit::JsonApiSpec::Resources::BookStore < Kit::Api::JsonApi::Resources::ActiveRecordResource
 
-  include Kit::Contract
-  Ct = Kit::Api::JsonApi::Contracts
-
-  include Kit::Api::JsonApi::Resources::Resource
-
-  def self.resource_name
+  def self.name
     :book_store
   end
 
+  def self.model
+    Kit::JsonApiSpec::Models::Write::BookStore
+  end
+
+  def self.fields_setup
+    {
+      id:         { type: :id_numeric, sort_field: { default: true, tie_breaker: true } },
+      created_at: { type: :date },
+      updated_at: { type: :date },
+      in_stock:   { type: :boolean },
+    }
+  end
+
+  def self.relationships
+    {
+      book:  {
+        resource:          :book,
+        relationship_type: :to_one,
+        resolvers:         [:active_record, parent_field: :kit_json_api_spec_book_id],
+      },
+      store: {
+        resource:          :store,
+        relationship_type: :to_one,
+        resolvers:         [:active_record, parent_field: :kit_json_api_spec_store_id],
+      },
+    }
+  end
+
+=begin
   def self.resource_url(resource_id:)
     "/book_stores/#{ resource_id }"
   end
@@ -16,56 +41,6 @@ module Kit::JsonApiSpec::Resources::BookStore
   def self.relationship_url(resource_id:, relationship_id:)
     "/book_stores/#{ resource_id }/relationships/#{ relationship_id }"
   end
-
-  def self.available_fields
-    {
-      id:         Kit::Api::JsonApi::TypesHint::IdNumeric,
-      created_at: Kit::Api::JsonApi::TypesHint::Date,
-      updated_at: Kit::Api::JsonApi::TypesHint::Date,
-      in_stock:   Kit::Api::JsonApi::TypesHint::Boolean,
-    }
-  end
-
-  def self.available_sort_fields
-    available_fields
-      .map { |name, _| [name, { order: [[name, :asc]], default: (name == :id) }] }
-      .to_h
-  end
-
-  def self.available_filters
-    available_fields
-      .map { |name, type| [name, Kit::Api::JsonApi::TypesHint.defaults[type]] }
-      .to_h
-  end
-
-  def self.available_relationships
-    list = [
-      Kit::JsonApiSpec::Resources::BookStore::Relationships::Book,
-      Kit::JsonApiSpec::Resources::BookStore::Relationships::Store,
-    ]
-
-    list
-      .map { |el| [el.relationship[:name],  el.relationship] }
-      .to_h
-  end
-
-  before [
-    ->(query_node:) { query_node[:resource][:name] == :book_store },
-  ]
-  def self.load_data(query_node:)
-    model  = Kit::JsonApiSpec::Models::Write::BookStore
-    _, ctx = Kit::Api::JsonApi::Services::Sql.sql_query(
-      ar_model:  model,
-      filtering: query_node[:condition],
-      sorting:   query_node[:sorting],
-      limit:     query_node[:limit],
-    )
-
-    puts ctx[:sql_str]
-    data = model.find_by_sql(ctx[:sql_str])
-    puts "LOAD DATA BOOK_STORE: #{ data.size }"
-
-    [:ok, data: data]
-  end
+=end
 
 end

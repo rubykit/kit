@@ -2,6 +2,7 @@
 module Kit::Api::JsonApi::Services::Serializer::Relationship
 
   include Kit::Contract
+  # @hide true
   Ct = Kit::Api::JsonApi::Contracts
 
   before Ct::Hash[document: Ct::Document, record: Ct::Record, relationship: Ct::Relationship]
@@ -39,7 +40,7 @@ module Kit::Api::JsonApi::Services::Serializer::Relationship
     resource_object = record[:resource_object]
 
     # to_one relationships can not generate collision so no need for the full pathname
-    if relationship[:type] == :to_one
+    if relationship[:relationship_type] == :to_one
       relationship_pathname = relationship[:name].to_s
     end
 
@@ -71,10 +72,19 @@ module Kit::Api::JsonApi::Services::Serializer::Relationship
   def self.add_record_relationship_links(document:, record:, relationship:, relationship_container:)
     resource = record[:query_node][:resource]
 
-    if relationship[:type] == :to_one
-      links = resource[:links_relationship_single].call(record: record, relationship: relationship)[1][:links]
+    if relationship[:relationship_type] == :to_one
+      links = resource[:linker][:relationship_single].call(
+        parent_record: record,
+        record:        record[:relationships][relationship[:name]][0],
+        relationship:  relationship,
+      )[1][:links]
     else
-      links = resource[:links_relationship_collection].call(record: record, relationship: relationship)[1][:links]
+      links = resource[:linker][:relationship_collection].call(
+        parent_record: record,
+        records:       record[:relationships][relationship[:name]],
+        relationship:  relationship,
+        paginator:     resource[:paginator],
+      )[1][:links]
     end
 
     # NOTE: not sure this is needed / links can change anyway

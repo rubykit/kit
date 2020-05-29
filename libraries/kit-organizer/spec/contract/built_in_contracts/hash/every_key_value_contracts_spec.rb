@@ -10,17 +10,17 @@ describe Kit::Contract::BuiltInContracts::Hash do
     let(:args_valid) do
       [
         [{ a: 11, b: 12 }],
-        [{ key: 15, }],
+        [{ key: 15 }],
       ]
     end
     let(:args_invalid) do
       {
-        [{ a: 11, b: 5, }]         => 'Invalid result type for contract',
-        [{ a: 11, b: '12', }]      => 'Invalid result type for contract',
-        [{ :a => 11, 'b' => 12, }] => 'Invalid result type for contract',
-        [{ key: 9, }]              => 'Invalid result type for contract',
-        [{ key: 15.0, }]           => 'Invalid result type for contract',
-        [{ 'key' => 15, }]         => 'Invalid result type for contract',
+        [{ a: 11, b: 5 }]         => 'Invalid result type for contract',
+        [{ a: 11, b: '12' }]      => 'Invalid result type for contract',
+        [{ :a => 11, 'b' => 12 }] => 'Invalid result type for contract',
+        [{ key: 9 }]              => 'Invalid result type for contract',
+        [{ key: 15.0 }]           => 'Invalid result type for contract',
+        [{ 'key' => 15 }]         => 'Invalid result type for contract',
       }
     end
 

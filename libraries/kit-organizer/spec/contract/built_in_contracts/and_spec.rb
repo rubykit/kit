@@ -4,10 +4,12 @@ require_relative '../../../lib/kit/contract'
 
 describe ::Kit::Contract::BuiltInContracts::And do
 
-  let(:contract) { described_class[
-    ->(v) { v && v > 3 },
-    ->(v) { v && v < 5 }
-  ] }
+  let(:contract) do
+    described_class[
+      ->(v) { v && v > 3 },
+      ->(v) { v && v < 5 }
+  ]
+  end
   let(:args_valid) do
     [
       [4],
@@ -15,9 +17,9 @@ describe ::Kit::Contract::BuiltInContracts::And do
   end
   let(:args_invalid) do
     {
-      [nil] => 'AND failed: [[{:detail=>"Invalid result type for contract"}], [{:detail=>"Invalid result type for contract"}]]',
-      [3]   => 'AND failed: [[{:detail=>"Invalid result type for contract"}]]',
-      [5]   => 'AND failed: [[{:detail=>"Invalid result type for contract"}]]',
+      [nil] => 'AND failed.',
+      [3]   => 'AND failed.',
+      [5]   => 'AND failed.',
     }
   end
 

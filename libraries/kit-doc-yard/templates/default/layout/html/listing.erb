@@ -1,7 +1,11 @@
+<%
+  version = config[:version]
+  version = (version == 'edge') ? 'Edge' : "v#{ version }"
+%>
 <section id="api-reference" class="details-list">
+   <small class="app-vsn"><b><%= config[:project] %></b> <%= version %></small>
 
    <h1 class="section-heading">
-      <small class="app-vsn"><%= config[:project] %> v<%= config[:version] %></small>
       <a class="hover-link" href="#api-reference">
         <span class="icon-link" aria-hidden="true"></span>
         <span class="sr-only">Link to this section</span>

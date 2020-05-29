@@ -14,10 +14,10 @@ describe Kit::Contract::BuiltInContracts::Symbol do
   let(:expected_type) { Symbol }
   let(:args_invalid) do
     {
-      [nil]  => nil,
-      ['a']  => nil,
-      [1]    => nil,
-      ['1']  => nil,
+      [nil] => nil,
+      ['a'] => nil,
+      [1]   => nil,
+      ['1'] => nil,
     }
   end
 

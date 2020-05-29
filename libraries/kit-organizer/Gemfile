@@ -1,34 +1,19 @@
 source 'https://rubygems.org'
-git_source(:github) { |repo| "https://github.com/#{repo}.git" }
+git_source(:github) { |repo| "https://github.com/#{ repo }.git" }
 
-# Declare your gem's dependencies in kit_organizer.gemspec.
-# Bundler will treat runtime dependencies like base dependencies, and
-# development dependencies will be added by default to the :development group.
 gemspec
 
-# Declare any dependencies that are still in development here instead of in
-# your gemspec. These might include edge Rails or gems from your path or
-# Git. Remember to move these dependencies to your gemspec before releasing
-# your gem to rubygems.org.
+gem 'concurrent-ruby',         require: 'concurrent'
 
-# To use a debugger
-# gem 'byebug', group: [:development, :test]
+# TODO: move to gemspec when released
+gem 'kit-app-container',       path: '../../libraries/kit-app-container' # DEV MODE
+gem 'kit-doc-yard',            path: '../../libraries/kit-doc-yard' # GEMSPEC DEV MODE
+gem 'kit-dummy-app-container', path: '../../libraries/kit-dummy-app-container' # DEV MODE
+gem 'kit-error',               path: '../../libraries/kit-error' # GEMSPEC
 
-gem 'rails'
-
+# TODO: clean this up
 group :test, :development do
-  gem 'pry'
   gem 'activesupport'
   gem 'colorize'
+  gem 'pry'
 end
-
-group :test do
-  gem 'rspec-rails'
-end
-
-gem 'awesome_print'
-
-gem 'kit-app-container',       path: '../../libraries/kit-app-container' # DEV MODE
-gem 'kit-dummy-app-container', path: '../../libraries/kit-dummy-app-container' # DEV MODE
-
-gem 'kit-doc-yard',            path: '../../libraries/kit-doc-yard'

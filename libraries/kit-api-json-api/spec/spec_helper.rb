@@ -1,4 +1,11 @@
+require 'test_prof/recipes/rspec/sample'
+require 'rspec'
+
+require_relative 'kit_rspec_formatter'
+
 RSpec.configure do |config|
+
+  config.formatter = KitRspecFormatter
 
   config.expect_with :rspec do |expectations|
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
@@ -13,3 +20,5 @@ RSpec.configure do |config|
   config.shared_context_metadata_behavior = :apply_to_host_groups
 
 end
+
+require_relative 'json_api/shared/config_dummy_app'

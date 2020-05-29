@@ -2,6 +2,7 @@
 module Kit::Api::JsonApi::Services::Sql::Sanitization
 
   include Kit::Contract
+  # @hide true
   Ct = Kit::Api::JsonApi::Contracts
 
 =begin
@@ -24,7 +25,7 @@ module Kit::Api::JsonApi::Services::Sql::Sanitization
   def self.sanitize_sql(statement:, values:, ar_connection:)
     return statement if statement.blank?
 
-    sanitized_sql = statement.gsub(/(:?):([a-zA-Z]\w*)/) do |match|
+    sanitized_sql = statement.gsub(%r{(:?):([a-zA-Z]\w*)}) do |match|
       if $1 == ':' # skip postgresql casts
         match # return the whole match
       elsif values.include?(match = $2.to_sym)
