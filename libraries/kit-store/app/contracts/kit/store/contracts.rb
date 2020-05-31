@@ -1,4 +1,6 @@
+# Contracts for the project.
 module Kit::Store::Contracts
+
   include Kit::Contract::BuiltInContracts
 
   Store        = IsA[Kit::Store::Types::Store]

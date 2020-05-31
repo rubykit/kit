@@ -1,5 +1,8 @@
+# Handles records ordering.
 module Kit::Store::Services::Table::Ordering
+
   include Kit::Contract
+  # @hide true
   Ct = Kit::Store::Contracts
 
   # Sort `InnerRecods` by criterias provided as order like `[[:id, :desc], [:created_at, :asc]]`
@@ -13,7 +16,6 @@ module Kit::Store::Services::Table::Ordering
         _, el2_get = Kit::Store::Services::Table::Selection.get(table: table, inner_record: el2, column_name: attr_name)
         el1_value  = el1_get[:value]
         el2_value  = el2_get[:value]
-
         res        = (direction == :asc) ? (el1_value <=> el2_value) : (el2_value <=> el1_value)
 
         if res != 0

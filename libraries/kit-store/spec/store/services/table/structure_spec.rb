@@ -1,6 +1,6 @@
-require_relative '../../rails_helper'
+require_relative '../../../rails_helper'
 
-describe "Table Structure" do
+describe 'Table Structure' do
   let(:service) { Kit::Store::Services::Table }
   let(:store)   { Kit::Store::Services::Store.create() }
 
@@ -9,7 +9,7 @@ describe "Table Structure" do
     let(:table_name) { :users }
 
     it 'creates a new table' do
-      status, ctx = subject
+      status, _ctx = subject
       expect(status).to eq :ok
       expect(store[:tables][table_name]).not_to be nil
       expect(store[:tables][table_name][:columns_hash][:_id]).not_to be nil
@@ -29,7 +29,7 @@ describe "Table Structure" do
 
     context 'when the column does not already exists' do
       it 'successfully creates a new column' do
-        status, ctx = subject
+        status, _ctx = subject
         expect(status).to eq :ok
         expect(store[:tables][table_name][:columns_hash][column_name]).not_to be nil
       end

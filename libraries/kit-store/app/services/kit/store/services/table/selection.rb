@@ -1,5 +1,8 @@
+# Handles Selection from Table.
 module Kit::Store::Services::Table::Selection
+
   include Kit::Contract
+  # @hide true
   Ct = Kit::Store::Contracts
 
   contract Ct::Hash[store: Ct::Store, from: Ct::TableName, select: Ct::Optional[Ct::ColumnNames], filters: Ct::Optional[Ct::Callables], order: Ct::Optional[Ct::Orders]]
@@ -13,7 +16,7 @@ module Kit::Store::Services::Table::Selection
     if limit.is_a?(Integer)
       limit_value = limit
       limit = ->(inner_records:) do
-        [:ok, inner_records: inner_records[0...(limit_value)]]
+        [:ok, inner_records: inner_records[0...limit_value]]
       end
     end
     if limit.respond_to?(:call)
@@ -28,14 +31,14 @@ module Kit::Store::Services::Table::Selection
     ].flatten
 
     Kit::Organizer.call({
-      list: list,
-      ctx: {
+      list:   list,
+      ctx:    {
         store:        store,
         table_name:   from,
         column_names: select,
         order:        order,
       },
-      filter: { ok: [:records], },
+      filter: { ok: [:records] },
     })
   end
 

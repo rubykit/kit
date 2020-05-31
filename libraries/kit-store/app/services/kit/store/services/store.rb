@@ -1,3 +1,4 @@
+# Namespace for Store related logic.
 module Kit::Store::Services::Store
 
   def self.create

@@ -1,4 +1,4 @@
-# Contracts for the project
+# Contracts for the project.
 module Kit::Organizer::Contracts
 
   include Kit::Contract::BuiltInContracts

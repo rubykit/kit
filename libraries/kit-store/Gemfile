@@ -3,8 +3,6 @@ git_source(:github) { |repo| "https://github.com/#{ repo }.git" }
 
 gemspec
 
-gem 'rails'
-
 gem 'kit-app-container',       path: '../../libraries/kit-app-container' # DEV MODE
 gem 'kit-doc-yard',            path: '../../libraries/kit-doc-yard'
 gem 'kit-dummy-app-container', path: '../../libraries/kit-dummy-app-container' # DEV MODE
