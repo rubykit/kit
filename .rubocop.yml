@@ -10,7 +10,6 @@ AllCops:
     - 'libraries/kit-api-json-api/spec/dummy/db/schema.rb'
     - 'libraries/kit-active-admin/**/*'
     - 'libraries/kit-doc-yard/**/*'
-    - 'libraries/kit-domain/**/*'
     - 'libraries/kit-dotenv/**/*'
     - 'libraries/kit-engine/**/*'
     - 'libraries/kit-router/**/*'

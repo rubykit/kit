@@ -1,45 +1,48 @@
+# Namespace for various Concerns.
 module Kit::Domain::Models::Concerns
-  module EngineRecord
-    extend ActiveSupport::Concern
+end
 
-    included do
-      self.abstract_class = true
+# Mixin for any Domain Record.
+module Kit::Domain::Models::Concerns::EngineRecord
 
-      class_attribute :columns_whitelisting
-      self.columns_whitelisting = true
-    end
+  extend ActiveSupport::Concern
 
-    class_methods do
+  included do
+    self.abstract_class = true
 
-       # Removes Engine modules name
-      def table_name
-        super.demodulize.tableize
-      end
+    class_attribute :columns_whitelisting
+    self.columns_whitelisting = true
+  end
 
-    end
+  class_methods do
 
-    # Ex: User#1
-    def model_log_name
-      "#{self.class.model_name.element.camelize}##{self.id}"
-    end
-
-    # Ex: User#1|dev@test.com
-    def model_verbose_name
-      "#{self.class.model_name.element.camelize}##{self.id}"
-    end
-
-
-    def is_read_record?
-      self.class.is_read_class?
-    end
-
-    def is_write_record?
-      self.class.is_write_class?
-    end
-
-    def readonly?
-      self.class.is_read_class?
+    # Removes Engine modules name
+    def table_name
+      super.demodulize.tableize
     end
 
   end
+
+  # Ex: User#1
+  def model_log_name
+    "#{ self.class.model_name.element.camelize }##{ self.id }"
+  end
+
+  # Ex: User#1|dev@test.com
+  def model_verbose_name
+    "#{ self.class.model_name.element.camelize }##{ self.id }"
+  end
+
+  def read_record?
+    self.class.read_class?
+  end
+
+  def write_record?
+    self.class.write_class?
+  end
+
+  def readonly?
+    self.class.read_class?
+  end
+
 end

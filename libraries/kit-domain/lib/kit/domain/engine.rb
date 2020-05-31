@@ -1,8 +1,6 @@
-module Kit
-  module Domain
-    class Engine < ::Rails::Engine
-      isolate_namespace Kit::Domain
+# Engine.
+class Kit::Domain::Engine < ::Rails::Engine
 
-    end
-  end
+  isolate_namespace Kit::Domain
+
 end
