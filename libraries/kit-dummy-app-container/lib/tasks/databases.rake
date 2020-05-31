@@ -9,8 +9,6 @@ def alias_task(name:, task_ref:)
   end
 end
 
-initial_task = Rake::Task['db:schema:dump']
-
 db_namespace = namespace :db do
   namespace :schema do
 
@@ -21,13 +19,13 @@ db_namespace = namespace :db do
 
     namespace :dump do
       ActiveRecord::Tasks::DatabaseTasks.for_each(databases) do |spec_name|
-        desc "Creates a schema.rb file for database `#{spec_name}` that is portable against any DB supported by Active Record"
+        desc "Creates a schema.rb file for database `#{ spec_name }` that is portable against any DB supported by Active Record"
         task spec_name => :load_config do
           db_config = ActiveRecord::Base.configurations.configs_for(env_name: Rails.env, spec_name: spec_name)
           ActiveRecord::Base.establish_connection(db_config.config)
           ActiveRecord::Tasks::DatabaseTasks.dump_schema(db_config.config, :ruby, db_config.spec_name)
 
-          db_namespace["schema:dump:#{spec_name}"].reenable
+          db_namespace["schema:dump:#{ spec_name }"].reenable
         end
       end
     end
@@ -43,7 +41,7 @@ db_namespace = namespace :db do
 
     namespace :load do
       ActiveRecord::Tasks::DatabaseTasks.for_each(databases) do |spec_name|
-        desc "Loads the schema.rb file for database `#{spec_name}`"
+        desc "Loads the schema.rb file for database `#{ spec_name }`"
         task spec_name => [:load_config, :check_protected_environments] do
           env_name  = Rails.env
           db_config = ActiveRecord::Base.configurations.configs_for(env_name: env_name, spec_name: spec_name)
@@ -61,5 +59,3 @@ db_namespace = namespace :db do
 
   end
 end
-
-

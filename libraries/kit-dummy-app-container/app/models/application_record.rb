@@ -1,3 +1,5 @@
-class ApplicationRecord < ActiveRecord::Base
+class ApplicationRecord < ActiveRecord::Base # rubocop:disable Style/Documentation
+
   self.abstract_class = true
+
 end

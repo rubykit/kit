@@ -1,4 +1,4 @@
-class ::Web::HomeController < ::WebController
+class ::Web::HomeController < ::WebController # rubocop:disable Style/Documentation
 
 =begin
   Kit::Router::Services::Router.register_without_target({
