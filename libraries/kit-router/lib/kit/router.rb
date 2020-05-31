@@ -1,6 +1,7 @@
-module Kit
-  module Router
-  end
+module Kit # rubocop:disable Style/Documentation
 end
 
-require "kit/router/engine"
+module Kit::Router # rubocop:disable Style/Documentation
+end
+
+require 'kit/router/engine'

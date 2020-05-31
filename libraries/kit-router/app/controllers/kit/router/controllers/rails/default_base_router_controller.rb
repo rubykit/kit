@@ -1,6 +1,7 @@
 # NOTE: More of a template than anything, each app container should define its own variations!
-
 module Kit::Router::Controllers::Rails
+
+  # Rails default catch-all controller.
   class DefaultBaseRouterController < ::ActionController::Base
 
     def route
@@ -11,12 +12,12 @@ module Kit::Router::Controllers::Rails
         rails_response:   self.response,
       }
 
-      status, ctx = Kit::Organizer.call({
+      _status, ctx = Kit::Organizer.call({
         list: [
           Kit::Router::Services::Adapters::Http::Rails::Request::Import.method(:import_request),
           request.params[:kit_router_target],
         ],
-        ctx: controller_ctx,
+        ctx:  controller_ctx,
       })
 
       # NOTE: we need to run this regardless of the previous status
@@ -24,7 +25,7 @@ module Kit::Router::Controllers::Rails
         list: [
           Kit::Router::Services::Adapters::Http::Rails::Request::Export.method(:export_request),
         ],
-        ctx: controller_ctx.merge(ctx.slice(:request, :response)),
+        ctx:  controller_ctx.merge(ctx.slice(:request, :response)),
       })
 
       return

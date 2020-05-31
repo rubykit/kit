@@ -1,27 +1,27 @@
 require_relative '../rails_helper'
 
-describe "Aliases" do
+describe 'Aliases' do
   let(:service)       { Kit::Router::Services::Store }
   let(:default_types) { [[:any, :any]] }
 
   let(:aliases_list) do
     [
-      { id: :c, target_id: :d, },
-      { id: :b, target_id: :c, },
-      { id: :a, target_id: :b, },
-      { id: :m, target_id: :b, },
-      { id: :y, target_id: :c, },
-      { id: :x, target_id: :y, },
-      { id: :c, target_id: :e, },
+      { id: :c, target_id: :d },
+      { id: :b, target_id: :c },
+      { id: :a, target_id: :b },
+      { id: :m, target_id: :b },
+      { id: :y, target_id: :c },
+      { id: :x, target_id: :y },
+      { id: :c, target_id: :e },
     ]
   end
 
   let(:aliases) do
     aliases_list.each do |data|
       service.add_alias(
-        alias_id:      data[:id],
-        target_id:     data[:target_id],
-        router_store:  router_store,
+        alias_id:     data[:id],
+        target_id:    data[:target_id],
+        router_store: router_store,
       )
     end
   end
@@ -30,8 +30,8 @@ describe "Aliases" do
 
   let(:endpoints_list) do
     [
-      { uid: :d, target: ->() {}, types: default_types, },
-      { uid: :e, target: ->() {}, types: default_types, },
+      { uid: :d, target: -> {}, types: default_types },
+      { uid: :e, target: -> {}, types: default_types },
     ]
   end
 
