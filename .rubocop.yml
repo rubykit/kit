@@ -12,7 +12,6 @@ AllCops:
     - 'libraries/kit-doc-yard/**/*'
     - 'libraries/kit-domain/**/*'
     - 'libraries/kit-dotenv/**/*'
-    - 'libraries/kit-error/**/*'
     - 'libraries/kit-engine/**/*'
     - 'libraries/kit-router/**/*'
     - 'libraries/kit-store/**/*'
