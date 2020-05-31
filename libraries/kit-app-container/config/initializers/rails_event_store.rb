@@ -7,7 +7,7 @@ if ENV['EVENT_STORE'] != 'false'
       Rails.configuration.event_store = RailsEventStore::Client.new(
         mapper: RubyEventStore::Mappers::Default.new(
           serializer: JSON,
-        )
+        ),
       )
     end
   end

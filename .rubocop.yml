@@ -9,7 +9,6 @@ AllCops:
     - 'domains/**/*'
     - 'libraries/kit-api-json-api/spec/dummy/db/schema.rb'
     - 'libraries/kit-active-admin/**/*'
-    - 'libraries/kit-app-container/**/*'
     - 'libraries/kit-doc-yard/**/*'
     - 'libraries/kit-domain/**/*'
     - 'libraries/kit-dotenv/**/*'
@@ -23,6 +22,8 @@ AllCops:
 
 # Re-add config/default.yml parameters for nested spec directories.
 # Reference: https://github.com/rubocop-hq/rubocop/blob/master/config/default.yml
+#
+# Weirdly enough this is only applied when specifying the config file with `rubocop --config .rubocop.yml`
 
 Naming/PredicateName:
   Exclude:
