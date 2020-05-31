@@ -14,6 +14,9 @@ Style/Alias:
 Style/AsciiComments:
   Enabled: false
 
+Style/NonNilCheck:
+  Enabled: false
+
 Style/ClassAndModuleChildren:
   EnforcedStyle: compact
 

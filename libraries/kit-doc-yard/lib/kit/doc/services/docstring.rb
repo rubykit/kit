@@ -1,10 +1,11 @@
+# Namespace for Docstring related operations.
 module Kit::Doc::Services::Docstring
 
   def self.full(object:)
     docstring = (object.tags(:overload).size == 1 && obj.docstring.empty?) ? object.tag(:overload).docstring : object.docstring
 
     if docstring.summary.empty? && object.tags(:return).size == 1 && object.tag(:return).text
-      docstring = ::YARD::Docstring.new(object.tag(:return).text.gsub(/\A([a-z])/, &:upcase).strip)
+      docstring = ::YARD::Docstring.new(object.tag(:return).text.gsub(%r{\A([a-z])}, &:upcase).strip)
     end
 
     docstring
@@ -51,8 +52,8 @@ module Kit::Doc::Services::Docstring
   def self.li_to_hash(node:)
     {
       title:    (node > 'a')&.children&.first&.to_s || '',
-      anchor:   (node > 'a')&.attribute('href')&.to_s&.gsub(/^#/, ''),
-      sections: ((node > 'ul' > 'li')&.map { |subnode| li_to_hash(node: subnode) }) || [],
+      anchor:   (node > 'a')&.attribute('href')&.to_s&.gsub(%r{^#}, ''),
+      sections: ((node > 'ul' > 'li')&.map { |subnode| li_to_hash(node: subnode) }) || [], # rubocop:disable Lint/MultipleComparison
     }
   end
 

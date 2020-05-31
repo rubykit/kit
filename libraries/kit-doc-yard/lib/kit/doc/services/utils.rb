@@ -44,7 +44,7 @@ module Kit::Doc::Services::Utils
   def self.markup_for_file(filename:, content: '')
     return $1.to_sym if content && content =~ ::YARD::Templates::Helpers::MarkupHelper::MARKUP_FILE_SHEBANG # Shebang support
 
-    ext = (File.extname(filename)[1..-1] || '').downcase
+    ext = (File.extname(filename)[1..] || '').downcase
     ::YARD::Templates::Helpers::MarkupHelper::MARKUP_EXTENSIONS.each do |type, exts|
       return type if exts.include?(ext)
     end

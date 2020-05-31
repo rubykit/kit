@@ -8,8 +8,9 @@ AllCops:
     - 'apps/**/*'
     - 'domains/**/*'
     - 'libraries/kit-api-json-api/spec/dummy/db/schema.rb'
+    - 'libraries/kit-doc-yard/specs/dummy/**/*.rb'
+    - 'libraries/kit-doc-yard/node_modules/**/*'
     - 'libraries/kit-active-admin/**/*'
-    - 'libraries/kit-doc-yard/**/*'
     - 'libraries/kit-dotenv/**/*'
 
 # ------------------------------------------------------------------------------

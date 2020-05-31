@@ -1,5 +1,5 @@
-include YARD::Templates::Helpers::HtmlHelper
-include ::Kit::Doc::Yard::TemplatePluginHelper
+include YARD::Templates::Helpers::HtmlHelper # rubocop:disable Style/MixinUsage
+include ::Kit::Doc::Yard::TemplatePluginHelper # rubocop:disable Style/MixinUsage
 
 def init
   super
@@ -7,9 +7,10 @@ end
 
 # Needed to access the current file object if it exists.
 # Used to set `data-type` in the <body>
-def file
-  @file
-end
+attr_reader :file
+#def file
+#  @file
+#end
 
 # Use our extended ExtraFile properties
 def diskfile

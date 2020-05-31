@@ -1,12 +1,13 @@
 require 'yard'
 
-module Kit
-  module Doc
+module Kit # rubocop:disable Style/Documentation
+end
 
-    # Register this gem template path with Yard
-    ::YARD::Templates::Engine.register_template_path File.expand_path('../../templates', __dir__)
+module Kit::Doc # rubocop:disable Style/Documentation
 
-  end
+  # Register this gem template path with Yard
+  ::YARD::Templates::Engine.register_template_path File.expand_path('../../templates', __dir__)
+
 end
 
 #require 'kit/doc/config'

@@ -1,12 +1,14 @@
-class ::YARD::CodeObjects::ExtraFileObject
+class ::YARD::CodeObjects::ExtraFileObject # rubocop:disable Style/Documentation
 
   def initialize(filename, contents = nil)
-    self.filename = filename
-    self.name = File.basename(filename).gsub(/\.[^.]+$/, '')
+    self.filename   = filename
+    self.name       = File.basename(filename).gsub(%r{\.[^.]+$}, '')
     self.attributes = SymbolHash.new(false)
+
     @original_contents = contents
-    @parsed = false
-    @locale = nil
+    @parsed            = false
+    @locale            = nil
+
     ensure_parsed
 
     # @ref https://github.com/lsegal/yard/blob/master/templates/default/layout/html/setup.rb#L65

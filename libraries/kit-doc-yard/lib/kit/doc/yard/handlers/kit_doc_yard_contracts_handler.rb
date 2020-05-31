@@ -33,11 +33,11 @@ class Kit::Doc::Yard::KitDocYardContractsHandler < YARD::Handlers::Ruby::Base
 
     ## Hacky way to test for class methods
     ## TODO: What about module methods? Probably broken.
-    scope     = def_method_ast.source.match(/def +self\./) ? :class : :instance
-    name      = def_method_ast.method_name true
+    scope = def_method_ast.source.match(%r{def +self\.}) ? :class : :instance
+    name  = def_method_ast.method_name true
+    doc   = YARD::DocstringParser.new.parse(statement.docstring).to_docstring
     #params    = def_method_ast.parameters # YARD::Parser::Ruby::ParameterNode
     #contracts = statement.parameters # YARD::Parser::Ruby::AstNode
-    doc       = YARD::DocstringParser.new.parse(statement.docstring).to_docstring
 
     # YARD hasn't got to the def method yet, so we create a stub of it with
     # our docstring, when YARD gets to it properly it will fill in the rest.

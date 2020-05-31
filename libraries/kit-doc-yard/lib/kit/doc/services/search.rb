@@ -101,7 +101,7 @@ module Kit::Doc::Services::Search
   def self.clean_content(content:)
     content = Kit::Doc::Services::Utils.remove_html_tags(content)
       .gsub("\n", ' ')
-      .gsub(/\s+/, ' ')
+      .gsub(%r{\s+}, ' ')
 
     # Generate text version
     content = Nokogiri::HTML.parse(content).text

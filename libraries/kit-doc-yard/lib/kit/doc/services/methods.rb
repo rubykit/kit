@@ -1,3 +1,4 @@
+# Namespace for method related operations.
 module Kit::Doc::Services::Methods
 
   # TODO: add support for finding target method when in parents
