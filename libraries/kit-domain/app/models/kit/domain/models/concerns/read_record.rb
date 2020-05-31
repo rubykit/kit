@@ -1,40 +1,46 @@
+# Namespace for various Concerns.
 module Kit::Domain::Models::Concerns
-  module ReadRecord
-    extend ActiveSupport::Concern
+end
 
-    included do
-      self.abstract_class = true
+# Mixin for Record intended to only have read access.
+module Kit::Domain::Models::Concerns::ReadRecord
 
-      before_destroy { |record| raise ReadOnlyRecord }
-    end
+  extend ActiveSupport::Concern
 
-    class_methods do
+  included do
+    self.abstract_class = true
 
-      def to_read_class
-        self
-      end
+    before_destroy { |_record| raise ReadOnlyRecord }
+  end
 
-      def to_write_class
-        self.name.gsub('::Read::', '::Write::').constantize rescue nil
-      end
+  class_methods do
 
-      def is_read_class?
-        true
-      end
-
-      def is_write_class?
-        false
-      end
-
-    end
-
-    def to_write_record
-      self.class.to_write_class&.find_by(id: self.id)
-    end
-
-    def to_read_record
+    def to_read_class
       self
     end
 
+    def to_write_class
+      self.name.gsub('::Read::', '::Write::').constantize
+    rescue StandardError
+      nil
+    end
+
+    def read_class?
+      true
+    end
+
+    def write_class?
+      false
+    end
+
   end
+
+  def to_write_record
+    self.class.to_write_class&.find_by(id: self.id)
+  end
+
+  def to_read_record
+    self
+  end
+
 end

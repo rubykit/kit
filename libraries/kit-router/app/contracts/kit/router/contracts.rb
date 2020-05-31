@@ -1,4 +1,6 @@
+# Contracts for the project
 module Kit::Router::Contracts
+
   include Kit::Contract::BuiltInContracts
 
   EndpointUid     = Or[Symbol, String]
@@ -21,9 +23,9 @@ module Kit::Router::Contracts
     #MountPointAsync,
   ]
 
+=begin
   # TODO: Links should be Stores ?
 
-=begin
   EndpointRecord = And[
     IsA[Kit::Router::Types::EndpointRecord],
     Hash[
@@ -38,8 +40,9 @@ module Kit::Router::Contracts
 =end
   EndpointRecord = IsA[Kit::Router::Types::EndpointRecord]
 
-  # NOTE: For now let's keep 1 alias = 1 mountpoint (and not 1 mountpoint per adapter type)
 =begin
+  # NOTE: For now let's keep 1 alias = 1 mountpoint (and not 1 mountpoint per adapter type)
+
   AliasRecord = And[
     IsA[Kit::Router::Types::AliasRecord],
     Hash[
@@ -64,6 +67,5 @@ module Kit::Router::Contracts
   ]
 =end
   RouterStore = IsA[Kit::Router::Types::RouterStore]
-
 
 end

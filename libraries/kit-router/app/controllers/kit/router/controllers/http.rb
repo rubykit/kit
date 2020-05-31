@@ -1,6 +1,8 @@
 require 'oj'
 
 module Kit::Router::Controllers
+
+  # HTTP request adapter.
   module Http
 
     def self.render(component:, params:, status: 200)
@@ -17,17 +19,17 @@ module Kit::Router::Controllers
             },
           },
         },
-      }]
+      },]
     end
 
     def self.render_jsonapi_errors(resources:, status:, meta: {}, serializers: nil)
       serializers ||= {
-        :Hash => JSONAPI::Rails::SerializableErrorHash,
+        Hash: JSONAPI::Rails::SerializableErrorHash,
       }
 
       renderer = JSONAPI::Serializable::Renderer.new
       options  = {
-        :class   => serializers,
+        class: serializers,
       }
       if !meta.empty?
         options[:meta] = meta
@@ -46,16 +48,16 @@ module Kit::Router::Controllers
             },
           },
         },
-      }]
+      },]
     end
 
     def self.render_jsonapi(resources:, serializers:, fields: {}, sideload: {}, links: {}, meta: {}, status: 200)
       renderer = JSONAPI::Serializable::Renderer.new
       options  = {
-        :class   => serializers,
-        :fields  => fields,
-        :include => sideload,
-        :links   => links.respond_to?(:call) ? links.call(resources: resources) : links,
+        class:   serializers,
+        fields:  fields,
+        include: sideload,
+        links:   links.respond_to?(:call) ? links.call(resources: resources) : links,
       }
 
       if !meta.empty?
@@ -75,7 +77,7 @@ module Kit::Router::Controllers
             },
           },
         },
-      }]
+      },]
     end
 
     # LINK: https://en.wikipedia.org/wiki/HTTP_302
@@ -86,7 +88,7 @@ module Kit::Router::Controllers
         response: {
           metadata: {
             http: {
-              status: status,
+              status:   status,
               redirect: {
                 location: location,
                 domain:   domain,
@@ -96,7 +98,7 @@ module Kit::Router::Controllers
             },
           },
         },
-      }]
+      },]
     end
 
   end

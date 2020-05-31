@@ -1,3 +1,4 @@
+# Namespace for Redcarpet logic.
 module Kit::Doc::Redcarpet
 end
 

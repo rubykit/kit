@@ -1,5 +1,8 @@
-module Kit
-  module AppContainer
-    VERSION = '0.1.0'
-  end
+module Kit # rubocop:disable Style/Documentation
+end
+
+module Kit::AppContainer
+
+  VERSION = '0.1.0'
+
 end

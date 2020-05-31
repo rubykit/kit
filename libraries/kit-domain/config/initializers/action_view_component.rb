@@ -1,10 +1,11 @@
-# LINK: https://github.com/rails/rails/pull/36388?fbclid=IwAR24W0c0MgJny1KvQyM3FxvpdSowv14F-BnoAVgI2KG7EW_DVmreB40FAV8
-# LINK: https://github.com/joelhawksley/actionview-component-demo/blob/master/app/lib/action_view/component.rb
-
 # Use this monkey patch if you aren't running Rails master / 6.1 alpha
-
+#
+# References:
+# - https://github.com/rails/rails/pull/36388?fbclid=IwAR24W0c0MgJny1KvQyM3FxvpdSowv14F-BnoAVgI2KG7EW_DVmreB40FAV8
+# - https://github.com/joelhawksley/actionview-component-demo/blob/master/app/lib/action_view/component.rb
 class ActionView::Base
-  module RenderMonkeyPatch
+
+  module RenderMonkeyPatch # rubocop:disable Style/Documentation
     def render(component, _ = nil, &block)
       return super unless component.respond_to?(:render_in)
 
@@ -13,10 +14,12 @@ class ActionView::Base
   end
 
   prepend RenderMonkeyPatch
+
 end
 
-module ActionView
-  class Component < ActionView::Base
+module ActionView # rubocop:disable Style/ClassAndModuleChildren
+  class Component < ActionView::Base # rubocop:disable Style/Documentation
+
     #include ActiveModel::Validations
 
     # Entrypoint for rendering. Called by ActionView::RenderingHelper#render.
@@ -54,6 +57,7 @@ module ActionView
     def initialize(*); end
 
     class << self
+
 =begin
       def inherited(child)
         child.include Rails.application.routes.url_helpers unless child < Rails.application.routes.url_helpers
@@ -67,9 +71,9 @@ module ActionView
         return if @compiled && !Rails.env.development?
 
         class_eval(
-          "def call; @output_buffer = ActionView::OutputBuffer.new; " +
+          'def call; @output_buffer = ActionView::OutputBuffer.new; ' +
           compiled_template +
-          "; end"
+          '; end',
         )
 
         @compiled = true
@@ -96,32 +100,34 @@ module ActionView
         if self.method(:template).owner == self.singleton_class
           :erb
         else
-          File.extname(template_file_path).gsub(".", "").to_sym
+          File.extname(template_file_path).gsub('.', '').to_sym
         end
       end
 
       def template_file_path
-        raise NotImplementedError.new("#{self} must implement #initialize.") unless self.instance_method(:initialize).owner == self
+        raise NotImplementedError.new("#{ self } must implement #initialize.") unless self.instance_method(:initialize).owner == self
 
         filename = self.instance_method(:initialize).source_location[0]
         filename_without_extension = filename[0..-(File.extname(filename).length + 1)]
-        sibling_files = Dir["#{filename_without_extension}.*"] - [filename]
+        sibling_files = Dir["#{ filename_without_extension }.*"] - [filename]
 
         if sibling_files.length > 1
-          raise StandardError.new("More than one template found for #{self}. There can only be one sidecar template file per component.")
+          raise StandardError.new("More than one template found for #{ self }. There can only be one sidecar template file per component.")
         end
 
         if sibling_files.length == 0
           raise NotImplementedError.new(
-            "Could not find a template for #{self}. Either define a .template method or add a sidecar template file."
+            "Could not find a template for #{ self }. Either define a .template method or add a sidecar template file.",
           )
         end
 
         sibling_files[0]
       end
+
     end
 
-    class DummyTemplate
+    class DummyTemplate # rubocop:disable Style/Documentation
+
       attr_reader :source
 
       def initialize(source = nil)
@@ -129,17 +135,19 @@ module ActionView
       end
 
       def identifier
-        ""
+        ''
       end
 
       # we'll eventually want to update this to support other types
       def type
-        "text/html"
+        'text/html'
       end
+
     end
 
     private
 
     attr_reader :content
+
   end
 end

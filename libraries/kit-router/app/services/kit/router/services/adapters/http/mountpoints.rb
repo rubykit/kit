@@ -1,15 +1,17 @@
 require 'uri'
 
 module Kit::Router::Services::Adapters::Http
+
+  # Mountpoint related logic.
   module Mountpoints
 
     def self.path(id:, params: {})
       alias_record = Kit::Router::Services::Store.get_alias(id: id)
       mountpoint   = Kit::Router::Services::Store.get_record_mountpoint(alias_record: alias_record, mountpoint_type: [:http, :rails])
-      verb, path   = mountpoint
+      _verb, path  = mountpoint
 
       if path.blank?
-        raise "Kit::Router | not mounted `#{id}`"
+        raise "Kit::Router | not mounted `#{ id }`"
       end
 
       uri = URI(path)
@@ -17,7 +19,7 @@ module Kit::Router::Services::Adapters::Http
       new_path = uri.path
 
       params = params.map do |k, v|
-        marker = ":#{k}"
+        marker = ":#{ k }"
         if path.include?(marker)
           new_path.gsub!(marker, v.to_s)
           nil
@@ -32,7 +34,7 @@ module Kit::Router::Services::Adapters::Http
         .merge(params)
         .to_query
 
-      uri.to_s.gsub(/\?$/, '')
+      uri.to_s.gsub(%r{\?$}, '')
     end
 
     def self.url(id:, params: {})
@@ -62,16 +64,16 @@ module Kit::Router::Services::Adapters::Http
     def self.verb(id:)
       alias_record = Kit::Router::Services::Store.get_alias(id: id)
       mountpoint   = Kit::Router::Services::Store.get_record_mountpoint(alias_record: alias_record, mountpoint_type: [:http, :rails])
-      verb, path   = mountpoint
+      verb, _path  = mountpoint
 
       if verb.blank?
-        raise "Kit::Router | not mounted `#{id}`"
+        raise "Kit::Router | not mounted `#{ id }`"
       end
 
       verb
     end
 
-    def self.is_request_route?(request:, id:, params: {})
+    def self.request_route?(request:, id:, params: {})
       request_url = request&.url
       return false if request_url.blank?
 

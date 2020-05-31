@@ -48,7 +48,7 @@ module Kit::Doc::Services::Sidebar::Modules
   end
 
   def self.generate_headers(object:)
-    toc      = Kit::Doc::Services::Docstring.toc(object: object)
+    toc = Kit::Doc::Services::Docstring.toc(object: object)
 
     toc.map do |h2|
       {

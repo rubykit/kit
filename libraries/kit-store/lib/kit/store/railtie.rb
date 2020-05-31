@@ -1,5 +1,3 @@
-module Kit::Store
-  class Railtie < ::Rails::Railtie
-
-  end
+# The Railtie is mainly used to handle all autoloading.
+class Kit::Store::Railtie < ::Rails::Railtie
 end

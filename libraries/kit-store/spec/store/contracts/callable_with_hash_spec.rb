@@ -20,7 +20,7 @@ describe Kit::Store::Contracts::CallableWithHash do
 
   it 'suceeds with valid values' do
     args_valid.each do |args|
-      status, ctx = Kit::Contract::Services::Validation.valid?(contract: contract, args: args)
+      status, _ctx = Kit::Contract::Services::Validation.valid?(contract: contract, args: args)
       expect(status).to eq(:ok)
     end
   end

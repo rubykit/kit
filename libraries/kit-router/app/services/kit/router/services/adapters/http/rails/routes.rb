@@ -1,4 +1,5 @@
 module Kit::Router::Services::Adapters::Http::Rails
+  # Routes setup for Rails.
   module Routes
 
     MOUNT_TYPE = [:http, :rails]
@@ -21,13 +22,13 @@ module Kit::Router::Services::Adapters::Http::Rails
           self.method(:mount_in_rails),
           self.method(:add_mountpoint_to_record),
         ],
-        ctx: {
+        ctx:  {
           id:                   id,
           path:                 path,
           verb:                 verb,
           rails_target:         rails_endpoint_wrapper,
           rails_router_context: rails_router_context,
-        }
+        },
       })
     end
 
@@ -49,12 +50,12 @@ module Kit::Router::Services::Adapters::Http::Rails
           self.method(:mount_in_rails),
           self.method(:add_mountpoint_to_record),
         ],
-        ctx: {
+        ctx:  {
           id:                   id,
           path:                 path,
           verb:                 verb,
           rails_router_context: rails_router_context,
-        }
+        },
       })
     end
 
@@ -64,9 +65,9 @@ module Kit::Router::Services::Adapters::Http::Rails
       alias_record    = Kit::Router::Services::Store.get_alias(id: id)
       endpoint_record = Kit::Router::Services::Store.get_endpoint(id: id)
 
-      endpoint_types  = endpoint_record[:types].keys
+      endpoint_types = endpoint_record[:types].keys
       if !Kit::Router::Services::Router.can_mount?(endpoint_types: endpoint_types, mounter_type: MOUNT_TYPE)
-        raise "Kit::Router | Can't mount `#{endpoint_record[:uid]}` (through: `#{id}`) | Endpoint mount type: `#{endpoint_record[:types]}` | Current mount type: `#{MOUNT_TYPE}`"
+        raise "Kit::Router | Can't mount `#{ endpoint_record[:uid] }` (through: `#{ id }`) | Endpoint mount type: `#{ endpoint_record[:types] }` | Current mount type: `#{ MOUNT_TYPE }`"
       end
 
       [:ok, endpoint_record: endpoint_record, alias_record: alias_record]
@@ -74,12 +75,12 @@ module Kit::Router::Services::Adapters::Http::Rails
 
     def self.ensure_valid_mountpoint!(id:, path:, verb:)
       if path.blank?
-        raise "Kit::Router | empty path for `#{id}`"
+        raise "Kit::Router | empty path for `#{ id }`"
       end
 
       verb = verb.to_s.downcase.to_sym
       if !Kit::Router::Services::Adapters::Http::VERBS.include?(verb)
-        raise "Kit::Router | unsupported http verb for `#{id}` (`#{verb}`)"
+        raise "Kit::Router | unsupported http verb for `#{ id }` (`#{ verb }`)"
       end
 
       [:ok, rails_mountpoint: [verb, path]]
@@ -88,7 +89,7 @@ module Kit::Router::Services::Adapters::Http::Rails
     def self.ensure_kit_router_target!(endpoint_record:)
       kit_router_target = endpoint_record[:target]
       if kit_router_target&.respond_to?(:call) != true
-        raise "Kit::Router | invalid target for #{endpoint_record[:uid]}"
+        raise "Kit::Router | invalid target for #{ endpoint_record[:uid] }"
       end
 
       [:ok, kit_router_target: kit_router_target]
@@ -101,7 +102,7 @@ module Kit::Router::Services::Adapters::Http::Rails
         rails_controller_name = rails_controller
       else
         # REF: https://github.com/rails/rails/blob/9a2e00e27b87632be3528b53efb8bba504688711/actionpack/lib/action_dispatch/http/request.rb#L85
-        rails_controller_name = rails_controller.name.underscore.gsub(/_controller$/, '')
+        rails_controller_name = rails_controller.name.underscore.gsub(%r{_controller$}, '')
       end
       rails_action_name = rails_action.to_sym
 
@@ -110,7 +111,7 @@ module Kit::Router::Services::Adapters::Http::Rails
 
     # NOTE: only call this directly if you understand what you are doing!
     def self.mount_in_rails(rails_router_context:, rails_target:, rails_mountpoint:, kit_router_target: nil)
-      puts "Mount in rails: #{rails_mountpoint}"
+      puts "Mount in rails: #{ rails_mountpoint }"
       rails_router_context.send(:match, rails_mountpoint[1], {
         controller: rails_target[0],
         action:     rails_target[1],
@@ -118,7 +119,7 @@ module Kit::Router::Services::Adapters::Http::Rails
         defaults:   {
           kit_router_target: kit_router_target,
         },
-      })
+      },)
 
       [:ok]
     end
@@ -137,7 +138,7 @@ module Kit::Router::Services::Adapters::Http::Rails
       rails_target = endpoint_record.dig(:meta, MOUNT_TYPE, :target)
 
       if !rails_target
-        raise "Kit::Router | invalid record target for #{endpoint_record[:uid]}"
+        raise "Kit::Router | invalid record target for #{ endpoint_record[:uid] }"
       end
 
       [:ok, rails_target: rails_target]

@@ -25,4 +25,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'rails_event_store'
   s.add_dependency 'sidekiq'
 
+  s.add_development_dependency 'rubocop'
+
 end

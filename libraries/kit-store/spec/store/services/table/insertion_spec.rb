@@ -1,6 +1,6 @@
-require_relative '../../rails_helper'
+require_relative '../../../rails_helper'
 
-describe "Table Insertion" do
+describe 'Table Insertion' do
   let(:service) { Kit::Store::Services::Table }
   let(:store)   { Kit::Store::Services::Store.create() }
 
@@ -13,11 +13,11 @@ describe "Table Insertion" do
   let(:test_values) do
     [
       {
-        _id: 1,
+        _id:   1,
         email: 'test1@test.com',
       },
       {
-        _id: 2,
+        _id:   2,
         email: 'test2@test.com',
       },
     ]
@@ -31,7 +31,7 @@ describe "Table Insertion" do
   context 'inserting data' do
     subject do
       results = test_values.map do |v|
-        data = v.reject { |k, v| k == :_id }
+        data = v.reject { |k, _v| k == :_id }
         service.insert(store: store, table_name: table_name, data: data)
       end
 
@@ -39,7 +39,7 @@ describe "Table Insertion" do
     end
 
     it 'inserts data in the table' do
-      status, ctx = subject
+      status, _ctx = subject
       expect(status).to eq :ok
 
       table = store[:tables][table_name]

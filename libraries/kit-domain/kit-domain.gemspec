@@ -23,14 +23,14 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'activerecord-nulldb-adapter', '~> 0.4.0'
   s.add_dependency 'multiverse',                  '~> 0.2.1'
-  s.add_dependency 'pg',                          '~> 1.2.3'
   s.add_dependency 'paranoia',                    '~> 2.4.1'
+  s.add_dependency 'pg',                          '~> 1.2.3'
   s.add_dependency 'rails',                       '~> 6.0.3.1'
   s.add_dependency 'rails_event_store'
   s.add_dependency 'slim-rails'
 
+  s.add_development_dependency 'annotate'
   s.add_development_dependency 'rubocop'
   s.add_development_dependency 'seedbank'
-  s.add_development_dependency 'annotate'
 
 end

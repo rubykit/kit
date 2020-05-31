@@ -1,9 +1,11 @@
+# Handle Series.
 module Kit::Store::Services::Table::Series
+
   include Kit::Contract
+  # @hide true
   Ct = Kit::Store::Contracts
 
   # NOTE: obviously non atomic / thread-safe
-
   contract Ct::Hash[table: Ct::Table, record: Ct::Record]
   def self.apply_to_record(table:, record:)
     table[:series].each do |column_name, properties|

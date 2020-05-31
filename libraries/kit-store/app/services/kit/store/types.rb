@@ -1,3 +1,4 @@
+# TODO: kills this
 module Kit::Store::Types
 
   class Store < ::Hash

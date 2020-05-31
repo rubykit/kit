@@ -1,4 +1,4 @@
-module Kit::Doc::Yard
+module Kit::Doc::Yard # rubocop:disable Style/Documentation
 end
 
 require_relative 'yard/custom_tags'

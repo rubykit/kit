@@ -1,12 +1,15 @@
+# Maintain Table structure.
 module Kit::Store::Services::Table::Structure
+
   include Kit::Contract
+  # @hide true
   Ct = Kit::Store::Contracts
 
   contract Ct::Hash[store: Ct::Store, table_name: Ct::TableName]
   def self.create_table(store:, table_name:)
-    status, _ = get_table(store: store, table_name: table_name)
+    status, = get_table(store: store, table_name: table_name)
     if status == [:ok]
-      return [:error, "Kit::Store | Table `#{table_name}` already exists"]
+      return [:error, "Kit::Store | Table `#{ table_name }` already exists"]
     end
 
     table = Kit::Store::Types::Table[{
@@ -20,7 +23,7 @@ module Kit::Store::Services::Table::Structure
       constraints:  {},
     }]
 
-    add_column(table: table, column_name: :_id,)
+    add_column(table: table, column_name: :_id)
     Kit::Store::Services::Table::Series.add_auto_increment(table: table, column_name: :_id)
 
     store[:tables][table_name] ||= table
@@ -31,7 +34,7 @@ module Kit::Store::Services::Table::Structure
   contract Ct::Hash[table: Ct::Table, column_name: Ct::ColumnName]
   def self.add_column(table:, column_name:)
     if table[:columns_hash][column_name]
-      return [:error, "Kit::Store | Table `#{table[:name]}` column `#{column_name}` column already exists"]
+      return [:error, "Kit::Store | Table `#{ table[:name] }` column `#{ column_name }` column already exists"]
     end
 
     table[:columns_hash][column_name] = { name: column_name }
@@ -70,7 +73,7 @@ module Kit::Store::Services::Table::Structure
     if table
       [:ok, table: table]
     else
-      [:error, "Kit::Store | Table `#{table_name}` does not exist"]
+      [:error, "Kit::Store | Table `#{ table_name }` does not exist"]
     end
   end
 

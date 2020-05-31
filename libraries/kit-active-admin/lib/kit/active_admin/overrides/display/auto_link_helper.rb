@@ -10,9 +10,9 @@ module ActiveAdmin
 
           if !resource
             klass_sibling = nil
-            if klass&.is_read_class?
+            if klass&.read_class?
               klass_sibling = klass.to_write_class
-            elsif klass&.is_write_class?
+            elsif klass&.write_class?
               klass_sibling = klass.to_read_class
             end
 

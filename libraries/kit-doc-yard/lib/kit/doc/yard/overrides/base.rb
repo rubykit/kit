@@ -1,4 +1,4 @@
-class ::YARD::CodeObjects::Base
+class ::YARD::CodeObjects::Base # rubocop:disable Style/Documentation
 
   # In the original code flow, the html rendering is done directly in templates.
   # This allows us to access the rendered version anywhere, and to cache it.

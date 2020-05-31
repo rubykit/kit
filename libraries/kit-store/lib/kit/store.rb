@@ -1,6 +1,7 @@
-module Kit
-  module Store
-  end
+module Kit # rubocop:disable Style/Documentation
 end
 
-require "kit/store/railtie"
+module Kit::Store # rubocop:disable Style/Documentation
+end
+
+require 'kit/store/railtie'

@@ -1,7 +1,8 @@
 module Kit::Router::Services::Adapters::Http::Rails::Request
-  module Export
 
-    # NOTE: very much a WIP!
+  # Export a KitRequest to a Rails response.
+  # NOTE: very much a WIP!
+  module Export
 
     def self.export_request(request:, response:, rails_cookies:, rails_controller:, rails_response:)
       Kit::Organizer.call({
@@ -9,7 +10,7 @@ module Kit::Router::Services::Adapters::Http::Rails::Request
           self.method(:export_rails_cookies),
           self.method(:handle_result),
         ],
-        ctx: {
+        ctx:  {
           request:          request,
           response:         response,
           rails_cookies:    rails_cookies,
@@ -34,7 +35,7 @@ module Kit::Router::Services::Adapters::Http::Rails::Request
 
       rails_response.status = status
 
-      if is_redirect?(http_metadata: http_metadata)
+      if redirect?(http_metadata: http_metadata)
         handle_redirect(rails_controller: rails_controller, http_metadata: http_metadata)
       elsif mime == :html
         rails_controller.render status: status, content_type: content_type, layout: true, html: content
@@ -45,7 +46,7 @@ module Kit::Router::Services::Adapters::Http::Rails::Request
       [:ok]
     end
 
-    def self.is_redirect?(http_metadata:)
+    def self.redirect?(http_metadata:)
       (300...400).cover?(http_metadata[:status])
     end
 
@@ -72,10 +73,10 @@ module Kit::Router::Services::Adapters::Http::Rails::Request
       data.each do |name, cookie|
         payload = cookie.slice(:value, :expires)
         if cookie[:encrypted] == true
-          cookie_name = "#{Kit::Router::Services::Adapters::Http::Rails::Request.cookies_encrypted_prefix}#{name}"
+          cookie_name = "#{ Kit::Router::Services::Adapters::Http::Rails::Request.cookies_encrypted_prefix }#{ name }"
           rails_cookies.encrypted[cookie_name] = payload
         elsif cookie[:signed] == true
-          cookie_name = "#{Kit::Router::Services::Adapters::Http::Rails::Request.cookies_signed_prefix}#{name}"
+          cookie_name = "#{ Kit::Router::Services::Adapters::Http::Rails::Request.cookies_signed_prefix }#{ name }"
           rails_cookies.signed[cookie_name] = payload
         else
           cookie_name = name

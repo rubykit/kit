@@ -1,4 +1,6 @@
 module Kit::Router::Services::Adapters::Http::Rails
+
+  # Request helpers.
   module Request
 
     def self.cookies_encrypted_prefix
@@ -10,4 +12,5 @@ module Kit::Router::Services::Adapters::Http::Rails
     end
 
   end
+
 end

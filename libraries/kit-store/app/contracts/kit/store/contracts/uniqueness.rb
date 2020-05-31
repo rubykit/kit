@@ -1,4 +1,5 @@
-  class Kit::Store::Contracts::Unique < Kit::Contract::Types::InstantiableContract
+# Uniqueness constraint as a Contract.
+class Kit::Store::Contracts::Unique < Kit::Contract::Types::InstantiableContract
 
   def initialize(*index_contracts)
     @contracts_list = []

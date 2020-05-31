@@ -1,3 +1,4 @@
+# Namespace for Ruby object properties handlers.
 module Kit::Doc::Services::Properties
 
   # Returns object `tags` + some ruby properties
@@ -36,21 +37,21 @@ module Kit::Doc::Services::Properties
 
     read_write_info = (item.respond_to?(:attr_info) && !item.is_a?(::YARD::CodeObjects::ConstantObject)) ? item.attr_info : nil
     if read_write_info
-      readonly  = !verifier_runner.call([read_write_info[:read]].compact).empty? && verifier_runner.call([read_write_info[:write]].compact).empty?
+      readonly = !verifier_runner.call([read_write_info[:read]].compact).empty? && verifier_runner.call([read_write_info[:write]].compact).empty?
       if readonly
-      list << { group: :ruby, name: :readonly, value: true }
+        list << { group: :ruby, name: :readonly, value: true }
       end
 
       writeonly = !verifier_runner.call([read_write_info[:write]].compact).empty? && verifier_runner.call([read_write_info[:read]].compact).empty?
       if writeonly
-      list << { group: :ruby, name: :writeonly, value: true }
+        list << { group: :ruby, name: :writeonly, value: true }
       end
     end
 
     list
   end
 
-  # Get a list of data-* attributes 
+  # Get a list of data-* attributes
   def self.object_html_data_properties(item:, verifier_runner:)
     list = object_properties(item: item, verifier_runner: verifier_runner)
 
@@ -60,7 +61,7 @@ module Kit::Doc::Services::Properties
   end
 
   # Return `true` if at least one item in the list is considered a `private API`
-  def self.has_private_apis?(list:)
+  def self.has_private_apis?(list:) # rubocop:disable Naming/PredicateName
     list.each do |item|
       if item.has_tag?(:api) && item.tag(:api).text == 'private'
         return true

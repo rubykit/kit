@@ -1,5 +1,8 @@
+# Handles Insertion in Table.
 module Kit::Store::Services::Table::Insertion
+
   include Kit::Contract
+  # @hide true
   Ct = Kit::Store::Contracts
 
   # Attempt to insert `data` into `table`
@@ -9,15 +12,15 @@ module Kit::Store::Services::Table::Insertion
     arguments = { store: store, table: table, record_data: data }
 
     Kit::Organizer.call({
-      list: [
+      list:   [
         self.method(:record_data_to_record),
         Kit::Store::Services::Table::Series.method(:apply_to_record),
         Kit::Store::Services::Table::Constraints.method(:apply_to_record),
         self.method(:to_inner_record),
         self.method(:persist),
       ],
-      ctx: arguments,
-      filter: { ok: [:store], error: [:errors], }
+      ctx:    arguments,
+      filter: { ok: [:store], error: [:errors] },
     })
   end
 
@@ -25,9 +28,9 @@ module Kit::Store::Services::Table::Insertion
   contract Ct::Hash[table: Ct::Table, record_data: Ct::Hash]
   def self.record_data_to_record(table:, record_data:)
     errors = []
-    record_data.keys.each do |column_name|
+    record_data.each_key do |column_name|
       if !table[:columns_hash][column_name]
-        errors << { detail: "Kit::Store | Insertion: column `#{column_name}` does not exist" }
+        errors << { detail: "Kit::Store | Insertion: column `#{ column_name }` does not exist" }
       end
     end
 
@@ -43,7 +46,7 @@ module Kit::Store::Services::Table::Insertion
   def self.to_inner_record(table:, record:)
     inner_record = Kit::Store::Types::InnerRecord.new
 
-    table[:columns_hash].each do |k, v|
+    table[:columns_hash].each do |k, _v|
       inner_record << record[k]
     end
 

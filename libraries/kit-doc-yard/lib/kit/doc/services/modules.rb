@@ -1,3 +1,4 @@
+# Logic go handle Ruby Modules (including classes)
 module Kit::Doc::Services::Modules
 
   # Namespaces (modules + classes) ---------------------------------------------
@@ -14,9 +15,8 @@ module Kit::Doc::Services::Modules
   def self.get_all_namespaces_as_hash(options:, verifier_runner:)
     get_all_namespaces_as_list(options: options, verifier_runner: verifier_runner)
       .map { |el| ["#{ el.namespace.path.size > 0 ? "#{ el.namespace.path }::" : '' }#{ el.name }", el] }
-      .sort_by { |name, el| name }
+      .sort_by { |name, _el| name }
   end
-
 
   # Modules --------------------------------------------------------------------
 
@@ -37,7 +37,7 @@ module Kit::Doc::Services::Modules
 
     list = verifier_runner.call(list)
 
-    list.sort_by { |el| el.path }
+    list.sort_by(&:path)
   end
 
   # Get the class / modules that have been extended into object
@@ -46,7 +46,7 @@ module Kit::Doc::Services::Modules
 
     list = verifier_runner.call(list)
 
-    list.sort_by { |el| el.path }
+    list.sort_by(&:path)
   end
 
   # @ref https://github.com/lsegal/yard/blob/master/templates/default/module/setup.rb#L159
@@ -66,7 +66,7 @@ module Kit::Doc::Services::Modules
     end
 
     (globals.mixins_included_into[object.path] || [])
-      .sort_by { |el| el.path }
+      .sort_by(&:path)
   end
 
   # @ref https://github.com/lsegal/yard/blob/master/templates/default/module/setup.rb#L159
@@ -86,7 +86,7 @@ module Kit::Doc::Services::Modules
     end
 
     (globals.mixins_extended_into[object.path] || [])
-      .sort_by { |el| el.path }
+      .sort_by(&:path)
   end
 
   # Classes --------------------------------------------------------------------
@@ -123,7 +123,6 @@ module Kit::Doc::Services::Modules
     list
   end
 
-
   # Methods --------------------------------------------------------------------
 
   def self.get_all_methods_as_list(options:, verifier_runner:)
@@ -144,11 +143,11 @@ module Kit::Doc::Services::Modules
     list = verifier_runner.call(list)
 
     if !include_aliases
-      list.delete_if { |el| !(::YARD::CodeObjects::Proxy === el.namespace) && el.is_alias? }
+      list.delete_if { |el| !(::YARD::CodeObjects::Proxy === el.namespace) && el.is_alias? } # rubocop:disable Style/CaseEquality
     end
 
     if !include_attributes
-      list.delete_if { |el| !(::YARD::CodeObjects::Proxy === el.namespace) && el.is_attribute? }
+      list.delete_if { |el| !(::YARD::CodeObjects::Proxy === el.namespace) && el.is_attribute? } # rubocop:disable Style/CaseEquality
     end
 
     if !include_specials
@@ -177,7 +176,7 @@ module Kit::Doc::Services::Modules
     list         = {}
     method_names = {}
 
-    (object.inheritance_tree(true)[1..-1] || []).each do |superclass|
+    (object.inheritance_tree(true)[1..] || []).each do |superclass|
       next if superclass.is_a?(::YARD::CodeObjects::Proxy)
       next if options.embed_mixins.size > 0 && options.embed_mixins_match?(superclass) != false
 
@@ -211,7 +210,6 @@ module Kit::Doc::Services::Modules
     list
   end
 
-
   # Attributes -----------------------------------------------------------------
 
   def self.get_object_attributes(object:, options:, verifier_runner:)
@@ -225,7 +223,7 @@ module Kit::Doc::Services::Modules
         superclass.attributes[scope].each do |_name, rw|
           sublist = [rw[:read], rw[:write]]
             .compact
-            .delete_if { |el| !(::YARD::CodeObjects::Proxy === el.namespace) && el.is_alias? }
+            .delete_if { |el| !(::YARD::CodeObjects::Proxy === el.namespace) && el.is_alias? } # rubocop:disable Style/CaseEquality
 
           sublist = verifier_runner.call(sublist)
 
@@ -243,7 +241,7 @@ module Kit::Doc::Services::Modules
   def self.get_object_inherited_attributes(object:, options:, verifier_runner:)
     list = {}
 
-    (object.inheritance_tree(true)[1..-1] || []).each do |superclass|
+    (object.inheritance_tree(true)[1..] || []).each do |superclass|
       next if superclass.is_a?(::YARD::CodeObjects::Proxy)
       next if !options.embed_mixins.empty? && options.embed_mixins_match?(superclass) != false
 
@@ -260,7 +258,6 @@ module Kit::Doc::Services::Modules
 
     list
   end
-
 
   # Constants ------------------------------------------------------------------
 
@@ -291,7 +288,7 @@ module Kit::Doc::Services::Modules
   def self.get_object_inherited_constants(object:, options:, verifier_runner:)
     list = {}
 
-    (object.inheritance_tree(true)[1..-1] || []).each do |superclass|
+    (object.inheritance_tree(true)[1..] || []).each do |superclass|
       next if superclass.is_a?(::YARD::CodeObjects::Proxy)
       next if !options.embed_mixins.empty? && options.embed_mixins_match?(superclass) != false
 

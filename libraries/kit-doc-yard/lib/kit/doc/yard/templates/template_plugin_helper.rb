@@ -1,7 +1,7 @@
-# frozen_string_literal: true
+# Kit Helper for Templates.
 module Kit::Doc::Yard::TemplatePluginHelper
 
-  # Allow access to plugin config
+  # Allow access to Kit plugin config from Templates.
   def config
     ::Kit::Doc::Services::Config.config
   end

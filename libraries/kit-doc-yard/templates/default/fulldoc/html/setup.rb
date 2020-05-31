@@ -1,5 +1,5 @@
-include YARD::Templates::Helpers::HtmlHelper
-include ::Kit::Doc::Yard::TemplatePluginHelper
+include YARD::Templates::Helpers::HtmlHelper # rubocop:disable Style/MixinUsage
+include ::Kit::Doc::Yard::TemplatePluginHelper # rubocop:disable Style/MixinUsage
 
 require 'json'
 
@@ -45,7 +45,7 @@ def handle_readme
   return if first_file&.name != 'README'
 
   kit_files_extra = config[:files_extra] || []
-  if !kit_files_extra.find { |path| path.end_with?(first_file.filename) }
+  if !kit_files_extra.find { |path| path.end_with?(first_file.filename) } # rubocop:disable Style/GuardClause
     options.files.shift
   end
 end
@@ -57,10 +57,8 @@ def handle_static_assets
   ]
 
   config = Kit::Doc::Services::Config.config
-  if config[:assets]
-    config[:assets].each do |el|
-      assets_list << el
-    end
+  config[:assets]&.each do |el|
+    assets_list << el
   end
 
   Kit::Doc::Services::Utils.copy_assets({

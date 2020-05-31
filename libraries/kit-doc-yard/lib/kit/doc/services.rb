@@ -1,3 +1,4 @@
+# Namespace for various `Kit:Doc`'s Services.
 module Kit::Doc::Services
 end
 

@@ -1,9 +1,11 @@
+# Local store to save all endpoints references.
 module Kit::Router::Services::Store
+
   include Kit::Contract
   Ct = Kit::Router::Contracts
 
   # DOC: one mountpoint per alias. >>> WHY?
-  # NOTE: if we maintain one mountpoint per alias, we can identify the 
+  # NOTE: if we maintain one mountpoint per alias, we can identify the
 
   contract Ct::Hash[uid: Ct::EndpointUid, target: Ct::Callable, types: Ct::Array.of(Ct::MountType)]
   def self.add_endpoint(uid:, target:, types:, meta: {}, router_store: nil)
@@ -12,7 +14,7 @@ module Kit::Router::Services::Store
 
     # NOTE: because of live reloading it is easier to allow this
     if router_store[:endpoints][uid] && ENV['KIT_ROUTER_ALLOW_ROUTE_RELOADING'] != true
-      raise "Kit::Router | already defined uid `#{uid}`"
+      raise "Kit::Router | already defined uid `#{ uid }`"
     end
 
     endpoint_record = Kit::Router::Types::EndpointRecord[
@@ -42,7 +44,7 @@ module Kit::Router::Services::Store
 
     alias_record = router_store[:aliases][id]
     if !alias_record
-      raise "Kit::Router | unknown route `#{id}`"
+      raise "Kit::Router | unknown route `#{ id }`"
     end
 
     alias_record
@@ -51,8 +53,6 @@ module Kit::Router::Services::Store
   # Default to first mountpoint if N
   contract Ct::Hash[alias_record: Ct::AliasRecord, mountpoint_type: Ct::MountType]
   def self.get_record_mountpoint(alias_record:, mountpoint_type:, router_store: nil)
-    router_store ||= self.router_store
-
     endpoint_record = alias_record[:cached_endpoint]
     mountpoint      = alias_record[:mountpoint]
     if !mountpoint
@@ -63,7 +63,7 @@ module Kit::Router::Services::Store
     end
 
     if !mountpoint
-      raise "Kit::Router | could not find an endpoint for `#{alias_record[:id]}` type `#{mountpoint_type}`"
+      raise "Kit::Router | could not find an endpoint for `#{ alias_record[:id] }` type `#{ mountpoint_type }`"
     end
 
     mountpoint
@@ -76,12 +76,12 @@ module Kit::Router::Services::Store
 
     alias_record = router_store[:aliases][id]
     if !alias_record
-      raise "Kit::Router | unknown route `#{id}`"
+      raise "Kit::Router | unknown route `#{ id }`"
     end
 
     endpoint_record = alias_record[:cached_endpoint]
     if !endpoint_record
-      raise "Kit::Router | unknown endpoint_record for alias `#{id}`"
+      raise "Kit::Router | unknown endpoint_record for alias `#{ id }`"
     end
 
     endpoint_record
@@ -94,7 +94,7 @@ module Kit::Router::Services::Store
 
     target_id = target_id.to_sym
     aliases   = (aliases.is_a?(Array) ? aliases : [aliases])
-      .map { |el| el.to_sym }
+      .map(&:to_sym)
 
     aliases.each do |alias_id|
       add_alias(
@@ -120,7 +120,7 @@ module Kit::Router::Services::Store
     end
 
     if !target_alias_record && !cached_endpoint
-      raise "Kit::Router | unknown target for alias `#{target_id}`"
+      raise "Kit::Router | unknown target for alias `#{ target_id }`"
     end
 
     if !alias_record
@@ -168,7 +168,7 @@ module Kit::Router::Services::Store
     router_store ||= self.router_store
 
     alias_record[:cached_endpoint] = cached_endpoint
-    alias_record[:aliases].each do |child_alias_id, child_alias_record|
+    alias_record[:aliases].each do |_child_alias_id, child_alias_record|
       update_alias_chain(
         alias_record:    child_alias_record,
         cached_endpoint: cached_endpoint,
@@ -189,17 +189,18 @@ module Kit::Router::Services::Store
     loop do
       current_id = alias_record[:alias_id]
       if traversed_ids.include?(current_id)
-        raise "Kit::Router | circular alias chain `#{current_id}`"
+        raise "Kit::Router | circular alias chain `#{ current_id }`"
       end
+
       traversed_ids << current_id
 
       target_id = alias_record[:target_id]
-      if (current_id == target_id)
+      if current_id == target_id
         endpoint_record = alias_record[:cached_endpoint]
         break
       end
 
-      alias_record = router_store[:aliases][target_id]# || router_store[:endpoints][target_id]
+      alias_record = router_store[:aliases][target_id] # || router_store[:endpoints][target_id]
     end
 
     [:ok, endpoint_record: endpoint_record]

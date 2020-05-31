@@ -1,6 +1,6 @@
-#require 'contracts'
-
 module Kit::Router::Services
+
+  # Router logic.
   module Router
     include Kit::Contract
     Ct = Kit::Router::Contracts
@@ -22,7 +22,7 @@ module Kit::Router::Services
       [:ok]
     end
 
-    EMPTY_TARGET = ->() {}
+    EMPTY_TARGET = -> {}
 
     def self.register_without_target(uid:, aliases:, types:)
       register(
@@ -41,11 +41,11 @@ module Kit::Router::Services
       endpoint_types.each do |record_type|
         record_protocol, record_lib = record_type
 
-        if (record_protocol == mounter_protocol && record_lib == mounter_lib)
+        if record_protocol == mounter_protocol && record_lib == mounter_lib # rubocop:disable Style/GuardClause
           return true
-        elsif (record_protocol == mounter_protocol && record_lib == :any)
+        elsif record_protocol == mounter_protocol && record_lib == :any
           return true
-        elsif (record_protocol == :any)
+        elsif record_protocol == :any
           return true
         end
       end
