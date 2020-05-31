@@ -1,6 +1,7 @@
 require 'kit/pagination'
 require 'ostruct'
 
+require_relative 'spec_helper'
 require_relative 'support/spec_db'
 
 describe 'Pagination page access' do
