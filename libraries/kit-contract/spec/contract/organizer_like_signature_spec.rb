@@ -9,7 +9,7 @@ end
 # Dummy module.
 module TestModules::Organizer
 
-  include Kit::Contract
+  include Kit::Contract::Mixin
   Ct = Kit::Contract::BuiltInContracts
 
   contract Ct::Hash[list: Ct::Array.of(Ct::Or[Ct::Callable, Ct::Symbol]), ctx: Ct::Optional[Ct::Hash], filter: Ct::Optional[Ct::Boolean]] => Kit::Organizer::Contracts::ResultTupple

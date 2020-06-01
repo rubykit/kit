@@ -1,7 +1,7 @@
 # Namespace for Contract validation
 module Kit::Contract::Services::Validation
 
-  include Kit::Contract
+  include Kit::Contract::Mixin
   # @hide true
   Ct = Kit::Contract::BuiltInContracts
 

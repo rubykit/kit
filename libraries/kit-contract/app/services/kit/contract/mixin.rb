@@ -1,7 +1,7 @@
 require 'active_support/concern'
 
 # Mixin that add `after`, `before`, `contract` class methods to enforce contracts on method signature.
-module Kit::Contract
+module Kit::Contract::Mixin
 
   extend ::ActiveSupport::Concern
 
