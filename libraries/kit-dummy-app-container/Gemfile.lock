@@ -7,11 +7,18 @@ PATH
       sidekiq
 
 PATH
+  remote: ../kit-contract
+  specs:
+    kit-contract (0.1.0)
+      awesome_print
+      concurrent-ruby
+      rails (~> 6.0.3.1)
+
+PATH
   remote: ../kit-organizer
   specs:
     kit-organizer (0.1.0)
       awesome_print
-      concurrent-ruby
       rails (~> 6.0.3.1)
 
 PATH
@@ -280,6 +287,7 @@ DEPENDENCIES
   factory_bot_rails
   faker
   kit-app-container!
+  kit-contract!
   kit-dummy-app-container!
   kit-organizer!
   listen
