@@ -2,5 +2,6 @@ source 'https://rubygems.org'
 
 gemspec
 
-gem 'kit-active-admin', path: '../kit-active-admin'
-gem 'kit-organizer',    path: '../kit-organizer'
+gem 'kit-active-admin', path: '../../libraries/kit-active-admin'
+gem 'kit-contract',     path: '../../libraries/kit-contract'
+gem 'kit-organizer',    path: '../../libraries/kit-organizer'

@@ -1,7 +1,7 @@
 # Handle context operations.
 module Kit::Organizer::Services::Context
 
-  include Kit::Contract
+  include Kit::Contract::Mixin
   # @hide true
   Ct = Kit::Organizer::Contracts
 

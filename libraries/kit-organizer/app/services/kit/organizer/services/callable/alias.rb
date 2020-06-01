@@ -1,7 +1,7 @@
 # Allows registration of a callable in a local store and reference it by an alias.
 module Kit::Organizer::Services::Callable::Alias
 
-  include Kit::Contract
+  include Kit::Contract::Mixin
   # @hide = true
   Ct = Kit::Organizer::Contracts
 

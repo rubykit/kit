@@ -9,7 +9,7 @@ end
 # Dummy module.
 module TestModules::Contract
 
-  include Kit::Contract
+  include Kit::Contract::Mixin
 
   contract((->(input) { input < 10 }) => (->(output) { output > 10 }))
   def self.test_contract_hash(input)

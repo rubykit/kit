@@ -1,0 +1,20 @@
+source 'https://rubygems.org'
+git_source(:github) { |repo| "https://github.com/#{ repo }.git" }
+
+gemspec
+
+gem 'concurrent-ruby',         require: 'concurrent'
+
+# TODO: move to gemspec when released
+gem 'kit-app-container',       path: '../../libraries/kit-app-container'
+gem 'kit-doc-yard',            path: '../../libraries/kit-doc-yard'
+gem 'kit-dummy-app-container', path: '../../libraries/kit-dummy-app-container'
+gem 'kit-error',               path: '../../libraries/kit-error'
+gem 'kit-organizer',           path: '../../libraries/kit-organizer'
+
+# TODO: clean this up
+group :test, :development do
+  gem 'activesupport'
+  gem 'colorize'
+  gem 'pry'
+end

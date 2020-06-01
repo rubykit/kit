@@ -9,7 +9,7 @@ end
 # Dummy module.
 module TestModules::RGB
 
-  include Kit::Contract
+  include Kit::Contract::Mixin
 
   before ->(r:, g:, b:) { (0..255) === r && (0..255) === g && (0..255) === b } # rubocop:disable Style/CaseEquality
   after  [

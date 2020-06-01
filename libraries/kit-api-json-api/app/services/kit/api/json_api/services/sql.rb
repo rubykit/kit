@@ -1,7 +1,7 @@
 # Transform AST to a SQL query string
 module Kit::Api::JsonApi::Services::Sql
 
-  include Kit::Contract
+  include Kit::Contract::Mixin
   # @hide true
   Ct = Kit::Api::JsonApi::Contracts
 

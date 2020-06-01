@@ -1,7 +1,7 @@
 # Handles Selection from Table.
 module Kit::Store::Services::Table::Selection
 
-  include Kit::Contract
+  include Kit::Contract::Mixin
   # @hide true
   Ct = Kit::Store::Contracts
 

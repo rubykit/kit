@@ -1,7 +1,7 @@
 # Serializer entry point.
 module Kit::Api::JsonApi::Services::Resolvers::Linker
 
-  include Kit::Contract
+  include Kit::Contract::Mixin
   # @hide true
   Ct = Kit::Api::JsonApi::Contracts
 

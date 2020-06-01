@@ -9,7 +9,7 @@ end
 # Dummy module.
 module TestModules::Before
 
-  include Kit::Contract
+  include Kit::Contract::Mixin
 
   before ->(value:) { value > 0 }
   before ->(value:) { value < 10 }

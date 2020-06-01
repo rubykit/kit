@@ -1,7 +1,7 @@
 # Serialization logic for ResourceObjects
 module Kit::Api::JsonApi::Services::Serializer::ResourceObject
 
-  include Kit::Contract
+  include Kit::Contract::Mixin
   # @hide true
   Ct = Kit::Api::JsonApi::Contracts
 

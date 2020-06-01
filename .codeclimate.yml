@@ -2,3 +2,28 @@ plugins:
   rubocop:
     enabled: true
     channel: rubocop-0-83
+
+checks:
+  # 2 objections:
+  #  - never understood why it was better to hide it in objects
+  #  - makes little sense with keyword args if you consider it to be pattern matching
+  argument-count:
+    enabled: false
+
+  # 1 objection:
+  #  - really poor proxy for complexity
+  file-lines:
+    enabled: false
+
+  method-complexity:
+    config:
+      threshold: 15
+
+  # 1 objection:
+  #  - really poor proxy for complexity (same than file-lines)
+  method-count:
+    enabled: false
+
+  method-lines:
+    config:
+      threshold: 50

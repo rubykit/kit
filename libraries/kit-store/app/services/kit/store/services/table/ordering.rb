@@ -1,7 +1,7 @@
 # Handles records ordering.
 module Kit::Store::Services::Table::Ordering
 
-  include Kit::Contract
+  include Kit::Contract::Mixin
   # @hide true
   Ct = Kit::Store::Contracts
 

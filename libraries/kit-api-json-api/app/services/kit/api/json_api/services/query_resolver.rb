@@ -1,7 +1,7 @@
 # Resolve a Query: load data & map it
 module Kit::Api::JsonApi::Services::QueryResolver
 
-  include Kit::Contract
+  include Kit::Contract::Mixin
   # @hide true
   Ct = Kit::Api::JsonApi::Contracts
 

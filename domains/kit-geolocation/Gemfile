@@ -8,6 +8,7 @@ gem 'dotenv-rails', require: 'dotenv/rails-now'
 gem 'paranoia', require: 'paranoia'
 
 gem 'kit-active-admin', path: '../../libraries/kit-active-admin', require: 'kit/active_admin' # DEV MODE
+gem 'kit-contract',     path: '../../libraries/kit-contract' # DEV MODE
 gem 'kit-domain',       path: '../../libraries/kit-domain' # DEV MODE
 gem 'kit-organizer',    path: '../../libraries/kit-organizer' # DEV MODE
 

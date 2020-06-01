@@ -9,7 +9,7 @@ end
 # Dummy module.
 module TestModules::ArrayTests
 
-  include Kit::Contract
+  include Kit::Contract::Mixin
   Ct = Kit::Contract::BuiltInContracts
 
   contract Ct::Array[Ct::Integer, Ct::Integer]

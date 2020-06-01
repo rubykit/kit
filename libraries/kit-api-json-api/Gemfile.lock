@@ -7,6 +7,14 @@ PATH
       sidekiq
 
 PATH
+  remote: ../kit-contract
+  specs:
+    kit-contract (0.1.0)
+      awesome_print
+      concurrent-ruby
+      rails (~> 6.0.3.1)
+
+PATH
   remote: ../kit-doc-yard
   specs:
     kit-doc-yard (0.0.1)
@@ -61,7 +69,6 @@ PATH
   specs:
     kit-organizer (0.1.0)
       awesome_print
-      concurrent-ruby
       rails (~> 6.0.3.1)
 
 PATH
@@ -353,6 +360,7 @@ PLATFORMS
 DEPENDENCIES
   kit-api-json-api!
   kit-app-container!
+  kit-contract!
   kit-doc-yard!
   kit-domain!
   kit-dotenv!

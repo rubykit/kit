@@ -22,10 +22,10 @@ Gem::Specification.new do |s|
   s.files = Dir['{app,config,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
 
   s.add_dependency 'awesome_print'
-  s.add_dependency 'concurrent-ruby'
   s.add_dependency 'rails',           '~> 6.0.3.1'
 
   s.add_development_dependency 'rspec-rails'
+  s.add_development_dependency 'rubocop'
   s.add_development_dependency 'simplecov', '~> 0.17.1'
 
 end

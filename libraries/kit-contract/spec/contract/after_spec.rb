@@ -8,7 +8,8 @@ end
 
 # Dummy module.
 module TestModules::After
-  include Kit::Contract
+
+  include Kit::Contract::Mixin
 
   after ->(v) { v > 0 }
   after ->(v) { v < 10 }

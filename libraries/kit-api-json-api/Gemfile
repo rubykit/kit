@@ -14,9 +14,10 @@ gemspec
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
 
-gem 'kit-error',               path: '../../libraries/kit-error' # GEMSPEC
-gem 'kit-organizer',           path: '../../libraries/kit-organizer' # GEMSPEC
-gem 'kit-pagination',          path: '../../libraries/kit-pagination' # GEMSPEC
+gem 'kit-contract',   path: '../../libraries/kit-contract' # GEMSPEC
+gem 'kit-error',      path: '../../libraries/kit-error' # GEMSPEC
+gem 'kit-organizer',  path: '../../libraries/kit-organizer' # GEMSPEC
+gem 'kit-pagination', path: '../../libraries/kit-pagination' # GEMSPEC
 
 group :test, :development do
   gem 'pry'

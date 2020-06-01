@@ -1,7 +1,7 @@
 # ActiveRecord data resolver.
 module Kit::Api::JsonApi::Services::Resolvers::Data::ActiveRecord
 
-  include Kit::Contract
+  include Kit::Contract::Mixin
   # @hide true
   Ct = Kit::Api::JsonApi::Contracts
 

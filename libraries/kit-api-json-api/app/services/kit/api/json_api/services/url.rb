@@ -3,7 +3,7 @@ require 'uri'
 # Namespace for URL related logic.
 module Kit::Api::JsonApi::Services::Url
 
-  include Kit::Contract
+  include Kit::Contract::Mixin
   # @hide true
   Ct = Kit::Api::JsonApi::Contracts
 

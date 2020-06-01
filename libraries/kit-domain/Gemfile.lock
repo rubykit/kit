@@ -8,11 +8,18 @@ PATH
       popper_js
 
 PATH
+  remote: ../kit-contract
+  specs:
+    kit-contract (0.1.0)
+      awesome_print
+      concurrent-ruby
+      rails (~> 6.0.3.1)
+
+PATH
   remote: ../kit-organizer
   specs:
     kit-organizer (0.1.0)
       awesome_print
-      concurrent-ruby
       rails (~> 6.0.3.1)
 
 PATH
@@ -328,6 +335,7 @@ PLATFORMS
 DEPENDENCIES
   annotate
   kit-active-admin!
+  kit-contract!
   kit-domain!
   kit-organizer!
   rubocop
