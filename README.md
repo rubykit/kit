@@ -1,6 +1,6 @@
 <img align="left" width="50" height="90" src="https://raw.githubusercontent.com/rubykit/kit/master/docs/assets/images/rubykit-framework-logo.svg">
 
-# Kit [![CircleCI](https://circleci.com/gh/rubykit/kit/tree/master.svg?style=shield)](https://circleci.com/gh/rubykit/kit/tree/master) [![Code Climate](https://codeclimate.com/github/rubykit/kit.svg)](https://codeclimate.com/github/rubykit/kit)
+# Kit [![CircleCI](https://circleci.com/gh/rubykit/kit/tree/master.svg?style=shield)](https://circleci.com/gh/rubykit/kit/tree/master) [![Test Coverage](https://api.codeclimate.com/v1/badges/7adfebf44214207cd21b/test_coverage)](https://codeclimate.com/github/rubykit/kit/test_coverage) [![Maintainability](https://api.codeclimate.com/v1/badges/7adfebf44214207cd21b/maintainability)](https://codeclimate.com/github/rubykit/kit/maintainability)
 
 **An all inclusive web framework to build growth-ready applications, fast!**
 
