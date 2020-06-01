@@ -4,6 +4,10 @@ ENV['EVENT_STORE'] = 'false'
 
 require_relative '../config/kit_runtime_config'
 
+# Simplecov
+require 'simplecov'
+SimpleCov.start
+
 # Set up gems listed in the Gemfile.
 ENV['BUNDLE_GEMFILE'] ||= KIT_APP_PATHS['GEMFILE']
 require 'bundler/setup' if File.exist?(ENV['BUNDLE_GEMFILE'])

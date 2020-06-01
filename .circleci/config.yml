@@ -1,10 +1,15 @@
+# References:
+# - https://github.com/codeclimate/test-reporter/blob/master/examples/multiple_suites.md#example-1
+
+# CircleCI ---------------------------------------------------------------------
+
 version: 2.1
 
 # Docker -----------------------------------------------------------------------
 
 # TODO: cleanup values that should live in Kit::Config
 
-docker_tests: &docker_tests
+docker_ruby: &docker_ruby
   docker:
     - image: circleci/ruby:2.7.0
       environment:
@@ -20,6 +25,11 @@ docker_tests: &docker_tests
         POSTGRES_PASSWORD: 'password'
         POSTGRES_DB: 'kit_api_json_api_spec_TEST'
 
+docker_ruby_no_db: &docker_ruby_no_db
+  docker:
+    - image: circleci/ruby:2.7.0
+
+
 # Rspec ------------------------------------------------------------------------
 
 commands:
@@ -30,14 +40,7 @@ commands:
       - checkout:
           path: ~/kit
 
-  run-rspec:
-    description: 'Run RSPEC'
-    steps:
-      - run:
-          #command: |
-          #  RAILS_ENV=circle bundle exec rspec
-          command: |
-            bundle exec rspec
+  # Gems related ---------------------------------------------------------------
 
   show-bundler-version:
     steps:
@@ -66,39 +69,62 @@ commands:
   save-cache-gems:
     description: Save RubyGems to cache.
     parameters:
-      key:
-        description: The cache key to use. The key is immutable.
+      project:
+        description: Target library / domain.
         type: string
     steps:
     - save_cache:
-        key: << parameters.key >>-{{ checksum "Gemfile.lock"  }}
+        key: << parameters.project >>|gems|{{ checksum "Gemfile.lock" }}
         paths:
         - vendor/bundle
 
   restore-cache-gems:
     description: Restore cached RubyGems.
     parameters:
-      key:
-        description: The cache key to use. The key is immutable.
+      project:
+        description: Target library / domain.
         type: string
     steps:
     - restore_cache:
         keys:
-        - << parameters.key >>-{{ checksum "Gemfile.lock"  }}
+        - << parameters.project >>|gems|{{ checksum "Gemfile.lock" }}
 
+  # Rspec ----------------------------------------------------------------------
 
-
-# kit-api-json-api -------------------------------------------------------------
-
-  kit-api-json-api__save-cache-gems:
+  run-rspec:
+    description: 'Run RSPEC'
     steps:
-      - save-cache-gems:
-          key: kit-api-json-api|gems|{{ checksum "Gemfile.lock" }}
+      - run:
+          #command: |
+          #  RAILS_ENV=circle bundle exec rspec
+          command: |
+            bundle exec rspec
 
-  kit-api-json-api__restore-cache-gems:
+  # Rspec ----------------------------------------------------------------------
+
+  save-simple-cov-coverage:
+    description: 'Transform SimpleCov code coverage & save it to workspace'
+    parameters:
+      project:
+        description: Target library / domain.
+        type: string
     steps:
-      - restore-cache-gems:
-          key: kit-api-json-api|gems|{{ checksum "Gemfile.lock" }}
+      - run:
+          name: Format coverage for CodeClimate
+          command: ~/workspace/code_climate/cc-test-reporter format-coverage -t simplecov -o ~/workspace/code_climate/codeclimate.<< parameters.project >>.json coverage/.resultset.json
+      - run:
+          name: Update .resultset.json paths to avoid collisions
+          command: |
+            sed -i 's|"name": "|"name": "<< parameters.project >>/|g' ~/workspace/code_climate/codeclimate.<< parameters.project >>.json
+      - persist_to_workspace:
+          root: ~/workspace
+          paths:
+            - code_climate/codeclimate.<< parameters.project >>.json
+      #- store_artifacts:
+      #    path: ~/workspace/code_climate/codeclimate.<< parameters.project >>.json
+      #    destination: codeclimate.<< parameters.project >>.json
+
+  # kit-api-json-api -----------------------------------------------------------
 
   kit-api-json-api__prepare-database:
     description: 'Loading DBs schemas && running seed'
@@ -108,79 +134,113 @@ commands:
             bundle exec rails db:schema:load:primary --trace
             bundle exec rails db:seed:fantasy_data
 
-# kit-organizer ----------------------------------------------------------------
-
-  kit-organizer__save-cache-gems:
-    steps:
-      - save-cache-gems:
-          key: kit-organizer|gems|{{ checksum "Gemfile.lock" }}
-
-  kit-organizer__restore-cache-gems:
-    steps:
-      - restore-cache-gems:
-          key: kit-organizer|gems|{{ checksum "Gemfile.lock" }}
-
-# kit-pagination ---------------------------------------------------------------
-
-  kit-pagination__save-cache-gems:
-    steps:
-      - save-cache-gems:
-          key: kit-pagination|gems|{{ checksum "Gemfile.lock" }}
-
-  kit-pagination__restore-cache-gems:
-    steps:
-      - restore-cache-gems:
-          key: kit-pagination|gems|{{ checksum "Gemfile.lock" }}
-
 
 # Jobs -------------------------------------------------------------------------
 
 jobs:
 
+  code-climate-setup:
+    <<: *docker_ruby_no_db
+    steps:
+      - run:
+          name: Download cc-test-reporter
+          command: |
+            mkdir -p code_climate/
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./code_climate/cc-test-reporter
+            chmod +x ./code_climate/cc-test-reporter
+      - persist_to_workspace:
+          root: .
+          paths:
+            - code_climate/cc-test-reporter
+
+  code-climate-upload-coverage:
+    <<: *docker_ruby_no_db
+    steps:
+      - attach_workspace:
+          at: ~/workspace
+      - run:
+          name: Upload coverage results to Code Climate
+          command: |
+            ~/workspace/code_climate/cc-test-reporter sum-coverage ~/workspace/code_climate/codeclimate.*.json -p 3 -o ~/workspace/code_climate/codeclimate.total.json
+            ~/workspace/code_climate/cc-test-reporter upload-coverage -i ~/workspace/code_climate/codeclimate.total.json
+
   test-kit-api-json-api:
     working_directory: ~/kit/libraries/kit-api-json-api
-    <<: *docker_tests
+    <<: *docker_ruby
     #executor: ruby/default
     steps:
       - checkout-code
+      - attach_workspace:
+          at: ~/workspace
       - install-bundler
       - show-bundler-version
-      - kit-api-json-api__restore-cache-gems
+      - restore-cache-gems:
+          project: kit-api-json-api
       - install-gems
-      - kit-api-json-api__save-cache-gems
+      - save-cache-gems:
+          project: kit-api-json-api
       - kit-api-json-api__prepare-database
       - run-rspec
+      - save-simple-cov-coverage:
+          project: kit-api-json-api
 
   test-kit-organizer:
     working_directory: ~/kit/libraries/kit-organizer
-    <<: *docker_tests
+    <<: *docker_ruby
     #executor: ruby/default
     steps:
       - checkout-code
+      - attach_workspace:
+          at: ~/workspace
       - install-bundler
       - show-bundler-version
-      - kit-organizer__restore-cache-gems
+      - restore-cache-gems:
+          project: kit-organizer
       - install-gems
-      - kit-organizer__save-cache-gems
+      - save-cache-gems:
+          project: kit-organizer
       - run-rspec
+      - save-simple-cov-coverage:
+          project: kit-organizer
 
   test-kit-pagination:
     working_directory: ~/kit/libraries/kit-pagination
-    <<: *docker_tests
+    <<: *docker_ruby_no_db
     #executor: ruby/default
     steps:
       - checkout-code
+      - attach_workspace:
+          at: ~/workspace
       - install-bundler
       - show-bundler-version
-      - kit-pagination__restore-cache-gems
+      - restore-cache-gems:
+          project: kit-pagination
       - install-gems
-      - kit-pagination__save-cache-gems
+      - save-cache-gems:
+          project: kit-pagination
       - run-rspec
+      - save-simple-cov-coverage:
+          project: kit-pagination
+
+
+# Workflows --------------------------------------------------------------------
 
 workflows:
 
   test-all:
     jobs:
-      - test-kit-api-json-api
-      - test-kit-organizer
-      - test-kit-pagination
+      - code-climate-setup
+      - test-kit-api-json-api:
+          requires:
+            - code-climate-setup
+      - test-kit-organizer:
+          requires:
+            - code-climate-setup
+      - test-kit-pagination:
+          requires:
+            - code-climate-setup
+      - code-climate-upload-coverage:
+          requires:
+            - test-kit-api-json-api
+            - test-kit-organizer
+            - test-kit-pagination

@@ -12,6 +12,10 @@ KIT_APP_PATHS['GEM_APP']  = File.expand_path('../app', __dir__)
 KIT_APP_PATHS['GEM_LIB']  = File.expand_path('../lib', __dir__)
 KIT_APP_PATHS['GEMFILE']  = File.expand_path('../Gemfile', __dir__)
 
+# Simplecov
+require 'simplecov'
+SimpleCov.start
+
 # Set up gems listed in the Gemfile.
 ENV['BUNDLE_GEMFILE'] ||= KIT_APP_PATHS['GEMFILE']
 require 'bundler/setup' if File.exist?(ENV['BUNDLE_GEMFILE'])
