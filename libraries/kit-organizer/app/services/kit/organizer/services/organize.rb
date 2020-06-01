@@ -47,7 +47,7 @@
 # ```
 module Kit::Organizer::Services::Organize
 
-  include Kit::Contract
+  include Kit::Contract::Mixin
   # @hide true
   Ct = Kit::Organizer::Contracts
 

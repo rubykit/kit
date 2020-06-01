@@ -1,7 +1,7 @@
 # Allows delayed generation of a callable in case of forward declaration.
 module Kit::Organizer::Services::Callable::Method
 
-  include Kit::Contract
+  include Kit::Contract::Mixin
   # @hide true
   Ct = Kit::Organizer::Contracts
 

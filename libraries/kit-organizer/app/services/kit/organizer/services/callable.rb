@@ -1,7 +1,7 @@
 # This module makes Organizer extensible. You can add your own behaviours to resolve callables.
 module Kit::Organizer::Services::Callable
 
-  include Kit::Contract
+  include Kit::Contract::Mixin
   # @hide true
   Ct = Kit::Organizer::Contracts
 

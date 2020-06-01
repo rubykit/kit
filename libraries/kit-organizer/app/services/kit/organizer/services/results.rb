@@ -1,7 +1,7 @@
 # Utility methods around Contract result payloads.
 module Kit::Organizer::Services::Results
 
-  include Kit::Contract
+  include Kit::Contract::Mixin
   Ct = Kit::Organizer::Contracts
 
   # TODO: add indications on how/what to deep merge

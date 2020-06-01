@@ -1,7 +1,7 @@
 # Allows to wrap a callable in order to adapt the input & output contexts
 module Kit::Organizer::Services::Callable::Wrap
 
-  include Kit::Contract
+  include Kit::Contract::Mixin
   # @hide true
   Ct = Kit::Organizer::Contracts
 
