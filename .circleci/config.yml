@@ -161,7 +161,7 @@ jobs:
       - run:
           name: Upload coverage results to Code Climate
           command: |
-            ~/workspace/code_climate/cc-test-reporter sum-coverage ~/workspace/code_climate/codeclimate.*.json -p 3 -o ~/workspace/code_climate/codeclimate.total.json
+            ~/workspace/code_climate/cc-test-reporter sum-coverage ~/workspace/code_climate/codeclimate.*.json -p 4 -o ~/workspace/code_climate/codeclimate.total.json
             ~/workspace/code_climate/cc-test-reporter upload-coverage -i ~/workspace/code_climate/codeclimate.total.json
 
   test-kit-api-json-api:
@@ -183,6 +183,25 @@ jobs:
       - run-rspec
       - save-simple-cov-coverage:
           project: kit-api-json-api
+
+  test-kit-contract:
+    working_directory: ~/kit/libraries/kit-contract
+    <<: *docker_ruby
+    #executor: ruby/default
+    steps:
+      - checkout-code
+      - attach_workspace:
+          at: ~/workspace
+      - install-bundler
+      - show-bundler-version
+      - restore-cache-gems:
+          project: kit-contract
+      - install-gems
+      - save-cache-gems:
+          project: kit-contract
+      - run-rspec
+      - save-simple-cov-coverage:
+          project: kit-contract
 
   test-kit-organizer:
     working_directory: ~/kit/libraries/kit-organizer
@@ -233,6 +252,9 @@ workflows:
       - test-kit-api-json-api:
           requires:
             - code-climate-setup
+      - test-kit-contract:
+          requires:
+            - code-climate-setup
       - test-kit-organizer:
           requires:
             - code-climate-setup
@@ -242,5 +264,6 @@ workflows:
       - code-climate-upload-coverage:
           requires:
             - test-kit-api-json-api
+            - test-kit-contract
             - test-kit-organizer
             - test-kit-pagination
