@@ -2,6 +2,7 @@
 module Kit::Organizer::Services::Results
 
   include Kit::Contract::Mixin
+  # @hide true
   Ct = Kit::Organizer::Contracts
 
   # TODO: add indications on how/what to deep merge

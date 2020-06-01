@@ -7,7 +7,7 @@
 # For instance `Author -> [Chapter | FirstChapter]` will generate 3 corresponding query nodes total, eventhough the two relationships `Chapter` and `FirstChapter` target the same Resource (Chapter)
 module Kit::Api::JsonApi::Services::QueryBuilder
 
-  include Kit::Contract
+  include Kit::Contract::Mixin
   # @hide true
   Ct = Kit::Api::JsonApi::Contracts
 

@@ -1,7 +1,7 @@
 # Handle Series.
 module Kit::Store::Services::Table::Series
 
-  include Kit::Contract
+  include Kit::Contract::Mixin
   # @hide true
   Ct = Kit::Store::Contracts
 

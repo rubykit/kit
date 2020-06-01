@@ -12,7 +12,7 @@
 #
 module Kit::Api::JsonApi::Services::Config
 
-  include Kit::Contract
+  include Kit::Contract::Mixin
   # @hide true
   Ct = Kit::Api::JsonApi::Contracts
 

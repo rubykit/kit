@@ -14,7 +14,7 @@
 #
 module Kit::Api::JsonApi::Services::Request::Import::SparseFieldsets
 
-  include Kit::Contract
+  include Kit::Contract::Mixin
   # @hide true
   Ct = Kit::Api::JsonApi::Contracts
 

@@ -1,7 +1,7 @@
 # Main Table API.
 module Kit::Store::Services::Table
 
-  include Kit::Contract
+  include Kit::Contract::Mixin
   # @hide true
   Ct = Kit::Store::Contracts
 

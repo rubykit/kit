@@ -1,7 +1,6 @@
 # Contracts for the project
 module Kit::Api::JsonApi::Contracts
 
-  #include Kit::Contract::BuiltInContracts
   include Kit::Organizer::Contracts
 
   SymbolOrString = Or[Symbol, String].named('SymbolOrString')

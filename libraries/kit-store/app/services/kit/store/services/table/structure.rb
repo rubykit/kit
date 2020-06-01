@@ -1,7 +1,7 @@
 # Maintain Table structure.
 module Kit::Store::Services::Table::Structure
 
-  include Kit::Contract
+  include Kit::Contract::Mixin
   # @hide true
   Ct = Kit::Store::Contracts
 

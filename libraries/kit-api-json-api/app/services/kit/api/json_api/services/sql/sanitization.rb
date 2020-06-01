@@ -1,7 +1,7 @@
 # @see https://github.com/rails/rails/blob/6-0-stable/activerecord/lib/active_record/sanitization.rb
 module Kit::Api::JsonApi::Services::Sql::Sanitization
 
-  include Kit::Contract
+  include Kit::Contract::Mixin
   # @hide true
   Ct = Kit::Api::JsonApi::Contracts
 

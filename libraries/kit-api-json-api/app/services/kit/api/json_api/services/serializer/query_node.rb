@@ -1,7 +1,7 @@
 # Serialization logic for an entire QueryNode
 module Kit::Api::JsonApi::Services::Serializer::QueryNode
 
-  include Kit::Contract
+  include Kit::Contract::Mixin
   # @hide true
   Ct = Kit::Api::JsonApi::Contracts
 

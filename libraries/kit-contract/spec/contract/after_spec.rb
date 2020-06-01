@@ -8,6 +8,7 @@ end
 
 # Dummy module.
 module TestModules::After
+
   include Kit::Contract::Mixin
 
   after ->(v) { v > 0 }

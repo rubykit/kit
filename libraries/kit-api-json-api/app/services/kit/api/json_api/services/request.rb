@@ -1,7 +1,7 @@
 # Transform hydrated query_params data to an actionable Request.
 module Kit::Api::JsonApi::Services::Request
 
-  include Kit::Contract
+  include Kit::Contract::Mixin
   # @hide true
   Ct = Kit::Api::JsonApi::Contracts
 

@@ -1,7 +1,7 @@
 # Transform Conditions AST to a SQL string
 module Kit::Api::JsonApi::Services::Sql::Filtering
 
-  include Kit::Contract
+  include Kit::Contract::Mixin
   # @hide true
   Ct = Kit::Api::JsonApi::Contracts
 

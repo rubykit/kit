@@ -1,7 +1,7 @@
 # Check && enforce table constraints.
 module Kit::Store::Services::Table::Constraints
 
-  include Kit::Contract
+  include Kit::Contract::Mixin
   # @hide true
   Ct = Kit::Store::Contracts
 

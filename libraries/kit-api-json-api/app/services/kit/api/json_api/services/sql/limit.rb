@@ -1,7 +1,7 @@
 # Generate LIMIT sql string statement.
 module Kit::Api::JsonApi::Services::Sql::Limit
 
-  include Kit::Contract
+  include Kit::Contract::Mixin
   # @hide true
   Ct = Kit::Api::JsonApi::Contracts
 

@@ -2,7 +2,9 @@ module Kit::Router::Services
 
   # Router logic.
   module Router
-    include Kit::Contract
+
+    include Kit::Contract::Mixin
+    # @hide true
     Ct = Kit::Router::Contracts
 
     #Contract KeywordArgs[uid: Or[String, Symbol], target: RespondTo[:call], aliases: ArrayOf[String, Symbol], type: ArrayOf[ArrayOf[Symbol, Symbol]]]]

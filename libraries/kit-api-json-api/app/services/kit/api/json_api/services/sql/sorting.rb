@@ -1,7 +1,7 @@
 # Transform sorting parameters from the AST to a SQL string
 module Kit::Api::JsonApi::Services::Sql::Sorting
 
-  include Kit::Contract
+  include Kit::Contract::Mixin
   # @hide true
   Ct = Kit::Api::JsonApi::Contracts
 

@@ -1,7 +1,7 @@
 # Serialization logic for Relatiobships
 module Kit::Api::JsonApi::Services::Serializer::Relationship
 
-  include Kit::Contract
+  include Kit::Contract::Mixin
   # @hide true
   Ct = Kit::Api::JsonApi::Contracts
 

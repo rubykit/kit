@@ -1,7 +1,7 @@
 # Handles Insertion in Table.
 module Kit::Store::Services::Table::Insertion
 
-  include Kit::Contract
+  include Kit::Contract::Mixin
   # @hide true
   Ct = Kit::Store::Contracts
 

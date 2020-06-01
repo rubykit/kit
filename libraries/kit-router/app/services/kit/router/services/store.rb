@@ -1,7 +1,8 @@
 # Local store to save all endpoints references.
 module Kit::Router::Services::Store
 
-  include Kit::Contract
+  include Kit::Contract::Mixin
+  # @hide true
   Ct = Kit::Router::Contracts
 
   # DOC: one mountpoint per alias. >>> WHY?
