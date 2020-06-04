@@ -1,6 +1,8 @@
 # Simplecov
-require 'simplecov'
-SimpleCov.start
+if ENV['SIMPLECOV'] == 'true'
+  require 'simplecov'
+  SimpleCov.start
+end
 
 RSpec.configure do |config|
 
