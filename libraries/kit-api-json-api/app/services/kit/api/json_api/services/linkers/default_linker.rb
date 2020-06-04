@@ -1,4 +1,6 @@
 # Serializer entry point.
+#
+# There are 2 categories
 module Kit::Api::JsonApi::Services::Linkers::DefaultLinker
 
   include Kit::Contract::Mixin
@@ -26,14 +28,17 @@ module Kit::Api::JsonApi::Services::Linkers::DefaultLinker
     path            = query_node[:path]
     resource_object = record[:resource_object]
 
-    query_params     = Kit::Api::JsonApi::Services::Request.create_query_params(request: request, path: path)
-    query_params_str = query_params.size > 0 ? "?#{ Rack::Utils.build_nested_query(query_params) }" : ''
-
-    links = {
-      self: "/#{ resource_object[:type] }s#{ resource_object[:id] }#{ query_params_str }",
+    self_url_path = "/#{ resource_object[:type] }s/#{ resource_object[:id] }"
+    links         = {
+      self: self_url_path,
     }
 
-    [:ok, links: links]
+    generate_single_element_links(
+      links:   links,
+      request: request,
+      path:    path,
+      record:  record,
+    )
   end
 
   # Presence:
@@ -46,30 +51,25 @@ module Kit::Api::JsonApi::Services::Linkers::DefaultLinker
   # - related resources
   # - pagination
   def self.collection(query_node:, records:, paginator:)
-    request      = query_node[:request]
-    path         = query_node[:path]
-    resource     = query_node[:resource]
+    request        = query_node[:request]
+    path           = query_node[:path]
+    resource       = query_node[:resource]
 
-    query_params           = Kit::Api::JsonApi::Services::Request.create_query_params(request: request, path: path)
-    paginator_query_params = paginator[:export].call(query_node: query_node, records: records)
-
-    links = {
-      self: "/#{ resource[:name] }s",
+    link_self_url_path = "/#{ resource[:name] }s"
+    links              = {
+      self: link_self_url_path,
+      prev: link_self_url_path.dup,
+      next: link_self_url_path.dup,
     }
-    links.merge!({
-      prev: links[:self].dup,
-      next: links[:self].dup,
-    })
 
-    [:self, :prev, :next].each do |link_type|
-      paginator_link_type = link_type.in?([:self, :related, :top_level]) ? :current : link_type
-      link_query_params   = query_params.merge(paginator_query_params[paginator_link_type] || {})
-      query_params_str    = link_query_params.size > 0 ? "?#{ Rack::Utils.build_nested_query(link_query_params) }" : ''
-
-      links[link_type]   += query_params_str
-    end
-
-    [:ok, links: links]
+    generate_collection_links(
+      links:      links,
+      request:    request,
+      query_node: query_node,
+      path:       path,
+      paginator:  paginator,
+      records:    records,
+    )
   end
 
   # Presence:
@@ -87,16 +87,18 @@ module Kit::Api::JsonApi::Services::Linkers::DefaultLinker
     resource_object        = record[:resource_object]
     parent_resource_object = parent_record[:resource_object]
 
-    query_params     = Kit::Api::JsonApi::Services::Request.create_query_params(request: request, path: path)
-    query_params_str = query_params.size > 0 ? "?#{ Rack::Utils.build_nested_query(query_params) }" : ''
-
     links = {
-      self:      "/#{ parent_resource_object[:type] }s/#{ parent_resource_object[:id] }/relationships/#{ relationship[:name] }#{ query_params_str }",
-      related:   "/#{ parent_resource_object[:type] }s/#{ parent_resource_object[:id] }/#{ relationship[:name] }#{ query_params_str }",
-      top_level: "/#{ resource_object[:type] }s/ #{ resource_object[:id] }#{ query_params_str }",
+      self:      "/#{ parent_resource_object[:type] }s/#{ parent_resource_object[:id] }/relationships/#{ relationship[:name] }",
+      related:   "/#{ parent_resource_object[:type] }s/#{ parent_resource_object[:id] }/#{ relationship[:name] }",
+      top_level: "/#{ resource_object[:type] }s/ #{ resource_object[:id] }",
     }
 
-    [:ok, links: links]
+    generate_single_element_links(
+      links:   links,
+      request: request,
+      path:    path,
+      record:  record,
+    )
   end
 
   # Presence:
@@ -114,26 +116,61 @@ module Kit::Api::JsonApi::Services::Linkers::DefaultLinker
     path                   = query_node[:path]
     parent_resource_object = parent_record[:resource_object]
 
-    links = {
-      self:      "/#{ parent_resource_object[:type] }s/#{ parent_resource_object[:id] }/relationships/#{ relationship[:name] }",
+    link_self_url_path = "/#{ parent_resource_object[:type] }s/#{ parent_resource_object[:id] }/relationships/#{ relationship[:name] }"
+    links              = {
+      self:      link_self_url_path,
+      prev:      link_self_url_path.dup,
+      next:      link_self_url_path.dup,
       related:   "/#{ parent_resource_object[:type] }s/#{ parent_resource_object[:id] }/#{ relationship[:name] }",
       top_level: "/#{ query_node[:resource][:name] }s",
     }
-    links.merge!({
-      prev: links[:self].dup,
-      next: links[:self].dup,
-    })
 
-    query_params           = Kit::Api::JsonApi::Services::Request.create_query_params(request: request, path: path)
+    generate_collection_links(
+      links:      links,
+      request:    request,
+      query_node: query_node,
+      path:       path,
+      paginator:  paginator,
+      records:    records,
+    )
+  end
+
+  # Generate links from single element.
+  def self.generate_single_element_links(links:, request:, path:, record:)
+    query_params = Kit::Api::JsonApi::Services::Request.create_query_params(request: request, path: path)[1][:query_params]
+
+    links = links
+      .map do |link_type, link_url_path|
+        link = Kit::Api::JsonApi::Services::Url.path_to_link(
+          url_path:     link_url_path,
+          query_params: query_params,
+        )[1][:link]
+
+        [link_type, link]
+      end
+      .to_h
+
+    [:ok, links: links]
+  end
+
+  # Generate paginated links from links paths.
+  def self.generate_collection_links(links:, request:, path:, query_node:, paginator:, records:)
+    query_params           = Kit::Api::JsonApi::Services::Request.create_query_params(request: request, path: path)[1][:query_params]
     paginator_query_params = paginator[:export].call(query_node: query_node, records: records)
 
-    [:self, :related, :top_level, :prev, :next].each do |link_type|
-      paginator_link_type = link_type.in?([:self, :related, :top_level]) ? :current : link_type
-      link_query_params   = query_params.merge(paginator_query_params[paginator_link_type] || {})
-      query_params_str    = link_query_params.size > 0 ? "?#{ Rack::Utils.build_nested_query(link_query_params) }" : ''
+    links = links
+      .map do |link_type, link_url_path|
+        paginator_link_type = link_type.in?([:self, :related, :top_level]) ? :current : link_type
+        link_query_params   = query_params.merge(paginator_query_params[paginator_link_type] || {})
 
-      links[link_type]   += query_params_str
-    end
+        link = Kit::Api::JsonApi::Services::Url.path_to_link(
+          url_path:     link_url_path,
+          query_params: link_query_params,
+        )[1][:link]
+
+        [link_type, link]
+      end
+      .to_h
 
     [:ok, links: links]
   end

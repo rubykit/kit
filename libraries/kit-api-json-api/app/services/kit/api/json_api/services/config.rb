@@ -42,6 +42,11 @@ module Kit::Api::JsonApi::Services::Config
       paginator:            nil,
       field_transformation: :underscore,
       linker:               nil,
+      linker_config:        {
+        export_sparse_fieldsets: true,
+        export_filters:          true,
+        export_sorting:          true,
+      },
       inclusion_level:      2,
     }
 
