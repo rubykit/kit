@@ -80,7 +80,7 @@ module Kit::Api::JsonApi::Services::Request::Export::RelatedResources
 
     if keys.size > 0
       # Generate final string.
-      path_size = path.size + 1
+      path_size = (path.size > 0) ? (path.size + 1) : 0
       query_params[:include] = keys
         .map { |k| k[path_size..] }
         .sort

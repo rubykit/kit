@@ -8,8 +8,17 @@ module Kit::Api::JsonApi::Services::Request::Export::SparseFieldsets
   def self.handle_sparse_fieldsets(request:, included_paths:, query_params:)
     return [:ok] if !request[:config][:linker_config][:export_sparse_fieldsets]
 
+    paths_list = included_paths[:list]
+    path_name  = included_paths[:path]
+
+    # Expected resource types given `include`
+    included_resources = paths_list.values.map { |el| el[:name] }
+
     qp = (request[:fields] || {})
-      .map { |resource_name, fields| [resource_name, fields.join(',')] }
+      .select do |resource_name, _fields|
+        included_resources.include?(resource_name) || (path_name == '' && request[:top_level_resource][:name] == resource_name)
+      end
+      .map { |resource_name, fields| [resource_name.to_s, fields.join(',')] }
       .to_h
 
     if qp.size > 0

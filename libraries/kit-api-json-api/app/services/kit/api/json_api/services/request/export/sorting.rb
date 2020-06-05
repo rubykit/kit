@@ -11,12 +11,22 @@ module Kit::Api::JsonApi::Services::Request::Export::Sorting
     paths_list = included_paths[:list]
     path_name  = included_paths[:path]
 
-    qp = (request[:sort] || {})
+    qp = (request[:sorting] || {})
       .filter_map do |sort_path, ordering|
-        next if !paths_list.include?(sort_path)
+        if sort_path == :top_level
+          next if path_name != ''
 
-        sort_path = sort_path[(path_name.size + 1)..]
-        ordering.map { |sort_name:, direction:| "#{ direction == :asc ? '' : '-' }#{ sort_path }#{ sort_path.size > 0 ? '.' : '' }#{ sort_name }" }
+          sort_path = ''
+        else
+          next if !paths_list.include?(sort_path)
+
+          # Account for . if there is further nesting. Otherwise defaults to ''.
+          sort_path = sort_path[((path_name.size > 0) ? (path_name.size + 1) : 0)..] || ''
+        end
+
+        ordering.map do |sort_name:, direction:|
+          "#{ direction == :asc ? '' : '-' }#{ sort_path }#{ sort_path.size > 0 ? '.' : '' }#{ sort_name }"
+        end
       end
       .flatten
       .join(',')

@@ -28,25 +28,39 @@ describe Kit::Api::JsonApi::Services::Request::Export::RelatedResources do
       )
     end
 
-    context 'with valid resources' do
+    context 'with matching path resources' do
+      # 'a' is the implicit top level resource
       let(:related_resources) do
         {
-          'a'       => 1,
-          'a.b'     => 1,
-          'a.z'     => 1,
-          'a.b.c'   => 1,
-          'a.b.e'   => 1,
-          'a.z.x'   => 1,
-          'a.b.c.d' => 1,
-          'a.z.x.m' => 1,
+          'b'       => 1,
+          'b.c'     => 1,
+          'b.z'     => 1,
+          'b.c.d'   => 1,
+          'b.c.f'   => 1,
+          'b.z.x'   => 1,
+          'b.c.d.e' => 1,
+          'b.z.x.m' => 1,
         }
       end
-      let(:path) { 'a.b' }
 
-      it 'add the expected data to the request' do
-        status, ctx = subject
-        expect(status).to eq :ok
-        expect(ctx[:query_params][:include]).to eq 'c.d,e'
+      context 'with a top level path' do
+        let(:path) { '' }
+
+        it 'add the expected data to the request' do
+          status, ctx = subject
+          expect(status).to eq :ok
+          expect(ctx[:query_params][:include]).to eq 'b.c.d.e,b.c.f,b.z.x.m'
+        end
+      end
+
+      context 'with a nested path' do
+        let(:path) { 'b.c' }
+
+        it 'add the expected data to the request' do
+          status, ctx = subject
+          expect(status).to eq :ok
+          expect(ctx[:query_params][:include]).to eq 'd.e,f'
+        end
       end
     end
 

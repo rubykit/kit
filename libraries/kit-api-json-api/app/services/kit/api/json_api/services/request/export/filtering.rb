@@ -14,10 +14,19 @@ module Kit::Api::JsonApi::Services::Request::Export::Filtering
     qp = {}
 
     (request[:filters] || {}).each do |filters_path, filters|
-      next if !paths_list.include?(filter_path)
+      if filters_path == :top_level
+        next if path_name != ''
 
-      filters_path = filters_path[(path_name.size + 1)..]
+        filters_path = ''
+      else
+        next if !paths_list.include?(filters_path)
+
+        # Account for . if there is further nesting. Otherwise defaults to ''.
+        filters_path = filters_path[((path_name.size > 0) ? (path_name.size + 1) : 0)..] || ''
+      end
+
       filters.map do |name:, op:, value:|
+        # Add filter name
         filter_path = "#{ filters_path }#{ filters_path.size > 0 ? '.' : '' }#{ name }"
 
         qp[filter_path] ||= {}
