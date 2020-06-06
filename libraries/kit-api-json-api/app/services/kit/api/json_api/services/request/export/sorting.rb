@@ -8,31 +8,21 @@ module Kit::Api::JsonApi::Services::Request::Export::Sorting
   def self.handle_sorting(request:, included_paths:, query_params:)
     return [:ok] if !request[:config][:linker_config][:export_sorting]
 
-    paths_list = included_paths[:list]
-    path_name  = included_paths[:path]
+    qp = []
 
-    qp = (request[:sorting] || {})
-      .filter_map do |sort_path, ordering|
-        if sort_path == :top_level
-          next if path_name != ''
+    (request[:sorting] || {}).each do |sort_path, ordering|
+      adjusted_path = Kit::Api::JsonApi::Services::Request::Export
+        .adjusted_path(included_paths: included_paths, current_path: sort_path)[1][:adjusted_path]
+      next if !adjusted_path
 
-          sort_path = ''
-        else
-          next if !paths_list.include?(sort_path)
-
-          # Account for . if there is further nesting. Otherwise defaults to ''.
-          sort_path = sort_path[((path_name.size > 0) ? (path_name.size + 1) : 0)..] || ''
-        end
-
-        ordering.map do |sort_name:, direction:|
-          "#{ direction == :asc ? '' : '-' }#{ sort_path }#{ sort_path.size > 0 ? '.' : '' }#{ sort_name }"
-        end
+      ordering.each do |sort_name:, direction:|
+        sort_qp_str = "#{ direction == :asc ? '' : '-' }#{ adjusted_path }#{ adjusted_path.size > 0 ? '.' : '' }#{ sort_name }"
+        qp << sort_qp_str
       end
-      .flatten
-      .join(',')
+    end
 
     if qp.size > 0
-      query_params[:sort] = qp
+      query_params[:sort] = qp.join(',')
     end
 
     [:ok, query_params: query_params]

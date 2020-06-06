@@ -51,15 +51,15 @@ module Kit::Api::JsonApi::Services::Debug
       "#{ pre_str }#{ (level > 0) ? (is_last ? '  ┗' : '  ┣') : '' }", # rubocop:disable Style/NestedTernaryOperator
       (relationship ? relationship[:name] : 'top-level-node'),
       query_node[:resource][:name],
-      query_node[:records].count,
+      query_node[:records]&.count,
     ]
 
     if relationship
-      parts << relationship[:parent_query_node][:records].map { |record| record[:relationships][relationship[:name]].size }
-      parts << relationship[:parent_query_node][:records].map { |record| [record[:raw_data].id, record[:relationships][relationship[:name]].map { |el| el[:raw_data].id }] }.to_h
+      parts << relationship[:parent_query_node][:records]&.map { |record| record[:relationships][relationship[:name]].size }
+      parts << relationship[:parent_query_node][:records]&.map { |record| [record[:raw_data].id, record[:relationships][relationship[:name]].map { |el| el[:raw_data].id }] }.to_h
     else
-      parts << [query_node[:records].count]
-      parts << query_node[:records].map { |el| el[:raw_data].id }
+      parts << [query_node[:records]&.count]
+      parts << query_node[:records]&.map { |el| el[:raw_data].id }
     end
 
     list << parts.map(&:to_s)

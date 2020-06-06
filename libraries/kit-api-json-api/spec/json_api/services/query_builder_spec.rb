@@ -28,7 +28,7 @@ describe Kit::Api::JsonApi::Services::QueryBuilder do
       status, ctx = subject
       query_node  = ctx[:entry_query_node]
 
-      Kit::Api::JsonApi::Services::Debug.print_query(query_node: qn) if ENV['KIT_API_DEBUG']
+      Kit::Api::JsonApi::Services::Debug.print_query(query_node: query_node) if ENV['KIT_API_DEBUG']
 
       expect(status).to eq :ok
       expect(query_node[:resource]).to eq top_level_resource

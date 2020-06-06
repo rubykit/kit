@@ -19,9 +19,9 @@ describe Kit::Api::JsonApi::Services::Serialization::Query do
       top_level_resource: top_level_resource,
       singular:           true,
       related_resources:  {
-        'books'              => true,
-        'books.author'       => true,
-        'books.author.books' => true,
+        'books'              => config[:resources][:book],
+        'books.author'       => config[:resources][:author],
+        'books.author.books' => config[:resources][:book],
       },
       sparse_fieldsets:   {},
       sorting:            {},
