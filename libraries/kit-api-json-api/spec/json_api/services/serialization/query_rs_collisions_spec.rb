@@ -11,7 +11,7 @@ describe Kit::Api::JsonApi::Services::Serialization::Query do
     )
   end
 
-  let(:top_level_resource) { Kit::JsonApiSpec::Resources::Author.to_h }
+  let(:top_level_resource) { config[:resources][:author] }
 
   let(:request) do
     {

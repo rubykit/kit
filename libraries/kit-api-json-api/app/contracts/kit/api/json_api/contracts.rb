@@ -106,7 +106,7 @@ module Kit::Api::JsonApi::Contracts
     #top_level_resource: Resource,
     top_level_resource: Any,
     singular:           Boolean,
-    related_resources:  Optional[Hash.of(String => Boolean).named('Request[:related_resources]')],
+    related_resources:  Optional[Hash.of(String => Resource).named('Request[:related_resources]')],
     sparse_fieldsets:   Optional[Hash.of(ResourceName => FieldNames).named('Request[:sparse_fieldsets]')],
     limits:             Optional[Hash.named('Request[:limits]')],
     #sorting:          {},
