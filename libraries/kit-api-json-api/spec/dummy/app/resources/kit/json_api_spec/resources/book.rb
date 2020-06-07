@@ -40,9 +40,9 @@ class Kit::JsonApiSpec::Resources::Book < Kit::Api::JsonApi::Resources::ActiveRe
         resource:          :chapter,
         relationship_type: :to_one,
         resolvers:         {
-          inherited_filter: Kit::Api::JsonApi::Services::Resolvers::Data::ActiveRecord.generate_inherited_filters(relationship_type: :to_many, parent_field: { id: :id }, child_field: { id: :kit_json_api_spec_book_id }),
-          records_selector: Kit::Api::JsonApi::Services::Resolvers::Data::ActiveRecord.generate_records_selector(relationship_type: :to_many, parent_field: { id: :id }, child_field: { id: :kit_json_api_spec_book_id }),
-          data_resolver:    Kit::Api::JsonApi::Services::Resolvers::Data::ActiveRecord.generate_data_resolver({
+          inherited_filter: Kit::Api::JsonApi::Services::Resolvers::ActiveRecord.generate_inherited_filters(relationship_type: :to_many, parent_field: { id: :id }, child_field: { id: :kit_json_api_spec_book_id }),
+          records_selector: Kit::Api::JsonApi::Services::Resolvers::ActiveRecord.generate_records_selector(relationship_type: :to_many, parent_field: { id: :id }, child_field: { id: :kit_json_api_spec_book_id }),
+          data_resolver:    Kit::Api::JsonApi::Services::Resolvers::ActiveRecord.generate_data_resolver({
             model: Kit::JsonApiSpec::Models::Write::Chapter,
           })[1][:data_resolver],
         },

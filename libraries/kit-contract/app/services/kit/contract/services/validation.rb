@@ -12,11 +12,11 @@ module Kit::Contract::Services::Validation
   def self.valid?(contract:, args:)
     args_in = Kit::Contract::Services::RubyHelpers.generate_args_in(callable: contract, args: args)
 
-    if ENV['LOG_ORGANIZER']
+    if ENV['KIT_CONTRACT_DEBUG'] == 'true'
       puts "# Calling `#{ contract }` with args: `#{ args_in }`".yellow
     end
     result = contract.call(*args_in)
-    if ENV['LOG_ORGANIZER']
+    if ENV['KIT_CONTRACT_DEBUG'] == 'true'
       puts "#   Result |#{ result }|".blue
     end
 

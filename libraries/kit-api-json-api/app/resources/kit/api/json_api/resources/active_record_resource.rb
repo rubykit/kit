@@ -175,15 +175,15 @@ class Kit::Api::JsonApi::Resources::ActiveRecordResource
   end
 
   def self.data_resolver(query_node:)
-    Kit::Api::JsonApi::Services::Resolvers::Data::ActiveRecord.data_resolver(model: model, query_node: query_node)
+    Kit::Api::JsonApi::Services::Resolvers::ActiveRecord.data_resolver(model: model, query_node: query_node)
   end
 
   def self.record_serializer(record:)
-    Kit::Api::JsonApi::Services::Resolvers::Serializers::ActiveRecord.record_serializer(record: record)
+    Kit::Api::JsonApi::Services::Serializers::ActiveRecord.record_serializer(record: record)
   end
 
   def self.linker
-    Kit::Api::JsonApi::Services::Resolvers::Linker.to_h
+    Kit::Api::JsonApi::Services::Linkers::DefaultLinker.to_h
   end
 
   def self.paginator

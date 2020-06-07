@@ -98,7 +98,7 @@ commands:
           #command: |
           #  RAILS_ENV=circle bundle exec rspec
           command: |
-            bundle exec rspec
+            SIMPLECOV=true bundle exec rspec
 
   # Rspec ----------------------------------------------------------------------
 

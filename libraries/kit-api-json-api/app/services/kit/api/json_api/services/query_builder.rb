@@ -105,7 +105,7 @@ module Kit::Api::JsonApi::Services::QueryBuilder
       resolvers = relationship[:resolvers]
       # Add resolver store
       if resolvers.is_a?(Array)
-        _, ctx = Kit::Api::JsonApi::Services::Resolvers::Data::ActiveRecord.generate_resolvers({
+        _, ctx = Kit::Api::JsonApi::Services::Resolvers::ActiveRecord.generate_resolvers({
           config:       request[:config],
           relationship: relationship,
           options:      resolvers[1],
