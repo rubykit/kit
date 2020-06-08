@@ -1,0 +1,37 @@
+source 'https://rubygems.org'
+git_source(:github) { |repo| "https://github.com/#{ repo }.git" }
+
+gemspec
+
+gem 'kit-contract',   path: '../../libraries/kit-contract' # GEMSPEC
+gem 'kit-error',      path: '../../libraries/kit-error' # GEMSPEC
+gem 'kit-organizer',  path: '../../libraries/kit-organizer' # GEMSPEC
+gem 'kit-pagination', path: '../../libraries/kit-pagination' # GEMSPEC
+
+group :test, :development do
+  gem 'pry'
+  gem 'pry-stack_explorer'
+
+  gem 'pg'
+
+  gem 'kit-dotenv',              path: '../../libraries/kit-dotenv'
+  gem 'kit-dotenv-rails',        path: '../../libraries/kit-dotenv', require: 'kit/dotenv/rails-now'
+
+  gem 'kit-app-container',       path: '../../libraries/kit-app-container' # DEV MODE
+  gem 'kit-domain',              path: '../../libraries/kit-domain' # DEV MODE
+  gem 'kit-dummy-app-container', path: '../../libraries/kit-dummy-app-container' # DEV MODE
+  gem 'kit-engine',              path: '../../libraries/kit-engine' # DEV MODE
+  gem 'kit-router',              path: '../../libraries/kit-router' # DEV MODE
+
+  gem 'seedbank'
+end
+
+group :development do
+  gem 'kit-doc-yard',            path: '../../libraries/kit-doc-yard'
+end
+
+group :test do
+  gem 'ruby-prof'
+  gem 'stackprof'
+  gem 'test-prof'
+end
