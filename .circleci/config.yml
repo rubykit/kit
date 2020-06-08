@@ -124,9 +124,9 @@ commands:
       #    path: ~/workspace/code_climate/codeclimate.<< parameters.project >>.json
       #    destination: codeclimate.<< parameters.project >>.json
 
-  # kit-api-json-api -----------------------------------------------------------
+  # kit-api --------------------------------------------------------------------
 
-  kit-api-json-api__prepare-database:
+  kit-api__prepare-database:
     description: 'Loading DBs schemas && running seed'
     steps:
       - run:
@@ -164,8 +164,8 @@ jobs:
             ~/workspace/code_climate/cc-test-reporter sum-coverage ~/workspace/code_climate/codeclimate.*.json -p 4 -o ~/workspace/code_climate/codeclimate.total.json
             ~/workspace/code_climate/cc-test-reporter upload-coverage -i ~/workspace/code_climate/codeclimate.total.json
 
-  test-kit-api-json-api:
-    working_directory: ~/kit/libraries/kit-api-json-api
+  test-kit-api:
+    working_directory: ~/kit/libraries/kit-api
     <<: *docker_ruby
     #executor: ruby/default
     steps:
@@ -175,14 +175,14 @@ jobs:
       - install-bundler
       - show-bundler-version
       - restore-cache-gems:
-          project: kit-api-json-api
+          project: kit-api
       - install-gems
       - save-cache-gems:
-          project: kit-api-json-api
-      - kit-api-json-api__prepare-database
+          project: kit-api
+      - kit-api__prepare-database
       - run-rspec
       - save-simple-cov-coverage:
-          project: kit-api-json-api
+          project: kit-api
 
   test-kit-contract:
     working_directory: ~/kit/libraries/kit-contract
@@ -249,7 +249,7 @@ workflows:
   test-all:
     jobs:
       - code-climate-setup
-      - test-kit-api-json-api:
+      - test-kit-api:
           requires:
             - code-climate-setup
       - test-kit-contract:
@@ -263,7 +263,7 @@ workflows:
             - code-climate-setup
       - code-climate-upload-coverage:
           requires:
-            - test-kit-api-json-api
+            - test-kit-api
             - test-kit-contract
             - test-kit-organizer
             - test-kit-pagination
