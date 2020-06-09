@@ -1,14 +1,23 @@
 require 'yard'
 require 'kit-doc-yard'
 
+# Output directory.
+output_dir = ENV['KIT_DOC_OUTPUT_DIR']
+if !output_dir || output_dir == ''
+  output_dir = 'docs/dist/kit'
+end
+
 DOC_CONFIG = Kit::Doc::Services::Tasks.get_default_config(
   gemspec_name:       'kit',
   git_project_path:   File.expand_path('..', __dir__),
-  output_dir_base:    'docs/dist',
+  output_dir_base:    output_dir,
 
-  main_redirect_url:  'Kit.html',
+  main_redirect_url:  'file.overview.html',
   logo:               'https://raw.githubusercontent.com/rubykit/kit/master/docs/assets/images/rubykit-framework-logo.svg',
 
+  files_modules:      [],
+  groups_for_modules: {},
+=begin
   files_modules:      Kit::Doc::Services::Tasks.resolve_files(hash: {
     'libraries/kit-api-jsonapi' => {
       include: %w[
@@ -46,6 +55,7 @@ DOC_CONFIG = Kit::Doc::Services::Tasks.get_default_config(
     'Organizer'  => [%r{^Kit::Organizer.*}],
     'Pagination' => [%r{^Kit::Pagination.*}],
   },
+=end
 
   files_extras:       Kit::Doc::Services::Tasks.resolve_files(hash: {
     'docs/guides' => {
@@ -63,7 +73,7 @@ DOC_CONFIG = Kit::Doc::Services::Tasks.get_default_config(
 )
 
 Kit::Doc::Services::Tasks.create_rake_documentation_task!({
-  task_name:        'documentation:yardoc:all',
+  task_name:        'documentation:yardoc',
   config:           DOC_CONFIG,
   clean_output_dir: true,
 })

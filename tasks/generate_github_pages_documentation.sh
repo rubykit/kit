@@ -2,16 +2,33 @@
 
 set -e
 
-documentation_build_dir='./docs/dist'
+# Reference: https://stackoverflow.com/a/21188136
+get_abs_filename() {
+  # $1 : relative filename
+  if [ -d "$(dirname "$1")" ]; then
+    echo "$(cd "$(dirname "$1")" && pwd)/$(basename "$1")"
+  fi
+}
+
+top_level_dir=`pwd`
+documentation_build_dir=$(get_abs_filename './docs/dist')
 documentation_build_dir_content="$documentation_build_dir/*"
 
-branch_master='master'
+# The source branch. Change this when working on this script.
+#branch_master='master'
+branch_master='chore/documentation-generation'
+# The target branch.
 branch_documentation='gh-pages'
+
+# The list of gems we want to generate documentation for.
+declare -A documentation_targets
+documentation_targets=(["kit"]=$top_level_dir ["kit-api"]="libraries/kit-api")
 
 # Ensure we are on a clean install
 echo "This script generates the documentation to be published on the project GitHub pages."
 echo "PLEASE use a clean copy of the repo to run this!"
-read -r -p "Is this the case? [y/N] " response
+echo "We are currently in \`${top_level_dir}\`"
+read -r -p "Is this a clean install? [y/N] " response
 if [[ "${response,,}" =~ ^(yes|y)$ ]]; then
   echo "  Good."
 else
@@ -34,12 +51,30 @@ else
   exit
 fi
 
-# For each version, checkout the tag, `bundle install` and generate doc.
+# For each version, checkout the tag, and generate doc for each gem.
 for version in ${versions[@]}; do
-  git checkout $version && bundle install && bundle exec rake documentation:yardoc:all
+  cd $top_level_dir
+  git checkout $version
+
+  echo "  Version: ${version}"
+
+  # For each gem
+  for documentation_target in "${!documentation_targets[@]}"; do
+    documentation_target_src_path=${documentation_targets[$documentation_target]}
+    documentation_target_dst_path="${documentation_build_dir}/${documentation_target}"
+
+    echo "    Gem: ${documentation_target} (src: \`${documentation_target_src_path}\`, dst: \`${documentation_target_dst_path}\`)"
+
+    mkdir -p $documentation_target_dst_path
+
+    cd $top_level_dir
+    cd $documentation_target_src_path
+    bundle install && KIT_DOC_OUTPUT_DIR=$documentation_target_dst_path bundle exec rake documentation:yardoc
+  done
 done
 
-# At this point we should be in master but let's make sure
+# Go back to the top level dir, on master.
+cd $top_level_dir
 git checkout $branch_master
 
 # Add the top level `index.html` and `doc_config.js`
@@ -60,14 +95,20 @@ echo 'docs.rubykit.org' > 'CNAME'
 git add 'CNAME'
 git add 'index.html'
 git add 'docs_config.js'
-for version in ${versions[@]}; do
-  if [ $version == $branch_master ]; then
-    version='edge'
-  fi
 
-  cp  'docs_config.js' "./$version/"
-  git add $version
+# For each combo gem/version
+for documentation_target in "${!documentation_targets[@]}"; do
+  for version in ${versions[@]}; do
+    if [ $version == $branch_master ]; then
+      version='edge'
+    fi
+
+    cp 'docs_config.js' "./$documentation_target/$version/"
+  done
+
+  git add $documentation_target_path
 done
+
 git commit -m "PROJECT DOCUMENTATION - generated on `date '+%F@%H-%M-%S'`"
 
 echo "We should be good to go! Please do check that:"

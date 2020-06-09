@@ -10,10 +10,16 @@ css_padding_helper = ->(text) do
 end
 display_title_last = ->(name) { name.split('::')[-1] }
 
+# Output directory.
+output_dir = ENV['KIT_DOC_OUTPUT_DIR']
+if !output_dir || output_dir == ''
+  output_dir = 'docs/dist'
+end
+
 CONFIG = Kit::Doc::Services::Tasks.get_default_config(
   gemspec_name:       'kit-api',
   git_project_path:   File.expand_path('../../..', __dir__),
-  output_dir_base:    'docs/dist',
+  output_dir_base:    output_dir,
 
   main_redirect_url:  'file.apis.html',
 
