@@ -19,7 +19,7 @@ FILES_EXTRAS = Kit::Doc::Services::Tasks.resolve_files(hash: {
   },
 })
 
-CONFIG = Kit::Doc::Services::Tasks.get_default_config(
+CONFIG = Kit::Doc::Services::Config.get_default_config(
   project:            'Kat',
   version:            'edge',
   source_url:         'https://github.com/rubykit/kit/tree/master/libraries/kit-doc-yard',
@@ -64,7 +64,7 @@ CONFIG = Kit::Doc::Services::Tasks.get_default_config(
   },
 )
 
-Kit::Doc::Services::Tasks.create_rake_documentation_task!({
+Kit::Doc::Services::Tasks.create_rake_task_documentation_generate!({
   task_name:        'specs:docs:dummy-app',
   config:           CONFIG,
   clean_output_dir: true,

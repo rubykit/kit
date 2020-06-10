@@ -14,3 +14,4 @@ end
 require 'kit/doc/redcarpet'
 require 'kit/doc/yard'
 require 'kit/doc/services'
+require 'kit/doc/railtie'
