@@ -14,11 +14,12 @@ Gem::Specification.new do |s|
   s.description = 'Kit::Doc::Yard is a Yard plugin that generates ExDoc look-alike documentation.'
   s.license     = 'MIT'
 
-  s.files       = Dir['{lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
+  s.files       = Dir['{lib,tasks}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
 
   # @todo All of these should be development dependencies, but that prevent them from being added to to projects using the gem.
   s.add_dependency 'git'
   s.add_dependency 'nokogiri'
+  s.add_dependency 'rails'
   s.add_dependency 'rake'
   s.add_dependency 'redcarpet'
   s.add_dependency 'rspec'

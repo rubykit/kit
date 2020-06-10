@@ -13,9 +13,8 @@ Gem::Specification.new do |s|
   s.homepage    = 'https://rubykit.org'
 
   s.metadata = {
-    'source_code_base_uri' => 'https://github.com/rubykit/kit',
-    'source_code_uri'      => "https://github.com/rubykit/kit/tree/v#{ version }",
-    'documentation_uri'    => "https://docs.rubykit.org/v#{ version }",
+    'documentation_uri' => "https://docs.rubykit.org/v#{ version }",
+    'source_code_uri'   => "https://github.com/rubykit/kit/tree/v#{ version }",
   }
 
   s.files = ['README.md']
