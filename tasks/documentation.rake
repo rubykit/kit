@@ -1,61 +1,21 @@
 require 'yard'
 require 'kit-doc-yard'
 
-# Output directory.
-output_dir = ENV['KIT_DOC_OUTPUT_DIR']
-if !output_dir || output_dir == ''
-  output_dir = 'docs/dist/kit'
-end
-
-DOC_CONFIG = Kit::Doc::Services::Tasks.get_default_config(
+DOC_CONFIG = Kit::Doc::Services::Config.get_default_config(
   gemspec_name:       'kit',
+
+  project_path:       File.expand_path('..', __dir__),
   git_project_path:   File.expand_path('..', __dir__),
-  output_dir_base:    output_dir,
+  output_dir_base:    ENV['KIT_DOC_OUTPUT_DIR_BASE'].presence || 'docs/dist/kit',
+  source_ref:         ENV['KIT_DOC_SOURCE_REF'].presence,
+  version:            ENV['KIT_DOC_VERSION'].presence,
+  versions:           Kit::Doc::Services::Config.load_versions_file(path: File.expand_path('../docs/VERSIONS', __dir__))[1][:versions],
 
   main_redirect_url:  'file.overview.html',
   logo:               'https://raw.githubusercontent.com/rubykit/kit/master/docs/assets/images/rubykit-framework-logo.svg',
 
   files_modules:      [],
   groups_for_modules: {},
-=begin
-  files_modules:      Kit::Doc::Services::Tasks.resolve_files(hash: {
-    'libraries/kit-api-jsonapi' => {
-      include: %w[
-        lib/**/*.rb
-        app/**/*.rb
-      ],
-    },
-    'libraries/kit-organizer'   => {
-      include: %w[
-        lib/**/*.rb
-        app/**/*.rb
-      ],
-    },
-    'libraries/kit-pagination'  => {
-      include: %w[
-        lib/**/*.rb
-        app/**/*.rb
-      ],
-    },
-  }),
-  groups_for_modules: {
-    ''           => [
-      %r{^Kit$},
-    ],
-    'Libs'       => [
-      %r{^Kit::Organizer$},
-      %r{^Kit::Api::JsonApi$},
-      %r{^Kit::Contract$},
-      %r{^Kit::Pagination$},
-    ],
-
-    'JSON:API'   => [%r{^Kit::Api::JsonApi.*}],
-
-    'Contract'   => [%r{^Kit::Contract.*}],
-    'Organizer'  => [%r{^Kit::Organizer.*}],
-    'Pagination' => [%r{^Kit::Pagination.*}],
-  },
-=end
 
   files_extras:       Kit::Doc::Services::Tasks.resolve_files(hash: {
     'docs/guides' => {
@@ -72,33 +32,33 @@ DOC_CONFIG = Kit::Doc::Services::Tasks.get_default_config(
   },
 )
 
-Kit::Doc::Services::Tasks.create_rake_documentation_task!({
-  task_name:        'documentation:yardoc',
+Kit::Doc::Services::Tasks.create_rake_task_documentation_generate!({
+  task_name:        'documentation:generate',
   config:           DOC_CONFIG,
   clean_output_dir: true,
 })
 
+Kit::Doc::Services::Tasks.create_rake_task_documentation_generate_all_versions!({
+  task_name: 'documentation:generate:all_versions',
+  config:    DOC_CONFIG,
+})
+
 namespace :documentation do
-  task :generate_global_dist_assets do
-    gemspec_data = load_gemspec_data
+  namespace :generate do
+    namespace :all_versions do
 
-    to = File.expand_path('../docs/dist', __dir__)
-    FileUtils.cp(File.expand_path('../docs/assets/top_level_index.html', __dir__), File.join(to, 'index.html'))
+      # Use the first version in config[:versions] as the default.
+      task :generate_global_assets do
+        default_version  = DOC_CONFIG[:versions][0][:version]
+        destination_path = File.expand_path('../docs/dist', __dir__)
 
-    dir_list = Dir[File.join(to, '*')]
-      .select { |el| File.directory?(el) }
-      .map    { |el| Pathname.new(el).basename.to_s }
+        Kit::Doc::Services::Tasks.generate_html_redirect_file(
+          dst:          File.join(destination_path, 'index.html'),
+          title:        'Rubykit Documentation',
+          redirect_url: "kit/#{ default_version }/index.html",
+        )
+      end
 
-    documentation_uri = gemspec_data.metadata['documentation_uri']
-    versions_list = dir_list.map do |el|
-      {
-        version: el,
-        url:     documentation_uri.gsub("v#{ gemspec_data.version }", el),
-      }
     end
-
-    file_content = "var versionNodes = #{ JSON.pretty_generate(versions_list) };"
-
-    File.open(File.join(to, 'docs_config.js'), 'w') { |file| file.write(file_content) }
   end
 end

@@ -1,12 +1,13 @@
 require 'rubygems'
+require 'fileutils'
 require 'git'
 
 # Utilities methods to create documentation rake tasks for yard
 module Kit::Doc::Services::Tasks
 
   # Create yard rake task with Kit::Doc::Yard setup
-  def self.create_rake_documentation_task!(config:, task_name: 'documentation:yardoc:all', clean_output_dir: false)
-    YARD::Rake::YardocTask.new do |t|
+  def self.create_rake_task_documentation_generate!(config:, task_name: 'documentation:generate', clean_output_dir: false)
+    ::YARD::Rake::YardocTask.new do |t|
       t.name    = task_name
 
       t.before  = -> do
@@ -28,84 +29,102 @@ module Kit::Doc::Services::Tasks
     end
   end
 
-  # Check that the version is a Git tag, otherwise for now, assume this is edge.
-  def self.get_git_version(git_project_path:, version:, source_url:)
-    g        = Git.open(git_project_path)
-    tag_name = "v#{ version }"
+  def self.create_rake_task_documentation_generate_all_versions!(config:, task_name: 'documentation:generate:all_versions')
+    ::Rake::Task.define_task task_name do
+      puts "Generating documentation for `#{ config[:project] }`"
+      if !config[:versions] || config[:versions].size == 0
+        puts '  No versions provided.'
+        exit
+      end
 
-    if g.tags.include?(tag_name)
-      source_ref       = tag_name
-      code_version_ref = tag_name
-    else
-      source_ref       = 'edge'
-      code_version_ref = g.log.first.objectish
+      puts "  Versions: #{ config[:versions].map { |el| el[:version] }.join(' ') }"
+
+      # Add `docs_config.js`
+      generate_docs_config(config: config)
+
+      # Generate documentation for every given version.
+      generate_documentation_all_versions(
+        config:         config,
+        before_version: ->(version:, source_ref:) { puts "  Generating version `#{ version }` (source_ref: `#{ source_ref }`)" },
+        after_version:  ->(result:, **)           { puts result.gsub("\n", "\n    ") },
+      )
+
+      # Add top level `index.html` redirect file. Use the first value of config[:versions] as the default.
+      generate_html_redirect_file(
+        dst:          File.join(config[:output_dir_base], 'index.html'),
+        title:        "#{ config[:project] } documentation",
+        redirect_url: "#{ config[:versions][0][:version] }/index.html",
+      )
     end
-
-    {
-      source_ref: source_ref,
-      repo_url:   "#{ source_url }/blob/#{ code_version_ref }",
-    }
   end
 
-  def self.get_default_config(**opts)
-    config = {
-      output_dir_base:   'docs/dist',
-      extra_section:     'Guides',
-      main:              'overview',
-      main_redirect_url: 'index.html',
-    }
+  # Run `documentation:generate` after checking out the git reference.
+  def self.generate_documentation_all_versions(config:, before_version: nil, after_version: nil)
+    # Save current current git reference
+    initial_git_ref = Git.open(config[:git_project_path]).current_branch
 
-    config.merge!(opts)
+    config[:versions].each do |version:, source_ref:|
+      before_version.call(version: version, source_ref: source_ref) if before_version&.respond_to?(:call)
 
-    if config[:gemspec_name]
-      gemspec_data = load_gemspec_data({
-        gemspec_name: config[:gemspec_name],
-      })
+      result = %x(
+        # Go back to the git top level directory for checkout
+        cd "#{ config[:git_project_path] }"
 
-      config.merge!({
-        project:           gemspec_data.name,
-        version:           gemspec_data.version,
-        source_url:        gemspec_data.metadata['source_code_base_uri'],
-        documentation_url: gemspec_data.metadata['documentation_uri'],
-        authors:           [gemspec_data.author],
-      })
+        # Checkout the tag (or branch)
+        git checkout --quiet #{ source_ref }
+
+        # Back to the project dir
+        cd #{ config[:project_path] }
+
+        # Install deps for this version
+        bundle install
+
+        # Generate documentation files
+        KIT_DOC_OUTPUT_DIR_BASE=#{ config[:output_dir_base] } KIT_DOC_VERSION=#{ version } KIT_DOC_SOURCE_REF=#{ source_ref } bundle exec rake documentation:generate
+
+        # Copy the docs_config version generated from `docs/VERSIONS` list if there is one.
+        [[ -e '#{ config[:output_dir_base] }/docs_config.js' ]] && cp '#{ config[:output_dir_base] }/docs_config.js' '#{ config[:output_dir_base] }/#{ version }/'
+      )
+
+      after_version.call(version: version, source_ref: source_ref, result: result) if after_version&.respond_to?(:call)
     end
 
-    if config[:git_project_path]
-      config.merge!(get_git_version({
-        git_project_path: config[:git_project_path],
-        version:          config[:version],
-        source_url:       config[:source_url],
-      }))
-    end
+    # Checkout the initial_git_ref before exiting
+    %x(git checkout --quiet #{ initial_git_ref })
 
-    if config[:source_ref] == 'edge'
-      config[:documentation_url] = config[:documentation_url].gsub("v#{ config[:version] }", 'edge')
-      config[:version]           = 'edge'
-    end
-
-    if !config[:output_dir]
-      config[:output_dir] = "#{ config[:output_dir_base] }/#{ config[:source_ref] }"
-    end
-
-    config
+    [:ok]
   end
 
-  # Load gemspec file
-  def self.load_gemspec_data(gemspec_name:)
-    gemspec_data = Gem::Specification.find_by_name(gemspec_name)
-
-=begin
-    extension = '.gemspec'
-
-    if !gemspec_path.end_with?(extension)
-      raise "Kit::Doc - Refused to eval `#{ gemspec_path }`, it does not end in `#{ extension }`"
+  # Generate `docs_config.js` file for all versions in config[:versions]
+  def self.generate_docs_config(config:)
+    destination_path  = config[:output_dir_base]
+    gemspec_data      = Kit::Doc::Services::Config.load_gemspec_data(gemspec_name: config[:gemspec_name])
+    documentation_uri = gemspec_data.metadata['documentation_uri']
+    versions_list     = (config[:versions] || []).map do |version:, **|
+      {
+        version: version,
+        url:     documentation_uri.gsub("v#{ gemspec_data.version }", version),
+      }
     end
 
-    gemspec_data = eval(File.read(gemspec_path), binding, gemspec_path)
-=end
+    file_content = "var versionNodes = #{ JSON.pretty_generate(versions_list) };"
+    file_path    = File.join(destination_path, 'docs_config.js')
+    File.open(file_path, 'w') { |file| file.write(file_content) }
 
-    gemspec_data
+    [:ok, file_path: file_path]
+  end
+
+  # Generate html redirect file.
+  def self.generate_html_redirect_file(dst:, title:, redirect_url:)
+    file_content = File
+      .read(File.expand_path('../../../../assets/redirect.html', __dir__))
+      .gsub('$title',        title)
+      .gsub('$redirect_url', redirect_url)
+
+    FileUtils.mkdir_p(File.dirname(dst))
+    File.open(dst, 'w') { |file| file.write(file_content) }
+
+    [:ok]
   end
 
   # Expand paths

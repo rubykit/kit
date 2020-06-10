@@ -10,16 +10,15 @@ css_padding_helper = ->(text) do
 end
 display_title_last = ->(name) { name.split('::')[-1] }
 
-# Output directory.
-output_dir = ENV['KIT_DOC_OUTPUT_DIR']
-if !output_dir || output_dir == ''
-  output_dir = 'docs/dist'
-end
-
-CONFIG = Kit::Doc::Services::Tasks.get_default_config(
+DOC_CONFIG = Kit::Doc::Services::Config.get_default_config(
   gemspec_name:       'kit-api',
+
+  project_path:       File.expand_path('..', __dir__),
   git_project_path:   File.expand_path('../../..', __dir__),
-  output_dir_base:    output_dir,
+  output_dir_base:    ENV['KIT_DOC_OUTPUT_DIR_BASE'].presence || 'docs/dist/kit-api',
+  source_ref:         ENV['KIT_DOC_SOURCE_REF'].presence,
+  version:            ENV['KIT_DOC_VERSION'].presence,
+  versions:           Kit::Doc::Services::Config.load_versions_file(path: File.expand_path('../docs/VERSIONS', __dir__))[1][:versions],
 
   main_redirect_url:  'file.apis.html',
 
@@ -95,8 +94,13 @@ CONFIG = Kit::Doc::Services::Tasks.get_default_config(
   ],
 )
 
-Kit::Doc::Services::Tasks.create_rake_documentation_task!({
-  task_name:        'documentation:yardoc',
-  config:           CONFIG,
+Kit::Doc::Services::Tasks.create_rake_task_documentation_generate!({
+  task_name:        'documentation:generate',
+  config:           DOC_CONFIG,
   clean_output_dir: true,
+})
+
+Kit::Doc::Services::Tasks.create_rake_task_documentation_generate_all_versions!({
+  task_name: 'documentation:generate:all_versions',
+  config:    DOC_CONFIG,
 })

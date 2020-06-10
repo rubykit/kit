@@ -14,9 +14,8 @@ Gem::Specification.new do |s|
   s.homepage    = 'https://github.com/rubykit/kit/tree/master/libraries/kit-api'
 
   s.metadata = {
-    'source_code_base_uri' => 'https://github.com/rubykit/kit',
-    'source_code_uri'      => "https://github.com/rubykit/kit/tree/v#{ version }/libraries/kit-api",
-    'documentation_uri'    => "https://docs.rubykit.org/v#{ version }",
+    'documentation_uri' => "https://docs.rubykit.org/kit-api/v#{ version }",
+    'source_code_uri'   => "https://github.com/rubykit/kit/tree/v#{ version }/libraries/kit-api",
   }
 
   s.files = Dir['{app,config,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
