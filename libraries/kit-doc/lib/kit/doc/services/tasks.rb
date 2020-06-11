@@ -22,7 +22,7 @@ module Kit::Doc::Services::Tasks
 
       t.options = [
         '--output-dir',      config[:output_dir],
-        '--plugin',          'kit-doc-yard', 'kit-doc-yard-contracts', # Redundant with `.yardopts`?
+        '--plugin',          'kit-doc', 'kit-doc-contracts', # Redundant with `.yardopts`?
         '--markup-provider', 'redcarpet',
         '--markup',          'markdown',
       ]

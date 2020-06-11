@@ -5,13 +5,13 @@ require 'kit/doc/version'
 
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
-  s.name        = 'kit-doc-yard'
+  s.name        = 'kit-doc'
   s.version     = Kit::Doc::VERSION
   s.authors     = ['Nathan Appere']
   s.email       = ['nathan@rubykit.org']
-  s.homepage    = 'https://github.com/rubykit/kit/tree/master/libraries/kit-doc-yard'
+  s.homepage    = 'https://github.com/rubykit/kit/tree/master/libraries/kit-doc'
   s.summary     = 'Yard setup & plugins for Kit'
-  s.description = 'Kit::Doc::Yard is a Yard plugin that generates ExDoc look-alike documentation.'
+  s.description = 'Kit::Doc is a Yard plugin that generates ExDoc look-alike documentation.'
   s.license     = 'MIT'
 
   s.files       = Dir['{lib,tasks}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']

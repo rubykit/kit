@@ -4,9 +4,9 @@ PATH
     kit (0.1.0.alpha)
 
 PATH
-  remote: libraries/kit-doc-yard
+  remote: libraries/kit-doc
   specs:
-    kit-doc-yard (0.0.1)
+    kit-doc (0.0.1)
       git
       nokogiri
       rails
@@ -189,7 +189,7 @@ PLATFORMS
 DEPENDENCIES
   git
   kit!
-  kit-doc-yard!
+  kit-doc!
   pry
   rake
   rubocop

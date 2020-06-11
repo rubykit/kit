@@ -6,7 +6,7 @@ require 'yard'
 #
 # @example
 #   bundle exec yardoc --plugin kit-contracts
-class Kit::Doc::Yard::KitDocYardContractsHandler < YARD::Handlers::Ruby::Base
+class Kit::Doc::Yard::KitDocContractsHandler < YARD::Handlers::Ruby::Base
 
   handles method_call(:contract)
   handles method_call(:before)

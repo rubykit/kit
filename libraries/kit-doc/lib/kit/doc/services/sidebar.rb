@@ -105,7 +105,7 @@ module Kit::Doc::Services::Sidebar
       elsif current_matcher.respond_to?(:call)
         matcher[:inclusion_fn] = current_matcher
       else
-        puts "Kit::Doc::Yard - Ignoring group `#{ group_name }` for sidebar: invalid inclusion matcher."
+        puts "Kit::Doc - Ignoring group `#{ group_name }` for sidebar: invalid inclusion matcher."
         next
       end
 

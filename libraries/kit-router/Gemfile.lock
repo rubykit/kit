@@ -15,17 +15,6 @@ PATH
       rails (~> 6.0.3.1)
 
 PATH
-  remote: ../kit-doc-yard
-  specs:
-    kit-doc-yard (0.0.1)
-      git
-      nokogiri
-      rake
-      redcarpet
-      rspec
-      yard
-
-PATH
   remote: ../kit-dummy-app-container
   specs:
     kit-dummy-app-container (0.1.0)
@@ -129,8 +118,6 @@ GEM
     diff-lcs (1.3)
     erubi (1.9.0)
     ffi (1.12.2)
-    git (1.7.0)
-      rchardet (~> 1.8)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     i18n (1.8.2)
@@ -213,14 +200,8 @@ GEM
     rb-fsevent (0.10.4)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
-    rchardet (1.8.0)
-    redcarpet (3.5.0)
     redis (4.1.4)
     rexml (3.2.4)
-    rspec (3.9.0)
-      rspec-core (~> 3.9.0)
-      rspec-expectations (~> 3.9.0)
-      rspec-mocks (~> 3.9.0)
     rspec-core (3.9.2)
       rspec-support (~> 3.9.3)
     rspec-expectations (3.9.2)
@@ -290,7 +271,6 @@ PLATFORMS
 DEPENDENCIES
   kit-app-container!
   kit-contract!
-  kit-doc-yard!
   kit-dummy-app-container!
   kit-engine!
   kit-organizer!
