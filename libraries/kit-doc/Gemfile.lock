@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    kit-doc-yard (0.0.1)
+    kit-doc (0.0.1)
       git
       nokogiri
       rails
@@ -182,7 +182,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  kit-doc-yard!
+  kit-doc!
   pry
   rubocop
 

@@ -1,6 +1,6 @@
-# Kit::Doc::Yard
+# Kit::Doc
 
-Kit::Doc::Yard is a [Yard](https://github.com/lsegal/yard) plugin that generates [ExDoc](https://github.com/elixir-lang/ex_doc) look-alike documentation. We generate compatible html to be able to reuse their styling and JS logic.
+`Kit::Doc` is a [Yard](https://github.com/lsegal/yard) plugin that generates [ExDoc](https://github.com/elixir-lang/ex_doc) look-alike documentation. We generate compatible html to be able to reuse their styling and JS logic.
 
 ## Todo
 
@@ -9,11 +9,11 @@ Kit::Doc::Yard is a [Yard](https://github.com/lsegal/yard) plugin that generates
 ## Usage
 
 Add this gem to your `Gemfile`:
-`gem 'kit-doc-yard'`
+`gem 'kit-doc'`
 Providing the `path` might be necessary if you are using it from within the `kit` repository.
 
 To make YARD aware of this plugin, add the following to the `.yardopts` of your project:
-`--plugin kit-doc-yard`
+`--plugin kit-doc`
 
 ## License
 
