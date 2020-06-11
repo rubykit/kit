@@ -11,6 +11,10 @@ gem 'kit-dummy-app-container', path: '../../libraries/kit-dummy-app-container'
 gem 'kit-error',               path: '../../libraries/kit-error'
 gem 'kit-organizer',           path: '../../libraries/kit-organizer'
 
+group :development do
+  gem 'kit-doc',               path: '../../libraries/kit-doc'
+end
+
 # TODO: clean this up
 group :test, :development do
   gem 'activesupport'
