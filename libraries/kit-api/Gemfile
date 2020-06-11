@@ -27,7 +27,7 @@ group :test, :development do
 end
 
 group :development do
-  gem 'kit-doc-yard',            path: '../../libraries/kit-doc-yard'
+  gem 'kit-doc',                 path: '../../libraries/kit-doc'
 end
 
 group :test do
