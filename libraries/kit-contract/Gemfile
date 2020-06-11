@@ -7,7 +7,6 @@ gem 'concurrent-ruby',         require: 'concurrent'
 
 # TODO: move to gemspec when released
 gem 'kit-app-container',       path: '../../libraries/kit-app-container'
-gem 'kit-doc-yard',            path: '../../libraries/kit-doc-yard'
 gem 'kit-dummy-app-container', path: '../../libraries/kit-dummy-app-container'
 gem 'kit-error',               path: '../../libraries/kit-error'
 gem 'kit-organizer',           path: '../../libraries/kit-organizer'
