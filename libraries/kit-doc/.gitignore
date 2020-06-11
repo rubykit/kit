@@ -16,8 +16,6 @@
 # Temporarily ignore test directory
 /test/
 
-/specs/dummy/docs/dist
-
 ################################################################################
 #
 # Default Rails .gitignore
@@ -88,6 +86,8 @@ build-iPhoneSimulator/
 /_yardoc/
 /doc/
 /rdoc/
+/docs/dist
+/specs/dummy/docs/dist
 
 ## Environment normalization:
 /.bundle/

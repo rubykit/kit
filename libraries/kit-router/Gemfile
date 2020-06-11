@@ -10,5 +10,6 @@ gem 'kit-engine',              path: '../../libraries/kit-engine' # DEV MODE
 gem 'kit-organizer',           path: '../../libraries/kit-organizer' # DEV MODE
 
 group :development do
+  gem 'kit-doc',               path: '../../libraries/kit-doc'
   gem 'pry'
 end

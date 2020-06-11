@@ -6,6 +6,8 @@ end
 
 require 'bundler/gem_tasks'
 
+import 'tasks/documentation.rake'
+
 begin
   require 'rspec/core/rake_task'
 

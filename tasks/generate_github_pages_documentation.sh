@@ -20,8 +20,16 @@ documentation_build_dir="${kit_dir}/docs/dist"
 
 # The list of gems we want to generate documentation for.
 # Add target gems here.
-declare -A documentation_targets
-documentation_targets=(["kit"]=$kit_dir ["kit-api"]="${kit_dir}/libraries/kit-api")
+declare -A documentation_targets=(
+  ["kit"]=$kit_dir
+  ["kit-api"]="${kit_dir}/libraries/kit-api"
+  ["kit-contract"]="${kit_dir}/libraries/kit-contract"
+  ["kit-doc"]="${kit_dir}/libraries/kit-doc"
+  ["kit-organizer"]="${kit_dir}/libraries/kit-organizer"
+  ["kit-pagination"]="${kit_dir}/libraries/kit-pagination"
+  ["kit-router"]="${kit_dir}/libraries/kit-router"
+)
+#typeset -p documentation_targets
 
 
 # SAFETY CHECKS ----------------------------------------------------------------
