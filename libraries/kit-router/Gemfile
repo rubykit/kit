@@ -5,7 +5,6 @@ gemspec
 
 gem 'kit-app-container',       path: '../../libraries/kit-app-container' # DEV MODE
 gem 'kit-contract',            path: '../../libraries/kit-contract'
-gem 'kit-doc-yard',            path: '../../libraries/kit-doc-yard'
 gem 'kit-dummy-app-container', path: '../../libraries/kit-dummy-app-container' # DEV MODE
 gem 'kit-engine',              path: '../../libraries/kit-engine' # DEV MODE
 gem 'kit-organizer',           path: '../../libraries/kit-organizer' # DEV MODE
