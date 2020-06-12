@@ -6,10 +6,10 @@ DOC_CONFIG_DUMMY_APP = Kit::Doc::Services::Config.get_default_config(
 
   project_path:            File.expand_path('..', __dir__),
   git_project_path:        File.expand_path('../../../../..', __dir__),
-  output_dir_all_versions: ENV['KIT_DOC_OUTPUT_DIR_BASE'].presence || 'docs/dist/kat',
+  output_dir_all_versions: ENV['KIT_DOC_OUTPUT_DIR_ALL_VERSIONS'].presence || 'docs/dist/kat',
   source_ref:              ENV['KIT_DOC_SOURCE_REF'].presence,
-  version:                 ENV['KIT_DOC_VERSION'].presence,
-  versions:                File.expand_path('../docs/VERSIONS', __dir__),
+  current_version:         ENV['KIT_DOC_CURRENT_VERSION'].presence,
+  all_versions:            File.expand_path('../docs/VERSIONS', __dir__),
 
   source_url:              'https://github.com/rubykit/kit/tree/master/libraries/kit-doc',
   authors:                 ['John Doe'],
@@ -17,7 +17,7 @@ DOC_CONFIG_DUMMY_APP = Kit::Doc::Services::Config.get_default_config(
   main_redirect_url:       'file.neu_dixi_raptam.html',
   logo:                    'https://raw.githubusercontent.com/rubykit/kit/master/docs/assets/images/rubykit-framework-logo.svg',
 
-  files_modules:           Kit::Doc::Services::Tasks.resolve_files(hash: {
+  files_modules:           Kit::Doc::Services::Tasks::Helpers.resolve_files(hash: {
     'specs/dummy/' => {
       include: %w[
         kat.rb
@@ -44,7 +44,7 @@ DOC_CONFIG_DUMMY_APP = Kit::Doc::Services::Config.get_default_config(
     ],
   },
 
-  files_extras:            Kit::Doc::Services::Tasks.resolve_files(hash: {
+  files_extras:            Kit::Doc::Services::Tasks::Helpers.resolve_files(hash: {
     'specs/dummy/docs/guides' => {
       include: %w[
         **/*.md
@@ -67,9 +67,9 @@ Kit::Doc::Services::Tasks.create_rake_task_documentation_generate!({
   clean_output_dir: true,
 })
 
-Kit::Doc::Services::Tasks.create_rake_task_documentation_generate_all_versions!({
-  task_name: 'specs:dummy-app:documentation:generate:all_versions',
-  config:    DOC_CONFIG_DUMMY_APP,
+Kit::Doc::Services::Tasks.create_rake_task_documentation_all_versions!({
+  task_namespace: 'specs:dummy-app:documentation:all_versions',
+  config:         DOC_CONFIG_DUMMY_APP,
 })
 
 YARD::Rake::YardocTask.new do |t|

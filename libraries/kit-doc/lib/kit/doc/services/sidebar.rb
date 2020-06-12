@@ -1,7 +1,8 @@
-# Data transformation logic for the sidebar content.
+# Data transformation logic for the documentation `Sidebar` content.
 module Kit::Doc::Services::Sidebar
 
   # Generate the group container needed in `sidebar_items`.
+  #
   # This maintain the group order defined in the initial config.
   def self.get_ordered_groups_container(groups:)
     result = {}
@@ -18,8 +19,11 @@ module Kit::Doc::Services::Sidebar
   end
 
   # Check if an element (module / extra) should be part of a group, based on its name, given groups conditions.
+  #
   # An element be in multiple groups if it matches inclusion conditions.
+  #
   # Also generate the display name && css classes.
+  #
   # If no group is specified, we default to the empty group (first to be displayed) rather than hidding the element.
   def self.find_element_groups(element_name:, groups:)
     result = []
