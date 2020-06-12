@@ -6,5 +6,7 @@ end
 
 require 'bundler/gem_tasks'
 
+require 'pry'
+
 import 'tasks/documentation.rake'
 import 'specs/dummy/tasks/documentation.rake'

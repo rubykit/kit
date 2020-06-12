@@ -2,7 +2,7 @@
   doc_main_href      = url_for_file("index.html")
   logo_img_src       = config[:logo] ? (config[:logo].start_with?('http') ? config[:logo] : url_for_file(config[:logo])) : nil
   project_name       = config[:project]
-  project_version    = "#{ (config[:version] != 'edge') ? 'v' : '' }#{ config[:version] }"
+  project_version    = config[:version_display]
 
   extra_section_name = config[:extra_section] || "Extras"
   nodes              = { modules: [] }

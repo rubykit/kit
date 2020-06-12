@@ -13,15 +13,15 @@ module Kit::Doc::Services::Tasks
       t.before  = -> do
         Kit::Doc::Services::Config.config = config
 
-        if clean_output_dir && !config[:output_dir].empty?
-          FileUtils.rm_rf(Dir[config[:output_dir] + '/*'])
+        if clean_output_dir && !config[:output_dir_current_version].empty?
+          FileUtils.rm_rf(Dir[config[:output_dir_current_version] + '/*'])
         end
       end
 
       t.files   = (config[:files_modules] + ['-'] + config[:files_extras]).flatten
 
       t.options = [
-        '--output-dir',      config[:output_dir],
+        '--output-dir',      config[:output_dir_current_version],
         '--plugin',          'kit-doc', 'kit-doc-contracts', # Redundant with `.yardopts`?
         '--markup-provider', 'redcarpet',
         '--markup',          'markdown',
@@ -30,7 +30,30 @@ module Kit::Doc::Services::Tasks
   end
 
   def self.create_rake_task_documentation_generate_all_versions!(config:, task_name: 'documentation:generate:all_versions')
-    ::Rake::Task.define_task task_name do
+    task_name                    = task_name
+    task_name_docs_config        = "#{ task_name }:docs_config"
+    task_name_html_redirect_file = "#{ task_name }:html_redirect_file"
+
+    known_versions = config[:versions].map { |el| el[:version] }.join(' ')
+
+    ::Rake.application.last_description = "Generate `docs_config.js` file with known versions: #{ known_versions }"
+    ::Rake::Task.define_task(task_name_docs_config) do
+      # Add `docs_config.js`
+      generate_docs_config(config: config)
+    end
+
+    ::Rake.application.last_description = "Generate `index.html` that redirect to first known version: #{ config[:versions][0][:version] }"
+    ::Rake::Task.define_task(task_name_html_redirect_file) do
+      # Add top level `index.html` redirect file. Use the first value of config[:versions] as the default.
+      generate_html_redirect_file(
+        dst:          File.join(config[:output_dir_all_versions], 'index.html'),
+        title:        "#{ config[:project] } documentation",
+        redirect_url: "#{ config[:versions][0][:version] }/index.html",
+      )
+    end
+
+    ::Rake.application.last_description = "Generate documentation for known versions: #{ known_versions }"
+    ::Rake::Task.define_task(task_name => [task_name_docs_config, task_name_html_redirect_file]) do
       puts "Generating documentation for `#{ config[:project] }`"
       if !config[:versions] || config[:versions].size == 0
         puts '  No versions provided.'
@@ -39,23 +62,14 @@ module Kit::Doc::Services::Tasks
 
       puts "  Versions: #{ config[:versions].map { |el| el[:version] }.join(' ') }"
 
-      # Add `docs_config.js`
-      generate_docs_config(config: config)
-
       # Generate documentation for every given version.
       generate_documentation_all_versions(
         config:         config,
         before_version: ->(version:, source_ref:) { puts "  Generating version `#{ version }` (source_ref: `#{ source_ref }`)" },
         after_version:  ->(result:, **)           { puts result.gsub("\n", "\n    ") },
       )
-
-      # Add top level `index.html` redirect file. Use the first value of config[:versions] as the default.
-      generate_html_redirect_file(
-        dst:          File.join(config[:output_dir_base], 'index.html'),
-        title:        "#{ config[:project] } documentation",
-        redirect_url: "#{ config[:versions][0][:version] }/index.html",
-      )
     end
+
   end
 
   # Run `documentation:generate` after checking out the git reference.
@@ -80,10 +94,10 @@ module Kit::Doc::Services::Tasks
         bundle install
 
         # Generate documentation files
-        KIT_DOC_OUTPUT_DIR_BASE=#{ config[:output_dir_base] } KIT_DOC_VERSION=#{ version } KIT_DOC_SOURCE_REF=#{ source_ref } bundle exec rake documentation:generate
+        KIT_DOC_OUTPUT_DIR_BASE=#{ config[:output_dir_all_versions] } KIT_DOC_VERSION=#{ version } KIT_DOC_SOURCE_REF=#{ source_ref } bundle exec rake documentation:generate
 
         # Copy the docs_config version generated from `docs/VERSIONS` list if there is one.
-        [[ -e '#{ config[:output_dir_base] }/docs_config.js' ]] && cp '#{ config[:output_dir_base] }/docs_config.js' '#{ config[:output_dir_base] }/#{ version }/'
+        [[ -e '#{ config[:output_dir_all_versions] }/docs_config.js' ]] && cp '#{ config[:output_dir_all_versions] }/docs_config.js' '#{ config[:output_dir_all_versions] }/#{ version }/'
       )
 
       after_version.call(version: version, source_ref: source_ref, result: result) if after_version&.respond_to?(:call)
@@ -96,19 +110,20 @@ module Kit::Doc::Services::Tasks
   end
 
   # Generate `docs_config.js` file for all versions in config[:versions]
-  def self.generate_docs_config(config:)
-    destination_path  = config[:output_dir_base]
-    gemspec_data      = Kit::Doc::Services::Config.load_gemspec_data(gemspec_name: config[:gemspec_name])
-    documentation_uri = gemspec_data.metadata['documentation_uri']
+  def self.generate_docs_config(config:, semver_regex: SEMVER_REGEX)
+    destination_path  = config[:output_dir_all_versions]
+    documentation_url = config[:documentation_url]
     versions_list     = (config[:versions] || []).map do |version:, **|
       {
         version: version,
-        url:     documentation_uri.gsub("v#{ gemspec_data.version }", version),
+        url:     documentation_url.call(version: version),
       }
     end
 
     file_content = "var versionNodes = #{ JSON.pretty_generate(versions_list) };"
     file_path    = File.join(destination_path, 'docs_config.js')
+
+    FileUtils.mkdir_p(destination_path)
     File.open(file_path, 'w') { |file| file.write(file_content) }
 
     [:ok, file_path: file_path]

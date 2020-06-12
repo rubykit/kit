@@ -91,8 +91,8 @@ def generate_api_reference
   serialize('_index.html')
 
   # Rename the generated file.
-  from = File.join(config[:output_dir], '_index.html')
-  to   = File.join(config[:output_dir], 'api_reference.html')
+  from = File.join(config[:output_dir_current_version], '_index.html')
+  to   = File.join(config[:output_dir_current_version], 'api_reference.html')
   FileUtils.mv(from, to, force: true)
 
   options.title = initial_title

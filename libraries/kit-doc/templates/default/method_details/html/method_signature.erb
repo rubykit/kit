@@ -18,7 +18,7 @@
   </h1>
 
   <% file = object.files.first || [] %>
-  <a href="<%= "#{ config[:repo_url] }/#{ file[0] }#L#{ file[1] }" %>" target='_blank' rel="help" title="View Source" class='source-link'>
+  <a href="<%= config[:source_url].call(path: path, line: line) %>" target='_blank' rel="help" title="View Source" class='source-link'>
     <span class="icon-code" aria-hidden="true"></span>
     <span class="sr-only">View Source</span>
   </a>

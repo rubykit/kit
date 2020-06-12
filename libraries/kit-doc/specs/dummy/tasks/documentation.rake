@@ -1,25 +1,23 @@
 require 'yard'
 require 'kit-doc'
 
-DOC_CONFIG = Kit::Doc::Services::Config.get_default_config(
-  project:            'Kat',
+DOC_CONFIG_DUMMY_APP = Kit::Doc::Services::Config.get_default_config(
+  project:                 'kat',
 
-  project_path:       File.expand_path('..', __dir__),
-  git_project_path:   File.expand_path('../../..', __dir__),
-  output_dir_base:    'specs/dummy/docs/dist/kat',
-  source_ref:         ENV['KIT_DOC_SOURCE_REF'].presence,
-  version:            ENV['KIT_DOC_VERSION'].presence || 'dev',
-  versions:           Kit::Doc::Services::Config.load_versions_file(path: File.expand_path('../docs/VERSIONS', __dir__))[1][:versions],
+  project_path:            File.expand_path('..', __dir__),
+  git_project_path:        File.expand_path('../../../../..', __dir__),
+  output_dir_all_versions: ENV['KIT_DOC_OUTPUT_DIR_BASE'].presence || 'docs/dist/kat',
+  source_ref:              ENV['KIT_DOC_SOURCE_REF'].presence,
+  version:                 ENV['KIT_DOC_VERSION'].presence,
+  versions:                File.expand_path('../docs/VERSIONS', __dir__),
 
-  main_redirect_url:  'file.neu_dixi_raptam.html',
+  source_url:              'https://github.com/rubykit/kit/tree/master/libraries/kit-doc',
+  authors:                 ['John Doe'],
 
-  source_url:         'https://github.com/rubykit/kit/tree/master/libraries/kit-doc',
-  documentation_url:  'http://localhost',
+  main_redirect_url:       'file.neu_dixi_raptam.html',
+  logo:                    'https://raw.githubusercontent.com/rubykit/kit/master/docs/assets/images/rubykit-framework-logo.svg',
 
-  authors:            ['John Doe'],
-  logo:               'https://raw.githubusercontent.com/rubykit/kit/master/docs/assets/images/rubykit-framework-logo.svg',
-
-  files_modules:      Kit::Doc::Services::Tasks.resolve_files(hash: {
+  files_modules:           Kit::Doc::Services::Tasks.resolve_files(hash: {
     'specs/dummy/' => {
       include: %w[
         kat.rb
@@ -28,7 +26,7 @@ DOC_CONFIG = Kit::Doc::Services::Config.get_default_config(
       ],
     },
   }),
-  groups_for_modules: {
+  groups_for_modules:      {
     ''         => [
       %r{^Kat$},
     ],
@@ -46,14 +44,14 @@ DOC_CONFIG = Kit::Doc::Services::Config.get_default_config(
     ],
   },
 
-  files_extras:       Kit::Doc::Services::Tasks.resolve_files(hash: {
+  files_extras:            Kit::Doc::Services::Tasks.resolve_files(hash: {
     'specs/dummy/docs/guides' => {
       include: %w[
         **/*.md
       ],
     },
   }),
-  groups_for_extras:  {
+  groups_for_extras:       {
     'Introduction' => [%r{guides/f1/.?}],
     'Architecture' => [%r{guides/f2/.?}],
     'Important'    => [
@@ -65,17 +63,17 @@ DOC_CONFIG = Kit::Doc::Services::Config.get_default_config(
 
 Kit::Doc::Services::Tasks.create_rake_task_documentation_generate!({
   task_name:        'specs:dummy-app:documentation:generate',
-  config:           DOC_CONFIG,
+  config:           DOC_CONFIG_DUMMY_APP,
   clean_output_dir: true,
 })
 
 Kit::Doc::Services::Tasks.create_rake_task_documentation_generate_all_versions!({
   task_name: 'specs:dummy-app:documentation:generate:all_versions',
-  config:    DOC_CONFIG,
+  config:    DOC_CONFIG_DUMMY_APP,
 })
 
 YARD::Rake::YardocTask.new do |t|
-  output_dir = "specs/dummy/docs/dist/kat-raw/#{ DOC_CONFIG[:version] }"
+  output_dir = "specs/dummy/docs/dist/kat-raw/#{ DOC_CONFIG_DUMMY_APP[:version] }"
 
   t.name     = 'specs:dummy-app:documentation:generate:raw'
   t.before   = -> do
@@ -85,7 +83,7 @@ YARD::Rake::YardocTask.new do |t|
     FileUtils.rm_rf(Dir[output_dir + '/*'])
   end
 
-  t.files    = (DOC_CONFIG[:files_modules] + ['-'] + DOC_CONFIG[:files_extras]).flatten
+  t.files    = (DOC_CONFIG_DUMMY_APP[:files_modules] + ['-'] + DOC_CONFIG_DUMMY_APP[:files_extras]).flatten
 
   t.options  = [
     '--output-dir',      output_dir,

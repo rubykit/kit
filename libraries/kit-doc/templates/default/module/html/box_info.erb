@@ -71,7 +71,7 @@
         <span class='doc-tag-type'>Defined in:</span>
         <span class='doc-tag-value'>
           <% path, line = files_list.first %>
-          <a href="<%= "#{ config[:repo_url] }/#{ path }#L#{ line }" %>" target='_blank' title="View Source" rel="help">
+          <a href="<%= config[:source_url].call(path: path, line: line) %>" target='_blank' title="View Source" rel="help">
             <%= "#{path}##{line}" %>
           </a>
         </span>
@@ -80,7 +80,7 @@
           <summary class='doc-tag-type'>Defined in: <%= files_list.size %> files</summary>
           <div class='doc-tag-value'>
             <% files_list.each do |path, line| %>
-              <p><a href="<%= "#{ config[:repo_url] }/#{ path }#L#{ line }" %>" target='_blank' title="View Source" rel="help">
+              <p><a href="<%= config[:source_url].call(path: path, line: line) %>" target='_blank' title="View Source" rel="help">
                 <%= "#{path}##{line}" %>
               </a></p>
             <% end %>
