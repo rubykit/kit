@@ -40,7 +40,7 @@ DOC_CONFIG = Kit::Doc::Services::Config.get_default_config(
       {
         inclusion:     %r{^(RedcarpetCompat|YARD.*|Kit::Doc::RedcarpetRenderCustom|Kit::Doc::Yard.*)$},
         display_title: Kit::Doc::Services::Tasks.display_helper_last_name,
-        css_classes:   Kit::Doc::Services::Tasks.display_helper_css_padding,
+        css_classes:   Kit::Doc::Services::Tasks.display_helper_css_padding(hide: 'Kit::Doc::'),
       },
     ],
     'Various'   => [
