@@ -3,8 +3,11 @@ include ::Kit::Doc::Yard::TemplatePluginHelper # rubocop:disable Style/MixinUsag
 
 require 'json'
 
-# @todo Rewrite with Kit::Organizer?
-# @ref https://github.com/lsegal/yard/blob/master/templates/default/fulldoc/html/setup.rb#L4
+# Entry point for the Kit::Doc template.
+#
+# ### References:
+# - https://github.com/lsegal/yard/blob/master/templates/default/fulldoc/html/setup.rb#L4
+#
 def init
   # Ugly trick to be able to reuse some Yard code out of order.
   Kit::Doc::Services::Config.config[:default_yard_markup] = options.markup

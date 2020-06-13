@@ -2,7 +2,10 @@ require 'English'
 
 # Basic markdown preprocessing.
 #
-# Adds variable substitution when generating `Kit::Doc` documentation, with valid Github fallback.
+# Adds variable substitution when generating `Kit::Doc` documentation, while staying compatible with Github markdown previews.
+#
+# This is particularly helpful for versionned link references in Guides.
+#
 module Kit::Doc::Services::MarkdownPreprocessor
 
   # Simple regex to identify `$variable_name` patterns.

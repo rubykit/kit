@@ -20,7 +20,8 @@ module Kit::Doc::Services::Config
   # Note that this is a more permissive version to match semver inside strings and allow for leading `v`.
   #
   # ### References:
-  #   - https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
+  # - https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
+  #
   SEMVER_REGEX = %r{(v?(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?)}
 
   # Configuration normalization for `Kit::Doc`.
@@ -86,6 +87,8 @@ module Kit::Doc::Services::Config
   #
   #   * `:authors` - List of authors for the generated docs.
   #     Autofilled from gemspec if `:gemspec_name` is set.
+  #
+  #   * `:markdown_variables` - Hash of values available in Markdown pre-processing. See `Kit::Doc::Services::MarkdownPreprocessor`.
   #
   #   * `:assets` - List of paths to files or directories that will be copied as is to the "assets" directory in the output path.
   #
