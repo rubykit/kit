@@ -5,6 +5,7 @@ end
 require_relative 'services/config'
 require_relative 'services/docstring'
 require_relative 'services/extras'
+require_relative 'services/markdown_preprocessor'
 require_relative 'services/methods'
 require_relative 'services/modules'
 require_relative 'services/properties'

@@ -14,7 +14,7 @@ DOC_CONFIG_DUMMY_APP = Kit::Doc::Services::Config.get_default_config(
   source_url:              'https://github.com/rubykit/kit/tree/master/libraries/kit-doc',
   authors:                 ['John Doe'],
 
-  main_redirect_url:       'file.neu_dixi_raptam.html',
+  main_redirect_url:       'file.ab_colla_deus.html',
   logo:                    'https://raw.githubusercontent.com/rubykit/kit/master/docs/assets/images/rubykit-framework-logo.svg',
 
   files_modules:           Kit::Doc::Services::Tasks::Helpers.resolve_files(hash: {

@@ -1,7 +1,11 @@
 class ::YARD::CodeObjects::Base # rubocop:disable Style/Documentation
 
   # In the original code flow, the html rendering is done directly in templates.
-  # This allows us to access the rendered version anywhere, and to cache it.
+  #
+  # This addition allows us to access the rendered version anywhere, and to cache it.
+  #
+  # Note: this is an addition, not present in the original class.
+  #
   def docstring_rendered(locale = nil)
     locale ||= ::YARD::I18n::Locale.default
     if locale.is_a?(String)
@@ -14,7 +18,8 @@ class ::YARD::CodeObjects::Base # rubocop:disable Style/Documentation
 
     @docstrings_rendered ||= {}
     @docstrings_rendered[locale_name] ||= Kit::Doc::Services::Utils.htmlify({
-      content: docstring,
+      content:            docstring,
+      markdown_variables: Kit::Doc::Services::Config.config[:markdown_variables],
     })
   end
 

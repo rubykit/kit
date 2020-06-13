@@ -1,6 +1,7 @@
 # Namespace for Docstring related operations.
 module Kit::Doc::Services::Docstring
 
+  # Get full "Docstring" for `object`.
   def self.full(object:)
     docstring = (object.tags(:overload).size == 1 && obj.docstring.empty?) ? object.tag(:overload).docstring : object.docstring
 
@@ -11,15 +12,18 @@ module Kit::Doc::Services::Docstring
     docstring
   end
 
-  def self.toc(object:)
-    get_content_toc(content: full(object: object))
-  end
-
+  # Get `Docstring` summary for `object`.
   def self.summary(object:)
     full(object: object).summary
   end
 
-  # Dirty hacks to get a Table of Content hash (based on mardown h1 / h2 / h3 / etc)
+  # Get a hash table of content for a given object.
+  def self.toc(object:)
+    get_content_toc(content: full(object: object))
+  end
+
+  # Generate a "Table of Content" `hash` based on html headers (h1 / h2 / h3 / etc)
+  #
   # Only the two first levels are used by the template.
   def self.get_content_toc(content:)
     begin
@@ -33,6 +37,7 @@ module Kit::Doc::Services::Docstring
     result
   end
 
+  # Generate an html "Table of Content".
   def self.get_html_toc(content:)
     begin
       renderer = ::Redcarpet::Render::HTML_TOC.new()
@@ -48,6 +53,7 @@ module Kit::Doc::Services::Docstring
   end
 
   # Flatten the DOM headers hierarchy recursively
+  #
   # @api private
   def self.li_to_hash(node:)
     {

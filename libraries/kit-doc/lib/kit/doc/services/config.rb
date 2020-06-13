@@ -172,6 +172,8 @@ module Kit::Doc::Services::Config
       extras_section_name:     'Guides',
       logo:                    nil,
       authors:                 [],
+      markdown_variables:      {},
+
       assets:                  [],
       main_redirect_url:       'api_reference.html',
     }
@@ -240,6 +242,11 @@ module Kit::Doc::Services::Config
     end
 
     config[:current_version_display] = "#{ (config[:current_version] =~ %r{^[0-9]}) ? 'v' : '' }#{ config[:current_version] }"
+
+    markdown_variables = {
+      CURRENT_VERSION: config[:current_version],
+    }
+    markdown_variables.each { |k, v| config[:markdown_variables][k] = v if !config[:markdown_variables][k] }
 
     config
   end
