@@ -55,7 +55,7 @@ DOC_CONFIG_DUMMY_APP = Kit::Doc::Services::Config.get_default_config(
     'Introduction' => [%r{guides/f1/.?}],
     'Architecture' => [%r{guides/f2/.?}],
     'Important'    => [
-      %r{guides/f1/ab},
+      %r{guides/f1/neu},
       %r{guides/f2/sub},
     ],
   },

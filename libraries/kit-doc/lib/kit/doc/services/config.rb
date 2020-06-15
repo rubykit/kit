@@ -289,7 +289,10 @@ module Kit::Doc::Services::Config
 
   # Parse a `VERSIONS` file.
   #
-  # Expected format per line:
+  # It contains all versions we want to generate documentation for.
+  #
+  # ### Expected format
+  # On each line:
   # ```
   # version[:source_ref]`
   # ```
@@ -298,6 +301,12 @@ module Kit::Doc::Services::Config
   #
   #   * `source_ref` - The branch/commit/tag used for source link inference.
   #     Defaults to `version` if not specified.
+  #
+  # ### Example
+  # ```text
+  # edge:master
+  # v0.0.1
+  # ```
   #
   def self.load_versions_file(path:)
     content  = File.readlines(path)
