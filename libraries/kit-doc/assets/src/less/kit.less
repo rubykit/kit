@@ -53,8 +53,6 @@ body {
   }
 }
 
-
-
 /* When there is no content between h1 and h2 */
 #moduledoc > h2:first-child {
   margin-top: 0px;
@@ -94,6 +92,10 @@ a {
   text-decoration: none !important;
 }
 
+.content a {
+  font-weight: 400;
+}
+
 .docstring a {
   /* text-decoration: underline !important; */
 
@@ -114,6 +116,16 @@ a {
   }
 }
 
+body.night-mode .footer {
+  a, button {
+    color: @nightTextHeaders !important;
+  }
+  a:hover, a:visited:hover {
+    opacity: 0.6;
+  }
+}
+
+
 /* Blockquote --------------------------------------------------------------- */
 
 body.night-mode {
@@ -123,6 +135,30 @@ body.night-mode {
   }
 }
 
+/* Footer ------------------------------------------------------------------- */
+
+.content-inner .footer {
+  color: @black;
+
+  a, a:visited, .footer-button {
+    color: @black;
+  }
+
+  .footer-button {
+    text-decoration: none;
+    font-style:      normal;
+  }
+}
+
+body.night-mode {
+  .content-inner .footer {
+    color: @mediumGray;
+
+    a, a:visited, .footer-button {
+      color: @mediumGray;
+    }
+  }
+}
 
 /* Imports -------------------------------------------------------------------*/
 

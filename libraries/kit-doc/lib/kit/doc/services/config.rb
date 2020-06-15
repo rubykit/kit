@@ -115,7 +115,7 @@ module Kit::Doc::Services::Config
   # You can have those grouped as follows:
   #
   # ```ruby
-  # groups_for_extras:  {
+  # groups_for_extras: {
   #   'Introduction' => [%r{guides/introduction/.?}],
   #   'Advanced'     => [%r{guides/advanced/.?}],
   # },
@@ -124,7 +124,7 @@ module Kit::Doc::Services::Config
   # Similar can be done for modules:
   #
   # ```ruby
-  # groups_for_modules:      {
+  # groups_for_modules: {
   #   # The "empty" group is where modules not included in another group go.
   #   ''          => [
   #     {
