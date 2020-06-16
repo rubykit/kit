@@ -11,7 +11,7 @@ DOC_CONFIG = Kit::Doc::Services::Config.get_default_config(
   current_version:         ENV['KIT_DOC_CURRENT_VERSION'].presence || 'dev',
   all_versions:            File.expand_path('../docs/VERSIONS', __dir__),
 
-  main_redirect_url:       'file.apis.html',
+  main_redirect_url:       'apis.html',
 
   logo:                    'https://raw.githubusercontent.com/rubykit/kit/master/docs/assets/images/rubykit-framework-logo.svg',
 

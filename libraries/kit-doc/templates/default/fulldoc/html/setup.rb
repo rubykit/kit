@@ -155,3 +155,22 @@ def generate_html_search_file
     T('layout').run(template_options)
   end
 end
+
+# Generate `extra` files.
+# Behaves like the original, except for `outfile_name`.
+#
+# ### References
+# - https://github.com/lsegal/yard/blob/84c983da9157ab7a6eccbc7a1740f2e22c05b679/templates/default/fulldoc/html/setup.rb#L63
+def serialize_file(file, title = nil)
+  options.object = Registry.root
+  options.file   = file
+  outfile_name   = file.name + '.html'
+
+  serialize_index(options) if file == options.readme
+  Templates::Engine.with_serializer(outfile_name, options.serializer) do
+    T('layout').run(options)
+  end
+
+  # DO NOT REMOVE: this seems to matter A LOT.
+  options.delete(:file)
+end

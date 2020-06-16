@@ -45,7 +45,7 @@ module Kit::Doc::Services::Utils
     def initialize(object:)
       @object     = object
       @serializer = options.serializer
-      if @object.is_a?(::YARD::CodeObjects::ExtraFileObject)
+      if @object.is_a?(::YARD::CodeObjects::ExtraFileObject) # rubocop:disable Style/GuardClause
         @file = @object
       end
     end
@@ -73,6 +73,18 @@ module Kit::Doc::Services::Utils
     html_content
   end
 
+  # If a text matches a reference object, add a link to it.
+  def self.linkify(text:)
+    template_helper = TemplateHelper.new(object: nil)
+
+    link = template_helper.link_object(text)
+    if !link.start_with?('<span')
+      link = nil
+    end
+
+    [:ok, link: link]
+  end
+
   # The original implementation has an implicit dependency on `options`.
   # We bypass it by saving the value we need in the Kit config earlier.
   #
@@ -90,8 +102,8 @@ module Kit::Doc::Services::Utils
     Kit::Doc::Services::Config.config[:yard_options]&.markup
   end
 
-  # If a class if module is defined in several files, removes the one that are nested, as it is probably just used as a namespace in that case.
-  #
+  # If a class if module is defined in several files, removes the one that are nested,
+  #   as it is probably just used as a namespace in that case.
   def self.cleanup_files(list:)
     list.reject do |cr_el_path, _cr_el_line|
       cr_el_path = cr_el_path[0..-4] if cr_el_path.end_with?('.rb')

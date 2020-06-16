@@ -50,7 +50,7 @@ class Kat::ChildNode < Kat::BaseNode
   #
   # ## Examples
   #
-  # ```console
+  # ```irb
   # irb> ChildNode.new(options: { levels: 3 })
   # [:ok]
   # ```
@@ -63,7 +63,7 @@ class Kat::ChildNode < Kat::BaseNode
   #
   # ## Examples
   #
-  # ```console
+  # ```irb
   # irb> node.instance_m(:replace, { layer: 2 })
   # [:ok]
   # ```
@@ -76,7 +76,7 @@ class Kat::ChildNode < Kat::BaseNode
   #
   # ## Examples
   #
-  # ```console
+  # ```irb
   # irb> ChildNode.class_m(next: true, prev: false)
   # [:ok]
   # ```
@@ -89,7 +89,7 @@ class Kat::ChildNode < Kat::BaseNode
   #
   # ## Examples
   #
-  # ```console
+  # ```irb
   # irb> node.instance_m2(:replace, { layer: 2 })
   # [:ok]
   # ```
@@ -109,7 +109,7 @@ class Kat::ChildNode < Kat::BaseNode
   #
   # ## Examples
   #
-  # ```console
+  # ```irb
   # irb> ChildNode.class_m2(next: true, prev: false)
   # [:ok]
   # ```

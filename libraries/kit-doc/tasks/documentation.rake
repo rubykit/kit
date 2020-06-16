@@ -11,7 +11,7 @@ DOC_CONFIG = Kit::Doc::Services::Config.get_default_config(
   current_version:         ENV['KIT_DOC_CURRENT_VERSION'].presence,
   all_versions:            File.expand_path('../docs/VERSIONS', __dir__),
 
-  main_redirect_url:       'file.README.html',
+  main_redirect_url:       'README.html',
   logo:                    'https://raw.githubusercontent.com/rubykit/kit/master/docs/assets/images/rubykit-framework-logo.svg',
 
   files_modules:           Kit::Doc::Services::Tasks::Helpers.resolve_files(hash: {

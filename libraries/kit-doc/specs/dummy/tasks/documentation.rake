@@ -14,7 +14,7 @@ DOC_CONFIG_DUMMY_APP = Kit::Doc::Services::Config.get_default_config(
   source_url:              'https://github.com/rubykit/kit/tree/master/libraries/kit-doc',
   authors:                 ['John Doe'],
 
-  main_redirect_url:       'file.ab_colla_deus.html',
+  main_redirect_url:       'ab_colla_deus.html',
   logo:                    'https://raw.githubusercontent.com/rubykit/kit/master/docs/assets/images/rubykit-framework-logo.svg',
 
   files_modules:           Kit::Doc::Services::Tasks::Helpers.resolve_files(hash: {
@@ -78,7 +78,11 @@ YARD::Rake::YardocTask.new do |t|
   t.name     = 'specs:dummy-app:documentation:generate:raw'
   t.before   = -> do
     # Disable the plugin in a hacky way
-    YARD::Templates::Engine.template_paths.pop
+    ::YARD::Templates::Engine.template_paths.pop
+    # Disable Redcarpet custom renderer
+    ::RedcarpetCompat.disabled = true
+    # Overwrite `Kit::Doc::Yard::FileSerializer`
+    ::YARD::CLI::YardocOptions.default_attr :serializer, -> { ::YARD::Serializers::FileSystemSerializer.new }
 
     FileUtils.rm_rf(Dir[output_dir + '/*'])
   end

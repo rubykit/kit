@@ -2,20 +2,20 @@ require 'pathname'
 
 # Configuration related logic.
 #
-# The most important thing is the expected `config` format, documented in `.get_default_config`.
+# The most important thing is the expected configuration format, documented in `Kit::Doc::Services::Config.get_default_config`.
 #
 module Kit::Doc::Services::Config
 
   class << self
 
-    # This `Service` currently acts as a singleton to reference the current config for Yard rake tasks.
+    # This Service currently acts as a singleton to reference the current config for Yard rake tasks.
     #
     # This is obviously not ideal / thread safe, but it is only used for tooling, so it does not matter.
     attr_accessor :config
 
   end
 
-  # A regex that match `semantic versioning` versions.
+  # A regex that match semantic versioning (semver) versions.
   #
   # Note that this is a more permissive version to match semver inside strings and allow for leading `v`.
   #
@@ -167,9 +167,9 @@ module Kit::Doc::Services::Config
       # source_url:              nil,
       url_mode:                :local,
 
-      files_modules:           {},
+      files_modules:           [],
       groups_for_modules:      {},
-      files_extras:            {},
+      files_extras:            [],
       groups_for_extras:       {},
 
       extras_section_name:     'Guides',

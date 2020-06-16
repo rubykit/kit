@@ -8,7 +8,7 @@ class Kit::Doc::RedcarpetRenderCustom < ::Redcarpet::Render::HTML
 
   # Generate a anchor from a given `text`.
   #
-  # ### References:
+  # ### References
   # - https://github.com/vmg/redcarpet/blob/master/ext/redcarpet/html.c#L274
   def self.header_anchor(text)
     # Skip html tags
@@ -30,7 +30,7 @@ class Kit::Doc::RedcarpetRenderCustom < ::Redcarpet::Render::HTML
   #
   # Bypasses `:with_toc_data` option so we need to reimplement it ourselves.
   #
-  # ### References:
+  # ### References
   # - https://github.com/vmg/redcarpet/blob/master/ext/redcarpet/html.c#L322
   def header(text, level)
     anchor = self.class.header_anchor(text)
@@ -41,6 +41,37 @@ class Kit::Doc::RedcarpetRenderCustom < ::Redcarpet::Render::HTML
         #{ text }
       </h#{ level }>
     )
+  end
+
+  # Attempt to identify extras `.md` links that we can replace with the `.html` version.
+  #
+  # This feature is similar to YARD's `{file:file.md}` conceptually, but it support defaults markdown links.
+  def link(link, title, content)
+    # Note: maybe we want to remove the link entirely?
+    link = '#' if !link
+
+    if link.end_with?('.md')
+      link_search = link.delete_prefix('/').gsub('../', '')
+      if Kit::Doc::Services::Config.config[:files_extras].select { |path| path.end_with?(link_search) }
+        link = File.basename(link).gsub('.md', '.html')
+      end
+    end
+
+    %(<a href="#{ link }" title="#{ title }">#{ content }</a>)
+  end
+
+  # Attempt to identify & add link to objects references between back ticks.
+  #
+  # Note: is it not ideal to perform it here, as we have no context for relative references
+  #  like `.class_method` or `#instance_method`. If we want to support this, the replacement
+  #  needs to be done in the docstring with some regex to identify backtick.
+  def codespan(code)
+    link = Kit::Doc::Services::Utils.linkify(text: code)[1][:link]
+    if link
+      code = link
+    end
+
+    %(<code>#{ code }</code>)
   end
 
 end
