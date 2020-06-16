@@ -10,7 +10,7 @@ require 'json'
 #
 def init
   # Ugly trick to be able to reuse some Yard code out of order.
-  Kit::Doc::Services::Config.config[:default_yard_markup] = options.markup
+  Kit::Doc::Services::Config.config[:yard_options] = options
 
   if options.title.start_with?('Documentation by YARD')
     options.title = nil

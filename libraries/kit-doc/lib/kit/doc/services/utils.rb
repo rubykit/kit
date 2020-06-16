@@ -30,6 +30,28 @@ module Kit::Doc::Services::Utils
     str.gsub(%{&([a-zA-Z0-9]+|#[0-9]{1,6}|#x[0-9a-fA-F]{1,6});}, '')
   end
 
+  # Template like class to call `htmlify`.
+  class TemplateHelper
+
+    include ::YARD::Templates::Helpers::BaseHelper
+    include ::YARD::Templates::Helpers::HtmlHelper
+
+    attr_reader :file
+
+    def options
+      Kit::Doc::Services::Config.config[:yard_options]
+    end
+
+    def initialize(object:)
+      @object     = object
+      @serializer = options.serializer
+      if @object.is_a?(::YARD::CodeObjects::ExtraFileObject)
+        @file = @object
+      end
+    end
+
+  end
+
   # In the original code flow, the html rendering is done directly in templates.
   #
   # This allows us to generate the rendered version from anywhere.
@@ -37,18 +59,18 @@ module Kit::Doc::Services::Utils
   # ### References
   # - https://github.com/lsegal/yard/blob/master/templates/default/layout/html/setup.rb#L65
   #
-  def self.htmlify(content:, markdown_variables: {}, markup: nil)
-    markup ||= Kit::Doc::Services::Config.config[:default_yard_markup]
-
-    helper = Struct.new(:options).new()
-    helper.extend(::YARD::Templates::Helpers::HtmlHelper)
+  def self.htmlify(content:, markdown_variables: {}, markup: nil, yard_object: nil)
+    markup ||= Kit::Doc::Services::Config.config[:yard_options]&.markup
 
     content = Kit::Doc::Services::MarkdownPreprocessor.preproc_conditionals({
       content:   content,
       variables: markdown_variables,
     })[1][:processed_content]
 
-    helper.htmlify(content, markup)
+    template_helper = TemplateHelper.new(object: yard_object)
+    html_content    = template_helper.htmlify(content, markup)
+
+    html_content
   end
 
   # The original implementation has an implicit dependency on `options`.
@@ -65,7 +87,7 @@ module Kit::Doc::Services::Utils
       return type if exts.include?(ext)
     end
 
-    Kit::Doc::Services::Config.config[:default_yard_markup]
+    Kit::Doc::Services::Config.config[:yard_options]&.markup
   end
 
   # If a class if module is defined in several files, removes the one that are nested, as it is probably just used as a namespace in that case.

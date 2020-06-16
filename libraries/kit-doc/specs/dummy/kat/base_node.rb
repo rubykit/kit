@@ -1,7 +1,29 @@
 require_relative '../mixins/class_include1.rb'
 require_relative '../mixins/class_extend1.rb'
 
-# Defines a BaseNode
+# Defines a `BaseNode`.
+#
+# ## Linking
+#
+# Linking, the `Kit::Doc` (markdown) way:
+#   - Current class: `Kat::BaseNode`
+#   - Class method: `.class_m`
+#   - Instance method: `#instance_m`
+#   - External class: `Kat::ChildNode`
+#   - Class method: `Kat::ChildNode.class_m`
+#   - Instance method: `Kat::ChildNode#instance_m`
+#   - Guide: [Ab colla deus](../docs/guides/ab_colla_deus.md)
+#
+# Linking, the {::YARD} way:
+#   - Current class: {Kat::BaseNode}
+#   - Class method: {.class_m}
+#   - Instance method: {instance_m}
+#   - External class: {Kat::ChildNode}
+#   - Class method: {Kat::ChildNode.class_m}
+#   - Instance method: {Kat::ChildNode#instance_m}
+#   - Guide: {file:docs/guides/ab_colla_deus.md Ab colla deus}
+#
+# ## Random doc
 #
 # Overall, the node has three responsibilities:
 #
@@ -26,7 +48,7 @@ require_relative '../mixins/class_extend1.rb'
 # end
 # ```
 #
-#  Mauris laoreet euismod velit, in malesuada diam rutrum in.
+# Mauris laoreet euismod velit, in malesuada diam rutrum in.
 class Kat::BaseNode
 
   include ClassInclude1

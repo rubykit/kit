@@ -20,7 +20,12 @@ class ::YARD::CodeObjects::Base # rubocop:disable Style/Documentation
     @docstrings_rendered[locale_name] ||= Kit::Doc::Services::Utils.htmlify({
       content:            docstring,
       markdown_variables: Kit::Doc::Services::Config.config[:markdown_variables],
+      yard_object:        self,
     })
+  end
+
+  def file
+    nil
   end
 
 end

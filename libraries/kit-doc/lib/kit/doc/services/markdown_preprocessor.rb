@@ -54,7 +54,7 @@ module Kit::Doc::Services::MarkdownPreprocessor
   # The regex simply match `<!--pp`, comment content inside `{}`, and a closing `--pp>`.
   #
   # ### References
-  # - https://regex101.com/r/BNbn0Y/7
+  # - https://regex101.com/r/BNbn0Y/8
   PREPROC_REGEX = %r{(?:<!--pp )(?:.*?)(?<!\\)(?:{)(?:\n| )?(?<prepoc_content>[^\>]*?)(?:\n| )?(?<!\\)(?:}){1}(?:.*?)(?:pp-->)}ms
 
   # Replace static content: by dynamic one hidden in html comments.

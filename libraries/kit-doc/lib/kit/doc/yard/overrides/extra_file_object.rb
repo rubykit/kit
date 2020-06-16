@@ -43,6 +43,7 @@ class ::YARD::CodeObjects::ExtraFileObject
       content:            self.contents,
       markdown_variables: Kit::Doc::Services::Config.config[:markdown_variables],
       markup:             self.attributes[:markup],
+      yard_object:        self,
     })
   end
 
