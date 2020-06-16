@@ -9,7 +9,7 @@ end
 
 module YARD::Templates::Helpers::HtmlHelper # rubocop:disable Style/Documentation
 
-  # Overriden to comment-out `parse_codeblocks` in order to avoid having to access `object`.
+  # Overriden to remove syntax highlighting with `parse_codeblocks`.
   #
   # ### References
   # - https://github.com/lsegal/yard/blob/master/lib/yard/templates/helpers/html_helper.rb#L57
@@ -26,9 +26,7 @@ module YARD::Templates::Helpers::HtmlHelper # rubocop:disable Style/Documentatio
       html = html.encode(invalid: :replace, replace: '?')
     end
     html = resolve_links(html)
-    #unless [:text, :none, :pre, :ruby].include?(markup)
-    #  html = parse_codeblocks(html)
-    #end
+
     html
   end
 

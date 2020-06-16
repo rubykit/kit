@@ -200,10 +200,14 @@ module Kit::Doc::Services::Config
         authors: [gemspec_data.author],
       }
 
+      gemspec_attributes.merge!({
+        version:    gemspec_data.version,
+        source_url: gemspec_data.metadata['source_code_uri'],
+      })
+
       if config[:url_mode] != :local
+        # Note: when we have a local source viewer or the view-source uri scheme improve, add `source_url` here too.
         gemspec_attributes.merge!({
-          version:           gemspec_data.version,
-          source_url:        gemspec_data.metadata['source_code_uri'],
           documentation_url: ->(version:) { gemspec_data.metadata['documentation_uri'].gsub(SEMVER_REGEX, version) },
         })
       end
@@ -266,7 +270,12 @@ module Kit::Doc::Services::Config
 
         path_split[2] = 'blob'
         path_split[3] = source_ref
-        path_split << "#{ path }#L#{ line }"
+
+        path_and_line = ''
+        path_and_line << "#{ path }"   if path
+        path_and_line << "#L#{ line }" if line
+        path_split << path_and_line
+
         url_split[1] = path_split.join('/')
 
         url_split.join(separator)

@@ -7,8 +7,8 @@
 [Kit::Doc](https://github.com/rubykit/kit/tree/master/libraries/kit-doc) is a tool to generate documentation for your Ruby projects.
 
 - To see a live example of the generated docs, see [Kit::Doc's own documentation](https://docs.rubykit.org/kit-doc/edge).
-- To learn how to use Kit::Doc in your projects, see the [Usage](https://docs.rubykit.org/kit-doc/edge/file.usage.md) guide.
-- To learn how to document your projects, see the [Writing documentation](https://docs.rubykit.org/kit-doc/edge/file.writing_documentation.md) guide.
+- To learn how to use Kit::Doc in your projects, see the [Usage](docs/guides/usage.md) guide.
+- To learn how to document your projects, see the [Writing documentation](docs/guides/writing_documentation.md) guide.
 
 ## Acknowledgements
 

@@ -1,4 +1,4 @@
-# Overriden class from `Yard`.
+# Overriden class from `YARD`.
 #
 # ### Reference:
 # - https://github.com/lsegal/yard/blob/master/lib/yard/code_objects/extra_file_object.rb#L7
@@ -43,8 +43,13 @@ class ::YARD::CodeObjects::ExtraFileObject
       content:            self.contents,
       markdown_variables: Kit::Doc::Services::Config.config[:markdown_variables],
       markup:             self.attributes[:markup],
-      yard_object:        self,
+      yard_code_object:   self,
     })
+  end
+
+  # Make this object interface compatible with Base CodeObjects.
+  def file
+    filename
   end
 
 end

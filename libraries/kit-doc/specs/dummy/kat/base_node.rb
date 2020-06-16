@@ -12,7 +12,8 @@ require_relative '../mixins/class_extend1.rb'
 #   - External class: `Kat::ChildNode`
 #   - Class method: `Kat::ChildNode.class_m`
 #   - Instance method: `Kat::ChildNode#instance_m`
-#   - Guide: [Ab colla deus](../docs/guides/ab_colla_deus.md)
+#   - Link to embedded file: [Ab colla deus](../docs/guides/ab_colla_deus.md)
+#   - Links to non-embedded files: [VERSIONS](../docs/VERSIONS) [LOGO](../../../../../docs/assets/images/rubykit-framework-logo.png)
 #
 # Linking, the {::YARD} way:
 #   - Current class: {Kat::BaseNode}

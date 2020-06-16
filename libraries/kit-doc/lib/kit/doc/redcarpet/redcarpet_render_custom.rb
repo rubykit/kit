@@ -1,6 +1,10 @@
 require 'redcarpet'
 
 # Custom RedCarpet renderer.
+#
+# ### References
+# - https://github.com/vmg/redcarpet
+#
 class Kit::Doc::RedcarpetRenderCustom < ::Redcarpet::Render::HTML
 
   # Characters to be removed from anchor links.
@@ -47,17 +51,32 @@ class Kit::Doc::RedcarpetRenderCustom < ::Redcarpet::Render::HTML
   #
   # This feature is similar to YARD's `{file:file.md}` conceptually, but it support defaults markdown links.
   def link(link, title, content)
-    # Note: maybe we want to remove the link entirely?
-    link = '#' if !link
+    config = Kit::Doc::Services::Config.config
 
-    if link.end_with?('.md')
-      link_search = link.delete_prefix('/').gsub('../', '')
-      if Kit::Doc::Services::Config.config[:files_extras].select { |path| path.end_with?(link_search) }
-        link = File.basename(link).gsub('.md', '.html')
+    # Note: maybe we want to remove the link entirely?
+    link ||= '#'
+    target = nil
+
+    # Attempt to detect relative link.
+    if !link.include?('://')
+      filename = File.basename(link)
+
+      # Hacky search in the extras file to see if the markdown file will be part of the documentation.
+      if link.end_with?('.md') && config[:files_extras].select { |path| path.end_with?(filename) }.size > 0
+        link = filename.gsub('.md', '.html')
+
+      # When there is a relative url reference to a non-embedded file, try to generate a correct url.
+      elsif (yard_code_object = Kit::Doc::Services::Utils::TemplateHelper.current_yard_code_object)
+        # This is relative to the project top level.
+        current_object_file = yard_code_object.file
+        adjusted_file_path  = File.join(File.dirname(current_object_file), link)
+
+        link   = config[:source_url].call(path: adjusted_file_path, line: nil).gsub('/./', '/')
+        target = '_blank'
       end
     end
 
-    %(<a href="#{ link }" title="#{ title }">#{ content }</a>)
+    %(<a href="#{ link }" title="#{ title }" #{ target ? %(target="#{ target }") : '' }>#{ content }</a>)
   end
 
   # Attempt to identify & add link to objects references between back ticks.

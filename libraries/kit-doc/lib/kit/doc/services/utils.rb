@@ -38,6 +38,13 @@ module Kit::Doc::Services::Utils
 
     attr_reader :file
 
+    class << self
+
+      # Quite an ugly hack to keep track of the current CodeObject being rendered for RedCarpet.
+      attr_accessor :current_yard_code_object
+
+    end
+
     def options
       Kit::Doc::Services::Config.config[:yard_options]
     end
@@ -45,9 +52,25 @@ module Kit::Doc::Services::Utils
     def initialize(object:)
       @object     = object
       @serializer = options.serializer
+
+      # Note: in YARD, options.object is never an `ExtraFileObject`.
+      #   Reference: https://github.com/lsegal/yard/blob/master/templates/default/fulldoc/html/setup.rb#L64
       if @object.is_a?(::YARD::CodeObjects::ExtraFileObject) # rubocop:disable Style/GuardClause
-        @file = @object
+        @file   = @object
+        @object = ::YARD::Registry.root
       end
+    end
+
+    def to_html(content:, markup:, yard_code_object: nil)
+      self.class.current_yard_code_object = yard_code_object
+
+      args = [content]
+      args << markup if markup
+      html_content = htmlify(*args)
+
+      self.class.current_yard_code_object = nil
+
+      html_content
     end
 
   end
@@ -59,7 +82,7 @@ module Kit::Doc::Services::Utils
   # ### References
   # - https://github.com/lsegal/yard/blob/master/templates/default/layout/html/setup.rb#L65
   #
-  def self.htmlify(content:, markdown_variables: {}, markup: nil, yard_object: nil)
+  def self.htmlify(content:, markdown_variables: {}, markup: nil, yard_code_object: nil)
     markup ||= Kit::Doc::Services::Config.config[:yard_options]&.markup
 
     content = Kit::Doc::Services::MarkdownPreprocessor.preproc_conditionals({
@@ -67,8 +90,12 @@ module Kit::Doc::Services::Utils
       variables: markdown_variables,
     })[1][:processed_content]
 
-    template_helper = TemplateHelper.new(object: yard_object)
-    html_content    = template_helper.htmlify(content, markup)
+    template_helper = TemplateHelper.new(object: yard_code_object)
+    html_content    = template_helper.to_html({
+      content:          content,
+      markup:           markup,
+      yard_code_object: yard_code_object,
+    })
 
     html_content
   end
