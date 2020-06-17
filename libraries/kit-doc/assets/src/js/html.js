@@ -5,7 +5,6 @@ import $ from 'jquery'
 import Handlebars from 'handlebars/runtime'
 
 import hljs from 'highlight.js/lib/core'
-import bash from 'highlight.js/lib/languages/bash'
 import css from 'highlight.js/lib/languages/css'
 import diff from 'highlight.js/lib/languages/diff'
 import http from 'highlight.js/lib/languages/http'
@@ -15,8 +14,9 @@ import markdown from 'highlight.js/lib/languages/markdown'
 import sql from 'highlight.js/lib/languages/sql'
 import xml from 'highlight.js/lib/languages/xml'
 
-import ruby from './highlight.js/languages/ruby'
+import bash    from './highlight.js/languages/bash'
 import kit_url from './highlight.js/languages/kit-url'
+import ruby    from './highlight.js/languages/ruby'
 
 import isArray from './template-helpers/isArray'
 import isLocal from './template-helpers/isLocal'
