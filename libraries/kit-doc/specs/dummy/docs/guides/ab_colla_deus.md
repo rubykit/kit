@@ -1,7 +1,7 @@
 # Ab colla deus
 
 <!--pp {
-[Neu dixi raptam](file.neu_dixi_raptam.html?version=$CURRENT_VERSION)
+[Neu dixi raptam $CURRENT_VERSION](f1/neu_dixi_raptam.md)
 } -->
 [Neu dixi raptam](f1/neu_dixi_raptam.md)
 <!-- pp-->
@@ -28,9 +28,9 @@ def create_set_and_get(initial_value=0) # note the default value of 0
   [ Proc.new {|x| closure_value = x}, Proc.new { closure_value } ]
 end
 
-setter, getter = create_set_and_get  # returns two values
+setter, getter = create_set_and_get # returns two values
 setter.call(21)
-getter.call      # => 21
+getter.call # => 21
 
 # Parameter variables can also be used as a binding for the closure,
 # so the preceding can be rewritten as:
