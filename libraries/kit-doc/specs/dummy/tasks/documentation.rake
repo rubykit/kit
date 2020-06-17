@@ -1,14 +1,12 @@
 require 'yard'
 require 'kit-doc'
 
-DOC_CONFIG_DUMMY_APP = Kit::Doc::Services::Config.get_default_config(
+DOC_CONFIG_DUMMY_APP = Kit::Doc::Services::Config.create_config(
   project:                 'kat',
 
   project_path:            File.expand_path('..', __dir__),
   git_project_path:        File.expand_path('../../../../..', __dir__),
   output_dir_all_versions: ENV['KIT_DOC_OUTPUT_DIR_ALL_VERSIONS'].presence || 'docs/dist/kat',
-  source_ref:              ENV['KIT_DOC_SOURCE_REF'].presence,
-  current_version:         ENV['KIT_DOC_CURRENT_VERSION'].presence,
   all_versions:            File.expand_path('../docs/VERSIONS', __dir__),
 
   source_url:              'https://github.com/rubykit/kit/tree/master/libraries/kit-doc',
@@ -17,7 +15,7 @@ DOC_CONFIG_DUMMY_APP = Kit::Doc::Services::Config.get_default_config(
   main_redirect_url:       'ab_colla_deus.html',
   logo:                    'https://raw.githubusercontent.com/rubykit/kit/master/docs/assets/images/rubykit-framework-logo.svg',
 
-  files_modules:           Kit::Doc::Services::Tasks::Helpers.resolve_files(hash: {
+  files_modules:           {
     'specs/dummy/' => {
       include: %w[
         kat.rb
@@ -25,7 +23,7 @@ DOC_CONFIG_DUMMY_APP = Kit::Doc::Services::Config.get_default_config(
         mixins/*.rb
       ],
     },
-  }),
+  },
   groups_for_modules:      {
     ''         => [
       %r{^Kat$},
@@ -44,13 +42,13 @@ DOC_CONFIG_DUMMY_APP = Kit::Doc::Services::Config.get_default_config(
     ],
   },
 
-  files_extras:            Kit::Doc::Services::Tasks::Helpers.resolve_files(hash: {
+  files_extras:            {
     'specs/dummy/docs/guides' => {
       include: %w[
         **/*.md
       ],
     },
-  }),
+  },
   groups_for_extras:       {
     'Introduction' => [%r{guides/f1/.?}],
     'Architecture' => [%r{guides/f2/.?}],

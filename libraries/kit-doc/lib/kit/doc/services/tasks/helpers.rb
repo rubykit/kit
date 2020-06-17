@@ -12,6 +12,7 @@ module Kit::Doc::Services::Tasks::Helpers
         (data[:include] || []).map { |path| Dir[File.join(lib_path, path)] }
       end
       .flatten
+      .sort
   end
 
   # Return a display helper that compute the needed css padding based on nesting, ignoring `hide`.

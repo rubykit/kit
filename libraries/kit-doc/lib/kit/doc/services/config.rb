@@ -2,7 +2,7 @@ require 'pathname'
 
 # Configuration related logic.
 #
-# The most important thing is the expected configuration format, documented in `Kit::Doc::Services::Config.get_default_config`.
+# The most important thing is the expected configuration format, documented in `Kit::Doc::Services::Config.create_config`.
 #
 module Kit::Doc::Services::Config
 
@@ -149,18 +149,18 @@ module Kit::Doc::Services::Config
   #   ],
   # ```
   #
-  def self.get_default_config(**opts)
+  def self.create_config(**opts)
     defaults = {
       # project_path:            nil,
       # git_project_path:        nil,
       # project:                 nil,
 
-      current_version:         'dev',
-      # source_ref:              nil,
+      current_version:         ENV['KIT_DOC_CURRENT_VERSION'].presence || 'dev',
+      source_ref:              ENV['KIT_DOC_SOURCE_REF'].presence,
       # current_version_display: nil,
       all_versions:            [],
 
-      output_dir_all_versions: 'docs/dist',
+      output_dir_all_versions: ENV['KIT_DOC_OUTPUT_DIR_ALL_VERSIONS'].presence || 'docs/dist',
       # output_dir_current_version: nil
 
       # documentation_url:       nil,
@@ -191,6 +191,14 @@ module Kit::Doc::Services::Config
 
     if config[:all_versions].is_a?(String)
       config[:all_versions] = Kit::Doc::Services::Config.load_versions_file(path: config[:all_versions])[1][:versions]
+    end
+
+    if config[:files_modules].is_a?(Hash)
+      config[:files_modules] = Kit::Doc::Services::Tasks::Helpers.resolve_files(hash: config[:files_modules])
+    end
+
+    if config[:files_extras].is_a?(Hash)
+      config[:files_extras] = Kit::Doc::Services::Tasks::Helpers.resolve_files(hash: config[:files_extras])
     end
 
     if config[:gemspec_name]
