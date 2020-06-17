@@ -22,9 +22,14 @@ module Kit::Doc::Services::Tasks
       t.before  = -> do
         Kit::Doc::Services::Config.config = config
 
+        puts "Generating documentation for `#{ config[:project] }` in `#{ config[:output_dir_current_version] }`"
+
         if clean_output_dir && !config[:output_dir_current_version].empty?
+          puts "  Cleaning out dst directory: rm -rf #{ config[:output_dir_current_version] + '/*' }"
           FileUtils.rm_rf(Dir[config[:output_dir_current_version] + '/*'])
         end
+
+        puts ''
       end
 
       t.files   = (config[:files_modules] + ['-'] + config[:files_extras]).flatten
@@ -62,7 +67,7 @@ module Kit::Doc::Services::Tasks
   end
 
   # Create a rake task to generate documentation for versions specified in `config[:all_versions]`.
-  def self.create_rake_task_documentation_all_versions_generate!(config:, task_name: 'documentation:all_versions:generate', task_name_docs_config: 'documentation:all_versions:generate:docs_config', task_name_index: 'documentation:all_versions:generate:index')
+  def self.create_rake_task_documentation_all_versions_generate!(config:, task_name: 'documentation:all_versions:generate', task_name_generate: 'documentation:generate', task_name_docs_config: 'documentation:all_versions:generate:docs_config', task_name_index: 'documentation:all_versions:generate:index')
     known_versions = config[:all_versions].map { |el| el[:version] }.join(' ')
 
     ::Rake.application.last_description = "Generate documentation for known versions: #{ known_versions }"
@@ -77,9 +82,10 @@ module Kit::Doc::Services::Tasks
 
       # Generate documentation for every given version.
       generate_documentation_all_versions(
-        config:         config,
-        before_version: ->(version:, source_ref:) { puts "  Generating version `#{ version }` (source_ref: `#{ source_ref }`)" },
-        after_version:  ->(result:, **)           { puts result.gsub("\n", "\n    ") },
+        config:             config,
+        task_name_generate: task_name_generate,
+        before_version:     ->(version:, source_ref:) { puts "  Generating version `#{ version }` (source_ref: `#{ source_ref }`)" },
+        after_version:      ->(result:, **)           { puts result.gsub("\n", "\n    ") },
       )
     end
   end
@@ -109,7 +115,7 @@ module Kit::Doc::Services::Tasks
   end
 
   # Run `rake documentation:generate` for all `config[:all_versions]` after checking out the git reference.
-  def self.generate_documentation_all_versions(config:, before_version: nil, after_version: nil)
+  def self.generate_documentation_all_versions(config:, task_name_generate: 'documentation:generate', before_version: nil, after_version: nil)
     # Save current current git reference
     initial_git_ref = Git.open(config[:git_project_path]).current_branch
 
@@ -130,7 +136,7 @@ module Kit::Doc::Services::Tasks
         bundle install
 
         # Generate documentation files
-        KIT_DOC_OUTPUT_DIR_BASE=#{ config[:output_dir_all_versions] } KIT_DOC_CURRENT_VERSION=#{ version } KIT_DOC_SOURCE_REF=#{ source_ref } bundle exec rake documentation:generate
+        KIT_DOC_OUTPUT_DIR_BASE=#{ config[:output_dir_all_versions] } KIT_DOC_CURRENT_VERSION=#{ version } KIT_DOC_SOURCE_REF=#{ source_ref } bundle exec rake #{ task_name_generate }
 
         # Copy the docs_config version generated from `docs/VERSIONS` list if there is one.
         [[ -e '#{ config[:output_dir_all_versions] }/docs_config.js' ]] && cp '#{ config[:output_dir_all_versions] }/docs_config.js' '#{ config[:output_dir_all_versions] }/#{ version }/'
