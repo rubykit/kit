@@ -46,7 +46,7 @@ class Kat::ChildChildNode < Kat::ChildNode
   # Sed fermentum imperdiet turpis sit amet dapibus.
   CHILD_CHILD_CONST = 3
 
-  # @hide true
+  # @doc false
   HIDDEN_CONST = true
 
   # Maecenas a imperdiet mauris.

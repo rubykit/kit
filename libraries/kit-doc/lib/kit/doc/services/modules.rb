@@ -8,7 +8,7 @@ module Kit::Doc::Services::Modules
     list = ::YARD::Registry.all(:class, :module)
     list = verifier_runner.call(list)
 
-    list.delete_if { |el| el.has_tag?(:hide) && el.tag(:hide).text == 'true' }
+    list.delete_if { |el| el.has_tag?(:doc) && el.tag(:doc).text == 'false' }
 
     list
   end
@@ -151,7 +151,7 @@ module Kit::Doc::Services::Modules
     list = ::YARD::Registry.all(:method)
     list = verifier_runner.call(list)
 
-    list.delete_if { |el| el.has_tag?(:hide) && el.tag(:hide).text == 'true' }
+    list.delete_if { |el| el.has_tag?(:doc) && el.tag(:doc).text == 'false' }
 
     list
   end
@@ -189,7 +189,7 @@ module Kit::Doc::Services::Modules
       list.delete_if { |el| options.embed_mixins_match?(el.namespace) == false }
     end
 
-    list.delete_if { |el| el.has_tag?(:hide) && el.tag(:hide).text == 'true' }
+    list.delete_if { |el| el.has_tag?(:doc) && el.tag(:doc).text == 'false' }
 
     list
       .sort_by { |el| [el.scope.to_s, el.name.to_s.downcase] }
@@ -224,7 +224,7 @@ module Kit::Doc::Services::Modules
         sublist.delete_if { |el| el.scope == :class }
       end
 
-      sublist.delete_if { |el| el.has_tag?(:hide) && el.tag(:hide).text == 'true' }
+      sublist.delete_if { |el| el.has_tag?(:doc) && el.tag(:doc).text == 'false' }
 
       next if sublist.size == 0
 
@@ -292,7 +292,7 @@ module Kit::Doc::Services::Modules
     list = ::YARD::Registry.all(:constant)
     list = verifier_runner.call(list)
 
-    list.delete_if { |el| el.has_tag?(:hide) && el.tag(:hide).text == 'true' }
+    list.delete_if { |el| el.has_tag?(:doc) && el.tag(:doc).text == 'false' }
 
     list
   end
@@ -307,7 +307,7 @@ module Kit::Doc::Services::Modules
 
     list = verifier_runner.call(list)
 
-    list.delete_if { |el| el.has_tag?(:hide) && el.tag(:hide).text == 'true' }
+    list.delete_if { |el| el.has_tag?(:doc) && el.tag(:doc).text == 'false' }
 
     list
       .sort_by { |el| el.name.to_s }
@@ -328,7 +328,7 @@ module Kit::Doc::Services::Modules
 
       sublist = verifier_runner.call(sublist)
 
-      sublist.delete_if { |el| el.has_tag?(:hide) && el.tag(:hide).text == 'true' }
+      sublist.delete_if { |el| el.has_tag?(:doc) && el.tag(:doc).text == 'false' }
 
       list[superclass.name] = { superclass: superclass, list: sublist }
     end

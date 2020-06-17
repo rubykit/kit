@@ -1,1 +1,1 @@
-::YARD::Tags::Library.define_tag('Hide object from doc', :hide)
+::YARD::Tags::Library.define_tag('Enable or disable documentation for a given docstring', :doc)
