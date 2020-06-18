@@ -55,7 +55,7 @@ module Kit::Doc::Services::MarkdownPreprocessor
   #
   # ### References
   # - https://regex101.com/r/BNbn0Y/8
-  PREPROC_REGEX = %r{(?:<!--pp )(?:.*?)(?<!\\)(?:{)(?:\n| )?(?<prepoc_content>[^\>]*?)(?:\n| )?(?<!\\)(?:}){1}(?:.*?)(?:pp-->)}ms
+  PREPROC_REGEX = %r{(?:<!--pp )(?:.*?)(?<!\\)(?:{)(?:\n| )?(?<prepoc_content>[^\>]*?)(?:\n| )?(?<!\\)(?:}){1}(?:.*?)(?:pp-->)}m
 
   # Replace static content: by dynamic one hidden in html comments.
   #
@@ -75,9 +75,7 @@ module Kit::Doc::Services::MarkdownPreprocessor
   # ```
   #
   def self.preproc_conditionals(content:, variables:, preproc_regex: PREPROC_REGEX)
-    processed_content = content
-
-    processed_content = processed_content.gsub(preproc_regex) do |_matched_text|
+    processed_content = content.gsub(preproc_regex) do |_matched_text|
       preproc_variables({
         content:   $LAST_MATCH_INFO[:prepoc_content],
         variables: variables,

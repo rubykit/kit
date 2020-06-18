@@ -45,6 +45,9 @@ class ::YARD::CodeObjects::ExtraFileObject
       markup:             self.attributes[:markup],
       yard_code_object:   self,
     })
+  rescue Encoding::CompatibilityError => e
+    puts "Kit::Doc - Error rendering `#{ filename }`."
+    raise e
   end
 
   # Make this object interface compatible with Base CodeObjects.
