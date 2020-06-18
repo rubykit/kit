@@ -2,7 +2,7 @@
 module Kit::Api::JsonApi::Services::Request::Export::RelatedResources
 
   include Kit::Contract::Mixin
-  # @hide true
+  # @doc false
   Ct = Kit::Api::JsonApi::Contracts
 
   # Export `included_paths` for a given path.

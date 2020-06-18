@@ -2,7 +2,7 @@
 module Kit::Api::JsonApi::Services::Request::Export::SparseFieldsets
 
   include Kit::Contract::Mixin
-  # @hide true
+  # @doc false
   Ct = Kit::Api::JsonApi::Contracts
 
   def self.handle_sparse_fieldsets(request:, included_paths:, query_params:)

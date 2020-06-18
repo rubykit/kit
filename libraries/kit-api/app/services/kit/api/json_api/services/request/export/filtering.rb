@@ -2,7 +2,7 @@
 module Kit::Api::JsonApi::Services::Request::Export::Filtering
 
   include Kit::Contract::Mixin
-  # @hide true
+  # @doc false
   Ct = Kit::Api::JsonApi::Contracts
 
   def self.handle_filtering(request:, included_paths:, query_params:)

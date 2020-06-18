@@ -41,7 +41,7 @@
 module Kit::Api::JsonApi::Services::Request::Import::Pagination
 
   include Kit::Contract::Mixin
-  # @hide true
+  # @doc false
   Ct = Kit::Api::JsonApi::Contracts
 
   # Entry point. Parse & validate pagination data before adding it to the `Request`.

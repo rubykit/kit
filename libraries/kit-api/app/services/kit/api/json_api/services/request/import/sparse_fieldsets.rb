@@ -15,7 +15,7 @@
 module Kit::Api::JsonApi::Services::Request::Import::SparseFieldsets
 
   include Kit::Contract::Mixin
-  # @hide true
+  # @doc false
   Ct = Kit::Api::JsonApi::Contracts
 
   # Entry point. Parse & validate sparse-fieldsets data before adding it to the `Request`.

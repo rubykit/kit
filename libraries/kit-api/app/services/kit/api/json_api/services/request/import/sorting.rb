@@ -28,7 +28,7 @@
 module Kit::Api::JsonApi::Services::Request::Import::Sorting
 
   include Kit::Contract::Mixin
-  # @hide true
+  # @doc false
   Ct = Kit::Api::JsonApi::Contracts
 
   # Entry point. Parse & validate sorting data before adding it to the `Request`.

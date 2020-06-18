@@ -4,7 +4,7 @@
 module Kit::Api::JsonApi::Services::Linkers::DefaultLinker
 
   include Kit::Contract::Mixin
-  # @hide true
+  # @doc false
   Ct = Kit::Api::JsonApi::Contracts
 
   def self.to_h

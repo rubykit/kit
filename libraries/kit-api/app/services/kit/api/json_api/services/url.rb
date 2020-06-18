@@ -4,7 +4,7 @@ require 'uri'
 module Kit::Api::JsonApi::Services::Url
 
   include Kit::Contract::Mixin
-  # @hide true
+  # @doc false
   Ct = Kit::Api::JsonApi::Contracts
 
   # Extract query parameters from an url string.

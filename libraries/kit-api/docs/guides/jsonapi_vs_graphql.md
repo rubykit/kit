@@ -1,6 +1,6 @@
 # JSON:API vs GraphQL
 
-While `JSON:API` & `GraphQL` attempt to solve the same categories of problems, they took different approaches.
+While `JSON:API` & `GraphQL` attempt to solve the same categories of problems, they take different approaches.
 
 ## JSON:API
 

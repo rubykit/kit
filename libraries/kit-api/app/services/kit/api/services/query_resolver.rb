@@ -2,7 +2,7 @@
 module Kit::Api::Services::QueryResolver
 
   include Kit::Contract::Mixin
-  # @hide true
+  # @doc false
   Ct = Kit::Api::Contracts
 
   before Ct::Hash[query_node: Ct::QueryNode]

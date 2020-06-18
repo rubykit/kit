@@ -1,6 +1,6 @@
-# Kit::Api::JsonApi
+# JsonApi support
 
-`Kit::Api::JsonApi` helps you to implement a server side API conforming to [version 1.1](https://jsonapi.org/format/1.1/) of the `JSON:API` spec.
+`Kit::Api::JsonApi` helps you to implement a server side API conforming to [JSON:API v1.1](https://jsonapi.org/format/1.1/) spec.
 
 The goals of this gems are to:
 - describe endpoints that can serve & modify [JSON:API Documents](http://jsonapi.org/format)

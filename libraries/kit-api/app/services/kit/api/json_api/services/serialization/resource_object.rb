@@ -2,7 +2,7 @@
 module Kit::Api::JsonApi::Services::Serialization::ResourceObject
 
   include Kit::Contract::Mixin
-  # @hide true
+  # @doc false
   Ct = Kit::Api::JsonApi::Contracts
 
   before Ct::Hash[document: Ct::Document, record: Ct::Record]

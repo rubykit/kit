@@ -1,3 +1,3 @@
-# Kit::Api::GraphQL
+# GraphQL support
 
 TODO: start implementation 😊.

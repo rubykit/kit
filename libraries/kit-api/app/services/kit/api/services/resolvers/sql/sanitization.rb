@@ -2,7 +2,7 @@
 module Kit::Api::Services::Resolvers::Sql::Sanitization
 
   include Kit::Contract::Mixin
-  # @hide true
+  # @doc false
   Ct = Kit::Api::Contracts
 
 =begin

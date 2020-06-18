@@ -8,7 +8,7 @@
 module Kit::Api::Services::QueryBuilder
 
   include Kit::Contract::Mixin
-  # @hide true
+  # @doc false
   Ct = Kit::Api::Contracts
 
   before Ct::Hash[request: Ct::Request]
