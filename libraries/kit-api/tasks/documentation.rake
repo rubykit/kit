@@ -1,4 +1,3 @@
-require 'yard'
 require 'kit-doc'
 
 DOC_CONFIG = Kit::Doc::Services::Config.create_config(
@@ -69,16 +68,8 @@ DOC_CONFIG = Kit::Doc::Services::Config.create_config(
   },
 
   files_extras:       {
-    '.'           => {
-      include: %w[
-        README.md
-      ],
-    },
-    'docs/guides' => {
-      include: %w[
-        **/*.md
-      ],
-    },
+    '.'           => { include: %w[README.md] },
+    'docs/guides' => { include: %w[**/*.md] },
   },
   groups_for_extras:  {
     'JSON:API' => [%r{guides/jsonapi_support.md}],

@@ -1,4 +1,14 @@
-Copyright 2019 Nathan Appere
+# License
+
+- [MIT license](http://www.opensource.org/licenses/mit-license.php)
+- **Copyright (c) 2020 Nathan Appere**
+- https://github.com/rubykit/kit/tree/master/libraries/kit-doc
+- https://github.com/rubykit/kit/tree/master/libraries/kit-doc/LICENSE.md
+
+The license itself:
+
+```
+Copyright (c) 2020 Nathan Appere, https://github.com/rubykit/kit
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
@@ -18,3 +28,4 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+```
