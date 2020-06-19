@@ -2,7 +2,7 @@
 module Kit::Contract::Services::Validation
 
   include Kit::Contract::Mixin
-  # @hide true
+  # @doc false
   Ct = Kit::Contract::BuiltInContracts
 
   #EXPECTED_CALLABLE_RESULT_TYPE = Or[Boolean, ResultTupple]
