@@ -4,7 +4,7 @@ module Kit::Router::Services
   module Router
 
     include Kit::Contract::Mixin
-    # @hide true
+    # @doc false
     Ct = Kit::Router::Contracts
 
     #Contract KeywordArgs[uid: Or[String, Symbol], target: RespondTo[:call], aliases: ArrayOf[String, Symbol], type: ArrayOf[ArrayOf[Symbol, Symbol]]]]

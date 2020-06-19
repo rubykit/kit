@@ -14,7 +14,7 @@
 
 ## Features
 
-TODO: add features.
+TODO: list features.
 
 ## References
 
