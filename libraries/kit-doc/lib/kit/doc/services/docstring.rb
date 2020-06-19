@@ -27,6 +27,11 @@ module Kit::Doc::Services::Docstring
   # Only the two first levels are used by the template.
   def self.get_content_toc(content:)
     begin
+      content = Kit::Doc::Services::MarkdownPreprocessor.preproc_conditionals({
+        content:   content,
+        variables: Kit::Doc::Services::Config.config[:markdown_variables],
+      })[1][:processed_content]
+
       rendered  = get_html_toc(content: content)
       local_dom = ::Nokogiri::HTML.parse(rendered)
       result    = local_dom.css(':not(li) > ul > li').map { |node| li_to_hash(node: node) }
