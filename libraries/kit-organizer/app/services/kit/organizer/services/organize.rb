@@ -48,7 +48,7 @@
 module Kit::Organizer::Services::Organize
 
   include Kit::Contract::Mixin
-  # @hide true
+  # @doc false
   Ct = Kit::Organizer::Contracts
 
   # Run a `list` of `operations` (callable) in order. Each results update the initial `ctx` which is then sent to the next operation.

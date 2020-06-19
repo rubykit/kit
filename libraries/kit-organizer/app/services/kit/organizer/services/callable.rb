@@ -2,7 +2,7 @@
 module Kit::Organizer::Services::Callable
 
   include Kit::Contract::Mixin
-  # @hide true
+  # @doc false
   Ct = Kit::Organizer::Contracts
 
   # Local store to add custom behaviours.

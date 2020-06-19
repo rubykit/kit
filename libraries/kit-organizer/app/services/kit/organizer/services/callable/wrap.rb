@@ -2,7 +2,7 @@
 module Kit::Organizer::Services::Callable::Wrap
 
   include Kit::Contract::Mixin
-  # @hide true
+  # @doc false
   Ct = Kit::Organizer::Contracts
 
   before Ct::Hash[args: Ct::Array[Ct::Eq[:wrap], Ct::Callable, Ct::Hash[in: Ct::Optional[Ct::Hash], out: Ct::Optional[Ct::Hash]]]]

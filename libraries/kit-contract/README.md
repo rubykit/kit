@@ -3,8 +3,6 @@
 <!-- pp-->
 
 [Kit::Contract]: https://github.com/rubykit/kit/tree/master/libraries/kit-contract
-[JSON:API]: https://jsoncontract.org
-[GraphQL]: https://graphql.org/
 
 # Kit::Contract
 
