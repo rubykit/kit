@@ -15,7 +15,7 @@ DOC_CONFIG = Kit::Doc::Services::Config.create_config(
   groups_for_modules:      {},
 
   files_extras:            {
-    '.'           => { include: %w[README.md] },
+    '.' => { include: %w[README.md] },
     #'docs/guides' => { include: %w[**/*.md] },
   },
   groups_for_extras:       {

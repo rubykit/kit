@@ -16,7 +16,9 @@
 
   * [Website]
   * [Source Code]
+<!--pp {} -->
   * [Documentation]
+<!-- pp-->
 
 [Website]: https://rubykit.org
 [Source Code]: https://github.com/rubykit/kit
