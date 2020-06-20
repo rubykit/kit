@@ -76,10 +76,15 @@ module Kit::Doc::Services::MarkdownPreprocessor
   #
   def self.preproc_conditionals(content:, variables:, preproc_regex: PREPROC_REGEX)
     processed_content = content.gsub(preproc_regex) do |_matched_text|
-      preproc_variables({
+      content = preproc_variables({
         content:   $LAST_MATCH_INFO[:prepoc_content],
         variables: variables,
       })[1][:processed_content]
+
+      content = content[1..] if content[0] == "\n"
+      content = content[2..] if content[0..1] == "\r\n"
+
+      content
     end
 
     # Remove the backslack in front of `pp` now that the preprocessing is done.
