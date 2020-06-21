@@ -1,7 +1,30 @@
 require_relative '../mixins/class_include1.rb'
 require_relative '../mixins/class_extend1.rb'
 
-# Defines a BaseNode
+# Defines a `BaseNode`.
+#
+# ## Linking
+#
+# Linking, the `Kit::Doc` (markdown) way:
+#   - Current class: `Kat::BaseNode`
+#   - Class method: `Kat::BaseNode.class_m`
+#   - Instance method: `Kat::BaseNode#instance_m`
+#   - External class: `Kat::ChildNode`
+#   - Class method: `Kat::ChildNode.class_m`
+#   - Instance method: `Kat::ChildNode#instance_m`
+#   - Link to embedded file: [Ab colla deus](../docs/guides/ab_colla_deus.md)
+#   - Links to non-embedded files: [VERSIONS](../docs/VERSIONS) [LOGO](../../../../../docs/assets/images/rubykit-framework-logo.png)
+#
+# Linking, the {::YARD} way:
+#   - Current class: {Kat::BaseNode}
+#   - Class method: {.class_m}
+#   - Instance method: {instance_m}
+#   - External class: {Kat::ChildNode}
+#   - Class method: {Kat::ChildNode.class_m}
+#   - Instance method: {Kat::ChildNode#instance_m}
+#   - Guide: {file:docs/guides/ab_colla_deus.md Ab colla deus}
+#
+# ## Random doc
 #
 # Overall, the node has three responsibilities:
 #
@@ -26,7 +49,7 @@ require_relative '../mixins/class_extend1.rb'
 # end
 # ```
 #
-#  Mauris laoreet euismod velit, in malesuada diam rutrum in.
+# Mauris laoreet euismod velit, in malesuada diam rutrum in.
 class Kat::BaseNode
 
   include ClassInclude1
@@ -45,7 +68,7 @@ class Kat::BaseNode
   #
   # ## Examples
   #
-  # ```console
+  # ```irb
   # irb> node.instance_m1a(:replace, { layer: 2 })
   # [:ok]
   # ```
@@ -58,7 +81,7 @@ class Kat::BaseNode
   #
   # ## Examples
   #
-  # ```console
+  # ```irb
   # irb> node.instance_m(:replace, { layer: 2 })
   # [:ok]
   # ```
@@ -72,7 +95,7 @@ class Kat::BaseNode
   #
   # ## Examples
   #
-  # ```console
+  # ```irb
   # irb> BaseNode.class_m(next: true, prev: false)
   # [:ok]
   # ```
@@ -86,7 +109,7 @@ class Kat::BaseNode
   #
   # ## Examples
   #
-  # ```console
+  # ```irb
   # irb> node.instance_m1a(:replace, { layer: 2 })
   # [:ok]
   # ```
@@ -100,7 +123,7 @@ class Kat::BaseNode
   #
   # ## Examples
   #
-  # ```console
+  # ```irb
   # irb> node.instance_m1a(:replace, { layer: 2 })
   # [:ok]
   # ```

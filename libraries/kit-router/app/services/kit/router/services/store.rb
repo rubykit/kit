@@ -2,7 +2,7 @@
 module Kit::Router::Services::Store
 
   include Kit::Contract::Mixin
-  # @hide true
+  # @doc false
   Ct = Kit::Router::Contracts
 
   # DOC: one mountpoint per alias. >>> WHY?

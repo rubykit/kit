@@ -2,7 +2,7 @@
 module Kit::Api::JsonApi::Services::Request
 
   include Kit::Contract::Mixin
-  # @hide true
+  # @doc false
   Ct = Kit::Api::JsonApi::Contracts
 
   # Takes hydrated query params to create a Request.

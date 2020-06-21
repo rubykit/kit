@@ -17,7 +17,7 @@ PATH
 PATH
   remote: ../kit-doc
   specs:
-    kit-doc (0.0.1)
+    kit-doc (0.1.0)
       git
       nokogiri
       rails

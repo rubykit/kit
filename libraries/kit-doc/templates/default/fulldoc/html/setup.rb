@@ -3,11 +3,14 @@ include ::Kit::Doc::Yard::TemplatePluginHelper # rubocop:disable Style/MixinUsag
 
 require 'json'
 
-# @todo Rewrite with Kit::Organizer?
-# @ref https://github.com/lsegal/yard/blob/master/templates/default/fulldoc/html/setup.rb#L4
+# Entry point for the Kit::Doc template.
+#
+# ### References:
+# - https://github.com/lsegal/yard/blob/master/templates/default/fulldoc/html/setup.rb#L4
+#
 def init
   # Ugly trick to be able to reuse some Yard code out of order.
-  Kit::Doc::Services::Config.config[:default_yard_markup] = options.markup
+  Kit::Doc::Services::Config.config[:yard_options] = options
 
   if options.title.start_with?('Documentation by YARD')
     options.title = nil
@@ -91,8 +94,8 @@ def generate_api_reference
   serialize('_index.html')
 
   # Rename the generated file.
-  from = File.join(config[:output_dir], '_index.html')
-  to   = File.join(config[:output_dir], 'api_reference.html')
+  from = File.join(config[:output_dir_current_version], '_index.html')
+  to   = File.join(config[:output_dir_current_version], 'api_reference.html')
   FileUtils.mv(from, to, force: true)
 
   options.title = initial_title
@@ -151,4 +154,23 @@ def generate_html_search_file
   Templates::Engine.with_serializer('search.html', options.serializer) do
     T('layout').run(template_options)
   end
+end
+
+# Generate `extra` files.
+# Behaves like the original, except for `outfile_name`.
+#
+# ### References
+# - https://github.com/lsegal/yard/blob/84c983da9157ab7a6eccbc7a1740f2e22c05b679/templates/default/fulldoc/html/setup.rb#L63
+def serialize_file(file, title = nil)
+  options.object = Registry.root
+  options.file   = file
+  outfile_name   = file.name + '.html'
+
+  serialize_index(options) if file == options.readme
+  Templates::Engine.with_serializer(outfile_name, options.serializer) do
+    T('layout').run(options)
+  end
+
+  # DO NOT REMOVE: this seems to matter A LOT.
+  options.delete(:file)
 end

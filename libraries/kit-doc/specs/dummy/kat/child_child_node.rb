@@ -46,7 +46,7 @@ class Kat::ChildChildNode < Kat::ChildNode
   # Sed fermentum imperdiet turpis sit amet dapibus.
   CHILD_CHILD_CONST = 3
 
-  # @hide true
+  # @doc false
   HIDDEN_CONST = true
 
   # Maecenas a imperdiet mauris.
@@ -102,7 +102,9 @@ class Kat::ChildChildNode < Kat::ChildNode
   # Maecenas a imperdiet mauris.
   # Etiam luctus est tellus, nec aliquam mi maximus in.
   # Sed fermentum imperdiet turpis sit amet dapibus.
-  # @ref https://github.com/rubykit/kit
+  #
+  # ### References
+  # - https://github.com/rubykit/kit
   def initialize(options: {})
   end
 

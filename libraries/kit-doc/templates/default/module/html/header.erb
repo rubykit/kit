@@ -1,18 +1,15 @@
 <%
   files = Kit::Doc::Services::Utils.cleanup_files(list: object.files)
   if files.size == 1
-    url = "#{ config[:repo_url] }/#{ files[0][0] }#L#{ files[0][1] }"
+    url = config[:source_url].call(path: files[0][0], line: files[0][1])
   else
     url = nil
   end
 
-  version = config[:version]
-  version = (version == 'edge') ? 'Edge' : "v#{ version }"
-
   object_name      = object.title.split('::')[-1]
   object_full_name = object.title
 %>
-<small class="app-vsn"><b><%= config[:project] %></b> <%= version %></small>
+<small class="app-vsn"><b><%= config[:project] %></b> <%= config[:current_version_display] %></small>
 
 <h1 class='modules-header'>
   <div style='flex-grow: 1;'>

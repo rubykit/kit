@@ -2,7 +2,7 @@
 module Kit::Api::JsonApi::Services::Request::Export::Pagination
 
   include Kit::Contract::Mixin
-  # @hide true
+  # @doc false
   Ct = Kit::Api::JsonApi::Contracts
 
   # Add `page[size]` to query params

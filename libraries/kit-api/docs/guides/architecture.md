@@ -1,6 +1,8 @@
+[Kit::Api]: https://github.com/rubykit/kit/tree/master/libraries/kit-api
+
 # Architecture
 
-TODO: explain the various objects of `Kit::Api` & how they fit / interact with each other.
+TODO: explain the various objects of [Kit::Api] & how they fit / interact with each other.
 
 ## Steps
 

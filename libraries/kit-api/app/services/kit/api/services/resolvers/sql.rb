@@ -2,7 +2,7 @@
 module Kit::Api::Services::Resolvers::Sql
 
   include Kit::Contract::Mixin
-  # @hide true
+  # @doc false
   Ct = Kit::Api::Contracts
 
   before Ct::Hash[filtering: Ct::Optional[Ct::Condition]]

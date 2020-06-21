@@ -2,7 +2,7 @@
 module Kit::Organizer::Services::Callable::Method
 
   include Kit::Contract::Mixin
-  # @hide true
+  # @doc false
   Ct = Kit::Organizer::Contracts
 
   # @note The expected format is `[:method, 'ModuleName', 'method_name']`. `ModuleName` can be a reference, string or symbol. `method_name` can be a string or symbol.

@@ -22,7 +22,7 @@ module Kat::Service
   def self.m1(str:)
   end
 
-  # @hide true
+  # @doc false
   HIDDEN_CONST = true
 
 end

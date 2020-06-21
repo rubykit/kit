@@ -1,10 +1,10 @@
 <%
-  doc_main_href      = url_for_file("index.html")
+  doc_main_href      = url_for_file('index.html')
   logo_img_src       = config[:logo] ? (config[:logo].start_with?('http') ? config[:logo] : url_for_file(config[:logo])) : nil
   project_name       = config[:project]
-  project_version    = "#{ (config[:version] != 'edge') ? 'v' : '' }#{ config[:version] }"
+  project_version    = config[:current_version_display]
 
-  extra_section_name = config[:extra_section] || "Extras"
+  extras_section_name = config[:extras_section_name] || 'Guides'
   nodes              = { modules: [] }
 %>
 
@@ -49,7 +49,7 @@
   <ul class="sidebar-listNav">
     <li>
       <a id="extras-list" href="#full-list">
-        <%= extra_section_name %>
+        <%= extras_section_name %>
       </a>
     </li>
     <% if nodes[:modules] %>

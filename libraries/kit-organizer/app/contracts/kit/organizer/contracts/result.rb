@@ -1,7 +1,7 @@
 # Shortcut to specify Tupple[:ok, Hash[values]] || Tupple[:errors, Any] with specific valid keyword arguments.
 class Kit::Organizer::Contracts::Result < Kit::Organizer::Contracts::InstantiableContract
 
-  # @hide true
+  # @doc false
   Ct = Kit::Organizer::Contracts
 
   def setup(keyword_args_contracts = nil)

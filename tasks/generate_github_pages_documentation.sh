@@ -75,7 +75,7 @@ for documentation_target_name in "${!documentation_targets[@]}"; do
   mkdir -p $documentation_target_dst_path
 
   bundle install
-  KIT_DOC_OUTPUT_DIR_BASE=$documentation_target_dst_path bundle exec rake documentation:generate:all_versions
+  KIT_DOC_OUTPUT_DIR_BASE=$documentation_target_dst_path bundle exec rake documentation:all_versions:generate
 done
 
 # Go back to the initial state
@@ -83,7 +83,7 @@ cd  $kit_dir
 git checkout --quiet $branch_master
 
 # Add the top level `index.html`
-bundle exec rake documentation:generate:all_versions:generate_global_assets
+bundle exec rake documentation:all_versions:generate:global_assets
 
 
 # GITHUB PAGES BRANCH SETUP ----------------------------------------------------

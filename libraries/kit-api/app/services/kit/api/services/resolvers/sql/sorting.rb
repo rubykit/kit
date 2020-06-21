@@ -2,7 +2,7 @@
 module Kit::Api::Services::Resolvers::Sql::Sorting
 
   include Kit::Contract::Mixin
-  # @hide true
+  # @doc false
   Ct = Kit::Api::Contracts
 
   before Ct::Hash[sorting: Ct::Optional[Ct::SortOrders], table_name: Ct::String]

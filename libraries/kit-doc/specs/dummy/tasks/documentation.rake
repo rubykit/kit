@@ -1,25 +1,21 @@
 require 'yard'
 require 'kit-doc'
 
-DOC_CONFIG = Kit::Doc::Services::Config.get_default_config(
-  project:            'Kat',
+DOC_CONFIG_DUMMY_APP = Kit::Doc::Services::Config.create_config(
+  project:                 'kat',
 
-  project_path:       File.expand_path('..', __dir__),
-  git_project_path:   File.expand_path('../../..', __dir__),
-  output_dir_base:    'specs/dummy/docs/dist/kat',
-  source_ref:         'master',
-  version:            'edge',
-  versions:           [{ version: 'edge', source_ref: 'master' }],
+  project_path:            File.expand_path('..', __dir__),
+  git_project_path:        File.expand_path('../../../../..', __dir__),
+  output_dir_all_versions: ENV['KIT_DOC_OUTPUT_DIR_ALL_VERSIONS'].presence || 'docs/dist/kat',
+  all_versions:            File.expand_path('../docs/VERSIONS', __dir__),
 
-  main_redirect_url:  'file.neu_dixi_raptam.html',
+  source_url:              'https://github.com/rubykit/kit/tree/master/libraries/kit-doc',
+  authors:                 ['John Doe'],
 
-  source_url:         'https://github.com/rubykit/kit/tree/master/libraries/kit-doc',
-  documentation_url:  'http://localhost',
+  main_redirect_url:       'ab_colla_deus.html',
+  logo:                    'https://raw.githubusercontent.com/rubykit/kit/master/docs/assets/images/rubykit-framework-logo.svg',
 
-  authors:            ['John Doe'],
-  logo:               'https://raw.githubusercontent.com/rubykit/kit/master/docs/assets/images/rubykit-framework-logo.svg',
-
-  files_modules:      Kit::Doc::Services::Tasks.resolve_files(hash: {
+  files_modules:           {
     'specs/dummy/' => {
       include: %w[
         kat.rb
@@ -27,8 +23,8 @@ DOC_CONFIG = Kit::Doc::Services::Config.get_default_config(
         mixins/*.rb
       ],
     },
-  }),
-  groups_for_modules: {
+  },
+  groups_for_modules:      {
     ''         => [
       %r{^Kat$},
     ],
@@ -46,18 +42,18 @@ DOC_CONFIG = Kit::Doc::Services::Config.get_default_config(
     ],
   },
 
-  files_extras:       Kit::Doc::Services::Tasks.resolve_files(hash: {
+  files_extras:            {
     'specs/dummy/docs/guides' => {
       include: %w[
         **/*.md
       ],
     },
-  }),
-  groups_for_extras:  {
+  },
+  groups_for_extras:       {
     'Introduction' => [%r{guides/f1/.?}],
     'Architecture' => [%r{guides/f2/.?}],
     'Important'    => [
-      %r{guides/f1/ab},
+      %r{guides/f1/neu},
       %r{guides/f2/sub},
     ],
   },
@@ -65,22 +61,31 @@ DOC_CONFIG = Kit::Doc::Services::Config.get_default_config(
 
 Kit::Doc::Services::Tasks.create_rake_task_documentation_generate!({
   task_name:        'specs:dummy-app:documentation:generate',
-  config:           DOC_CONFIG,
+  config:           DOC_CONFIG_DUMMY_APP,
   clean_output_dir: true,
 })
 
+Kit::Doc::Services::Tasks.create_rake_task_documentation_all_versions!({
+  task_namespace: 'specs:dummy-app:documentation:all_versions',
+  config:         DOC_CONFIG_DUMMY_APP,
+})
+
 YARD::Rake::YardocTask.new do |t|
-  output_dir = "specs/dummy/docs/dist/kat-raw/#{ DOC_CONFIG[:version] }"
+  output_dir = "specs/dummy/docs/dist/kat-raw/#{ DOC_CONFIG_DUMMY_APP[:version] }"
 
   t.name     = 'specs:dummy-app:documentation:generate:raw'
   t.before   = -> do
     # Disable the plugin in a hacky way
-    YARD::Templates::Engine.template_paths.pop
+    ::YARD::Templates::Engine.template_paths.pop
+    # Disable Redcarpet custom renderer
+    ::RedcarpetCompat.disabled = true
+    # Overwrite `Kit::Doc::Yard::FileSerializer`
+    ::YARD::CLI::YardocOptions.default_attr :serializer, -> { ::YARD::Serializers::FileSystemSerializer.new }
 
     FileUtils.rm_rf(Dir[output_dir + '/*'])
   end
 
-  t.files    = (DOC_CONFIG[:files_modules] + ['-'] + DOC_CONFIG[:files_extras]).flatten
+  t.files    = (DOC_CONFIG_DUMMY_APP[:files_modules] + ['-'] + DOC_CONFIG_DUMMY_APP[:files_extras]).flatten
 
   t.options  = [
     '--output-dir',      output_dir,

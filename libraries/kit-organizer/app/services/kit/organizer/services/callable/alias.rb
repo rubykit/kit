@@ -2,7 +2,7 @@
 module Kit::Organizer::Services::Callable::Alias
 
   include Kit::Contract::Mixin
-  # @hide = true
+  # @doc false
   Ct = Kit::Organizer::Contracts
 
   # ALlows to ?

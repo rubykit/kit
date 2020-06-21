@@ -2,7 +2,7 @@
 module Kit::Api::Services::Resolvers::Sql::Filtering
 
   include Kit::Contract::Mixin
-  # @hide true
+  # @doc false
   Ct = Kit::Api::Contracts
 
   OPERATORS_STR = {

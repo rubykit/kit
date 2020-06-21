@@ -1,24 +1,29 @@
+<!--pp {} -->
+<img align="left" width="50" height="90" src="https://raw.githubusercontent.com/rubykit/kit/master/docs/assets/images/rubykit-framework-logo.svg">
+<!-- pp-->
+
+[Kit::Organizer]: https://github.com/rubykit/kit/tree/master/libraries/kit-organizer
+
 # Kit::Organizer
 
-Validation primitive for all data.
+[Kit::Organizer] is a flow control library that lets you chain (pipe) operations.
 
-`Kit::Contract` allows you to codify expectations about your data. It can be applied to functions pre & post conditions, user input validation, etc.
+- To learn more about [Kit::Organizer], see [Kit::Organizer's documentation](https://docs.rubykit.org/kit-organizer/edge).
+- To understand how we think about code organization, see the [About Organizers](docs/guides/organizers.md) guide.
+- To learn how to use [Kit::Organizer] in your projects, see the [Usage](docs/guides/usage.md) guide.
 
-## Design by contracts
+## Features
 
-Wikipedia has a good intro https://en.wikipedia.org/wiki/Design_by_contract
+TODO: list features.
 
 ## References
 
-- [contracts.ruby](https://github.com/egonSchiele/contracts.ruby)
-- [Contracts for Building Reliable Systems - Chris Keathley](https://www.youtube.com/watch?v=tpo3JUyVIjQ)
-- [ExContracts](https://hexdocs.pm/ex_contract/readme.html)
-- [Adacore contracts](https://learn.adacore.com/courses/intro-to-ada/chapters/contracts.html)
-- [Elixir Norm](https://github.com/keathley/norm)
+- https://github.com/collectiveidea/interactor
+- http://trailblazer.to/gems/operation/2.0/
+- https://fsharpforfunandprofit.com/rop/
 
-
-## Copyright and License
+## Copyright & License
 
 Copyright (c) 2020, Nathan Appere.
 
-Kit source code is licensed under the [MIT License](MIT-LICENSE).
+[Kit::Organizer] is licensed under [MIT License](MIT_LICENSE.md).

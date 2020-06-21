@@ -1,8 +1,4 @@
-<%
-  version = config[:version]
-  version = (version == 'edge') ? 'Edge' : "v#{ version }"
-%>
-<small class="app-vsn"><b><%= config[:project] %></b> <%= version %></small>
+<small class="app-vsn"><b><%= config[:project] %></b> <%= config[:current_version_display] %></small>
 
 <div class='extra'>
   <%= yield %>

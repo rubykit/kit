@@ -7,14 +7,13 @@
   }
 
   files.each do |key, file_path|
-    base_path      = config[:output_dir]
+    base_path      = config[:output_dir_current_version]
     asset_file     = Dir["#{ base_path }/#{ file_path }"].first
     rel_asset_file = asset_file[(base_path.size + 1)..(-1)]
     files[key]     = rel_asset_file
   end
 
-  version = config[:version]
-  version = (version == 'edge') ? 'Edge' : "v#{ version }"
+  version = config[:current_version_display]
  %>
 
 <meta charset="<%= charset %>">

@@ -2,7 +2,7 @@
 module Kit::Api::Services::Resolvers::ActiveRecord
 
   include Kit::Contract::Mixin
-  # @hide true
+  # @doc false
   Ct = Kit::Api::Contracts
 
   ClassicField     = Ct::Hash[id: Ct::SymbolOrString].without(:type).named('ClassicField')

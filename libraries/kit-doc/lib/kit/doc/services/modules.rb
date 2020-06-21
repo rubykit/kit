@@ -1,17 +1,19 @@
-# Logic go handle Ruby Modules (including classes)
+# Logic used in `Yard` to retrieve objects or properties, centralized in one place.
 module Kit::Doc::Services::Modules
 
   # Namespaces (modules + classes) ---------------------------------------------
 
+  # Get all Classes & Modules as an array.
   def self.get_all_namespaces_as_list(options:, verifier_runner:)
     list = ::YARD::Registry.all(:class, :module)
     list = verifier_runner.call(list)
 
-    list.delete_if { |el| el.has_tag?(:hide) && el.tag(:hide).text == 'true' }
+    list.delete_if { |el| el.has_tag?(:doc) && el.tag(:doc).text == 'false' }
 
     list
   end
 
+  # Get all Classes & Modules as a hash, the key being the fully qualified name of the object.
   def self.get_all_namespaces_as_hash(options:, verifier_runner:)
     get_all_namespaces_as_list(options: options, verifier_runner: verifier_runner)
       .map { |el| ["#{ el.namespace.path.size > 0 ? "#{ el.namespace.path }::" : '' }#{ el.name }", el] }
@@ -20,7 +22,11 @@ module Kit::Doc::Services::Modules
 
   # Modules --------------------------------------------------------------------
 
-  # @ref https://github.com/lsegal/yard/blob/master/templates/default/module/setup.rb#L19
+  # Get all Modules.
+  #
+  # ### References
+  # - https://github.com/lsegal/yard/blob/master/templates/default/module/setup.rb#L19
+  #
   def self.get_object_modules(object:, options:, verifier_runner:)
     list = object.children
       .select  { |el| el.type == :module }
@@ -31,7 +37,7 @@ module Kit::Doc::Services::Modules
     list
   end
 
-  # Get the class / modules that have been included into object
+  # Get the class / modules that have been included into `object`.
   def self.get_object_mixins_include(object:, verifier_runner:, **)
     list = object.mixins(:instance)
 
@@ -40,7 +46,7 @@ module Kit::Doc::Services::Modules
     list.sort_by(&:path)
   end
 
-  # Get the class / modules that have been extended into object
+  # Get the class / modules that have been extended into `object`.
   def self.get_object_mixins_extend(object:, verifier_runner:, **)
     list = object.mixins(:class)
 
@@ -49,7 +55,11 @@ module Kit::Doc::Services::Modules
     list.sort_by(&:path)
   end
 
-  # @ref https://github.com/lsegal/yard/blob/master/templates/default/module/setup.rb#L159
+  # Get the class / modules that have included `object`.
+  #
+  # ### References
+  # - https://github.com/lsegal/yard/blob/master/templates/default/module/setup.rb#L159
+  #
   def self.get_object_included_into(object:, verifier_runner:, globals:, **)
     if !globals.mixins_included_into
       globals.mixins_included_into = {}
@@ -69,7 +79,11 @@ module Kit::Doc::Services::Modules
       .sort_by(&:path)
   end
 
-  # @ref https://github.com/lsegal/yard/blob/master/templates/default/module/setup.rb#L159
+  # Get the class / modules that have extended `object`.
+  #
+  # ### References
+  # - https://github.com/lsegal/yard/blob/master/templates/default/module/setup.rb#L159
+  #
   def self.get_object_extended_into(object:, verifier_runner:, globals:, **)
     if !globals.mixins_extended_into
       globals.mixins_extended_into = {}
@@ -91,7 +105,11 @@ module Kit::Doc::Services::Modules
 
   # Classes --------------------------------------------------------------------
 
-  # @ref https://github.com/lsegal/yard/blob/master/templates/default/module/setup.rb#L19
+  # Get all classes declared in `object` namespace.
+  #
+  # ### References
+  # - https://github.com/lsegal/yard/blob/master/templates/default/module/setup.rb#L19
+  #
   def self.get_object_classes(object:, options:, verifier_runner:)
     list = object.children
       .select  { |el| el.type == :class }
@@ -102,7 +120,10 @@ module Kit::Doc::Services::Modules
     list
   end
 
-  # @ref https://github.com/lsegal/yard/blob/master/templates/default/class/setup.rb#L18
+  # Get all subclasses of `object`.
+  #
+  # ### References
+  # - https://github.com/lsegal/yard/blob/master/templates/default/class/setup.rb#L18
   def self.get_object_subclasses(object:, options:, verifier_runner:, globals:)
     return [] if object.path == 'Object' # don't show subclasses for Object
 
@@ -125,15 +146,17 @@ module Kit::Doc::Services::Modules
 
   # Methods --------------------------------------------------------------------
 
+  # Get all methods of `object` as an array.
   def self.get_all_methods_as_list(options:, verifier_runner:)
     list = ::YARD::Registry.all(:method)
     list = verifier_runner.call(list)
 
-    list.delete_if { |el| el.has_tag?(:hide) && el.tag(:hide).text == 'true' }
+    list.delete_if { |el| el.has_tag?(:doc) && el.tag(:doc).text == 'false' }
 
     list
   end
 
+  # Get all methods of `object` as an hash.
   def self.get_object_methods(object:, options:, verifier_runner:, include_aliases: true, include_attributes: false, include_inherited: false, include_specials: true, include_instance_methods: true, include_class_methods: true)
     list = object.meths(
       inherited: include_inherited,
@@ -166,12 +189,13 @@ module Kit::Doc::Services::Modules
       list.delete_if { |el| options.embed_mixins_match?(el.namespace) == false }
     end
 
-    list.delete_if { |el| el.has_tag?(:hide) && el.tag(:hide).text == 'true' }
+    list.delete_if { |el| el.has_tag?(:doc) && el.tag(:doc).text == 'false' }
 
     list
       .sort_by { |el| [el.scope.to_s, el.name.to_s.downcase] }
   end
 
+  # Get all methods inherited by `object`.
   def self.get_object_inherited_methods(object:, options:, verifier_runner:, include_instance_methods: true, include_class_methods: true, hide_if_overwritten: true)
     list         = {}
     method_names = {}
@@ -200,7 +224,7 @@ module Kit::Doc::Services::Modules
         sublist.delete_if { |el| el.scope == :class }
       end
 
-      sublist.delete_if { |el| el.has_tag?(:hide) && el.tag(:hide).text == 'true' }
+      sublist.delete_if { |el| el.has_tag?(:doc) && el.tag(:doc).text == 'false' }
 
       next if sublist.size == 0
 
@@ -212,6 +236,7 @@ module Kit::Doc::Services::Modules
 
   # Attributes -----------------------------------------------------------------
 
+  # Get all attributes of `object`.
   def self.get_object_attributes(object:, options:, verifier_runner:)
     list = []
 
@@ -238,6 +263,7 @@ module Kit::Doc::Services::Modules
       .sort_by { |el| [el.scope.to_s, el.name.to_s.downcase] }
   end
 
+  # Get all attributes inherited by `object`.
   def self.get_object_inherited_attributes(object:, options:, verifier_runner:)
     list = {}
 
@@ -261,15 +287,17 @@ module Kit::Doc::Services::Modules
 
   # Constants ------------------------------------------------------------------
 
+  # Get all constants declared in `object` namespace as an array.
   def self.get_all_constants_as_list(options:, verifier_runner:)
     list = ::YARD::Registry.all(:constant)
     list = verifier_runner.call(list)
 
-    list.delete_if { |el| el.has_tag?(:hide) && el.tag(:hide).text == 'true' }
+    list.delete_if { |el| el.has_tag?(:doc) && el.tag(:doc).text == 'false' }
 
     list
   end
 
+  # Get all constants declared in `object` namespace as a hash.
   def self.get_object_constants(object:, options:, verifier_runner:, include_inherited: false)
     list = object.constants(
       inherited: include_inherited,
@@ -279,12 +307,13 @@ module Kit::Doc::Services::Modules
 
     list = verifier_runner.call(list)
 
-    list.delete_if { |el| el.has_tag?(:hide) && el.tag(:hide).text == 'true' }
+    list.delete_if { |el| el.has_tag?(:doc) && el.tag(:doc).text == 'false' }
 
     list
       .sort_by { |el| el.name.to_s }
   end
 
+  # Get all constants declared in parent's `object` namespace.
   def self.get_object_inherited_constants(object:, options:, verifier_runner:)
     list = {}
 
@@ -299,7 +328,7 @@ module Kit::Doc::Services::Modules
 
       sublist = verifier_runner.call(sublist)
 
-      sublist.delete_if { |el| el.has_tag?(:hide) && el.tag(:hide).text == 'true' }
+      sublist.delete_if { |el| el.has_tag?(:doc) && el.tag(:doc).text == 'false' }
 
       list[superclass.name] = { superclass: superclass, list: sublist }
     end

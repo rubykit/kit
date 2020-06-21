@@ -8,9 +8,6 @@ end
 # Needed to access the current file object if it exists.
 # Used to set `data-type` in the <body>
 attr_reader :file
-#def file
-#  @file
-#end
 
 # Use our extended ExtraFile properties
 def diskfile
@@ -19,7 +16,12 @@ def diskfile
   else
     #super
     @file.attributes[:markup] ||= markup_for_file('', @file.filename)
-    data = htmlify(@file.contents, @file.attributes[:markup])
+
+    data = Kit::Doc::Services::Utils.htmlify({
+      content:            @file.contents,
+      markdown_variables: Kit::Doc::Services::Config.config[:markdown_variables],
+      markup:             @file.attributes[:markup],
+    })
   end
 
   erb(:extra) { data }

@@ -5,8 +5,8 @@
   anchor    = anchor_for(item)
   link_href = url_for(owner, anchor)
 
-  file      = item.files.first || []
-  src_href  = "#{ config[:repo_url] }/#{ file[0] }#L#{ file[1] }"
+  files     = item.files.first || []
+  src_href  = config[:source_url].call(path: files[0], line: files[1])
 
   data_attr_list = Kit::Doc::Services::Properties.object_html_data_properties({
     item:            item,

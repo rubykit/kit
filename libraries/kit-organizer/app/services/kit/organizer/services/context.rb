@@ -2,7 +2,7 @@
 module Kit::Organizer::Services::Context
 
   include Kit::Contract::Mixin
-  # @hide true
+  # @doc false
   Ct = Kit::Organizer::Contracts
 
   # Performs a 1 level deep merge on the organizer context.

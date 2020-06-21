@@ -13,7 +13,7 @@
 module Kit::Api::Services::Config
 
   include Kit::Contract::Mixin
-  # @hide true
+  # @doc false
   Ct = Kit::Api::Contracts
 
   PAGE_SIZE_MAX_DEFAULT = 200

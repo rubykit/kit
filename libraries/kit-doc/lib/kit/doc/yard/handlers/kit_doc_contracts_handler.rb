@@ -1,11 +1,12 @@
 require 'yard'
 
-# @ref https://github.com/sfcgeorge/yard-contracts
-
-# Run the plugin handler by supplying it to yard with the --plugin flag
+# Support for `Kit::Contract`.
 #
-# @example
-#   bundle exec yardoc --plugin kit-contracts
+# Currently this simply ignores `after` / `before` / `contract` directives and does not add anything to the generated documentation.
+#
+# ### References
+# - https://github.com/sfcgeorge/yard-contracts
+#
 class Kit::Doc::Yard::KitDocContractsHandler < YARD::Handlers::Ruby::Base
 
   handles method_call(:contract)
