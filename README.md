@@ -34,28 +34,32 @@ Currently working towards [v0.1.0](https://github.com/rubykit/kit/projects/1), s
   * [Kit::Api](https://docs.rubykit.org/kit-api/$CURRENT_VERSION)
 } -->
   * [Kit::Api](https://docs.rubykit.org/kit-api/edge)
-<!-- pp--><!--pp {
+<!-- pp-->
+<!--pp {
   * [Kit::Contract](https://docs.rubykit.org/kit-contract/$CURRENT_VERSION)
 } -->
   * [Kit::Contract](https://docs.rubykit.org/kit-contract/edge)
-<!-- pp--><!--pp {
+<!-- pp-->
+<!--pp {
   * [Kit::Doc](https://docs.rubykit.org/kit-doc/$CURRENT_VERSION)
 } -->
   * [Kit::Doc](https://docs.rubykit.org/kit-doc/edge)
-<!-- pp--><!--pp {
+<!-- pp-->
+<!--pp {
   * [Kit::Organizer](https://docs.rubykit.org/kit-organizer/$CURRENT_VERSION)
 } -->
   * [Kit::Organizer](https://docs.rubykit.org/kit-organizer/edge)
-<!-- pp--><!--pp {
+<!-- pp-->
+<!--pp {
   * [Kit::Pagination](https://docs.rubykit.org/kit-pagination/$CURRENT_VERSION)
 } -->
   * [Kit::Pagination](https://docs.rubykit.org/kit-pagination/edge)
-<!-- pp--><!--pp {
+<!-- pp-->
+<!--pp {
   * [Kit::Router](https://docs.rubykit.org/kit-router/$CURRENT_VERSION)
 } -->
   * [Kit::Router](https://docs.rubykit.org/kit-router/edge)
 <!-- pp-->
-
 
 ## Copyright & License
 

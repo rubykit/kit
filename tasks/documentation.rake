@@ -40,7 +40,7 @@ namespace :documentation do
     namespace :generate do
       # Use the first version in config[:versions] as the default.
       task :global_assets do
-        default_version  = DOC_CONFIG[:versions][0][:version]
+        default_version  = DOC_CONFIG[:all_versions][0][:version]
         destination_path = File.expand_path('../docs/dist', __dir__)
 
         Kit::Doc::Services::Tasks.generate_html_redirect_file(

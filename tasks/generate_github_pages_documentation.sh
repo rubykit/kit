@@ -91,7 +91,7 @@ generate_documentation() {
     mkdir -p $documentation_target_dst_path
 
     bundle install
-    KIT_DOC_OUTPUT_DIR_BASE=$documentation_target_dst_path bundle exec rake documentation:all_versions:generate
+    KIT_DOC_OUTPUT_DIR_ALL_VERSIONS=$documentation_target_dst_path bundle exec rake documentation:all_versions:generate
   done
 
   # Go back to the initial state

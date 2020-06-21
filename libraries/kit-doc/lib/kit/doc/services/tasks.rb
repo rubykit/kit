@@ -136,7 +136,7 @@ module Kit::Doc::Services::Tasks
         bundle install
 
         # Generate documentation files
-        KIT_DOC_OUTPUT_DIR_BASE=#{ config[:output_dir_all_versions] } KIT_DOC_CURRENT_VERSION=#{ version } KIT_DOC_SOURCE_REF=#{ source_ref } bundle exec rake #{ task_name_generate }
+        KIT_DOC_OUTPUT_DIR_ALL_VERSIONS=#{ config[:output_dir_all_versions] } KIT_DOC_CURRENT_VERSION=#{ version } KIT_DOC_SOURCE_REF=#{ source_ref } bundle exec rake #{ task_name_generate }
 
         # Copy the docs_config version generated from `docs/VERSIONS` list if there is one.
         [[ -e '#{ config[:output_dir_all_versions] }/docs_config.js' ]] && cp '#{ config[:output_dir_all_versions] }/docs_config.js' '#{ config[:output_dir_all_versions] }/#{ version }/'
