@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html>
+  <head>
+     
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="generator" content="Yard v0.9.25">
+<meta name="project" content="kit-api edge">
+
+
+<title>Module: Kit::Api::JsonApi::Services::Paginators::Cursor::Validation — kit-api edge</title>
+
+<link rel="stylesheet" href="assets/css/app-0f9f08c1bb297a76a4fe.css" />
+
+<script>
+  var yard_kit_relative_url_path = "";
+</script>
+
+<script src="sidebar_items-4b8cf7c60c.js"></script>
+<script src="docs_config.js"  ></script>
+<script src="assets/js/app-8922f842956a6779307c.js"    async ></script>
+
+  </head>
+
+  <body data-type="modules">
+    <script>
+      try {
+        let night_mode = localStorage.getItem('night-mode');
+        if (night_mode === 'true' || night_mode === true) {
+          document.body.className += ' night-mode';
+        }
+      } catch (e) {}
+    </script>
+
+    <div class="main">
+      
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button">
+      <span class="icon-search" aria-hidden="true"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button">
+      <span class="icon-cross" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Search" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    
+      <a href="index.html">
+        <img src="https://raw.githubusercontent.com/rubykit/kit/master/docs/assets/images/rubykit-framework-logo.svg" alt="kit-api" class="sidebar-projectImage">
+      </a>
+    
+    <div class="sidebar-projectDetails">
+      <a href="index.html" class="sidebar-projectName">
+        kit-api
+      </a>
+      <h2 class="sidebar-projectVersion">
+        edge
+      </h2>
+    </div>
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li>
+      <a id="extras-list" href="#full-list">
+        Guides
+      </a>
+    </li>
+    
+      <li>
+        <a id="modules-list" href="#full-list">
+          Modules
+        </a>
+      </li>
+    
+  </ul>
+
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+
+      <section class="content">
+        <div class="content-outer">
+          <div id="content" class="content-inner">
+
+            
+<small class="app-vsn"><b>kit-api</b> edge</small>
+
+<h1 class='modules-header'>
+  <div style='flex-grow: 1;'>
+
+    <span class='title module-name'>Validation</span>
+    <span class='object-type'>module</span>
+    
+      <div class='module-full-name'>Kit::Api::JsonApi::Services::Paginators::Cursor::Validation</div>
+    
+  </div>
+
+  
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-api/app/services/kit/api/json_api/services/paginators/cursor/validation.rb#L4" target='_blank' title="View Source" class="view-source" rel="help">
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+  
+</h1><section id="moduledoc">
+  <div class='docstring-tags'>
+  
+</div><div class='docstring'>
+  <p>Holds the query_parameters validation logic for the Cursor paginator.</p>
+
+<p>TODO: good candidate to rewrite as Contracts.</p>
+
+
+</div><div class="tags">
+  
+
+</div>
+</section><hr>
+
+<section id="summary" class="details-list">
+
+   <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this section</span>
+      </a>
+      Summary
+      <span class='private-apis-warning unselectable'>⚠️ Private APIs are currently hidden.</span>
+   </h1>
+
+   
+<div class="docstring-tags">
+
+  
+
+  
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+    <div class='doc-tag' data-ruby-files='app/services/kit/api/json_api/services/paginators/cursor/validation.rb#L4'>
+      
+        <span class='doc-tag-type'>Defined in:</span>
+        <span class='doc-tag-value'>
+          
+          <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-api/app/services/kit/api/json_api/services/paginators/cursor/validation.rb#L4" target='_blank' title="View Source" rel="help">
+            app/services/kit/api/json_api/services/paginators/cursor/validation.rb#4
+          </a>
+        </span>
+      
+    </div>
+  
+
+</div>
+
+
+
+
+
+
+  <div class="summary summary-methods-class">
+    <h2 class='summary-heading'>
+      <a href="#methods-class" class='title'>Class methods</a>
+      <span class='list-count'>7</span>
+    </h2>
+
+    
+      
+
+<div class="summary-row" data-doc-type="method" >
+  <a href="Kit.Api.JsonApi.Services.Paginators.Cursor.Validation.html#decrypt_cursors-class_method" title="decrypt_cursors (class method)">
+    <div class="summary-signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>decrypt_cursors</span><span class='arguments'>(request:, parsed_query_params_page:)</span><span class='block'></span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p>Decrypt `:after` && `:before` cursors if present.</p></div>
+    
+  </a>
+</div>
+
+
+
+    
+      
+
+<div class="summary-row" data-doc-type="method" >
+  <a href="Kit.Api.JsonApi.Services.Paginators.Cursor.Validation.html#ensure_no_nesting-class_method" title="ensure_no_nesting (class method)">
+    <div class="summary-signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>ensure_no_nesting</span><span class='arguments'>(request:, parsed_query_params_page:)</span><span class='block'></span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p>Detect nested pagination (pagination that targets a nested to_many).</p></div>
+    
+  </a>
+</div>
+
+
+
+    
+      
+
+<div class="summary-row" data-doc-type="method" >
+  <a href="Kit.Api.JsonApi.Services.Paginators.Cursor.Validation.html#ensure_single_value-class_method" title="ensure_single_value (class method)">
+    <div class="summary-signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>ensure_single_value</span><span class='arguments'>(parsed_query_params_page:)</span><span class='block'></span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p>Only accept single value as query_parameter, not lists.</p></div>
+    
+  </a>
+</div>
+
+
+
+    
+      
+
+<div class="summary-row" data-doc-type="method" >
+  <a href="Kit.Api.JsonApi.Services.Paginators.Cursor.Validation.html#error-class_method" title="error (class method)">
+    <div class="summary-signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>error</span><span class='arguments'>(str:, path: nil)</span><span class='block'></span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p>Simple error formatting.</p></div>
+    
+  </a>
+</div>
+
+
+
+    
+      
+
+<div class="summary-row" data-doc-type="method" >
+  <a href="Kit.Api.JsonApi.Services.Paginators.Cursor.Validation.html#validate-class_method" title="validate (class method)">
+    <div class="summary-signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>validate</span><span class='arguments'>(request:, parsed_query_params_page:)</span><span class='block'></span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p></p></div>
+    
+  </a>
+</div>
+
+
+
+    
+      
+
+<div class="summary-row" data-doc-type="method" >
+  <a href="Kit.Api.JsonApi.Services.Paginators.Cursor.Validation.html#validate_keys-class_method" title="validate_keys (class method)">
+    <div class="summary-signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>validate_keys</span><span class='arguments'>(parsed_query_params_page:)</span><span class='block'></span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p>Only accepts `:size`, `:after`, `:before` keywords.</p></div>
+    
+  </a>
+</div>
+
+
+
+    
+      
+
+<div class="summary-row" data-doc-type="method" >
+  <a href="Kit.Api.JsonApi.Services.Paginators.Cursor.Validation.html#validate_size_parameters-class_method" title="validate_size_parameters (class method)">
+    <div class="summary-signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>validate_size_parameters</span><span class='arguments'>(request:, parsed_query_params_page:)</span><span class='block'></span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p>Validate `:size` parameters.</p></div>
+    
+  </a>
+</div>
+
+
+
+    
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</section>
+
+
+  <hr>
+
+  <section id="methods-class" class="details-list">
+
+    <h1 class="section-heading">
+      <a class="hover-link" href="#methods-class">
+        <span class="icon-link" aria-hidden="true"></span>
+        <span class="sr-only">Link to this section</span>
+      </a>
+      Class methods
+      <span class='list-count'>7</span>
+      
+    </h1>
+
+    <div class="functions-list">
+      
+        
+
+<section class="detail" id="decrypt_cursors-class_method" >
+
+  <div class="detail-header">
+
+    <a href="Kit.Api.JsonApi.Services.Paginators.Cursor.Validation.html#decrypt_cursors-class_method" class="detail-link" title="Link to this method">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this method</span>
+    </a>
+
+    <h1 class="signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>decrypt_cursors</span><span class='arguments'>(request:, parsed_query_params_page:)</span><span class='block'></span>
+
+
+    </h1>
+
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-api/app/services/kit/api/json_api/services/paginators/cursor/validation.rb#L72" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+    
+    
+
+<span class='docstring-tags'>
+  
+</span>
+
+
+    <div class="specs" style='opacity: 1; margin-left: 15px; font-size: 0.8em; color: #777;'>
+      <!-- TODO: add contracts here when we can generate documentation from them -->
+
+      
+
+      
+    </div>
+
+  </div>
+
+  <section class="detail-body">
+    <div class='docstring-tags'>
+  
+</div><div class='docstring'>
+  <p>Decrypt <code>:after</code> &amp;&amp; <code>:before</code> cursors if present.</p>
+
+
+</div><div class="tags">
+  
+
+</div>
+  </section>
+
+</section>
+
+      
+        
+
+<section class="detail" id="ensure_no_nesting-class_method" >
+
+  <div class="detail-header">
+
+    <a href="Kit.Api.JsonApi.Services.Paginators.Cursor.Validation.html#ensure_no_nesting-class_method" class="detail-link" title="Link to this method">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this method</span>
+    </a>
+
+    <h1 class="signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>ensure_no_nesting</span><span class='arguments'>(request:, parsed_query_params_page:)</span><span class='block'></span>
+
+
+    </h1>
+
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-api/app/services/kit/api/json_api/services/paginators/cursor/validation.rb#L105" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+    
+    
+
+<span class='docstring-tags'>
+  
+</span>
+
+
+    <div class="specs" style='opacity: 1; margin-left: 15px; font-size: 0.8em; color: #777;'>
+      <!-- TODO: add contracts here when we can generate documentation from them -->
+
+      
+
+      
+    </div>
+
+  </div>
+
+  <section class="detail-body">
+    <div class='docstring-tags'>
+  
+</div><div class='docstring'>
+  <p>Detect nested pagination (pagination that targets a nested to_many).</p>
+
+<p>This is probably never what API developers want because the a cursor only target one subset.
+See <code>Nested pagination</code> in the module doc.</p>
+
+<p>Traverse every request path and count the collection nesting level. If &gt; 1, not paginateable.</p>
+
+
+</div><div class="tags">
+  
+
+</div>
+  </section>
+
+</section>
+
+      
+        
+
+<section class="detail" id="ensure_single_value-class_method" >
+
+  <div class="detail-header">
+
+    <a href="Kit.Api.JsonApi.Services.Paginators.Cursor.Validation.html#ensure_single_value-class_method" class="detail-link" title="Link to this method">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this method</span>
+    </a>
+
+    <h1 class="signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>ensure_single_value</span><span class='arguments'>(parsed_query_params_page:)</span><span class='block'></span>
+
+
+    </h1>
+
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-api/app/services/kit/api/json_api/services/paginators/cursor/validation.rb#L35" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+    
+    
+
+<span class='docstring-tags'>
+  
+</span>
+
+
+    <div class="specs" style='opacity: 1; margin-left: 15px; font-size: 0.8em; color: #777;'>
+      <!-- TODO: add contracts here when we can generate documentation from them -->
+
+      
+
+      
+    </div>
+
+  </div>
+
+  <section class="detail-body">
+    <div class='docstring-tags'>
+  
+</div><div class='docstring'>
+  <p>Only accept single value as query_parameter, not lists.</p>
+
+
+</div><div class="tags">
+  
+
+</div>
+  </section>
+
+</section>
+
+      
+        
+
+<section class="detail" id="error-class_method" >
+
+  <div class="detail-header">
+
+    <a href="Kit.Api.JsonApi.Services.Paginators.Cursor.Validation.html#error-class_method" class="detail-link" title="Link to this method">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this method</span>
+    </a>
+
+    <h1 class="signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>error</span><span class='arguments'>(str:, path: nil)</span><span class='block'></span>
+
+
+    </h1>
+
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-api/app/services/kit/api/json_api/services/paginators/cursor/validation.rb#L128" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+    
+    
+
+<span class='docstring-tags'>
+  
+</span>
+
+
+    <div class="specs" style='opacity: 1; margin-left: 15px; font-size: 0.8em; color: #777;'>
+      <!-- TODO: add contracts here when we can generate documentation from them -->
+
+      
+
+      
+    </div>
+
+  </div>
+
+  <section class="detail-body">
+    <div class='docstring-tags'>
+  
+</div><div class='docstring'>
+  <p>Simple error formatting.</p>
+
+
+</div><div class="tags">
+  
+
+</div>
+  </section>
+
+</section>
+
+      
+        
+
+<section class="detail" id="validate-class_method" >
+
+  <div class="detail-header">
+
+    <a href="Kit.Api.JsonApi.Services.Paginators.Cursor.Validation.html#validate-class_method" class="detail-link" title="Link to this method">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this method</span>
+    </a>
+
+    <h1 class="signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>validate</span><span class='arguments'>(request:, parsed_query_params_page:)</span><span class='block'></span>
+
+
+    </h1>
+
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-api/app/services/kit/api/json_api/services/paginators/cursor/validation.rb#L6" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+    
+    
+
+<span class='docstring-tags'>
+  
+</span>
+
+
+    <div class="specs" style='opacity: 1; margin-left: 15px; font-size: 0.8em; color: #777;'>
+      <!-- TODO: add contracts here when we can generate documentation from them -->
+
+      
+
+      
+    </div>
+
+  </div>
+
+  <section class="detail-body">
+    
+  </section>
+
+</section>
+
+      
+        
+
+<section class="detail" id="validate_keys-class_method" >
+
+  <div class="detail-header">
+
+    <a href="Kit.Api.JsonApi.Services.Paginators.Cursor.Validation.html#validate_keys-class_method" class="detail-link" title="Link to this method">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this method</span>
+    </a>
+
+    <h1 class="signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>validate_keys</span><span class='arguments'>(parsed_query_params_page:)</span><span class='block'></span>
+
+
+    </h1>
+
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-api/app/services/kit/api/json_api/services/paginators/cursor/validation.rb#L22" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+    
+    
+
+<span class='docstring-tags'>
+  
+</span>
+
+
+    <div class="specs" style='opacity: 1; margin-left: 15px; font-size: 0.8em; color: #777;'>
+      <!-- TODO: add contracts here when we can generate documentation from them -->
+
+      
+
+      
+    </div>
+
+  </div>
+
+  <section class="detail-body">
+    <div class='docstring-tags'>
+  
+</div><div class='docstring'>
+  <p>Only accepts <code>:size</code>, <code>:after</code>, <code>:before</code> keywords</p>
+
+
+</div><div class="tags">
+  
+
+</div>
+  </section>
+
+</section>
+
+      
+        
+
+<section class="detail" id="validate_size_parameters-class_method" >
+
+  <div class="detail-header">
+
+    <a href="Kit.Api.JsonApi.Services.Paginators.Cursor.Validation.html#validate_size_parameters-class_method" class="detail-link" title="Link to this method">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this method</span>
+    </a>
+
+    <h1 class="signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>validate_size_parameters</span><span class='arguments'>(request:, parsed_query_params_page:)</span><span class='block'></span>
+
+
+    </h1>
+
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-api/app/services/kit/api/json_api/services/paginators/cursor/validation.rb#L48" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+    
+    
+
+<span class='docstring-tags'>
+  
+</span>
+
+
+    <div class="specs" style='opacity: 1; margin-left: 15px; font-size: 0.8em; color: #777;'>
+      <!-- TODO: add contracts here when we can generate documentation from them -->
+
+      
+
+      
+    </div>
+
+  </div>
+
+  <section class="detail-body">
+    <div class='docstring-tags'>
+  
+</div><div class='docstring'>
+  <p>Validate <code>:size</code> parameters.</p>
+
+
+</div><div class="tags">
+  
+
+</div>
+  </section>
+
+</section>
+
+      
+    </div>
+
+  </section>
+
+
+
+
+
+
+            <footer class="footer">
+
+  <p>
+    <span class="line">
+      Built on 2020-06-21 by
+      <a href="https://github.com/lsegal/yard" title="Yard" target="_blank" rel="help noopener">yard-0.9.25</a> with <a href="https://github.com/rubykit/kit/tree/master/libraries/kit-doc" title="Kit::Doc" target="_blank" rel="help noopener">Kit::Doc</a>,
+    </span>
+    <span class="line">
+      designed by
+      <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>
+      for
+      <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a>.
+    </span>
+  </p>
+
+  <p>
+    <button class="line footer-button display-shortcuts-help">
+      Display keyboard shortcuts
+    </button>
+    <button class="line footer-button night-mode-toggle">
+      Toggle night mode
+    </button>
+    <button class="line footer-button private-apis-toggle">
+      Toggle private APIs display
+    </button>
+  </p>
+
+</footer>
+
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>
+
+</html>
+

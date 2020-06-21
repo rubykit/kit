@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+  <head>
+     
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="generator" content="Yard v0.9.25">
+<meta name="project" content="kit-doc edge">
+
+
+<title>Getting started — kit-doc edge</title>
+
+<link rel="stylesheet" href="assets/css/app-0f9f08c1bb297a76a4fe.css" />
+
+<script>
+  var yard_kit_relative_url_path = "";
+</script>
+
+<script src="sidebar_items-8483947126.js"></script>
+<script src="docs_config.js"  ></script>
+<script src="assets/js/app-8922f842956a6779307c.js"    async ></script>
+
+  </head>
+
+  <body data-type="extras">
+    <script>
+      try {
+        let night_mode = localStorage.getItem('night-mode');
+        if (night_mode === 'true' || night_mode === true) {
+          document.body.className += ' night-mode';
+        }
+      } catch (e) {}
+    </script>
+
+    <div class="main">
+      
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button">
+      <span class="icon-search" aria-hidden="true"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button">
+      <span class="icon-cross" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Search" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    
+      <a href="index.html">
+        <img src="https://raw.githubusercontent.com/rubykit/kit/master/docs/assets/images/rubykit-framework-logo.svg" alt="kit-doc" class="sidebar-projectImage">
+      </a>
+    
+    <div class="sidebar-projectDetails">
+      <a href="index.html" class="sidebar-projectName">
+        kit-doc
+      </a>
+      <h2 class="sidebar-projectVersion">
+        edge
+      </h2>
+    </div>
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li>
+      <a id="extras-list" href="#full-list">
+        Guides
+      </a>
+    </li>
+    
+      <li>
+        <a id="modules-list" href="#full-list">
+          Modules
+        </a>
+      </li>
+    
+  </ul>
+
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+
+      <section class="content">
+        <div class="content-outer">
+          <div id="content" class="content-inner">
+
+            <small class="app-vsn"><b>kit-doc</b> edge</small>
+
+<div class='extra'>
+  
+      <h1 id="getting-started" class="section-heading">
+        <a href="#getting-started" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+        Getting started
+      </h1>
+    
+<p>Here are the steps to add <a href="https://github.com/rubykit/kit/tree/master/libraries/kit-doc" title="" >Kit::Doc</a> to your project.</p>
+
+      <h2 id="adding-the-gem" class="section-heading">
+        <a href="#adding-the-gem" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+        Adding the gem
+      </h2>
+    
+<p>1 - Add the following line to your <code>Gemfile</code>:</p>
+
+<pre><code>  gem &#39;kit-doc&#39;
+</code></pre>
+
+<p>2 - Run <code>bundle install</code></p>
+
+      <h2 id="generating-kit--doc-config" class="section-heading">
+        <a href="#generating-kit--doc-config" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+        Generating Kit::Doc config
+      </h2>
+    
+<p>1 - Run the generator:</p>
+
+<pre><code class="sh">$ rails generate kit-doc:install
+</code></pre>
+
+<p>This will create the following files:</p>
+
+<pre><code>docs/
+  assets/
+  dist/
+  guides/
+  VERSIONS
+tasks/
+  documentation.rake
+</code></pre>
+
+<p>2 - Add this to your <code>Rakefile</code>:</p>
+
+<pre><code>import &#39;tasks/documentation.rake&#39;
+</code></pre>
+
+<p>3 - Add this to your <code>.gitignore</code>:</p>
+
+<pre><code>docs/dist
+</code></pre>
+
+<p>By default, the documentation is generated in <code>docs/dist</code>. There is no need to git version this (please don&#39;t ;).</p>
+
+      <h2 id="edit-your-project-info" class="section-heading">
+        <a href="#edit-your-project-info" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+        Edit your project info
+      </h2>
+    
+<p>1 - Edit the generated <code>tasks/documentation.rake</code>:</p>
+
+<p>You may want to set <code>:project</code>, <code>:source_url</code> and <code>:documentation_url</code>. If not, you can do it later!</p>
+
+<pre><code class="ruby">require &#39;kit-doc&#39;
+
+DOC_CONFIG = Kit::Doc::Services::Config.create_config(
+  project:           &#39;YOUR_PROJECT_NAME&#39;,
+  source_url:        &#39;https://github.com/YOUR_GITHUB_ORG_NAME/YOUR_GITHUB_REPO_NAME&#39;,
+  documentation_url: &#39;https://YOUR_GITHUB_ORG_NAME.github.io/YOUR_GITHUB_REPO_NAME&#39;,
+
+  # The top level directory of your project, relative to this file:
+  project_path:      File.expand_path(&#39;..&#39;, __dir__),
+  # The path to your project git repo. Remove if you don&#39;t have one (you should though ;).
+  git_project_path:  File.expand_path(&#39;..&#39;, __dir__),
+  # The path to the VERSIONS file that was generated, it contains the list of versions to generate documentation for.
+  all_versions:      File.expand_path(&#39;../docs/VERSIONS&#39;, __dir__),
+
+  # The files you want to generate documentation for:
+  files_modules:     { &#39;./&#39; =&gt; { include: %w[lib/**/*.rb app/**/*.rb] },
+  # Extra `.md` files to include as guides:
+  files_extras:      {
+    &#39;.&#39;           =&gt; { include: %w[README.md] },
+    &#39;docs/guides&#39; =&gt; { include: %w[**/*.md] },
+  },
+)
+
+Kit::Doc::Services::Tasks.create_rake_task_documentation_generate!({
+  config:           DOC_CONFIG,
+  # By default, the documentation is generated in `docs/dist`.
+  #   It will run `rm -rf docs/dist/*` before each run if this is set to true.
+  clean_output_dir: true,
+})
+
+Kit::Doc::Services::Tasks.create_rake_task_documentation_all_versions!({
+  config: DOC_CONFIG,
+})
+</code></pre>
+
+<p>2 - Optional: edit <code>docs/VERSIONS</code> to choose the versions that should have documentation.</p>
+
+<p>The default is:</p>
+
+<pre><code>edge:master
+</code></pre>
+
+      <h2 id="generate-documentation" class="section-heading">
+        <a href="#generate-documentation" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+        Generate documentation
+      </h2>
+    
+<p>Now you are ready to generate your project documentation.</p>
+
+<p>1 - Run:</p>
+
+<pre><code class="shell">$ bundle exec rake documentation:generate
+</code></pre>
+
+<p>Documentation should be generated in <code>/docs/dist/dev</code>.</p>
+
+<p>You can open <code>/docs/dist/dev/index.html</code>.</p>
+
+</div>
+
+            <footer class="footer">
+
+  <p>
+    <span class="line">
+      Built on 2020-06-21 by
+      <a href="https://github.com/lsegal/yard" title="Yard" target="_blank" rel="help noopener">yard-0.9.25</a> with <a href="https://github.com/rubykit/kit/tree/master/libraries/kit-doc" title="Kit::Doc" target="_blank" rel="help noopener">Kit::Doc</a>,
+    </span>
+    <span class="line">
+      designed by
+      <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>
+      for
+      <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a>.
+    </span>
+  </p>
+
+  <p>
+    <button class="line footer-button display-shortcuts-help">
+      Display keyboard shortcuts
+    </button>
+    <button class="line footer-button night-mode-toggle">
+      Toggle night mode
+    </button>
+    <button class="line footer-button private-apis-toggle">
+      Toggle private APIs display
+    </button>
+  </p>
+
+</footer>
+
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>
+
+</html>
+

@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html>
+  <head>
+     
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="generator" content="Yard v0.9.25">
+<meta name="project" content="kit-organizer edge">
+
+
+<title>Module: Kit::Organizer::Services::Callable — kit-organizer edge</title>
+
+<link rel="stylesheet" href="assets/css/app-0f9f08c1bb297a76a4fe.css" />
+
+<script>
+  var yard_kit_relative_url_path = "";
+</script>
+
+<script src="sidebar_items-86d9e7bb48.js"></script>
+<script src="docs_config.js"  ></script>
+<script src="assets/js/app-8922f842956a6779307c.js"    async ></script>
+
+  </head>
+
+  <body data-type="modules">
+    <script>
+      try {
+        let night_mode = localStorage.getItem('night-mode');
+        if (night_mode === 'true' || night_mode === true) {
+          document.body.className += ' night-mode';
+        }
+      } catch (e) {}
+    </script>
+
+    <div class="main">
+      
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button">
+      <span class="icon-search" aria-hidden="true"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button">
+      <span class="icon-cross" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Search" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    
+      <a href="index.html">
+        <img src="https://raw.githubusercontent.com/rubykit/kit/master/docs/assets/images/rubykit-framework-logo.svg" alt="kit-organizer" class="sidebar-projectImage">
+      </a>
+    
+    <div class="sidebar-projectDetails">
+      <a href="index.html" class="sidebar-projectName">
+        kit-organizer
+      </a>
+      <h2 class="sidebar-projectVersion">
+        edge
+      </h2>
+    </div>
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li>
+      <a id="extras-list" href="#full-list">
+        Guides
+      </a>
+    </li>
+    
+      <li>
+        <a id="modules-list" href="#full-list">
+          Modules
+        </a>
+      </li>
+    
+  </ul>
+
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+
+      <section class="content">
+        <div class="content-outer">
+          <div id="content" class="content-inner">
+
+            
+<small class="app-vsn"><b>kit-organizer</b> edge</small>
+
+<h1 class='modules-header'>
+  <div style='flex-grow: 1;'>
+
+    <span class='title module-name'>Callable</span>
+    <span class='object-type'>module</span>
+    
+      <div class='module-full-name'>Kit::Organizer::Services::Callable</div>
+    
+  </div>
+
+  
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-organizer/app/services/kit/organizer/services/callable.rb#L2" target='_blank' title="View Source" class="view-source" rel="help">
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+  
+</h1><section id="moduledoc">
+  <div class='docstring-tags'>
+  
+</div><div class='docstring'>
+  <p>This module makes Organizer extensible. You can add your own behaviours to resolve callables.</p>
+
+
+</div><div class="tags">
+  
+
+</div>
+</section><hr>
+
+<section id="summary" class="details-list">
+
+   <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this section</span>
+      </a>
+      Summary
+      <span class='private-apis-warning unselectable'>⚠️ Private APIs are currently hidden.</span>
+   </h1>
+
+   
+<div class="docstring-tags">
+
+  
+
+  
+  
+    
+  
+    
+      <div class='doc-tag' data-ruby-Used instance mixins:='Kit::Contract::Mixin'>
+        
+          <span class='doc-tag-type'>Used instance mixins:</span>
+          <span class='doc-tag-value'>Contract::Mixin</span>
+        
+      </div>
+    
+  
+    
+  
+    
+  
+
+  
+    <div class='doc-tag' data-ruby-files='app/services/kit/organizer/services/callable.rb#L2'>
+      
+        <span class='doc-tag-type'>Defined in:</span>
+        <span class='doc-tag-value'>
+          
+          <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-organizer/app/services/kit/organizer/services/callable.rb#L2" target='_blank' title="View Source" rel="help">
+            app/services/kit/organizer/services/callable.rb#2
+          </a>
+        </span>
+      
+    </div>
+  
+
+</div>
+
+
+
+  <div class="summary summary-modules">
+    <h2 class='summary-heading'>
+      <a href="#modules" class='title'>Modules</a>
+      <span class='list-count'>3</span>
+    </h2>
+
+    
+      
+
+<div class="summary-row" data-doc-type="module" >
+  <a href="Kit.Organizer.Services.Callable.Alias.html" title="Alias (module)">
+    <div class="summary-signature">
+      
+      
+
+
+  <span class="name">Alias</span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p>Allows registration of a callable in a local store and reference it by an alias.</p></div>
+    
+  </a>
+</div>
+
+
+
+    
+      
+
+<div class="summary-row" data-doc-type="module" >
+  <a href="Kit.Organizer.Services.Callable.Method.html" title="Method (module)">
+    <div class="summary-signature">
+      
+      
+
+
+  <span class="name">Method</span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p>Allows delayed generation of a callable in case of forward declaration.</p></div>
+    
+  </a>
+</div>
+
+
+
+    
+      
+
+<div class="summary-row" data-doc-type="module" >
+  <a href="Kit.Organizer.Services.Callable.Wrap.html" title="Wrap (module)">
+    <div class="summary-signature">
+      
+      
+
+
+  <span class="name">Wrap</span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p>Allows to wrap a callable in order to adapt the input & output contexts.</p></div>
+    
+  </a>
+</div>
+
+
+
+    
+  </div>
+
+
+
+
+
+
+  <div class="summary summary-methods-class">
+    <h2 class='summary-heading'>
+      <a href="#methods-class" class='title'>Class methods</a>
+      <span class='list-count'>2</span>
+    </h2>
+
+    
+      
+
+<div class="summary-row" data-doc-type="method" >
+  <a href="Kit.Organizer.Services.Callable.html#resolve-class_method" title="resolve (class method)">
+    <div class="summary-signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>resolve</span><span class='arguments'>(target:)</span><span class='block'></span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p>Transform each target to a callable.</p></div>
+    
+  </a>
+</div>
+
+
+
+    
+      
+
+<div class="summary-row" data-doc-type="method" >
+  <a href="Kit.Organizer.Services.Callable.html#store-class_method" title="store (class method)">
+    <div class="summary-signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>store</span><span class='arguments'></span><span class='block'></span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p>Local store to add custom behaviours.</p></div>
+    
+  </a>
+</div>
+
+
+
+    
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="summary summary-constants">
+    <h2 class='summary-heading'>
+      <a href="#constants" class='title'>Constants</a>
+      <span class='list-count'>1</span>
+    </h2>
+
+    
+      
+
+<div class="summary-row" data-doc-type="constant" >
+  <a href="Kit.Organizer.Services.Callable.html#ResultType-constant" title="ResultType (constant)">
+    <div class="summary-signature">
+      
+      
+
+
+  <span class="name">ResultType</span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p></p></div>
+    
+  </a>
+</div>
+
+
+
+    
+  </div>
+
+
+
+
+
+</section>
+
+
+  <hr>
+
+  <section id="methods-class" class="details-list">
+
+    <h1 class="section-heading">
+      <a class="hover-link" href="#methods-class">
+        <span class="icon-link" aria-hidden="true"></span>
+        <span class="sr-only">Link to this section</span>
+      </a>
+      Class methods
+      <span class='list-count'>2</span>
+      
+    </h1>
+
+    <div class="functions-list">
+      
+        
+
+<section class="detail" id="resolve-class_method" >
+
+  <div class="detail-header">
+
+    <a href="Kit.Organizer.Services.Callable.html#resolve-class_method" class="detail-link" title="Link to this method">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this method</span>
+    </a>
+
+    <h1 class="signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>resolve</span><span class='arguments'>(target:)</span><span class='block'></span>
+
+
+    </h1>
+
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-organizer/app/services/kit/organizer/services/callable.rb#L23" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+    
+    
+
+<span class='docstring-tags'>
+  
+</span>
+
+
+    <div class="specs" style='opacity: 1; margin-left: 15px; font-size: 0.8em; color: #777;'>
+      <!-- TODO: add contracts here when we can generate documentation from them -->
+
+      
+
+      
+    </div>
+
+  </div>
+
+  <section class="detail-body">
+    <div class='docstring-tags'>
+  
+</div><div class='docstring'>
+  <p>Transform each target to a callable. This is delegated to submodules registered in the local <code>store</code>.</p>
+
+
+</div><div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>target</span>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>A callable or some data that can be transformed to a callable</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+        
+        <div class='inline'><p>A callable</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+  </section>
+
+</section>
+
+      
+        
+
+<section class="detail" id="store-class_method" >
+
+  <div class="detail-header">
+
+    <a href="Kit.Organizer.Services.Callable.html#store-class_method" class="detail-link" title="Link to this method">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this method</span>
+    </a>
+
+    <h1 class="signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>store</span><span class='arguments'></span><span class='block'></span>
+
+
+    </h1>
+
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-organizer/app/services/kit/organizer/services/callable.rb#L9" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+    
+    
+
+<span class='docstring-tags'>
+  
+</span>
+
+
+    <div class="specs" style='opacity: 1; margin-left: 15px; font-size: 0.8em; color: #777;'>
+      <!-- TODO: add contracts here when we can generate documentation from them -->
+
+      
+
+      
+    </div>
+
+  </div>
+
+  <section class="detail-body">
+    <div class='docstring-tags'>
+  
+</div><div class='docstring'>
+  <p>Local store to add custom behaviours.</p>
+
+
+</div><div class="tags">
+  
+
+</div>
+  </section>
+
+</section>
+
+      
+    </div>
+
+  </section>
+
+
+
+
+
+
+  <hr>
+
+  <section id="constants" class="details-list">
+
+    <h1 class="section-heading">
+      <a class="hover-link" href="#constants">
+        <span class="icon-link" aria-hidden="true"></span>
+        <span class="sr-only">Link to this section</span>
+      </a>
+      Constants
+      <span class='list-count'>1</span>
+      
+    </h1>
+
+    <div class="functions-list">
+      
+        
+
+<section class="detail" id="ResultType-constant">
+
+  <div class="detail-header" >
+
+    <a href="Kit.Organizer.Services.Callable.html#ResultType-constant" class="detail-link" title="Link to this constant">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this constant</span>
+    </a>
+
+    <h1 class="signature">
+      
+      
+
+
+  <span class="name">ResultType</span>
+
+
+    </h1>
+
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-organizer/app/services/kit/organizer/services/callable.rb#L17" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+    
+    
+
+<span class='docstring-tags'>
+  
+</span>
+
+
+  </div>
+
+  <section class="detail-body">
+    
+
+    <pre><code class="ruby"><span class='const'><span class='object_link'><a href="Kit.Organizer.Services.Callable.html#Ct-constant" title="Kit::Organizer::Services::Callable::Ct (constant)">Ct</a></span></span><span class='op'>::</span><span class='const'>Or</span><span class='lbracket'>[</span><span class='const'><span class='object_link'><a href="Kit.Organizer.Services.Callable.html#Ct-constant" title="Kit::Organizer::Services::Callable::Ct (constant)">Ct</a></span></span><span class='op'>::</span><span class='const'>Tupple</span><span class='lbracket'>[</span><span class='const'><span class='object_link'><a href="Kit.Organizer.Services.Callable.html#Ct-constant" title="Kit::Organizer::Services::Callable::Ct (constant)">Ct</a></span></span><span class='op'>::</span><span class='const'>Eq</span><span class='lbracket'>[</span><span class='symbol'>:ok</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='const'><span class='object_link'><a href="Kit.Organizer.Services.Callable.html#Ct-constant" title="Kit::Organizer::Services::Callable::Ct (constant)">Ct</a></span></span><span class='op'>::</span><span class='const'>Hash</span><span class='lbracket'>[</span><span class='label'>callable:</span> <span class='const'><span class='object_link'><a href="Kit.Organizer.Services.Callable.html#Ct-constant" title="Kit::Organizer::Services::Callable::Ct (constant)">Ct</a></span></span><span class='op'>::</span><span class='const'>Callable</span><span class='rbracket'>]</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='const'><span class='object_link'><a href="Kit.Organizer.Services.Callable.html#Ct-constant" title="Kit::Organizer::Services::Callable::Ct (constant)">Ct</a></span></span><span class='op'>::</span><span class='const'>ErrorResultTupple</span><span class='rbracket'>]</span></code></pre>
+  </section>
+
+</section>
+      
+    </div>
+
+  </section>
+
+
+
+            <footer class="footer">
+
+  <p>
+    <span class="line">
+      Built on 2020-06-21 by
+      <a href="https://github.com/lsegal/yard" title="Yard" target="_blank" rel="help noopener">yard-0.9.25</a> with <a href="https://github.com/rubykit/kit/tree/master/libraries/kit-doc" title="Kit::Doc" target="_blank" rel="help noopener">Kit::Doc</a>,
+    </span>
+    <span class="line">
+      designed by
+      <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>
+      for
+      <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a>.
+    </span>
+  </p>
+
+  <p>
+    <button class="line footer-button display-shortcuts-help">
+      Display keyboard shortcuts
+    </button>
+    <button class="line footer-button night-mode-toggle">
+      Toggle night mode
+    </button>
+    <button class="line footer-button private-apis-toggle">
+      Toggle private APIs display
+    </button>
+  </p>
+
+</footer>
+
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>
+
+</html>
+

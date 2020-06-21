@@ -1,0 +1,1806 @@
+<!DOCTYPE html>
+<html>
+  <head>
+     
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="generator" content="Yard v0.9.25">
+<meta name="project" content="kit-api edge">
+
+
+<title>Class: Kit::Api::Resources::ActiveRecordResource — kit-api edge</title>
+
+<link rel="stylesheet" href="assets/css/app-0f9f08c1bb297a76a4fe.css" />
+
+<script>
+  var yard_kit_relative_url_path = "";
+</script>
+
+<script src="sidebar_items-4b8cf7c60c.js"></script>
+<script src="docs_config.js"  ></script>
+<script src="assets/js/app-8922f842956a6779307c.js"    async ></script>
+
+  </head>
+
+  <body data-type="modules">
+    <script>
+      try {
+        let night_mode = localStorage.getItem('night-mode');
+        if (night_mode === 'true' || night_mode === true) {
+          document.body.className += ' night-mode';
+        }
+      } catch (e) {}
+    </script>
+
+    <div class="main">
+      
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button">
+      <span class="icon-search" aria-hidden="true"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button">
+      <span class="icon-cross" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Search" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    
+      <a href="index.html">
+        <img src="https://raw.githubusercontent.com/rubykit/kit/master/docs/assets/images/rubykit-framework-logo.svg" alt="kit-api" class="sidebar-projectImage">
+      </a>
+    
+    <div class="sidebar-projectDetails">
+      <a href="index.html" class="sidebar-projectName">
+        kit-api
+      </a>
+      <h2 class="sidebar-projectVersion">
+        edge
+      </h2>
+    </div>
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li>
+      <a id="extras-list" href="#full-list">
+        Guides
+      </a>
+    </li>
+    
+      <li>
+        <a id="modules-list" href="#full-list">
+          Modules
+        </a>
+      </li>
+    
+  </ul>
+
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+
+      <section class="content">
+        <div class="content-outer">
+          <div id="content" class="content-inner">
+
+            
+<small class="app-vsn"><b>kit-api</b> edge</small>
+
+<h1 class='modules-header'>
+  <div style='flex-grow: 1;'>
+
+    <span class='title module-name'>ActiveRecordResource</span>
+    <span class='object-type'>class</span>
+    
+      <div class='module-full-name'>Kit::Api::Resources::ActiveRecordResource</div>
+    
+  </div>
+
+  
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-api/app/resources/kit/api/resources/active_record_resource.rb#L4" target='_blank' title="View Source" class="view-source" rel="help">
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+  
+</h1><section id="moduledoc">
+  <div class='docstring-tags'>
+  
+</div><div class='docstring'>
+  <p>The <code>ActiveRecordResource</code> module is a helper to generate a Hash that will pass the <code>Contract::Resource</code> requirements.</p>
+
+<p>While you can always generate a Resource yourself, this helps do it in a less verbose way.</p>
+
+
+</div><div class="tags">
+  
+
+</div>
+</section><hr>
+
+<section id="summary" class="details-list">
+
+   <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this section</span>
+      </a>
+      Summary
+      <span class='private-apis-warning unselectable'>⚠️ Private APIs are currently hidden.</span>
+   </h1>
+
+   
+<div class="docstring-tags">
+
+  
+    <div class='doc-tag' data-ruby-inheritance='Object'>
+      <span class='doc-tag-type'>Inheritance:</span>
+      <span class='doc-tag-value'>
+        Object
+      </span>
+    </div>
+  
+
+  
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+    <div class='doc-tag' data-ruby-files='app/resources/kit/api/resources/active_record_resource.rb#L4'>
+      
+        <span class='doc-tag-type'>Defined in:</span>
+        <span class='doc-tag-value'>
+          
+          <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-api/app/resources/kit/api/resources/active_record_resource.rb#L4" target='_blank' title="View Source" rel="help">
+            app/resources/kit/api/resources/active_record_resource.rb#4
+          </a>
+        </span>
+      
+    </div>
+  
+
+</div>
+
+
+
+
+
+  <div class="summary summary-subclasses">
+    <h2 class='summary-heading'>
+      <a href="#subclasses" class='title'>Direct subclasses</a>
+      <span class='list-count'>7</span>
+    </h2>
+
+    
+      
+
+<div class="summary-row" data-doc-type="class" >
+  <a href="Kit.JsonApiSpec.Resources.Author.html" title="Author (class)">
+    <div class="summary-signature">
+      
+      
+
+
+  <span class="name">Author</span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p>Exemple type for dummy app.</p></div>
+    
+  </a>
+</div>
+
+
+
+    
+      
+
+<div class="summary-row" data-doc-type="class" >
+  <a href="Kit.JsonApiSpec.Resources.Book.html" title="Book (class)">
+    <div class="summary-signature">
+      
+      
+
+
+  <span class="name">Book</span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p>Exemple type for dummy app.</p></div>
+    
+  </a>
+</div>
+
+
+
+    
+      
+
+<div class="summary-row" data-doc-type="class" >
+  <a href="Kit.JsonApiSpec.Resources.BookStore.html" title="BookStore (class)">
+    <div class="summary-signature">
+      
+      
+
+
+  <span class="name">BookStore</span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p>Exemple type for dummy app.</p></div>
+    
+  </a>
+</div>
+
+
+
+    
+      
+
+<div class="summary-row" data-doc-type="class" >
+  <a href="Kit.JsonApiSpec.Resources.Chapter.html" title="Chapter (class)">
+    <div class="summary-signature">
+      
+      
+
+
+  <span class="name">Chapter</span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p>Exemple type for dummy app.</p></div>
+    
+  </a>
+</div>
+
+
+
+    
+      
+
+<div class="summary-row" data-doc-type="class" >
+  <a href="Kit.JsonApiSpec.Resources.Photo.html" title="Photo (class)">
+    <div class="summary-signature">
+      
+      
+
+
+  <span class="name">Photo</span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p>Exemple type for dummy app.</p></div>
+    
+  </a>
+</div>
+
+
+
+    
+      
+
+<div class="summary-row" data-doc-type="class" >
+  <a href="Kit.JsonApiSpec.Resources.Serie.html" title="Serie (class)">
+    <div class="summary-signature">
+      
+      
+
+
+  <span class="name">Serie</span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p>Exemple type for dummy app.</p></div>
+    
+  </a>
+</div>
+
+
+
+    
+      
+
+<div class="summary-row" data-doc-type="class" >
+  <a href="Kit.JsonApiSpec.Resources.Store.html" title="Store (class)">
+    <div class="summary-signature">
+      
+      
+
+
+  <span class="name">Store</span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p>Exemple type for dummy app.</p></div>
+    
+  </a>
+</div>
+
+
+
+    
+  </div>
+
+
+
+
+  <div class="summary summary-methods-class">
+    <h2 class='summary-heading'>
+      <a href="#methods-class" class='title'>Class methods</a>
+      <span class='list-count'>14</span>
+    </h2>
+
+    
+      
+
+<div class="summary-row" data-doc-type="method" >
+  <a href="Kit.Api.Resources.ActiveRecordResource.html#data_resolver-class_method" title="data_resolver (class method)">
+    <div class="summary-signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>data_resolver</span><span class='arguments'>(query_node:)</span><span class='block'></span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p></p></div>
+    
+  </a>
+</div>
+
+
+
+    
+      
+
+<div class="summary-row" data-doc-type="method" >
+  <a href="Kit.Api.Resources.ActiveRecordResource.html#default_filters-class_method" title="default_filters (class method)">
+    <div class="summary-signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>default_filters</span><span class='arguments'></span><span class='block'></span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p>Default filter configuration based on field type.</p></div>
+    
+  </a>
+</div>
+
+
+
+    
+      
+
+<div class="summary-row" data-doc-type="method" >
+  <a href="Kit.Api.Resources.ActiveRecordResource.html#default_sort_fields-class_method" title="default_sort_fields (class method)">
+    <div class="summary-signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>default_sort_fields</span><span class='arguments'></span><span class='block'></span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p>Default sort_field behaviour based on field type.</p></div>
+    
+  </a>
+</div>
+
+
+
+    
+      
+
+<div class="summary-row" data-doc-type="method" >
+  <a href="Kit.Api.Resources.ActiveRecordResource.html#fields-class_method" title="fields (class method)">
+    <div class="summary-signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>fields</span><span class='arguments'></span><span class='block'></span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p></p></div>
+    
+  </a>
+</div>
+
+
+
+    
+      
+
+<div class="summary-row" data-doc-type="method" >
+  <a href="Kit.Api.Resources.ActiveRecordResource.html#fields_setup-class_method" title="fields_setup (class method)">
+    <div class="summary-signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>fields_setup</span><span class='arguments'></span><span class='block'></span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p>Hold data to generate `fields`, `filters` && `sort_fields`.</p></div>
+    
+  </a>
+</div>
+
+
+
+    
+      
+
+<div class="summary-row" data-doc-type="method" >
+  <a href="Kit.Api.Resources.ActiveRecordResource.html#filters-class_method" title="filters (class method)">
+    <div class="summary-signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>filters</span><span class='arguments'></span><span class='block'></span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p></p></div>
+    
+  </a>
+</div>
+
+
+
+    
+      
+
+<div class="summary-row" data-doc-type="method" >
+  <a href="Kit.Api.Resources.ActiveRecordResource.html#linker-class_method" title="linker (class method)">
+    <div class="summary-signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>linker</span><span class='arguments'></span><span class='block'></span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p></p></div>
+    
+  </a>
+</div>
+
+
+
+    
+      
+
+<div class="summary-row" data-doc-type="method" >
+  <a href="Kit.Api.Resources.ActiveRecordResource.html#model-class_method" title="model (class method)">
+    <div class="summary-signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>model</span><span class='arguments'></span><span class='block'></span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p>Should contain the ActiveRecord model.</p></div>
+    
+  </a>
+</div>
+
+
+
+    
+      
+
+<div class="summary-row" data-doc-type="method" >
+  <a href="Kit.Api.Resources.ActiveRecordResource.html#name-class_method" title="name (class method)">
+    <div class="summary-signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>name</span><span class='arguments'></span><span class='block'></span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p>Should contain the name (type) of the Resource.</p></div>
+    
+  </a>
+</div>
+
+
+
+    
+      
+
+<div class="summary-row" data-doc-type="method" >
+  <a href="Kit.Api.Resources.ActiveRecordResource.html#paginator-class_method" title="paginator (class method)">
+    <div class="summary-signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>paginator</span><span class='arguments'></span><span class='block'></span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p></p></div>
+    
+  </a>
+</div>
+
+
+
+    
+      
+
+<div class="summary-row" data-doc-type="method" >
+  <a href="Kit.Api.Resources.ActiveRecordResource.html#record_serializer-class_method" title="record_serializer (class method)">
+    <div class="summary-signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>record_serializer</span><span class='arguments'>(record:)</span><span class='block'></span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p></p></div>
+    
+  </a>
+</div>
+
+
+
+    
+      
+
+<div class="summary-row" data-doc-type="method" >
+  <a href="Kit.Api.Resources.ActiveRecordResource.html#relationships-class_method" title="relationships (class method)">
+    <div class="summary-signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>relationships</span><span class='arguments'></span><span class='block'></span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p></p></div>
+    
+  </a>
+</div>
+
+
+
+    
+      
+
+<div class="summary-row" data-doc-type="method" >
+  <a href="Kit.Api.Resources.ActiveRecordResource.html#sort_fields-class_method" title="sort_fields (class method)">
+    <div class="summary-signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>sort_fields</span><span class='arguments'></span><span class='block'></span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p></p></div>
+    
+  </a>
+</div>
+
+
+
+    
+      
+
+<div class="summary-row" data-doc-type="method" >
+  <a href="Kit.Api.Resources.ActiveRecordResource.html#to_h-class_method" title="to_h (class method)">
+    <div class="summary-signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>to_h</span><span class='arguments'></span><span class='block'></span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p>Returns a Resource we actualy depend on, everything else is syntaxic sugar.</p></div>
+    
+  </a>
+</div>
+
+
+
+    
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</section>
+
+
+  <hr>
+
+  <section id="methods-class" class="details-list">
+
+    <h1 class="section-heading">
+      <a class="hover-link" href="#methods-class">
+        <span class="icon-link" aria-hidden="true"></span>
+        <span class="sr-only">Link to this section</span>
+      </a>
+      Class methods
+      <span class='list-count'>14</span>
+      
+    </h1>
+
+    <div class="functions-list">
+      
+        
+
+<section class="detail" id="data_resolver-class_method" >
+
+  <div class="detail-header">
+
+    <a href="Kit.Api.Resources.ActiveRecordResource.html#data_resolver-class_method" class="detail-link" title="Link to this method">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this method</span>
+    </a>
+
+    <h1 class="signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>data_resolver</span><span class='arguments'>(query_node:)</span><span class='block'></span>
+
+
+    </h1>
+
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-api/app/resources/kit/api/resources/active_record_resource.rb#L177" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+    
+    
+
+<span class='docstring-tags'>
+  
+</span>
+
+
+    <div class="specs" style='opacity: 1; margin-left: 15px; font-size: 0.8em; color: #777;'>
+      <!-- TODO: add contracts here when we can generate documentation from them -->
+
+      
+
+      
+    </div>
+
+  </div>
+
+  <section class="detail-body">
+    
+  </section>
+
+</section>
+
+      
+        
+
+<section class="detail" id="default_filters-class_method" >
+
+  <div class="detail-header">
+
+    <a href="Kit.Api.Resources.ActiveRecordResource.html#default_filters-class_method" class="detail-link" title="Link to this method">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this method</span>
+    </a>
+
+    <h1 class="signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>default_filters</span><span class='arguments'></span><span class='block'></span>
+
+
+    </h1>
+
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-api/app/resources/kit/api/resources/active_record_resource.rb#L7" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+    
+    
+
+<span class='docstring-tags'>
+  
+</span>
+
+
+    <div class="specs" style='opacity: 1; margin-left: 15px; font-size: 0.8em; color: #777;'>
+      <!-- TODO: add contracts here when we can generate documentation from them -->
+
+      
+
+      
+    </div>
+
+  </div>
+
+  <section class="detail-body">
+    <div class='docstring-tags'>
+  
+</div><div class='docstring'>
+  <p>Default filter configuration based on field type</p>
+
+
+</div><div class="tags">
+  
+
+</div>
+  </section>
+
+</section>
+
+      
+        
+
+<section class="detail" id="default_sort_fields-class_method" >
+
+  <div class="detail-header">
+
+    <a href="Kit.Api.Resources.ActiveRecordResource.html#default_sort_fields-class_method" class="detail-link" title="Link to this method">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this method</span>
+    </a>
+
+    <h1 class="signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>default_sort_fields</span><span class='arguments'></span><span class='block'></span>
+
+
+    </h1>
+
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-api/app/resources/kit/api/resources/active_record_resource.rb#L27" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+    
+    
+
+<span class='docstring-tags'>
+  
+</span>
+
+
+    <div class="specs" style='opacity: 1; margin-left: 15px; font-size: 0.8em; color: #777;'>
+      <!-- TODO: add contracts here when we can generate documentation from them -->
+
+      
+
+      
+    </div>
+
+  </div>
+
+  <section class="detail-body">
+    <div class='docstring-tags'>
+  
+</div><div class='docstring'>
+  <p>Default sort_field behaviour based on field type.</p>
+
+<p>Please remember that sort fields do not necessarily need to correspond to resource attribute and relationship names.</p>
+
+<ul>
+<li><code>sortable</code> means we want to create a sort criteria for the field, with the same name.</li>
+<li><code>unique</code> means we don&#39;t need a tie-breaker for pagination purposes</li>
+<li><code>tie_breaker</code> is the unique field to use when a tie breaker is needed. The default config assumes that there will likely only be one Id type field per Resource, but that might not hold true.</li>
+</ul>
+
+
+</div><div class="tags">
+  
+
+</div>
+  </section>
+
+</section>
+
+      
+        
+
+<section class="detail" id="fields-class_method" >
+
+  <div class="detail-header">
+
+    <a href="Kit.Api.Resources.ActiveRecordResource.html#fields-class_method" class="detail-link" title="Link to this method">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this method</span>
+    </a>
+
+    <h1 class="signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>fields</span><span class='arguments'></span><span class='block'></span>
+
+
+    </h1>
+
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-api/app/resources/kit/api/resources/active_record_resource.rb#L134" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+    
+    
+
+<span class='docstring-tags'>
+  
+</span>
+
+
+    <div class="specs" style='opacity: 1; margin-left: 15px; font-size: 0.8em; color: #777;'>
+      <!-- TODO: add contracts here when we can generate documentation from them -->
+
+      
+
+      
+    </div>
+
+  </div>
+
+  <section class="detail-body">
+    
+  </section>
+
+</section>
+
+      
+        
+
+<section class="detail" id="fields_setup-class_method" >
+
+  <div class="detail-header">
+
+    <a href="Kit.Api.Resources.ActiveRecordResource.html#fields_setup-class_method" class="detail-link" title="Link to this method">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this method</span>
+    </a>
+
+    <h1 class="signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>fields_setup</span><span class='arguments'></span><span class='block'></span>
+
+
+    </h1>
+
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-api/app/resources/kit/api/resources/active_record_resource.rb#L130" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+    
+    
+
+<span class='docstring-tags'>
+  
+</span>
+
+
+    <div class="specs" style='opacity: 1; margin-left: 15px; font-size: 0.8em; color: #777;'>
+      <!-- TODO: add contracts here when we can generate documentation from them -->
+
+      
+
+      
+    </div>
+
+  </div>
+
+  <section class="detail-body">
+    <div class='docstring-tags'>
+  
+</div><div class='docstring'>
+  <p>Hold data to generate <code>fields</code>, <code>filters</code> &amp;&amp; <code>sort_fields</code>.</p>
+
+      <h3 id="example" class="section-heading">
+        <a href="#example" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+        Example
+      </h3>
+    
+<p>The following:</p>
+
+<pre><code class="ruby">def self.fields_setup
+  {
+    id:            { type: :id_numeric, sort_field: { default: true, tie_breaker: true } },
+    created_at:    { type: :date },
+    updated_at:    { type: :date },
+    name:          { type: :string },
+    date_of_birth: { type: :date },
+    date_of_death: { type: :date, sort_field: { order: :desc } },
+  }
+end
+</code></pre>
+
+<p>Is equivalent to declarings:</p>
+
+<pre><code class="ruby">def self.fields
+ [:id, :created_at, :updated_at, :name, :date_of_birth, :date_of_death]
+end
+
+def self.filters
+  {
+    id:            [:eq, :in],
+    created_at:    [:eq, :in, :gt, :gte, :lt, :lte],
+    updated_at:    [:eq, :in, :gt, :gte, :lt, :lte],
+    name:          [:eq, :in, :contain, :start_with, :end_with],
+    date_of_birth: [:eq, :in, :gt, :gte, :lt, :lte],
+    date_of_death: [:eq, :in, :gt, :gte, :lt, :lte],
+  }
+end
+
+def self.sort_fields
+  {
+    id:            { order: [[:id,            :asc]],              default: true },
+    created_at:    { order: [[:created_at,    :asc],  [:id, :asc]] },
+    updated_at:    { order: [[:updated_at,    :asc],  [:id, :asc]] },
+    name:          { order: [[:name,          :asc],  [:id, :asc]] },
+    date_of_birth: { order: [[:date_of_birth, :asc],  [:id, :asc]] },
+    date_of_death: { order: [[:date_of_death, :desc], [:id, :asc]] },
+  }
+end
+</code></pre>
+
+
+</div><div class="tags">
+  
+
+</div>
+  </section>
+
+</section>
+
+      
+        
+
+<section class="detail" id="filters-class_method" >
+
+  <div class="detail-header">
+
+    <a href="Kit.Api.Resources.ActiveRecordResource.html#filters-class_method" class="detail-link" title="Link to this method">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this method</span>
+    </a>
+
+    <h1 class="signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>filters</span><span class='arguments'></span><span class='block'></span>
+
+
+    </h1>
+
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-api/app/resources/kit/api/resources/active_record_resource.rb#L167" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+    
+    
+
+<span class='docstring-tags'>
+  
+</span>
+
+
+    <div class="specs" style='opacity: 1; margin-left: 15px; font-size: 0.8em; color: #777;'>
+      <!-- TODO: add contracts here when we can generate documentation from them -->
+
+      
+
+      
+    </div>
+
+  </div>
+
+  <section class="detail-body">
+    
+  </section>
+
+</section>
+
+      
+        
+
+<section class="detail" id="linker-class_method" >
+
+  <div class="detail-header">
+
+    <a href="Kit.Api.Resources.ActiveRecordResource.html#linker-class_method" class="detail-link" title="Link to this method">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this method</span>
+    </a>
+
+    <h1 class="signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>linker</span><span class='arguments'></span><span class='block'></span>
+
+
+    </h1>
+
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-api/app/resources/kit/api/resources/active_record_resource.rb#L185" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+    
+    
+
+<span class='docstring-tags'>
+  
+</span>
+
+
+    <div class="specs" style='opacity: 1; margin-left: 15px; font-size: 0.8em; color: #777;'>
+      <!-- TODO: add contracts here when we can generate documentation from them -->
+
+      
+
+      
+    </div>
+
+  </div>
+
+  <section class="detail-body">
+    
+  </section>
+
+</section>
+
+      
+        
+
+<section class="detail" id="model-class_method" >
+
+  <div class="detail-header">
+
+    <a href="Kit.Api.Resources.ActiveRecordResource.html#model-class_method" class="detail-link" title="Link to this method">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this method</span>
+    </a>
+
+    <h1 class="signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>model</span><span class='arguments'></span><span class='block'></span>
+
+
+    </h1>
+
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-api/app/resources/kit/api/resources/active_record_resource.rb#L80" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+    
+    
+
+<span class='docstring-tags'>
+  
+</span>
+
+
+    <div class="specs" style='opacity: 1; margin-left: 15px; font-size: 0.8em; color: #777;'>
+      <!-- TODO: add contracts here when we can generate documentation from them -->
+
+      
+
+      
+    </div>
+
+  </div>
+
+  <section class="detail-body">
+    <div class='docstring-tags'>
+  
+</div><div class='docstring'>
+  <p>Should contain the ActiveRecord model</p>
+
+
+</div><div class="tags">
+  
+
+</div>
+  </section>
+
+</section>
+
+      
+        
+
+<section class="detail" id="name-class_method" >
+
+  <div class="detail-header">
+
+    <a href="Kit.Api.Resources.ActiveRecordResource.html#name-class_method" class="detail-link" title="Link to this method">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this method</span>
+    </a>
+
+    <h1 class="signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>name</span><span class='arguments'></span><span class='block'></span>
+
+
+    </h1>
+
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-api/app/resources/kit/api/resources/active_record_resource.rb#L75" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+    
+    
+
+<span class='docstring-tags'>
+  
+</span>
+
+
+    <div class="specs" style='opacity: 1; margin-left: 15px; font-size: 0.8em; color: #777;'>
+      <!-- TODO: add contracts here when we can generate documentation from them -->
+
+      
+
+      
+    </div>
+
+  </div>
+
+  <section class="detail-body">
+    <div class='docstring-tags'>
+  
+</div><div class='docstring'>
+  <p>Should contain the name (type) of the Resource</p>
+
+
+</div><div class="tags">
+  
+
+</div>
+  </section>
+
+</section>
+
+      
+        
+
+<section class="detail" id="paginator-class_method" >
+
+  <div class="detail-header">
+
+    <a href="Kit.Api.Resources.ActiveRecordResource.html#paginator-class_method" class="detail-link" title="Link to this method">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this method</span>
+    </a>
+
+    <h1 class="signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>paginator</span><span class='arguments'></span><span class='block'></span>
+
+
+    </h1>
+
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-api/app/resources/kit/api/resources/active_record_resource.rb#L189" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+    
+    
+
+<span class='docstring-tags'>
+  
+</span>
+
+
+    <div class="specs" style='opacity: 1; margin-left: 15px; font-size: 0.8em; color: #777;'>
+      <!-- TODO: add contracts here when we can generate documentation from them -->
+
+      
+
+      
+    </div>
+
+  </div>
+
+  <section class="detail-body">
+    
+  </section>
+
+</section>
+
+      
+        
+
+<section class="detail" id="record_serializer-class_method" >
+
+  <div class="detail-header">
+
+    <a href="Kit.Api.Resources.ActiveRecordResource.html#record_serializer-class_method" class="detail-link" title="Link to this method">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this method</span>
+    </a>
+
+    <h1 class="signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>record_serializer</span><span class='arguments'>(record:)</span><span class='block'></span>
+
+
+    </h1>
+
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-api/app/resources/kit/api/resources/active_record_resource.rb#L181" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+    
+    
+
+<span class='docstring-tags'>
+  
+</span>
+
+
+    <div class="specs" style='opacity: 1; margin-left: 15px; font-size: 0.8em; color: #777;'>
+      <!-- TODO: add contracts here when we can generate documentation from them -->
+
+      
+
+      
+    </div>
+
+  </div>
+
+  <section class="detail-body">
+    
+  </section>
+
+</section>
+
+      
+        
+
+<section class="detail" id="relationships-class_method" >
+
+  <div class="detail-header">
+
+    <a href="Kit.Api.Resources.ActiveRecordResource.html#relationships-class_method" class="detail-link" title="Link to this method">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this method</span>
+    </a>
+
+    <h1 class="signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>relationships</span><span class='arguments'></span><span class='block'></span>
+
+
+    </h1>
+
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-api/app/resources/kit/api/resources/active_record_resource.rb#L173" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+    
+    
+
+<span class='docstring-tags'>
+  
+</span>
+
+
+    <div class="specs" style='opacity: 1; margin-left: 15px; font-size: 0.8em; color: #777;'>
+      <!-- TODO: add contracts here when we can generate documentation from them -->
+
+      
+
+      
+    </div>
+
+  </div>
+
+  <section class="detail-body">
+    
+  </section>
+
+</section>
+
+      
+        
+
+<section class="detail" id="sort_fields-class_method" >
+
+  <div class="detail-header">
+
+    <a href="Kit.Api.Resources.ActiveRecordResource.html#sort_fields-class_method" class="detail-link" title="Link to this method">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this method</span>
+    </a>
+
+    <h1 class="signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>sort_fields</span><span class='arguments'></span><span class='block'></span>
+
+
+    </h1>
+
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-api/app/resources/kit/api/resources/active_record_resource.rb#L138" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+    
+    
+
+<span class='docstring-tags'>
+  
+</span>
+
+
+    <div class="specs" style='opacity: 1; margin-left: 15px; font-size: 0.8em; color: #777;'>
+      <!-- TODO: add contracts here when we can generate documentation from them -->
+
+      
+
+      
+    </div>
+
+  </div>
+
+  <section class="detail-body">
+    
+  </section>
+
+</section>
+
+      
+        
+
+<section class="detail" id="to_h-class_method" >
+
+  <div class="detail-header">
+
+    <a href="Kit.Api.Resources.ActiveRecordResource.html#to_h-class_method" class="detail-link" title="Link to this method">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this method</span>
+    </a>
+
+    <h1 class="signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>to_h</span><span class='arguments'></span><span class='block'></span>
+
+
+    </h1>
+
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-api/app/resources/kit/api/resources/active_record_resource.rb#L53" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+    
+    
+
+<span class='docstring-tags'>
+  
+</span>
+
+
+    <div class="specs" style='opacity: 1; margin-left: 15px; font-size: 0.8em; color: #777;'>
+      <!-- TODO: add contracts here when we can generate documentation from them -->
+
+      
+
+      
+    </div>
+
+  </div>
+
+  <section class="detail-body">
+    <div class='docstring-tags'>
+  
+</div><div class='docstring'>
+  <p>Returns a Resource we actualy depend on, everything else is syntaxic sugar.
+after Ct::Resource # TODO: in order for this to work, add <code>ActiveSupport::Concern</code> support in <code>Kit::Contract</code></p>
+
+
+</div><div class="tags">
+  
+
+</div>
+  </section>
+
+</section>
+
+      
+    </div>
+
+  </section>
+
+
+
+
+
+
+            <footer class="footer">
+
+  <p>
+    <span class="line">
+      Built on 2020-06-21 by
+      <a href="https://github.com/lsegal/yard" title="Yard" target="_blank" rel="help noopener">yard-0.9.25</a> with <a href="https://github.com/rubykit/kit/tree/master/libraries/kit-doc" title="Kit::Doc" target="_blank" rel="help noopener">Kit::Doc</a>,
+    </span>
+    <span class="line">
+      designed by
+      <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>
+      for
+      <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a>.
+    </span>
+  </p>
+
+  <p>
+    <button class="line footer-button display-shortcuts-help">
+      Display keyboard shortcuts
+    </button>
+    <button class="line footer-button night-mode-toggle">
+      Toggle night mode
+    </button>
+    <button class="line footer-button private-apis-toggle">
+      Toggle private APIs display
+    </button>
+  </p>
+
+</footer>
+
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>
+
+</html>
+

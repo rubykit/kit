@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+  <head>
+     
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="generator" content="Yard v0.9.25">
+<meta name="project" content="kit-api edge">
+
+
+<title>About APIs — kit-api edge</title>
+
+<link rel="stylesheet" href="assets/css/app-0f9f08c1bb297a76a4fe.css" />
+
+<script>
+  var yard_kit_relative_url_path = "";
+</script>
+
+<script src="sidebar_items-4b8cf7c60c.js"></script>
+<script src="docs_config.js"  ></script>
+<script src="assets/js/app-8922f842956a6779307c.js"    async ></script>
+
+  </head>
+
+  <body data-type="extras">
+    <script>
+      try {
+        let night_mode = localStorage.getItem('night-mode');
+        if (night_mode === 'true' || night_mode === true) {
+          document.body.className += ' night-mode';
+        }
+      } catch (e) {}
+    </script>
+
+    <div class="main">
+      
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button">
+      <span class="icon-search" aria-hidden="true"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button">
+      <span class="icon-cross" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Search" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    
+      <a href="index.html">
+        <img src="https://raw.githubusercontent.com/rubykit/kit/master/docs/assets/images/rubykit-framework-logo.svg" alt="kit-api" class="sidebar-projectImage">
+      </a>
+    
+    <div class="sidebar-projectDetails">
+      <a href="index.html" class="sidebar-projectName">
+        kit-api
+      </a>
+      <h2 class="sidebar-projectVersion">
+        edge
+      </h2>
+    </div>
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li>
+      <a id="extras-list" href="#full-list">
+        Guides
+      </a>
+    </li>
+    
+      <li>
+        <a id="modules-list" href="#full-list">
+          Modules
+        </a>
+      </li>
+    
+  </ul>
+
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+
+      <section class="content">
+        <div class="content-outer">
+          <div id="content" class="content-inner">
+
+            <small class="app-vsn"><b>kit-api</b> edge</small>
+
+<div class='extra'>
+  
+      <h1 id="about-apis" class="section-heading">
+        <a href="#about-apis" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+        About APIs
+      </h1>
+    
+<p>APIs are a way of doing message-passing between systems.</p>
+
+<p>They allow a client to access &amp; act on ressources of a remote system, while hidding most of the complexity of that system (encapsulation).</p>
+
+<p><a href="https://jsonapi.org" title="" >JSON:API</a> &amp; <a href="https://graphql.org/" title="" >GraphQL</a> are two set of specifications that help you build API&#39;s in a standardized way, faster, avoiding bikeshedding.</p>
+
+      <h2 id="what-truly-matters" class="section-heading">
+        <a href="#what-truly-matters" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+        What truly matters
+      </h2>
+    
+<p><a href="https://github.com/rubykit/kit" title="" >Kit</a> helps you design your apps in a domain driven way. The &quot;growth-ready&quot; way is to build your domain in a mono-repo. At first, they will likely be exposed through the same app-container in production, as it is simpler &amp; cheaper.</p>
+
+<p>External clients will be able to connect to 1 API.</p>
+
+<p>As your business &amp; system grow, there will be valid reasons to expose these domains as different apps in production. So now you effectively have N APIs,
+but you don&#39;t want clients to have to know about the specifics of the production setup.</p>
+
+<p>This is why having a way to aggregate &amp; expose the various graphs (resources + operations of your domain) through a gateway is important.</p>
+
+<p><img src="assets/images/api_gateway.png" alt="API Gateway"></p>
+
+      <h2 id="layers" class="section-heading">
+        <a href="#layers" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+        Layers
+      </h2>
+    
+<p>There are different layers that can be identified for any API.</p>
+
+<table><thead>
+<tr>
+<th>Properties</th>
+<th>Definition</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>A</code> Query interface</td>
+<td>How you express your request (acting on data)</td>
+</tr>
+<tr>
+<td><code>B</code> Query format</td>
+<td>How the various operations (read, create, update, delete) are expressed.</td>
+</tr>
+<tr>
+<td><code>C</code> API&#39;s resources standardization</td>
+<td>How you standardize your API&#39;s business resources. This allows API auto-discovery and connecting graphs. (Ex for Stripe: PaymentSource, Charge, Refund, etc).</td>
+</tr>
+<tr>
+<td><code>D</code> Response format</td>
+<td>The API&#39;s response format (serialization).</td>
+</tr>
+</tbody></table>
+
+<p>Once we identify them in the specs, we gain the ability to build APIs that can be exposed for free through both standards.</p>
+
+<p>You can even mix &amp; match if you find a valid usecase, like: <code>GraphQL query interface + GraphQL resources standardization + JSON:API response format</code>)</p>
+
+<p>This is what <a href="https://github.com/rubykit/kit/tree/master/libraries/kit-api" title="" >Kit::Api</a> is about.</p>
+
+</div>
+
+            <footer class="footer">
+
+  <p>
+    <span class="line">
+      Built on 2020-06-21 by
+      <a href="https://github.com/lsegal/yard" title="Yard" target="_blank" rel="help noopener">yard-0.9.25</a> with <a href="https://github.com/rubykit/kit/tree/master/libraries/kit-doc" title="Kit::Doc" target="_blank" rel="help noopener">Kit::Doc</a>,
+    </span>
+    <span class="line">
+      designed by
+      <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>
+      for
+      <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a>.
+    </span>
+  </p>
+
+  <p>
+    <button class="line footer-button display-shortcuts-help">
+      Display keyboard shortcuts
+    </button>
+    <button class="line footer-button night-mode-toggle">
+      Toggle night mode
+    </button>
+    <button class="line footer-button private-apis-toggle">
+      Toggle private APIs display
+    </button>
+  </p>
+
+</footer>
+
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>
+
+</html>
+

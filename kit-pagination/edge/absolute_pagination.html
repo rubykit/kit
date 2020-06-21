@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+  <head>
+     
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="generator" content="Yard v0.9.25">
+<meta name="project" content="kit-pagination edge">
+
+
+<title>Absolute pagination — kit-pagination edge</title>
+
+<link rel="stylesheet" href="assets/css/app-0f9f08c1bb297a76a4fe.css" />
+
+<script>
+  var yard_kit_relative_url_path = "";
+</script>
+
+<script src="sidebar_items-2a0708345d.js"></script>
+<script src="docs_config.js"  ></script>
+<script src="assets/js/app-8922f842956a6779307c.js"    async ></script>
+
+  </head>
+
+  <body data-type="extras">
+    <script>
+      try {
+        let night_mode = localStorage.getItem('night-mode');
+        if (night_mode === 'true' || night_mode === true) {
+          document.body.className += ' night-mode';
+        }
+      } catch (e) {}
+    </script>
+
+    <div class="main">
+      
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button">
+      <span class="icon-search" aria-hidden="true"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button">
+      <span class="icon-cross" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Search" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    
+      <a href="index.html">
+        <img src="https://raw.githubusercontent.com/rubykit/kit/master/docs/assets/images/rubykit-framework-logo.svg" alt="kit-pagination" class="sidebar-projectImage">
+      </a>
+    
+    <div class="sidebar-projectDetails">
+      <a href="index.html" class="sidebar-projectName">
+        kit-pagination
+      </a>
+      <h2 class="sidebar-projectVersion">
+        edge
+      </h2>
+    </div>
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li>
+      <a id="extras-list" href="#full-list">
+        Guides
+      </a>
+    </li>
+    
+      <li>
+        <a id="modules-list" href="#full-list">
+          Modules
+        </a>
+      </li>
+    
+  </ul>
+
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+
+      <section class="content">
+        <div class="content-outer">
+          <div id="content" class="content-inner">
+
+            <small class="app-vsn"><b>kit-pagination</b> edge</small>
+
+<div class='extra'>
+  
+      <h1 id="absolute-pagination" class="section-heading">
+        <a href="#absolute-pagination" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+        Absolute pagination
+      </h1>
+    
+<p>With this strategy, the <code>subset id</code> will always returns the <strong>same</strong> <code>subset</code> (minus elements that have been deleted since that access).</p>
+
+<p>The <code>subset id</code> needs to contain data that allows to identify the subset in an absolute way: often, a unique proprety of the <code>first element</code> and <code>last element</code> of the <code>subset</code>.</p>
+
+<p>To avoid collisions between <code>subsets</code>, the last (or least important) <code>ordering parameter</code> used always need to be <strong>unique</strong>.</p>
+
+      <h3 id="examples-" class="section-heading">
+        <a href="#examples-" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+        Examples:
+      </h3>
+    
+<table><thead>
+<tr>
+<th>Ordering</th>
+<th>Status</th>
+<th>Note</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>[[:uid, :asc], [:created_at, :desc]]</code></td>
+<td><strong>Valid</strong></td>
+<td>But <code>created_at</code> will never be used since <code>uid</code> is already unique</td>
+</tr>
+<tr>
+<td><code>[[:created_at, :desc]]</code></td>
+<td><strong>Invalid</strong></td>
+<td>You might have <code>elements</code> of the <code>sets</code> that have similar creation timestamps. This can lead to collisions between <code>subsets</code>: the same element can be returned in different pages</td>
+</tr>
+<tr>
+<td><code>[[[:created_at, :desc], [:uid, :asc]]</code></td>
+<td><strong>Valid</strong></td>
+<td>Even if you don&#39;t care about <code>:uid</code> in itself, adding it allows to uniquely identify elements of the set.</td>
+</tr>
+</tbody></table>
+
+</div>
+
+            <footer class="footer">
+
+  <p>
+    <span class="line">
+      Built on 2020-06-21 by
+      <a href="https://github.com/lsegal/yard" title="Yard" target="_blank" rel="help noopener">yard-0.9.25</a> with <a href="https://github.com/rubykit/kit/tree/master/libraries/kit-doc" title="Kit::Doc" target="_blank" rel="help noopener">Kit::Doc</a>,
+    </span>
+    <span class="line">
+      designed by
+      <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>
+      for
+      <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a>.
+    </span>
+  </p>
+
+  <p>
+    <button class="line footer-button display-shortcuts-help">
+      Display keyboard shortcuts
+    </button>
+    <button class="line footer-button night-mode-toggle">
+      Toggle night mode
+    </button>
+    <button class="line footer-button private-apis-toggle">
+      Toggle private APIs display
+    </button>
+  </p>
+
+</footer>
+
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>
+
+</html>
+

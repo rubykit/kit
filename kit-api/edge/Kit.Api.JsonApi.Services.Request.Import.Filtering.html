@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html>
+  <head>
+     
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="generator" content="Yard v0.9.25">
+<meta name="project" content="kit-api edge">
+
+
+<title>Module: Kit::Api::JsonApi::Services::Request::Import::Filtering — kit-api edge</title>
+
+<link rel="stylesheet" href="assets/css/app-0f9f08c1bb297a76a4fe.css" />
+
+<script>
+  var yard_kit_relative_url_path = "";
+</script>
+
+<script src="sidebar_items-4b8cf7c60c.js"></script>
+<script src="docs_config.js"  ></script>
+<script src="assets/js/app-8922f842956a6779307c.js"    async ></script>
+
+  </head>
+
+  <body data-type="modules">
+    <script>
+      try {
+        let night_mode = localStorage.getItem('night-mode');
+        if (night_mode === 'true' || night_mode === true) {
+          document.body.className += ' night-mode';
+        }
+      } catch (e) {}
+    </script>
+
+    <div class="main">
+      
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button">
+      <span class="icon-search" aria-hidden="true"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button">
+      <span class="icon-cross" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Search" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    
+      <a href="index.html">
+        <img src="https://raw.githubusercontent.com/rubykit/kit/master/docs/assets/images/rubykit-framework-logo.svg" alt="kit-api" class="sidebar-projectImage">
+      </a>
+    
+    <div class="sidebar-projectDetails">
+      <a href="index.html" class="sidebar-projectName">
+        kit-api
+      </a>
+      <h2 class="sidebar-projectVersion">
+        edge
+      </h2>
+    </div>
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li>
+      <a id="extras-list" href="#full-list">
+        Guides
+      </a>
+    </li>
+    
+      <li>
+        <a id="modules-list" href="#full-list">
+          Modules
+        </a>
+      </li>
+    
+  </ul>
+
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+
+      <section class="content">
+        <div class="content-outer">
+          <div id="content" class="content-inner">
+
+            
+<small class="app-vsn"><b>kit-api</b> edge</small>
+
+<h1 class='modules-header'>
+  <div style='flex-grow: 1;'>
+
+    <span class='title module-name'>Filtering</span>
+    <span class='object-type'>module</span>
+    
+      <div class='module-full-name'>Kit::Api::JsonApi::Services::Request::Import::Filtering</div>
+    
+  </div>
+
+  
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-api/app/services/kit/api/json_api/services/request/import/filtering.rb#L50" target='_blank' title="View Source" class="view-source" rel="help">
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+  
+</h1><section id="moduledoc">
+  <div class='docstring-tags'>
+  
+</div><div class='docstring'>
+  <p><code>JSON:API</code> base specification is agnostic about filtering strategies supported by a server.</p>
+
+<p><code>Kit::Api::JsonApi</code> supports:</p>
+
+<ul>
+<li>filtering on the top level collection and any to-many relationship</li>
+<li>multiple operators per field, defined per field type</li>
+</ul>
+
+<p><code>Kit::Api::JsonApi</code> supports pagination on each included relationship.
+A relationship that is traversed through multiple paths can have per-path filters.</p>
+
+      <h2 id="url-format" class="section-heading">
+        <a href="#url-format" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+        URL format
+      </h2>
+    
+<p>The format of a filter is:</p>
+
+<pre><code class="kit-url"> GET https://my.api/my-resource?filter[(resource_path.)filter_name]([operator])=value(s)
+</code></pre>
+
+<p>If the <code>resource_path</code> is omitted, the filter applies to the top level resource.</p>
+
+<pre><code class="kit-url"># Implicit: the filter `name` is applied on `authors`
+GET /authors?filter[name]=Dan
+# Explicit: the filter `title` is applied on `books.chapter`
+GET /authors?include=books.chapter&amp;filter[books.chapter.title]=Strider
+</code></pre>
+
+<p>If the operator is omitted, is defaults to <code>eq</code> or <code>in</code>, based on the values.</p>
+
+<pre><code class="kit-url"># Single value: the two following are equal
+GET /authors?filter[id]=2
+GET /authors?filter[id][eq]=2
+
+# Multiple values: the two following are equal
+GET /authors?filter[id]=1,2
+GET /authors?filter[id][in]=1,2
+</code></pre>
+
+      <h3 id="---warning" class="section-heading">
+        <a href="#---warning" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+        ⚠️ Warning
+      </h3>
+    
+<p>Filters on relationship <strong>do not</strong> have any effect on the parent (upper level).
+This ensures <code>Resources</code> can be loaded from different datasources, where JOINs are not available.</p>
+
+<pre><code class="kit-url"># The following will not affect the returned authors, only the books.
+GET /authors?filter[books.title]=Title
+</code></pre>
+
+      <h2 id="references" class="section-heading">
+        <a href="#references" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+        References
+      </h2>
+    
+<ul>
+<li><a href="https://jsonapi.org/format/1.1/#fetching-filtering">https://jsonapi.org/format/1.1/#fetching-filtering</a></li>
+<li><a href="https://jsonapi.org/recommendations/#filtering">https://jsonapi.org/recommendations/#filtering</a></li>
+</ul>
+
+
+</div><div class="tags">
+  
+
+</div>
+</section><hr>
+
+<section id="summary" class="details-list">
+
+   <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this section</span>
+      </a>
+      Summary
+      <span class='private-apis-warning unselectable'>⚠️ Private APIs are currently hidden.</span>
+   </h1>
+
+   
+<div class="docstring-tags">
+
+  
+
+  
+  
+    
+  
+    
+      <div class='doc-tag' data-ruby-Used instance mixins:='Kit::Contract::Mixin'>
+        
+          <span class='doc-tag-type'>Used instance mixins:</span>
+          <span class='doc-tag-value'>Contract::Mixin</span>
+        
+      </div>
+    
+  
+    
+  
+    
+  
+
+  
+    <div class='doc-tag' data-ruby-files='app/services/kit/api/json_api/services/request/import/filtering.rb#L50'>
+      
+        <span class='doc-tag-type'>Defined in:</span>
+        <span class='doc-tag-value'>
+          
+          <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-api/app/services/kit/api/json_api/services/request/import/filtering.rb#L50" target='_blank' title="View Source" rel="help">
+            app/services/kit/api/json_api/services/request/import/filtering.rb#50
+          </a>
+        </span>
+      
+    </div>
+  
+
+</div>
+
+
+
+
+
+
+  <div class="summary summary-methods-class">
+    <h2 class='summary-heading'>
+      <a href="#methods-class" class='title'>Class methods</a>
+      <span class='list-count'>4</span>
+    </h2>
+
+    
+      
+
+<div class="summary-row" data-doc-type="method" >
+  <a href="Kit.Api.JsonApi.Services.Request.Import.Filtering.html#add_to_request-class_method" title="add_to_request (class method)">
+    <div class="summary-signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>add_to_request</span><span class='arguments'>(parsed_query_params_filters:, request:)</span><span class='block'></span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p>When filtering data is valid, add it to the `Request`.</p></div>
+    
+  </a>
+</div>
+
+
+
+    
+      
+
+<div class="summary-row" data-doc-type="method" >
+  <a href="Kit.Api.JsonApi.Services.Request.Import.Filtering.html#handle_filtering-class_method" title="handle_filtering (class method)">
+    <div class="summary-signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>handle_filtering</span><span class='arguments'>(query_params:, request:)</span><span class='block'></span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p>Entry point.</p></div>
+    
+  </a>
+</div>
+
+
+
+    
+      
+
+<div class="summary-row" data-doc-type="method" >
+  <a href="Kit.Api.JsonApi.Services.Request.Import.Filtering.html#parse-class_method" title="parse (class method)">
+    <div class="summary-signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>parse</span><span class='arguments'>(query_params:)</span><span class='block'></span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p>Extract `filter` query params and transform it into a normalized hash.</p></div>
+    
+  </a>
+</div>
+
+
+
+    
+      
+
+<div class="summary-row" data-doc-type="method" >
+  <a href="Kit.Api.JsonApi.Services.Request.Import.Filtering.html#validate-class_method" title="validate (class method)">
+    <div class="summary-signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>validate</span><span class='arguments'>(parsed_query_params_filters:, request:)</span><span class='block'></span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p>Ensure that: - nested relationships are included when filtered on - filters types are supported on the fields.</p></div>
+    
+  </a>
+</div>
+
+
+
+    
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</section>
+
+
+  <hr>
+
+  <section id="methods-class" class="details-list">
+
+    <h1 class="section-heading">
+      <a class="hover-link" href="#methods-class">
+        <span class="icon-link" aria-hidden="true"></span>
+        <span class="sr-only">Link to this section</span>
+      </a>
+      Class methods
+      <span class='list-count'>4</span>
+      
+    </h1>
+
+    <div class="functions-list">
+      
+        
+
+<section class="detail" id="add_to_request-class_method" >
+
+  <div class="detail-header">
+
+    <a href="Kit.Api.JsonApi.Services.Request.Import.Filtering.html#add_to_request-class_method" class="detail-link" title="Link to this method">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this method</span>
+    </a>
+
+    <h1 class="signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>add_to_request</span><span class='arguments'>(parsed_query_params_filters:, request:)</span><span class='block'></span>
+
+
+    </h1>
+
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-api/app/services/kit/api/json_api/services/request/import/filtering.rb#L174" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+    
+    
+
+<span class='docstring-tags'>
+  
+</span>
+
+
+    <div class="specs" style='opacity: 1; margin-left: 15px; font-size: 0.8em; color: #777;'>
+      <!-- TODO: add contracts here when we can generate documentation from them -->
+
+      
+
+      
+    </div>
+
+  </div>
+
+  <section class="detail-body">
+    <div class='docstring-tags'>
+  
+</div><div class='docstring'>
+  <p>When filtering data is valid, add it to the <code>Request</code>.</p>
+
+
+</div><div class="tags">
+  
+
+</div>
+  </section>
+
+</section>
+
+      
+        
+
+<section class="detail" id="handle_filtering-class_method" >
+
+  <div class="detail-header">
+
+    <a href="Kit.Api.JsonApi.Services.Request.Import.Filtering.html#handle_filtering-class_method" class="detail-link" title="Link to this method">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this method</span>
+    </a>
+
+    <h1 class="signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>handle_filtering</span><span class='arguments'>(query_params:, request:)</span><span class='block'></span>
+
+
+    </h1>
+
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-api/app/services/kit/api/json_api/services/request/import/filtering.rb#L57" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+    
+    
+
+<span class='docstring-tags'>
+  
+</span>
+
+
+    <div class="specs" style='opacity: 1; margin-left: 15px; font-size: 0.8em; color: #777;'>
+      <!-- TODO: add contracts here when we can generate documentation from them -->
+
+      
+
+      
+    </div>
+
+  </div>
+
+  <section class="detail-body">
+    <div class='docstring-tags'>
+  
+</div><div class='docstring'>
+  <p>Entry point. Parse &amp; validate filtering data before adding it to the <code>Request</code>.</p>
+
+
+</div><div class="tags">
+  
+
+</div>
+  </section>
+
+</section>
+
+      
+        
+
+<section class="detail" id="parse-class_method" >
+
+  <div class="detail-header">
+
+    <a href="Kit.Api.JsonApi.Services.Request.Import.Filtering.html#parse-class_method" class="detail-link" title="Link to this method">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this method</span>
+    </a>
+
+    <h1 class="signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>parse</span><span class='arguments'>(query_params:)</span><span class='block'></span>
+
+
+    </h1>
+
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-api/app/services/kit/api/json_api/services/request/import/filtering.rb#L99" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+    
+    
+
+<span class='docstring-tags'>
+  
+</span>
+
+
+    <div class="specs" style='opacity: 1; margin-left: 15px; font-size: 0.8em; color: #777;'>
+      <!-- TODO: add contracts here when we can generate documentation from them -->
+
+      
+
+      
+    </div>
+
+  </div>
+
+  <section class="detail-body">
+    <div class='docstring-tags'>
+  
+</div><div class='docstring'>
+  <p>Extract <code>filter</code> query params and transform it into a normalized hash.</p>
+
+      <h2 id="examples" class="section-heading">
+        <a href="#examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+        Examples
+      </h2>
+    
+<pre><code class="irb">irb&gt; ex_qp  = &quot;filter[name][eq]=Tolkien,Rowling&amp;filter[books.date_published][lt]=2002&amp;filter[date_of_birth][gt]=1950&amp;filter[books.title]=Title&quot;
+irb&gt; _, ctx = Services::Url.parse_query_params(url: &quot;scheme://my.api/my-resource?#{ ex_qp }&quot;)
+irb&gt; ctx[:query_params]
+{
+  filter: {
+    :name                   =&gt; { eq: &#39;Tolkien,Rowling&#39; },
+    :&#39;books.date_published&#39; =&gt; { lt: &#39;2002&#39; },
+    :date_of_birth          =&gt; { gt: &#39;1950&#39; },
+    :&#39;books.title&#39;          =&gt; &quot;Title&quot; },
+  },
+}
+irb&gt; _, ctx = parse(query_params: ctx[:query_params])
+irb&gt; ctx[:parsed_query_params_filters]
+{
+  :top_level =&gt; [
+    { name: :name,           op: :in, value: [&#39;Tolkien&#39;, &#39;Rowling&#39;] },
+    { name: :date_of_birth,  op: :gt, value: [&#39;1950&#39;] },
+  ],
+  &#39;books&#39;    =&gt; [
+    { name: :date_published, op: :lt, value: [&#39;2002&#39;] },
+    { name: :title,          op: :eq, value: [&#39;Title&#39;] },
+  ],
+}
+</code></pre>
+
+
+</div><div class="tags">
+  
+
+</div>
+  </section>
+
+</section>
+
+      
+        
+
+<section class="detail" id="validate-class_method" >
+
+  <div class="detail-header">
+
+    <a href="Kit.Api.JsonApi.Services.Request.Import.Filtering.html#validate-class_method" class="detail-link" title="Link to this method">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this method</span>
+    </a>
+
+    <h1 class="signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>validate</span><span class='arguments'>(parsed_query_params_filters:, request:)</span><span class='block'></span>
+
+
+    </h1>
+
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-api/app/services/kit/api/json_api/services/request/import/filtering.rb#L139" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+    
+    
+
+<span class='docstring-tags'>
+  
+</span>
+
+
+    <div class="specs" style='opacity: 1; margin-left: 15px; font-size: 0.8em; color: #777;'>
+      <!-- TODO: add contracts here when we can generate documentation from them -->
+
+      
+
+      
+    </div>
+
+  </div>
+
+  <section class="detail-body">
+    <div class='docstring-tags'>
+  
+</div><div class='docstring'>
+  <p>Ensure that:</p>
+
+<ul>
+<li>nested relationships are included when filtered on</li>
+<li>filters types are supported on the fields</li>
+</ul>
+
+<p><strong>⚠️ Warning</strong>: in order to validate inclusion, the related resources need to have been run first.</p>
+
+
+</div><div class="tags">
+  
+
+</div>
+  </section>
+
+</section>
+
+      
+    </div>
+
+  </section>
+
+
+
+
+
+
+            <footer class="footer">
+
+  <p>
+    <span class="line">
+      Built on 2020-06-21 by
+      <a href="https://github.com/lsegal/yard" title="Yard" target="_blank" rel="help noopener">yard-0.9.25</a> with <a href="https://github.com/rubykit/kit/tree/master/libraries/kit-doc" title="Kit::Doc" target="_blank" rel="help noopener">Kit::Doc</a>,
+    </span>
+    <span class="line">
+      designed by
+      <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>
+      for
+      <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a>.
+    </span>
+  </p>
+
+  <p>
+    <button class="line footer-button display-shortcuts-help">
+      Display keyboard shortcuts
+    </button>
+    <button class="line footer-button night-mode-toggle">
+      Toggle night mode
+    </button>
+    <button class="line footer-button private-apis-toggle">
+      Toggle private APIs display
+    </button>
+  </p>
+
+</footer>
+
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>
+
+</html>
+

@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html>
+  <head>
+     
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="generator" content="Yard v0.9.25">
+<meta name="project" content="kit-api edge">
+
+
+<title>Module: Kit::Api::JsonApi::Services::Request::Import::Pagination — kit-api edge</title>
+
+<link rel="stylesheet" href="assets/css/app-0f9f08c1bb297a76a4fe.css" />
+
+<script>
+  var yard_kit_relative_url_path = "";
+</script>
+
+<script src="sidebar_items-4b8cf7c60c.js"></script>
+<script src="docs_config.js"  ></script>
+<script src="assets/js/app-8922f842956a6779307c.js"    async ></script>
+
+  </head>
+
+  <body data-type="modules">
+    <script>
+      try {
+        let night_mode = localStorage.getItem('night-mode');
+        if (night_mode === 'true' || night_mode === true) {
+          document.body.className += ' night-mode';
+        }
+      } catch (e) {}
+    </script>
+
+    <div class="main">
+      
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button">
+      <span class="icon-search" aria-hidden="true"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button">
+      <span class="icon-cross" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Search" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    
+      <a href="index.html">
+        <img src="https://raw.githubusercontent.com/rubykit/kit/master/docs/assets/images/rubykit-framework-logo.svg" alt="kit-api" class="sidebar-projectImage">
+      </a>
+    
+    <div class="sidebar-projectDetails">
+      <a href="index.html" class="sidebar-projectName">
+        kit-api
+      </a>
+      <h2 class="sidebar-projectVersion">
+        edge
+      </h2>
+    </div>
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li>
+      <a id="extras-list" href="#full-list">
+        Guides
+      </a>
+    </li>
+    
+      <li>
+        <a id="modules-list" href="#full-list">
+          Modules
+        </a>
+      </li>
+    
+  </ul>
+
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+
+      <section class="content">
+        <div class="content-outer">
+          <div id="content" class="content-inner">
+
+            
+<small class="app-vsn"><b>kit-api</b> edge</small>
+
+<h1 class='modules-header'>
+  <div style='flex-grow: 1;'>
+
+    <span class='title module-name'>Pagination</span>
+    <span class='object-type'>module</span>
+    
+      <div class='module-full-name'>Kit::Api::JsonApi::Services::Request::Import::Pagination</div>
+    
+  </div>
+
+  
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-api/app/services/kit/api/json_api/services/request/import/pagination.rb#L41" target='_blank' title="View Source" class="view-source" rel="help">
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+  
+</h1><section id="moduledoc">
+  <div class='docstring-tags'>
+  
+</div><div class='docstring'>
+  <p><code>JSON:API</code> base specification is agnostic about pagination strategies supported by a server, it only reserves the <code>page</code> query parameter family for pagination.</p>
+
+<p><code>Kit::Api::JsonApi</code> provides pagination strategies through <code>Paginators</code>.</p>
+
+<p><code>Paginators</code> are set by <code>Resource</code> (types). ALthough not recommended, we support using different types of <code>Paginators</code> for different <code>Resources</code> in the same API.</p>
+
+<p><code>Kit::Api::JsonApi</code> includes the following strategies:</p>
+
+<ul>
+<li>[x] cursor based pagination strategy</li>
+<li>[x] offset based pagination strategy</li>
+</ul>
+
+      <h2 id="url-format" class="section-heading">
+        <a href="#url-format" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+        URL format
+      </h2>
+    
+<p>Regardless of the pagination strategy, the expected format is:</p>
+
+<pre><code class="kit-url"> GET https://my.api/my-resource?page[(resource_path.)pagination_keyword]=cursor_data
+</code></pre>
+
+<p>When the <code>resource_path</code> is omitted, pagination applies to the top level resource.</p>
+
+<p>Each pagination strategy defines the <code>pagination_keyword</code> it accepts.</p>
+
+<p>Note that <code>resource_path</code> only reference <code>relationship</code> names, and not <code>Resource</code> name.</p>
+
+<pre><code class="kit-url"> # Here the pagination data apply to the top level Resource (books)
+ GET https://my.api/books?page[next]=cursor_data
+ # Here the pagination data apply to a relationship on the top level Resource (books),
+ #  with the name `books`, that can potentially map to any Resource type.
+ #  As this is quite confusing, it is recommended not to do it.
+ GET https://my.api/books?page[books.next]=cursor_data
+</code></pre>
+
+      <h2 id="considerations-for-different-strategies" class="section-heading">
+        <a href="#considerations-for-different-strategies" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+        Considerations for different strategies
+      </h2>
+    
+<p>Pagination strategies may have different implications for data <code>Resolvers</code>.</p>
+
+<p>Please check the documentation of the <code>Paginator</code> you wish to use.</p>
+
+      <h2 id="references" class="section-heading">
+        <a href="#references" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+        References
+      </h2>
+    
+<ul>
+<li><a href="https://jsonapi.org/format/1.1/#fetching-pagination">https://jsonapi.org/format/1.1/#fetching-pagination</a></li>
+<li><a href="https://jsonapi.org/profiles/ethanresnick/cursor-pagination/">https://jsonapi.org/profiles/ethanresnick/cursor-pagination/</a></li>
+</ul>
+
+
+</div><div class="tags">
+  
+
+</div>
+</section><hr>
+
+<section id="summary" class="details-list">
+
+   <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this section</span>
+      </a>
+      Summary
+      <span class='private-apis-warning unselectable'>⚠️ Private APIs are currently hidden.</span>
+   </h1>
+
+   
+<div class="docstring-tags">
+
+  
+
+  
+  
+    
+  
+    
+      <div class='doc-tag' data-ruby-Used instance mixins:='Kit::Contract::Mixin'>
+        
+          <span class='doc-tag-type'>Used instance mixins:</span>
+          <span class='doc-tag-value'>Contract::Mixin</span>
+        
+      </div>
+    
+  
+    
+  
+    
+  
+
+  
+    <div class='doc-tag' data-ruby-files='app/services/kit/api/json_api/services/request/import/pagination.rb#L41'>
+      
+        <span class='doc-tag-type'>Defined in:</span>
+        <span class='doc-tag-value'>
+          
+          <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-api/app/services/kit/api/json_api/services/request/import/pagination.rb#L41" target='_blank' title="View Source" rel="help">
+            app/services/kit/api/json_api/services/request/import/pagination.rb#41
+          </a>
+        </span>
+      
+    </div>
+  
+
+</div>
+
+
+
+
+
+
+  <div class="summary summary-methods-class">
+    <h2 class='summary-heading'>
+      <a href="#methods-class" class='title'>Class methods</a>
+      <span class='list-count'>5</span>
+    </h2>
+
+    
+      
+
+<div class="summary-row" data-doc-type="method" >
+  <a href="Kit.Api.JsonApi.Services.Request.Import.Pagination.html#add_to_request-class_method" title="add_to_request (class method)">
+    <div class="summary-signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>add_to_request</span><span class='arguments'>(parsed_query_params_page:, request:)</span><span class='block'></span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p>When pagination data is valid, add it to the `Request`.</p></div>
+    
+  </a>
+</div>
+
+
+
+    
+      
+
+<div class="summary-row" data-doc-type="method" >
+  <a href="Kit.Api.JsonApi.Services.Request.Import.Pagination.html#handle_pagination-class_method" title="handle_pagination (class method)">
+    <div class="summary-signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>handle_pagination</span><span class='arguments'>(query_params:, request:)</span><span class='block'></span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p>Entry point.</p></div>
+    
+  </a>
+</div>
+
+
+
+    
+      
+
+<div class="summary-row" data-doc-type="method" >
+  <a href="Kit.Api.JsonApi.Services.Request.Import.Pagination.html#parse-class_method" title="parse (class method)">
+    <div class="summary-signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>parse</span><span class='arguments'>(query_params:)</span><span class='block'></span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p>Extract `page` query params and transform it into a normalized & per-path hash.</p></div>
+    
+  </a>
+</div>
+
+
+
+    
+      
+
+<div class="summary-row" data-doc-type="method" >
+  <a href="Kit.Api.JsonApi.Services.Request.Import.Pagination.html#run_paginators_import-class_method" title="run_paginators_import (class method)">
+    <div class="summary-signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>run_paginators_import</span><span class='arguments'>(request:, parsed_query_params_page:)</span><span class='block'></span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p>Find all paginators in use for the Request and run their validation logic.</p></div>
+    
+  </a>
+</div>
+
+
+
+    
+      
+
+<div class="summary-row" data-doc-type="method" >
+  <a href="Kit.Api.JsonApi.Services.Request.Import.Pagination.html#validate-class_method" title="validate (class method)">
+    <div class="summary-signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>validate</span><span class='arguments'>(request:, parsed_query_params_page:)</span><span class='block'></span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p>Ensure that: - nested relationships are included when paginated on.</p></div>
+    
+  </a>
+</div>
+
+
+
+    
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</section>
+
+
+  <hr>
+
+  <section id="methods-class" class="details-list">
+
+    <h1 class="section-heading">
+      <a class="hover-link" href="#methods-class">
+        <span class="icon-link" aria-hidden="true"></span>
+        <span class="sr-only">Link to this section</span>
+      </a>
+      Class methods
+      <span class='list-count'>5</span>
+      
+    </h1>
+
+    <div class="functions-list">
+      
+        
+
+<section class="detail" id="add_to_request-class_method" >
+
+  <div class="detail-header">
+
+    <a href="Kit.Api.JsonApi.Services.Request.Import.Pagination.html#add_to_request-class_method" class="detail-link" title="Link to this method">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this method</span>
+    </a>
+
+    <h1 class="signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>add_to_request</span><span class='arguments'>(parsed_query_params_page:, request:)</span><span class='block'></span>
+
+
+    </h1>
+
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-api/app/services/kit/api/json_api/services/request/import/pagination.rb#L171" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+    
+    
+
+<span class='docstring-tags'>
+  
+</span>
+
+
+    <div class="specs" style='opacity: 1; margin-left: 15px; font-size: 0.8em; color: #777;'>
+      <!-- TODO: add contracts here when we can generate documentation from them -->
+
+      
+
+      
+    </div>
+
+  </div>
+
+  <section class="detail-body">
+    <div class='docstring-tags'>
+  
+</div><div class='docstring'>
+  <p>When pagination data is valid, add it to the <code>Request</code>.</p>
+
+
+</div><div class="tags">
+  
+
+</div>
+  </section>
+
+</section>
+
+      
+        
+
+<section class="detail" id="handle_pagination-class_method" >
+
+  <div class="detail-header">
+
+    <a href="Kit.Api.JsonApi.Services.Request.Import.Pagination.html#handle_pagination-class_method" class="detail-link" title="Link to this method">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this method</span>
+    </a>
+
+    <h1 class="signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>handle_pagination</span><span class='arguments'>(query_params:, request:)</span><span class='block'></span>
+
+
+    </h1>
+
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-api/app/services/kit/api/json_api/services/request/import/pagination.rb#L48" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+    
+    
+
+<span class='docstring-tags'>
+  
+</span>
+
+
+    <div class="specs" style='opacity: 1; margin-left: 15px; font-size: 0.8em; color: #777;'>
+      <!-- TODO: add contracts here when we can generate documentation from them -->
+
+      
+
+      
+    </div>
+
+  </div>
+
+  <section class="detail-body">
+    <div class='docstring-tags'>
+  
+</div><div class='docstring'>
+  <p>Entry point. Parse &amp; validate pagination data before adding it to the <code>Request</code>.</p>
+
+
+</div><div class="tags">
+  
+
+</div>
+  </section>
+
+</section>
+
+      
+        
+
+<section class="detail" id="parse-class_method" >
+
+  <div class="detail-header">
+
+    <a href="Kit.Api.JsonApi.Services.Request.Import.Pagination.html#parse-class_method" class="detail-link" title="Link to this method">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this method</span>
+    </a>
+
+    <h1 class="signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>parse</span><span class='arguments'>(query_params:)</span><span class='block'></span>
+
+
+    </h1>
+
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-api/app/services/kit/api/json_api/services/request/import/pagination.rb#L96" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+    
+    
+
+<span class='docstring-tags'>
+  
+</span>
+
+
+    <div class="specs" style='opacity: 1; margin-left: 15px; font-size: 0.8em; color: #777;'>
+      <!-- TODO: add contracts here when we can generate documentation from them -->
+
+      
+
+      
+    </div>
+
+  </div>
+
+  <section class="detail-body">
+    <div class='docstring-tags'>
+  
+</div><div class='docstring'>
+  <p>Extract <code>page</code> query params and transform it into a normalized &amp; per-path hash.</p>
+
+      <h2 id="examples" class="section-heading">
+        <a href="#examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+        Examples
+      </h2>
+    
+<pre><code class="irb">irb&gt; ex_qp  = &quot;include=books.chapters&amp;page[size]=2&amp;page[after]=XdJ6Fh&amp;page[books.size]=3&amp;page[books.offset]=4&amp;page[books.chapters.size]=4&quot;
+irb&gt; _, ctx = Services::Url.parse_query_params(url: &quot;scheme://my.api/my-resource?#{ ex_qp }&quot;)
+irb&gt; ctx[:query_params]
+{
+  include: &#39;books.chapters&#39;,
+  page:    {
+    :size                  =&gt; &#39;2&#39;,
+    :after                 =&gt;&#39;XdJ6Fh&#39;,
+    :&quot;books.size&quot;          =&gt; &#39;3&#39;,
+    :&quot;books.offset&quot;        =&gt; &#39;2&#39;,
+    :&quot;books.chapters.size&quot; =&gt; &#39;4&#39;,
+  },
+}
+irb&gt; _, ctx = parse(query_params: ctx[:query_params])
+irb&gt; ctx[:parsed_query_params_page]
+{
+  :top_level        =&gt; {
+    size:  &#39;2&#39;,
+    after: &#39;XdJ6Fh&#39;
+  },
+  :&#39;books&#39;          =&gt; {
+    size:   &#39;3&#39;,
+    offset: &#39;2&#39;,
+  },
+  :&#39;books.chapters&#39; =&gt; {
+    size:   &#39;4&#39;,
+  },
+}
+</code></pre>
+
+
+</div><div class="tags">
+  
+
+</div>
+  </section>
+
+</section>
+
+      
+        
+
+<section class="detail" id="run_paginators_import-class_method" >
+
+  <div class="detail-header">
+
+    <a href="Kit.Api.JsonApi.Services.Request.Import.Pagination.html#run_paginators_import-class_method" class="detail-link" title="Link to this method">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this method</span>
+    </a>
+
+    <h1 class="signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>run_paginators_import</span><span class='arguments'>(request:, parsed_query_params_page:)</span><span class='block'></span>
+
+
+    </h1>
+
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-api/app/services/kit/api/json_api/services/request/import/pagination.rb#L144" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+    
+    
+
+<span class='docstring-tags'>
+  
+</span>
+
+
+    <div class="specs" style='opacity: 1; margin-left: 15px; font-size: 0.8em; color: #777;'>
+      <!-- TODO: add contracts here when we can generate documentation from them -->
+
+      
+
+      
+    </div>
+
+  </div>
+
+  <section class="detail-body">
+    <div class='docstring-tags'>
+  
+</div><div class='docstring'>
+  <p>Find all paginators in use for the Request and run their validation logic.</p>
+
+
+</div><div class="tags">
+  
+
+</div>
+  </section>
+
+</section>
+
+      
+        
+
+<section class="detail" id="validate-class_method" >
+
+  <div class="detail-header">
+
+    <a href="Kit.Api.JsonApi.Services.Request.Import.Pagination.html#validate-class_method" class="detail-link" title="Link to this method">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this method</span>
+    </a>
+
+    <h1 class="signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>validate</span><span class='arguments'>(request:, parsed_query_params_page:)</span><span class='block'></span>
+
+
+    </h1>
+
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-api/app/services/kit/api/json_api/services/request/import/pagination.rb#L125" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+    
+    
+
+<span class='docstring-tags'>
+  
+</span>
+
+
+    <div class="specs" style='opacity: 1; margin-left: 15px; font-size: 0.8em; color: #777;'>
+      <!-- TODO: add contracts here when we can generate documentation from them -->
+
+      
+
+      
+    </div>
+
+  </div>
+
+  <section class="detail-body">
+    <div class='docstring-tags'>
+  
+</div><div class='docstring'>
+  <p>Ensure that:</p>
+
+<ul>
+<li>nested relationships are included when paginated on</li>
+</ul>
+
+<p>Everything else is the responsability of each Paginator.</p>
+
+<p><strong>⚠️ Warning</strong>: in order to validate inclusion, the related resources need to have been run first.</p>
+
+
+</div><div class="tags">
+  
+
+</div>
+  </section>
+
+</section>
+
+      
+    </div>
+
+  </section>
+
+
+
+
+
+
+            <footer class="footer">
+
+  <p>
+    <span class="line">
+      Built on 2020-06-21 by
+      <a href="https://github.com/lsegal/yard" title="Yard" target="_blank" rel="help noopener">yard-0.9.25</a> with <a href="https://github.com/rubykit/kit/tree/master/libraries/kit-doc" title="Kit::Doc" target="_blank" rel="help noopener">Kit::Doc</a>,
+    </span>
+    <span class="line">
+      designed by
+      <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>
+      for
+      <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a>.
+    </span>
+  </p>
+
+  <p>
+    <button class="line footer-button display-shortcuts-help">
+      Display keyboard shortcuts
+    </button>
+    <button class="line footer-button night-mode-toggle">
+      Toggle night mode
+    </button>
+    <button class="line footer-button private-apis-toggle">
+      Toggle private APIs display
+    </button>
+  </p>
+
+</footer>
+
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>
+
+</html>
+

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+  <head>
+     
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="generator" content="Yard v0.9.25">
+<meta name="project" content="kit-api edge">
+
+
+<title>JSON:API vs GraphQL — kit-api edge</title>
+
+<link rel="stylesheet" href="assets/css/app-0f9f08c1bb297a76a4fe.css" />
+
+<script>
+  var yard_kit_relative_url_path = "";
+</script>
+
+<script src="sidebar_items-4b8cf7c60c.js"></script>
+<script src="docs_config.js"  ></script>
+<script src="assets/js/app-8922f842956a6779307c.js"    async ></script>
+
+  </head>
+
+  <body data-type="extras">
+    <script>
+      try {
+        let night_mode = localStorage.getItem('night-mode');
+        if (night_mode === 'true' || night_mode === true) {
+          document.body.className += ' night-mode';
+        }
+      } catch (e) {}
+    </script>
+
+    <div class="main">
+      
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button">
+      <span class="icon-search" aria-hidden="true"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button">
+      <span class="icon-cross" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Search" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    
+      <a href="index.html">
+        <img src="https://raw.githubusercontent.com/rubykit/kit/master/docs/assets/images/rubykit-framework-logo.svg" alt="kit-api" class="sidebar-projectImage">
+      </a>
+    
+    <div class="sidebar-projectDetails">
+      <a href="index.html" class="sidebar-projectName">
+        kit-api
+      </a>
+      <h2 class="sidebar-projectVersion">
+        edge
+      </h2>
+    </div>
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li>
+      <a id="extras-list" href="#full-list">
+        Guides
+      </a>
+    </li>
+    
+      <li>
+        <a id="modules-list" href="#full-list">
+          Modules
+        </a>
+      </li>
+    
+  </ul>
+
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+
+      <section class="content">
+        <div class="content-outer">
+          <div id="content" class="content-inner">
+
+            <small class="app-vsn"><b>kit-api</b> edge</small>
+
+<div class='extra'>
+  
+      <h1 id="json-api-vs-graphql" class="section-heading">
+        <a href="#json-api-vs-graphql" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+        JSON:API vs GraphQL
+      </h1>
+    
+<p>While <code>JSON:API</code> &amp; <code>GraphQL</code> attempt to solve the same categories of problems, they take different approaches.</p>
+
+      <h2 id="json-api" class="section-heading">
+        <a href="#json-api" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+        JSON:API
+      </h2>
+    
+<p>The spec is mostly about defining operations &amp; the response format.
+Because the operations are CRUD based, you are always acting on <code>Resources</code>.</p>
+
+<p>A <code>search</code> operation could be modeled as <code>POST /searches?author=Leckie</code>.</p>
+
+<table><thead>
+<tr>
+<th>Property</th>
+<th>Quick overview</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>A</code> Query interface</td>
+<td>URL based. The API will need to provide N endpoints that describe the top level resources being acted on.</td>
+</tr>
+<tr>
+<td><code>B</code> Query format</td>
+<td>REST based CRUD operations. Top level resource verb + top level resource url. Pagination / filters / sorting are specified through query parameters.</td>
+</tr>
+<tr>
+<td><code>C</code> API&#39;s resources standardization</td>
+<td>Resources types are identified but not checked on. <a href="https://github.com/json-api/json-api/issues/1281" title="" >Schema Support #1281</a></td>
+</tr>
+<tr>
+<td><code>D</code> Response format</td>
+<td>This is what the spec is mostly about.<br> The response format is quite complete: relationship VS attributes, resource de-duplication, linkage options...</td>
+</tr>
+</tbody></table>
+
+      <h2 id="graphql" class="section-heading">
+        <a href="#graphql" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+        GraphQL
+      </h2>
+    
+<p><code>GraphQL</code> scope is larger, so it does more things.</p>
+
+<table><thead>
+<tr>
+<th>Property</th>
+<th>Quick overview</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>A</code> Query interface</td>
+<td>Database like. You can expose an entry point through various protocols to receive a GraphQL query.</td>
+</tr>
+<tr>
+<td><code>B</code> Query format</td>
+<td>GraphQL is its own <a href="https://spec.graphql.org/June2018/#sec-Language.Operations" title="" >query language</a>. It differentiates between read-only (&quot;query&quot;) operations and write (&quot;mutable&quot;) operations.</td>
+</tr>
+<tr>
+<td><code>C</code> API&#39;s resources standardization</td>
+<td>Through schemas of the <a href="https://spec.graphql.org/June2018/#sec-Schema" title="" >type system</a>.</td>
+</tr>
+<tr>
+<td><code>D</code> Response format</td>
+<td>JSON based. Allows duplication of resources in the payload (this makes returning collections easier.)</td>
+</tr>
+</tbody></table>
+
+<p>Various:</p>
+
+<ul>
+<li>GraphQL provides &quot;subscription&quot; operations. They allow the API server to push data to registered clients.</li>
+</ul>
+
+</div>
+
+            <footer class="footer">
+
+  <p>
+    <span class="line">
+      Built on 2020-06-21 by
+      <a href="https://github.com/lsegal/yard" title="Yard" target="_blank" rel="help noopener">yard-0.9.25</a> with <a href="https://github.com/rubykit/kit/tree/master/libraries/kit-doc" title="Kit::Doc" target="_blank" rel="help noopener">Kit::Doc</a>,
+    </span>
+    <span class="line">
+      designed by
+      <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>
+      for
+      <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a>.
+    </span>
+  </p>
+
+  <p>
+    <button class="line footer-button display-shortcuts-help">
+      Display keyboard shortcuts
+    </button>
+    <button class="line footer-button night-mode-toggle">
+      Toggle night mode
+    </button>
+    <button class="line footer-button private-apis-toggle">
+      Toggle private APIs display
+    </button>
+  </p>
+
+</footer>
+
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>
+
+</html>
+

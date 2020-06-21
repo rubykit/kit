@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html>
+  <head>
+     
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="generator" content="Yard v0.9.25">
+<meta name="project" content="kit-doc edge">
+
+
+<title>Module: Kit::Doc::Services::Config — kit-doc edge</title>
+
+<link rel="stylesheet" href="assets/css/app-0f9f08c1bb297a76a4fe.css" />
+
+<script>
+  var yard_kit_relative_url_path = "";
+</script>
+
+<script src="sidebar_items-8483947126.js"></script>
+<script src="docs_config.js"  ></script>
+<script src="assets/js/app-8922f842956a6779307c.js"    async ></script>
+
+  </head>
+
+  <body data-type="modules">
+    <script>
+      try {
+        let night_mode = localStorage.getItem('night-mode');
+        if (night_mode === 'true' || night_mode === true) {
+          document.body.className += ' night-mode';
+        }
+      } catch (e) {}
+    </script>
+
+    <div class="main">
+      
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button">
+      <span class="icon-search" aria-hidden="true"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button">
+      <span class="icon-cross" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Search" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    
+      <a href="index.html">
+        <img src="https://raw.githubusercontent.com/rubykit/kit/master/docs/assets/images/rubykit-framework-logo.svg" alt="kit-doc" class="sidebar-projectImage">
+      </a>
+    
+    <div class="sidebar-projectDetails">
+      <a href="index.html" class="sidebar-projectName">
+        kit-doc
+      </a>
+      <h2 class="sidebar-projectVersion">
+        edge
+      </h2>
+    </div>
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li>
+      <a id="extras-list" href="#full-list">
+        Guides
+      </a>
+    </li>
+    
+      <li>
+        <a id="modules-list" href="#full-list">
+          Modules
+        </a>
+      </li>
+    
+  </ul>
+
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+
+      <section class="content">
+        <div class="content-outer">
+          <div id="content" class="content-inner">
+
+            
+<small class="app-vsn"><b>kit-doc</b> edge</small>
+
+<h1 class='modules-header'>
+  <div style='flex-grow: 1;'>
+
+    <span class='title module-name'>Config</span>
+    <span class='object-type'>module</span>
+    
+      <div class='module-full-name'>Kit::Doc::Services::Config</div>
+    
+  </div>
+
+  
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-doc/lib/kit/doc/services/config.rb#L7" target='_blank' title="View Source" class="view-source" rel="help">
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+  
+</h1><section id="moduledoc">
+  <div class='docstring-tags'>
+  
+</div><div class='docstring'>
+  <p>Configuration related logic.</p>
+
+<p>The most important thing is the expected configuration format, documented in <code><span class='object_link'><a href="Kit.Doc.Services.Config.html#create_config-class_method" title="Kit::Doc::Services::Config.create_config (method)">Kit::Doc::Services::Config.create_config</a></span></code>.</p>
+
+
+</div><div class="tags">
+  
+
+</div>
+</section><hr>
+
+<section id="summary" class="details-list">
+
+   <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this section</span>
+      </a>
+      Summary
+      <span class='private-apis-warning unselectable'>⚠️ Private APIs are currently hidden.</span>
+   </h1>
+
+   
+<div class="docstring-tags">
+
+  
+
+  
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+    <div class='doc-tag' data-ruby-files='lib/kit/doc/services/config.rb#L7'>
+      
+        <span class='doc-tag-type'>Defined in:</span>
+        <span class='doc-tag-value'>
+          
+          <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-doc/lib/kit/doc/services/config.rb#L7" target='_blank' title="View Source" rel="help">
+            lib/kit/doc/services/config.rb#7
+          </a>
+        </span>
+      
+    </div>
+  
+
+</div>
+
+
+
+
+
+
+  <div class="summary summary-methods-class">
+    <h2 class='summary-heading'>
+      <a href="#methods-class" class='title'>Class methods</a>
+      <span class='list-count'>5</span>
+    </h2>
+
+    
+      
+
+<div class="summary-row" data-doc-type="method" >
+  <a href="Kit.Doc.Services.Config.html#create_config-class_method" title="create_config (class method)">
+    <div class="summary-signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>create_config</span><span class='arguments'>(**opts)</span><span class='block'></span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p>Configuration normalization for `Kit::Doc`.</p></div>
+    
+  </a>
+</div>
+
+
+
+    
+      
+
+<div class="summary-row" data-doc-type="method" >
+  <a href="Kit.Doc.Services.Config.html#generate_source_url-class_method" title="generate_source_url (class method)">
+    <div class="summary-signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>generate_source_url</span><span class='arguments'>(source_url:, source_ref:, path:, line:)</span><span class='block'></span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p>Generate a versioned source link for a given `source_ref` & `path` & `line` number.</p></div>
+    
+  </a>
+</div>
+
+
+
+    
+      
+
+<div class="summary-row" data-doc-type="method" >
+  <a href="Kit.Doc.Services.Config.html#get_git_source_ref-class_method" title="get_git_source_ref (class method)">
+    <div class="summary-signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>get_git_source_ref</span><span class='arguments'>(git_project_path:)</span><span class='block'></span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p>Attempt to guess the most accurate git `source_ref`.</p></div>
+    
+  </a>
+</div>
+
+
+
+    
+      
+
+<div class="summary-row" data-doc-type="method" >
+  <a href="Kit.Doc.Services.Config.html#load_gemspec_data-class_method" title="load_gemspec_data (class method)">
+    <div class="summary-signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>load_gemspec_data</span><span class='arguments'>(gemspec_name:)</span><span class='block'></span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p>Load a gemspec file data.</p></div>
+    
+  </a>
+</div>
+
+
+
+    
+      
+
+<div class="summary-row" data-doc-type="method" >
+  <a href="Kit.Doc.Services.Config.html#load_versions_file-class_method" title="load_versions_file (class method)">
+    <div class="summary-signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>load_versions_file</span><span class='arguments'>(path:)</span><span class='block'></span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p>Parse a `VERSIONS` file.</p></div>
+    
+  </a>
+</div>
+
+
+
+    
+  </div>
+
+
+
+
+
+
+
+
+
+  <div class="summary summary-attributes-instance">
+    <h2 class='summary-heading'>
+      <a href="#attributes-instance" class='title'>Instance attributes</a>
+      <span class='list-count'>1</span>
+    </h2>
+
+    
+      
+
+<div class="summary-row" data-doc-type="method" >
+  <a href="Kit.Doc.Services.Config.html#config-class_method" title="config (class method)">
+    <div class="summary-signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>config</span><span class='arguments'></span><span class='block'></span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p>This Service currently acts as a singleton to reference the current config for Yard rake tasks.</p></div>
+    
+  </a>
+</div>
+
+
+
+    
+  </div>
+
+
+
+
+
+
+  <div class="summary summary-constants">
+    <h2 class='summary-heading'>
+      <a href="#constants" class='title'>Constants</a>
+      <span class='list-count'>1</span>
+    </h2>
+
+    
+      
+
+<div class="summary-row" data-doc-type="constant" >
+  <a href="Kit.Doc.Services.Config.html#SEMVER_REGEX-constant" title="SEMVER_REGEX (constant)">
+    <div class="summary-signature">
+      
+      
+
+
+  <span class="name">SEMVER_REGEX</span>
+
+
+
+      
+
+      
+      
+
+<span class='docstring-tags'>
+  
+</span>
+
+    </div>
+
+    
+      <div class="summary-synopsis"><p>A regex that match semantic versioning (semver) versions.</p></div>
+    
+  </a>
+</div>
+
+
+
+    
+  </div>
+
+
+
+
+
+</section>
+
+
+  <hr>
+
+  <section id="methods-class" class="details-list">
+
+    <h1 class="section-heading">
+      <a class="hover-link" href="#methods-class">
+        <span class="icon-link" aria-hidden="true"></span>
+        <span class="sr-only">Link to this section</span>
+      </a>
+      Class methods
+      <span class='list-count'>5</span>
+      
+    </h1>
+
+    <div class="functions-list">
+      
+        
+
+<section class="detail" id="create_config-class_method" >
+
+  <div class="detail-header">
+
+    <a href="Kit.Doc.Services.Config.html#create_config-class_method" class="detail-link" title="Link to this method">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this method</span>
+    </a>
+
+    <h1 class="signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>create_config</span><span class='arguments'>(**opts)</span><span class='block'></span>
+
+
+    </h1>
+
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-doc/lib/kit/doc/services/config.rb#L152" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+    
+    
+
+<span class='docstring-tags'>
+  
+</span>
+
+
+    <div class="specs" style='opacity: 1; margin-left: 15px; font-size: 0.8em; color: #777;'>
+      <!-- TODO: add contracts here when we can generate documentation from them -->
+
+      
+
+      
+    </div>
+
+  </div>
+
+  <section class="detail-body">
+    <div class='docstring-tags'>
+  
+</div><div class='docstring'>
+  <p>Configuration normalization for <code><span class='object_link'><a href="Kit.Doc.html" title="Kit::Doc (module)">Kit::Doc</a></span></code>.</p>
+
+<p><code>opts</code> is a hash that can contain the following keys:</p>
+
+<ul>
+<li><p><code>:project_path</code> - Absolute path of the project home directory.</p></li>
+<li><p><code>:git_project_path</code> - Absolute path of the project git home directory.
+It will sometimes be different from <code>:project_path</code> in a multi-project setup.
+This is necessary when using <code>all_versions</code> tasks, that will checkout different versions of the project.</p></li>
+<li><p><code>:project</code> - Project name.
+Autofilled from gemspec if <code>:gemspec_name</code> is set.</p></li>
+<li><p><code>:current_version</code> - Semver name of the current version. Example: &quot;0.1.0&quot;.
+Defaults to <code>dev</code> (this is the most common usage: previewing new documentation).</p></li>
+<li><p><code>:source_ref</code> - The branch/commit/tag used for source link inference.
+Autogenerated if nil. If <code>:git_project_path</code> is set, the current branch be used if found, last commit otherwise.
+Defaults to <code>master</code> otherwise.</p></li>
+<li><p><code>:current_version_display</code> - Version that will be displayed.
+Autogenerated if nil: add <code>v</code> in front of <code>:version</code> values that start with an integer.
+Example: <code>version: '0.1.0'</code> would lead to <code>version_display: 'v0.1.0'</code>.</p></li>
+<li><p><code>:all_versions</code> - List of version &amp; source_ref to be used for <code>all_versions</code> tasks and javascript <code>versionNodes</code>.
+Example: <code>[{ version: 'edge', source_ref: 'master' }, { version: 'v0.0.1', source_ref: 'v0.0.1' }]</code>
+If a string is given, assume it is the path to a <code>VERSIONS</code> file that will be loaded.</p></li>
+<li><p><code>:output_dir_all_versions</code> - Container directory for various versioned generated docs.
+Defaults to <code>"#{ project_path }/docs/dist"</code>.
+If a relative path is provided it will be auto-expanded to an absolute path.</p></li>
+<li><p><code>:output_dir_current_version</code> - Output directory for the generated docs.
+If a relative path is provided it will be auto-expanded to an absolute path.
+Auto-generated from <code>:output_dir_all_versions</code> and <code>:current_version</code> if nil.</p></li>
+<li><p><code>:documentation_url</code> - The address of the generated documentation.
+Autofilled from gemspec if <code>:gemspec_name</code> is set.</p></li>
+<li><p><code>:source_url</code> - The address of code source.
+Autofilled from gemspec if <code>:gemspec_name</code> is set.</p></li>
+<li><p><code>:url_mode</code> - Defaults to <code>:local</code>.
+If <code>:local</code>, <code>:documentation_url</code> is set to <code>file://</code> URI scheme. Useful for browsing <code>dev</code> documentation.
+(TODO: apply to <code>source_url</code> also when we find a good way to preview code locally. <code>view-source</code> URI scheme does not have syntax highligthing or line number anchors.)</p></li>
+<li><p><code>:files_modules</code> - List of files to generate documentation from.
+See <code><span class='object_link'><a href="Kit.Doc.Services.Tasks.Helpers.html#resolve_files-class_method" title="Kit::Doc::Services::Tasks::Helpers.resolve_files (method)">Kit::Doc::Services::Tasks::Helpers.resolve_files</a></span></code> for a helper to express that list in a terser way.</p></li>
+<li><p><code>:groups_for_modules</code> - See the &quot;Groups&quot; section</p></li>
+<li><p><code>:files_extras</code> - List of Markdown files to add to the documentation.
+See <code><span class='object_link'><a href="Kit.Doc.Services.Tasks.Helpers.html#resolve_files-class_method" title="Kit::Doc::Services::Tasks::Helpers.resolve_files (method)">Kit::Doc::Services::Tasks::Helpers.resolve_files</a></span></code> for a helper to express that list in a terser way.</p></li>
+<li><p><code>:groups_for_extras</code> - See the &quot;Groups&quot; section</p></li>
+<li><p><code>:extras_section_name</code> - String that defines the section title of the additional Markdown pages.
+Defaults to &quot;Guides&quot;.</p></li>
+<li><p><code>:logo</code> - Path to the image logo of the project.</p></li>
+<li><p><code>:authors</code> - List of authors for the generated docs.
+Autofilled from gemspec if <code>:gemspec_name</code> is set.</p></li>
+<li><p><code>:markdown_variables</code> - Hash of values available in Markdown pre-processing. See <code><span class='object_link'><a href="Kit.Doc.Services.MarkdownPreprocessor.html" title="Kit::Doc::Services::MarkdownPreprocessor (module)">Kit::Doc::Services::MarkdownPreprocessor</a></span></code>.</p></li>
+<li><p><code>:assets</code> - List of paths to files or directories that will be copied as is to the &quot;assets&quot; directory in the output path.</p></li>
+<li><p><code>:main_redirect_url</code> - Path to the default page for the documentation.
+The top level <code>index.html</code> for the <code>:current_version</code> documentation will redirect there.
+Defaults to &quot;api_reference.html&quot;.</p></li>
+</ul>
+
+      <h2 id="groups" class="section-heading">
+        <a href="#groups" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+        Groups
+      </h2>
+    
+<p>The output sidebar content can be organized in groups. This is done via the <code>:groups_for_extras</code>
+and <code>:groups_for_modules</code>. For example, imagine you are storing extra guides in
+your documentation which are organized per directory. In the extras section you have:</p>
+
+<pre><code class="ruby">extras: [
+  &quot;guides/introduction/foo.md&quot;,
+  &quot;guides/introduction/bar.md&quot;,
+  # ...
+  &quot;guides/advanced/baz.md&quot;,
+  &quot;guides/advanced/bat.md&quot;,
+],
+</code></pre>
+
+<p>You can have those grouped as follows:</p>
+
+<pre><code class="ruby">groups_for_extras: {
+  &#39;Introduction&#39; =&gt; [%r{guides/introduction/.?}],
+  &#39;Advanced&#39;     =&gt; [%r{guides/advanced/.?}],
+},
+</code></pre>
+
+<p>Similar can be done for modules:</p>
+
+<pre><code class="ruby">groups_for_modules: {
+  # The &quot;empty&quot; group is where modules not included in another group go.
+  &#39;&#39;          =&gt; [
+    {
+      # Here we define the ones we want to hide from that category.
+      inclusion: %r{^(Kit|Kit::Doc|Kit::Doc::Services)$},
+      display:   false,
+    },
+  ],
+  &#39;Services&#39;  =&gt; [
+    {
+      # Match on the fully qualified name.
+      inclusion:     %r{^Kit::Doc::Services::.*},
+      # A callable that will receive and modify the display name of the module.
+      display_title: -&gt;(name) { name.split(&#39;::&#39;)[-1] },
+      # A callable that will the name of the module and return a list of css classes to be applied.
+      # This can for instance be used to add padding.
+      css_classes:   -&gt;(name) do
+        size = name.gsub(&#39;hide&#39;, &#39;Kit::Doc::Services::&#39;).scan(&#39;::&#39;).size
+        [&quot;#{ (size &gt; 0) ? &quot;sidebar-pl-#{ size }&quot; : &#39;&#39; }&quot;]
+      end,
+    },
+  ],
+</code></pre>
+
+
+</div><div class="tags">
+  
+
+</div>
+  </section>
+
+</section>
+
+      
+        
+
+<section class="detail" id="generate_source_url-class_method" >
+
+  <div class="detail-header">
+
+    <a href="Kit.Doc.Services.Config.html#generate_source_url-class_method" class="detail-link" title="Link to this method">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this method</span>
+    </a>
+
+    <h1 class="signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>generate_source_url</span><span class='arguments'>(source_url:, source_ref:, path:, line:)</span><span class='block'></span>
+
+
+    </h1>
+
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-doc/lib/kit/doc/services/config.rb#L270" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+    
+    
+
+<span class='docstring-tags'>
+  
+</span>
+
+
+    <div class="specs" style='opacity: 1; margin-left: 15px; font-size: 0.8em; color: #777;'>
+      <!-- TODO: add contracts here when we can generate documentation from them -->
+
+      
+
+      
+    </div>
+
+  </div>
+
+  <section class="detail-body">
+    <div class='docstring-tags'>
+  
+</div><div class='docstring'>
+  <p>Generate a versioned source link for a given <code>source_ref</code> &amp; <code>path</code> &amp; <code>line</code> number.</p>
+
+
+</div><div class="tags">
+  
+
+</div>
+  </section>
+
+</section>
+
+      
+        
+
+<section class="detail" id="get_git_source_ref-class_method" >
+
+  <div class="detail-header">
+
+    <a href="Kit.Doc.Services.Config.html#get_git_source_ref-class_method" class="detail-link" title="Link to this method">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this method</span>
+    </a>
+
+    <h1 class="signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>get_git_source_ref</span><span class='arguments'>(git_project_path:)</span><span class='block'></span>
+
+
+    </h1>
+
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-doc/lib/kit/doc/services/config.rb#L346" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+    
+    
+
+<span class='docstring-tags'>
+  
+</span>
+
+
+    <div class="specs" style='opacity: 1; margin-left: 15px; font-size: 0.8em; color: #777;'>
+      <!-- TODO: add contracts here when we can generate documentation from them -->
+
+      
+
+      
+    </div>
+
+  </div>
+
+  <section class="detail-body">
+    <div class='docstring-tags'>
+  
+</div><div class='docstring'>
+  <p>Attempt to guess the most accurate git <code>source_ref</code>.</p>
+
+<p>If <code>git_project_path</code> is set, it will attempt to find the current branch first, then the last commit.
+Otherwise, defaults to <code>master</code>.</p>
+
+
+</div><div class="tags">
+  
+
+</div>
+  </section>
+
+</section>
+
+      
+        
+
+<section class="detail" id="load_gemspec_data-class_method" >
+
+  <div class="detail-header">
+
+    <a href="Kit.Doc.Services.Config.html#load_gemspec_data-class_method" class="detail-link" title="Link to this method">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this method</span>
+    </a>
+
+    <h1 class="signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>load_gemspec_data</span><span class='arguments'>(gemspec_name:)</span><span class='block'></span>
+
+
+    </h1>
+
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-doc/lib/kit/doc/services/config.rb#L301" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+    
+    
+
+<span class='docstring-tags'>
+  
+</span>
+
+
+    <div class="specs" style='opacity: 1; margin-left: 15px; font-size: 0.8em; color: #777;'>
+      <!-- TODO: add contracts here when we can generate documentation from them -->
+
+      
+
+      
+    </div>
+
+  </div>
+
+  <section class="detail-body">
+    <div class='docstring-tags'>
+  
+</div><div class='docstring'>
+  <p>Load a gemspec file data.</p>
+
+
+</div><div class="tags">
+  
+
+</div>
+  </section>
+
+</section>
+
+      
+        
+
+<section class="detail" id="load_versions_file-class_method" >
+
+  <div class="detail-header">
+
+    <a href="Kit.Doc.Services.Config.html#load_versions_file-class_method" class="detail-link" title="Link to this method">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this method</span>
+    </a>
+
+    <h1 class="signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>load_versions_file</span><span class='arguments'>(path:)</span><span class='block'></span>
+
+
+    </h1>
+
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-doc/lib/kit/doc/services/config.rb#L328" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+    
+    
+
+<span class='docstring-tags'>
+  
+</span>
+
+
+    <div class="specs" style='opacity: 1; margin-left: 15px; font-size: 0.8em; color: #777;'>
+      <!-- TODO: add contracts here when we can generate documentation from them -->
+
+      
+
+      
+    </div>
+
+  </div>
+
+  <section class="detail-body">
+    <div class='docstring-tags'>
+  
+</div><div class='docstring'>
+  <p>Parse a <code>VERSIONS</code> file.</p>
+
+<p>It contains all versions we want to generate documentation for.</p>
+
+      <h3 id="expected-format" class="section-heading">
+        <a href="#expected-format" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+        Expected format
+      </h3>
+    
+<p>On each line:</p>
+
+<pre><code>version[:source_ref]`
+</code></pre>
+
+<ul>
+<li><p><code>version</code> - The name of the version.</p></li>
+<li><p><code>source_ref</code> - The branch/commit/tag used for source link inference.
+Defaults to <code>version</code> if not specified.</p></li>
+</ul>
+
+      <h3 id="example" class="section-heading">
+        <a href="#example" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+        Example
+      </h3>
+    
+<pre><code class="text">edge:master
+v0.0.1
+</code></pre>
+
+
+</div><div class="tags">
+  
+
+</div>
+  </section>
+
+</section>
+
+      
+    </div>
+
+  </section>
+
+
+
+
+
+  <hr>
+
+  <section id="attributes-instance" class="details-list">
+
+    <h1 class="section-heading">
+      <a class="hover-link" href="#attributes-instance">
+        <span class="icon-link" aria-hidden="true"></span>
+        <span class="sr-only">Link to this section</span>
+      </a>
+      Instance attributes
+      <span class='list-count'>1</span>
+      
+    </h1>
+
+    <div class="functions-list">
+      
+        
+
+<section class="detail" id="config-class_method" >
+
+  <div class="detail-header">
+
+    <a href="Kit.Doc.Services.Config.html#config-class_method" class="detail-link" title="Link to this method">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this method</span>
+    </a>
+
+    <h1 class="signature">
+      
+      
+
+
+<span class='scope'>.</span><span class='name'>config</span><span class='arguments'></span><span class='block'></span>
+
+
+    </h1>
+
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-doc/lib/kit/doc/services/config.rb#L14" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+    
+    
+
+<span class='docstring-tags'>
+  
+</span>
+
+
+    <div class="specs" style='opacity: 1; margin-left: 15px; font-size: 0.8em; color: #777;'>
+      <!-- TODO: add contracts here when we can generate documentation from them -->
+
+      
+
+      
+    </div>
+
+  </div>
+
+  <section class="detail-body">
+    <div class='docstring-tags'>
+  
+</div><div class='docstring'>
+  <p>This Service currently acts as a singleton to reference the current config for Yard rake tasks.</p>
+
+<p>This is obviously not ideal / thread safe, but it is only used for tooling, so it does not matter.</p>
+
+
+</div><div class="tags">
+  
+
+</div>
+  </section>
+
+</section>
+
+      
+    </div>
+
+  </section>
+
+
+
+
+  <hr>
+
+  <section id="constants" class="details-list">
+
+    <h1 class="section-heading">
+      <a class="hover-link" href="#constants">
+        <span class="icon-link" aria-hidden="true"></span>
+        <span class="sr-only">Link to this section</span>
+      </a>
+      Constants
+      <span class='list-count'>1</span>
+      
+    </h1>
+
+    <div class="functions-list">
+      
+        
+
+<section class="detail" id="SEMVER_REGEX-constant">
+
+  <div class="detail-header" >
+
+    <a href="Kit.Doc.Services.Config.html#SEMVER_REGEX-constant" class="detail-link" title="Link to this constant">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this constant</span>
+    </a>
+
+    <h1 class="signature">
+      
+      
+
+
+  <span class="name">SEMVER_REGEX</span>
+
+
+    </h1>
+
+    <a href="https://github.com/rubykit/kit/blob/master/libraries/kit-doc/lib/kit/doc/services/config.rb#L25" target='_blank' rel="help" title="View Source" class='source-link'>
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
+
+    
+    
+
+<span class='docstring-tags'>
+  
+</span>
+
+
+  </div>
+
+  <section class="detail-body">
+    <div class='docstring-tags'>
+  
+</div><div class='docstring'>
+  <p>A regex that match semantic versioning (semver) versions.</p>
+
+<p>Note that this is a more permissive version to match semver inside strings and allow for leading <code>v</code>.</p>
+
+      <h3 id="references-" class="section-heading">
+        <a href="#references-" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+        References:
+      </h3>
+    
+<ul>
+<li><a href="https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string">https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string</a></li>
+</ul>
+
+
+</div><div class="tags">
+  
+
+</div>
+
+    <pre><code class="ruby"><span class='tstring'><span class='regexp_beg'>%r{</span><span class='tstring_content'>(v?(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?)</span><span class='regexp_end'>}</span></span></code></pre>
+  </section>
+
+</section>
+      
+    </div>
+
+  </section>
+
+
+
+            <footer class="footer">
+
+  <p>
+    <span class="line">
+      Built on 2020-06-21 by
+      <a href="https://github.com/lsegal/yard" title="Yard" target="_blank" rel="help noopener">yard-0.9.25</a> with <a href="https://github.com/rubykit/kit/tree/master/libraries/kit-doc" title="Kit::Doc" target="_blank" rel="help noopener">Kit::Doc</a>,
+    </span>
+    <span class="line">
+      designed by
+      <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>
+      for
+      <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a>.
+    </span>
+  </p>
+
+  <p>
+    <button class="line footer-button display-shortcuts-help">
+      Display keyboard shortcuts
+    </button>
+    <button class="line footer-button night-mode-toggle">
+      Toggle night mode
+    </button>
+    <button class="line footer-button private-apis-toggle">
+      Toggle private APIs display
+    </button>
+  </p>
+
+</footer>
+
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>
+
+</html>
+
