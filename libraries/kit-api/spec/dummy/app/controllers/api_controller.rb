@@ -1,4 +1,4 @@
-class ::ApiController < ::ActionController::API # :nodoc:
+class ::ApiController < ::ActionController::API # rubocop:disable Style/Documentation
 
   # NOTE: right now we need to overwrite the default dummy one as it references kit-auth code.
   #  We need to solve this somehow, maybe via Plug / Pipelines ?
@@ -23,7 +23,7 @@ class ::ApiController < ::ActionController::API # :nodoc:
       list: [
         Kit::Router::Services::Adapters::Http::Rails::Request::Export.method(:export_request),
       ],
-      ctx:  controller_ctx.merge(ctx.slice(:request, :response)),
+      ctx:  controller_ctx.merge(ctx.slice(:router_request, :router_response)),
     })
 
     return

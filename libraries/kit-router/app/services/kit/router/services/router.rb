@@ -8,13 +8,13 @@ module Kit::Router::Services
     Ct = Kit::Router::Contracts
 
     #Contract KeywordArgs[uid: Or[String, Symbol], target: RespondTo[:call], aliases: ArrayOf[String, Symbol], type: ArrayOf[ArrayOf[Symbol, Symbol]]]]
-    def self.register(uid:, aliases:, target:, types: { [:any, :any] => nil })
+    def self.register(uid:, aliases:, target:, types: { [:any, :any] => nil }, meta: nil)
       #puts "Kit::Router - Registering `#{uid}` (aliases: #{aliases})".colorize(:green)
 
       # NOTES: does this make it too complex a function signature?
-      meta = nil
+      meta ||= {}
       if types.is_a?(Hash)
-        meta  = types
+        meta[:types] ||= types
         types = types.keys
       end
 

@@ -4,15 +4,15 @@ module Kit::Router::Services::Adapters::Http::Rails::Request
   # NOTE: very much a WIP!
   module Export
 
-    def self.export_request(request:, response:, rails_cookies:, rails_controller:, rails_response:)
+    def self.export_request(router_request:, router_response:, rails_cookies:, rails_controller:, rails_response:)
       Kit::Organizer.call({
         list: [
           self.method(:export_rails_cookies),
           self.method(:handle_result),
         ],
         ctx:  {
-          request:          request,
-          response:         response,
+          router_request:   router_request,
+          router_response:  router_response,
           rails_cookies:    rails_cookies,
           rails_controller: rails_controller,
           rails_response:   rails_response,
@@ -20,10 +20,10 @@ module Kit::Router::Services::Adapters::Http::Rails::Request
       })
     end
 
-    def self.handle_result(request:, response:, rails_controller:, rails_response:)
-      metadata      = response[:metadata] || {}
-      mime          = response[:mime]
-      content       = response[:content]
+    def self.handle_result(router_request:, router_response:, rails_controller:, rails_response:)
+      metadata      = router_response[:metadata] || {}
+      mime          = router_response[:mime]
+      content       = router_response[:content]
 
       http_metadata = metadata.dig(:http) || {}
       content_type  = mime ? Mime[mime.to_sym].to_s : nil
@@ -66,8 +66,8 @@ module Kit::Router::Services::Adapters::Http::Rails::Request
     end
 
     # REF: https://api.rubyonrails.org/v5.1.7/classes/ActionDispatch/Cookies.html
-    def self.export_rails_cookies(request:, rails_cookies:)
-      data = request.http.cookies
+    def self.export_rails_cookies(router_request:, rails_cookies:)
+      data = router_request.http.cookies
       return [:ok] if data.blank?
 
       data.each do |name, cookie|
