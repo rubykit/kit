@@ -10,6 +10,11 @@ module Kit::Contract::Mixin
   end
 
   class_methods do
+
+    def inherited(child_class)
+      child_class.reset_tmp_contracts
+    end
+
     # TODO: add contracts INSIDE method body
     # contract Or[Callable, Array.of(Callable)]
     def before(arg)
