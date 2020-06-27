@@ -3,14 +3,26 @@ require 'kit_api'
 Rails.application.routes.draw do
 
   list_api = [
-    #{ id: 'api|users|show',     path: '/api/users/:resource_id',    verb: :get },
-    { id: 'specs|api|users|index',    path: '/specs_api/users',                 verb: :get },
+    { id: 'specs|api|author|index',     path: '/dummy_app/json_api/authors',                   verb: :get },
+    { id: 'specs|api|author|show',      path: '/dummy_app/json_api/authors/:resource_id',      verb: :get },
 
-    #{ id: 'api|posts|show',     path: '/api/posts/:resource_id',    verb: :get },
-    #{ id: 'api|posts|index',    path: '/api/posts',                 verb: :get },
+    { id: 'specs|api|book|index',       path: '/dummy_app/json_api/books',                     verb: :get },
+    { id: 'specs|api|book|show',        path: '/dummy_app/json_api/books/:resource_id',        verb: :get },
 
-    #{ id: 'api|comments|show',  path: '/api/comments/:resource_id', verb: :get },
-    #{ id: 'api|comments|index', path: '/api/comments',              verb: :get },
+    { id: 'specs|api|book_store|index', path: '/dummy_app/json_api/book_stores',               verb: :get },
+    { id: 'specs|api|book_store|show',  path: '/dummy_app/json_api/book_stores/:resource_id',  verb: :get },
+
+    { id: 'specs|api|chapter|index',    path: '/dummy_app/json_api/chapters',                  verb: :get },
+    { id: 'specs|api|chapter|show',     path: '/dummy_app/json_api/chapters/:resource_id',     verb: :get },
+
+    { id: 'specs|api|photo|index',      path: '/dummy_app/json_api/photos',                    verb: :get },
+    { id: 'specs|api|photo|show',       path: '/dummy_app/json_api/photos/:resource_id',       verb: :get },
+
+    { id: 'specs|api|serie|index',      path: '/dummy_app/json_api/series',                    verb: :get },
+    { id: 'specs|api|serie|show',       path: '/dummy_app/json_api/series/:resource_id',       verb: :get },
+
+    { id: 'specs|api|store|index',      path: '/dummy_app/json_api/stores',                    verb: :get },
+    { id: 'specs|api|store|show',       path: '/dummy_app/json_api/stores/:resource_id',       verb: :get },
   ]
 
   list_api.each do |entry|

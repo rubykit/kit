@@ -7,12 +7,12 @@ module Kit::Api::JsonApi::Services::Request
 
   # Takes hydrated query params to create a Request.
   # @see Kit::Api::JsonApi::Contracts#Request
-  def self.create_request(query_params:)
+  def self.create_api_request(query_params:)
     Kit::Api::JsonApi::Services::Request::Export.import(query_params: query_params)
   end
 
-  def self.create_query_params(request:, path:)
-    Kit::Api::JsonApi::Services::Request::Export.export(request: request, path: path)
+  def self.create_query_params(api_request:, path:)
+    Kit::Api::JsonApi::Services::Request::Export.export(api_request: api_request, path: path)
   end
 
 end

@@ -13,7 +13,7 @@ describe Kit::Api::Services::QueryBuilder do
     )
   end
 
-  let(:request) do
+  let(:api_request) do
     {
       config:             config,
       top_level_resource: top_level_resource,
@@ -21,12 +21,12 @@ describe Kit::Api::Services::QueryBuilder do
     }
   end
 
-  let(:subject) { service.build_query(request: request) }
+  let(:subject) { service.build_query(api_request: api_request) }
 
   shared_examples 'a valid query plan is generated' do
     it 'generates a valid query plan' do
       status, ctx = subject
-      query_node  = ctx[:entry_query_node]
+      query_node  = ctx[:query_node]
 
       Kit::Api::Services::Debug.print_query(query_node: query_node) if ENV['KIT_API_DEBUG']
 
@@ -53,7 +53,7 @@ describe Kit::Api::Services::QueryBuilder do
 
           expect(qn_relationship[:name]).to eq(relationship_name)
           expect(parent_query_node).to      eq(current_query_node)
-          expect(child_query_node[:resource][:name]).to eq(request[:config][:resources][relationship[:resource]][:name])
+          expect(child_query_node[:resource][:name]).to eq(api_request[:config][:resources][relationship[:resource]][:name])
 
           expect(child_query_node[:condition]).not_to be nil
         end

@@ -3,8 +3,8 @@
 # TODO: good candidate to rewrite as Contracts.
 module Kit::Api::JsonApi::Services::Paginators::Cursor::Validation
 
-  def self.validate(request:, parsed_query_params_page:)
-    args = { request: request, parsed_query_params_page: parsed_query_params_page }
+  def self.validate(api_request:, parsed_query_params_page:)
+    args = { api_request: api_request, parsed_query_params_page: parsed_query_params_page }
 
     Kit::Organizer.call({
       list: [
@@ -45,8 +45,8 @@ module Kit::Api::JsonApi::Services::Paginators::Cursor::Validation
   end
 
   # Validate `:size` parameters.
-  def self.validate_size_parameters(request:, parsed_query_params_page:)
-    config        = request[:config]
+  def self.validate_size_parameters(api_request:, parsed_query_params_page:)
+    config        = api_request[:config]
     page_size_max = config[:page_size_max]
 
     parsed_query_params_page.map do |path, list|
@@ -69,8 +69,8 @@ module Kit::Api::JsonApi::Services::Paginators::Cursor::Validation
   end
 
   # Decrypt `:after` && `:before` cursors if present.
-  def self.decrypt_cursors(request:, parsed_query_params_page:)
-    config = request[:config]
+  def self.decrypt_cursors(api_request:, parsed_query_params_page:)
+    config = api_request[:config]
 
     parsed_query_params_page.map do |path, list|
       [:after, :before].each do |key|
@@ -102,12 +102,12 @@ module Kit::Api::JsonApi::Services::Paginators::Cursor::Validation
   # See `Nested pagination` in the module doc.
   #
   # Traverse every request path and count the collection nesting level. If > 1, not paginateable.
-  def self.ensure_no_nesting(request:, parsed_query_params_page:)
-    config = request[:config]
+  def self.ensure_no_nesting(api_request:, parsed_query_params_page:)
+    config = api_request[:config]
 
     parsed_query_params_page.map do |path, _list|
-      level    = (request[:singular] == false) ? 1 : 0
-      resource = request[:top_level_resource]
+      level    = (api_request[:singular] == false) ? 1 : 0
+      resource = api_request[:top_level_resource]
 
       (path == :top_level ? '' : path).split('.').each do |name|
         relationship = resource[:relationships][name.to_sym]

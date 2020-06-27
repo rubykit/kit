@@ -1,7 +1,7 @@
 RSpec.shared_context 'config dummy app' do
 
   let(:config_dummy_app) do
-    Kit::Api::Services::Config.default_config({
+    Kit::Api::Services::Config.create_config({
       resources:     {
         author:     Kit::JsonApiSpec::Resources::Author.to_h,
         book:       Kit::JsonApiSpec::Resources::Book.to_h,

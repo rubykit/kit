@@ -5,12 +5,12 @@ module Kit::Api::JsonApi::Services::Request::Export::Sorting
   # @doc false
   Ct = Kit::Api::JsonApi::Contracts
 
-  def self.handle_sorting(request:, included_paths:, query_params:)
-    return [:ok] if !request[:config][:linker_config][:export_sorting]
+  def self.handle_sorting(api_request:, included_paths:, query_params:)
+    return [:ok] if !api_request[:config][:linker_config][:export_sorting]
 
     qp = []
 
-    (request[:sorting] || {}).each do |sort_path, ordering|
+    (api_request[:sorting] || {}).each do |sort_path, ordering|
       adjusted_path = Kit::Api::JsonApi::Services::Request::Export
         .adjusted_path(included_paths: included_paths, current_path: sort_path)[1][:adjusted_path]
       next if !adjusted_path

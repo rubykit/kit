@@ -1,4 +1,4 @@
-class Kit::JsonApiSpec::Models::WriteRecord < Kit::JsonApiSpec::Models::EngineRecord
+class Kit::JsonApiSpec::Models::WriteRecord < Kit::JsonApiSpec::Models::EngineRecord # rubocop:disable Style/Documentation
 
   include Kit::Domain::Models::Concerns::WriteRecord
 

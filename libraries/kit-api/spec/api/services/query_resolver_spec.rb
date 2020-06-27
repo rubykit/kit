@@ -13,7 +13,7 @@ describe Kit::Api::Services::QueryResolver do
     )
   end
 
-  let(:request) do
+  let(:api_request) do
     {
       config:             config,
       top_level_resource: top_level_resource,
@@ -22,7 +22,7 @@ describe Kit::Api::Services::QueryResolver do
   end
 
   let(:query_node) do
-    Kit::Api::Services::QueryBuilder.build_query(request: request)[1][:entry_query_node]
+    Kit::Api::Services::QueryBuilder.build_query(api_request: api_request)[1][:query_node]
   end
 
   let(:subject) { service.resolve_query_node(query_node: query_node) }

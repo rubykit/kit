@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'rails', '~> 6.0.3.1'
 
+  s.add_development_dependency 'listen'
   s.add_development_dependency 'rubocop'
 
 end

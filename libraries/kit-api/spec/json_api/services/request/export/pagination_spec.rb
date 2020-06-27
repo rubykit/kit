@@ -7,7 +7,7 @@ describe Kit::Api::JsonApi::Services::Request::Export::Pagination do
 
   let(:config)   { config_dummy_app }
 
-  let(:request) do
+  let(:api_request) do
     {
       config:             config,
       top_level_resource: Kit::JsonApiSpec::Resources::Author.to_h,
@@ -32,7 +32,7 @@ describe Kit::Api::JsonApi::Services::Request::Export::Pagination do
         Kit::Api::JsonApi::Services::Request::Export::RelatedResources.method(:handle_related_resources),
         Kit::Api::JsonApi::Services::Request::Export::Pagination.method(:handle_page_size),
       ],
-      ctx:  { request: request, url: url, path: path },
+      ctx:  { api_request: api_request, url: url, path: path },
     })
   end
 

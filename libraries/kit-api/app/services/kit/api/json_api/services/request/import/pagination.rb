@@ -45,15 +45,15 @@ module Kit::Api::JsonApi::Services::Request::Import::Pagination
   Ct = Kit::Api::JsonApi::Contracts
 
   # Entry point. Parse & validate pagination data before adding it to the `Request`.
-  def self.handle_pagination(query_params:, request:)
-    args = { query_params: query_params, request: request }
+  def self.handle_pagination(query_params:, api_request:)
+    args = { query_params: query_params, api_request: api_request }
 
     Kit::Organizer.call({
       list: [
         self.method(:parse),
         self.method(:validate),
         self.method(:run_paginators_import),
-        self.method(:add_to_request),
+        self.method(:add_to_api_request),
       ],
       ctx:  args,
     })
@@ -122,11 +122,11 @@ module Kit::Api::JsonApi::Services::Request::Import::Pagination
   # Everything else is the responsability of each Paginator.
   #
   # **⚠️ Warning**: in order to validate inclusion, the related resources need to have been run first.
-  def self.validate(request:, parsed_query_params_page:)
+  def self.validate(api_request:, parsed_query_params_page:)
     errors = []
 
     parsed_query_params_page.each do |path, _list|
-      resource = (path == :top_level) ? request[:top_level_resource] : request[:related_resources][path]
+      resource = (path == :top_level) ? api_request[:top_level_resource] : api_request[:related_resources][path]
 
       if !resource
         errors << { detail: "Page: `#{ path }` is not an included relationship" }
@@ -141,12 +141,12 @@ module Kit::Api::JsonApi::Services::Request::Import::Pagination
   end
 
   # Find all paginators in use for the Request and run their validation logic.
-  def self.run_paginators_import(request:, parsed_query_params_page:)
+  def self.run_paginators_import(api_request:, parsed_query_params_page:)
     paginators = {}
 
     # Sort parsed_query_params per paginator type
     parsed_query_params_page.each do |path, list|
-      resource  = (path == :top_level) ? request[:top_level_resource] : request[:related_resources][path]
+      resource  = (path == :top_level) ? api_request[:top_level_resource] : api_request[:related_resources][path]
       container = paginators[resource[:paginator][:type]] ||= { paginator: resource[:paginator], parsed_query_params_page: {} }
       container[:parsed_query_params_page][path] = list
     end
@@ -154,7 +154,7 @@ module Kit::Api::JsonApi::Services::Request::Import::Pagination
     # Call each paginator with its data
     paginators.each do |_paginator_type, paginator_data|
       paginator   = paginator_data[:paginator]
-      result      = paginator[:import].call(request: request, parsed_query_params_page: paginator_data[:parsed_query_params_page])
+      result      = paginator[:import].call(api_request: api_request, parsed_query_params_page: paginator_data[:parsed_query_params_page])
       status, ctx = result
 
       return result if status == :error
@@ -168,10 +168,10 @@ module Kit::Api::JsonApi::Services::Request::Import::Pagination
   end
 
   # When pagination data is valid, add it to the `Request`.
-  def self.add_to_request(parsed_query_params_page:, request:)
-    request[:pagination] = parsed_query_params_page
+  def self.add_to_api_request(parsed_query_params_page:, api_request:)
+    api_request[:pagination] = parsed_query_params_page
 
-    [:ok, request: request]
+    [:ok, api_request: api_request]
   end
 
 end

@@ -7,7 +7,7 @@ describe Kit::Api::JsonApi::Services::Request::Export::RelatedResources do
 
   let(:config)   { config_dummy_app }
 
-  let(:request) do
+  let(:api_request) do
     {
       config:             config,
       top_level_resource: Kit::JsonApiSpec::Resources::Author.to_h,
@@ -18,12 +18,12 @@ describe Kit::Api::JsonApi::Services::Request::Export::RelatedResources do
   describe '.handle_related_resources' do
     subject do
       included_paths = service.included_paths(
-        request: request,
-        path:    path,
+        api_request: api_request,
+        path:        path,
       )[1][:included_paths]
       service.handle_related_resources(
         query_params:   {},
-        request:        request,
+        api_request:    api_request,
         included_paths: included_paths,
       )
     end

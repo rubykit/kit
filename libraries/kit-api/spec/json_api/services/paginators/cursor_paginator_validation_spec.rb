@@ -8,7 +8,7 @@ describe Kit::Api::JsonApi::Services::Paginators::Cursor::Validation do
   let(:config)   { config_dummy_app }
 
   let(:query_params) { Kit::Api::JsonApi::Services::Url.parse_query_params(url: url)[1][:query_params] }
-  let(:request) do
+  let(:api_request) do
     {
       config:             config,
       top_level_resource: config[:resources][:author],
@@ -18,7 +18,7 @@ describe Kit::Api::JsonApi::Services::Paginators::Cursor::Validation do
   subject do
     params = {
       query_params: query_params,
-      request:      request,
+      api_request:  api_request,
     }
     Kit::Api::JsonApi::Services::Request::Import::RelatedResources.handle_related_resources(params)
     service.handle_pagination(params)
@@ -128,7 +128,7 @@ describe Kit::Api::JsonApi::Services::Paginators::Cursor::Validation do
       let(:include_param) { 'include=books' }
       let(:page_param)    { 'page[books.after]=val' }
 
-      let(:request) do
+      let(:api_request) do
         {
           config:             config,
           top_level_resource: config[:resources][:author],
@@ -151,9 +151,9 @@ describe Kit::Api::JsonApi::Services::Paginators::Cursor::Validation do
     context 'with valid top level cursor' do
       let(:page_param)    { "page[before]=#{ cursor }" }
 
-      it 'generates the proper request[:pagination] data' do
+      it 'generates the proper api_request[:pagination] data' do
         expect(status).to eq :ok
-        expect(ctx[:request][:pagination][:top_level][:before]).to eq cursor_data
+        expect(ctx[:api_request][:pagination][:top_level][:before]).to eq cursor_data
       end
     end
 
@@ -161,9 +161,9 @@ describe Kit::Api::JsonApi::Services::Paginators::Cursor::Validation do
       let(:include_param) { 'include=books' }
       let(:page_param)    { "page[books.before]=#{ cursor }" }
 
-      it 'generates the proper request[:pagination] data' do
+      it 'generates the proper api_request[:pagination] data' do
         expect(status).to eq :ok
-        expect(ctx[:request][:pagination]['books'][:before]).to eq cursor_data
+        expect(ctx[:api_request][:pagination]['books'][:before]).to eq cursor_data
       end
     end
 

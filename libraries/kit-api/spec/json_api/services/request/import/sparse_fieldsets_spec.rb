@@ -8,7 +8,7 @@ describe Kit::Api::JsonApi::Services::Request::Import::SparseFieldsets do
   let(:config)   { config_dummy_app }
 
   let(:query_params) { Kit::Api::JsonApi::Services::Url.parse_query_params(url: url)[1][:query_params] }
-  let(:request) do
+  let(:api_request) do
     {
       config: config,
     }
@@ -20,7 +20,7 @@ describe Kit::Api::JsonApi::Services::Request::Import::SparseFieldsets do
     subject do
       service.handle_sparse_fieldsets(
         query_params: query_params,
-        request:      request,
+        api_request:  api_request,
       )
     end
 
@@ -30,7 +30,7 @@ describe Kit::Api::JsonApi::Services::Request::Import::SparseFieldsets do
       it 'add the expected data to the request' do
         status, ctx = subject
         expect(status).to eq :ok
-        expect(ctx[:request][:fields]).to eq({ author: [:name, :date_of_birth], book: [:title] })
+        expect(ctx[:api_request][:fields]).to eq({ author: [:name, :date_of_birth], book: [:title] })
       end
     end
 
