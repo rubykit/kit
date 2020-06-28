@@ -51,7 +51,6 @@ PATH
   remote: ../kit-dummy-app-container
   specs:
     kit-dummy-app-container (0.1.0)
-      listen
       rails (~> 6.0.3.1)
 
 PATH
@@ -380,6 +379,7 @@ DEPENDENCIES
   kit-organizer!
   kit-pagination!
   kit-router!
+  listen
   pg
   pry
   pry-stack_explorer

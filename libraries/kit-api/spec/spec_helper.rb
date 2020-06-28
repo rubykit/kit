@@ -22,3 +22,4 @@ RSpec.configure do |config|
 end
 
 require_relative 'shared/config_dummy_app'
+require_relative 'shared/json_api'
