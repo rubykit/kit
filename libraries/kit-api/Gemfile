@@ -11,6 +11,8 @@ gem 'kit-pagination', path: '../../libraries/kit-pagination' # GEMSPEC
 group :test, :development do
   gem 'listen'
 
+  gem 'json_schemer'
+
   gem 'pry'
   gem 'pry-stack_explorer'
 

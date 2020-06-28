@@ -8,23 +8,11 @@ describe 'Json:Api Index requests', type: :request do
 
   before { subject }
 
-  let(:ar_models) do
-    {
-      author:     Kit::JsonApiSpec::Models::Write::Author,
-      book:       Kit::JsonApiSpec::Models::Write::Book,
-      book_store: Kit::JsonApiSpec::Models::Write::BookStore,
-      chapter:    Kit::JsonApiSpec::Models::Write::Chapter,
-      photo:      Kit::JsonApiSpec::Models::Write::Photo,
-      serie:      Kit::JsonApiSpec::Models::Write::Serie,
-      store:      Kit::JsonApiSpec::Models::Write::Store,
-    }
-  end
-
   shared_examples 'returns valid JSON:API data' do
     let(:path) { Kit::Router::Services::Adapters::Http::Mountpoints.path(id: "specs|api|#{ resource_name }|index") }
 
     let(:expected_count) do
-      [ar_models[resource_name].count, KIT_DUMMY_APP_API_CONFIG[:page_size]].select(&:positive?).min
+      [config_dummy_app_ar_models[resource_name].count, KIT_DUMMY_APP_API_CONFIG[:page_size]].select(&:positive?).min
     end
 
     it 'returns the expected number of top-level objects' do
@@ -33,6 +21,8 @@ describe 'Json:Api Index requests', type: :request do
       expect(jsonapi_response_body[:data].size).to eq expected_count
       expect(jsonapi_response_body[:data].map { |el| el[:type] }.uniq).to eq [resource_name.to_s]
     end
+
+    it_behaves_like 'a valid json:api response'
   end
 
   KIT_DUMMY_APP_API_CONFIG[:resources].each do |_, resource|

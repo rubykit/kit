@@ -175,15 +175,23 @@ GEM
     dotenv-rails (2.7.5)
       dotenv (= 2.7.5)
       railties (>= 3.2, < 6.1)
+    ecma-re-validator (0.2.1)
+      regexp_parser (~> 1.2)
     erubi (1.9.0)
     ffi (1.13.1)
     git (1.7.0)
       rchardet (~> 1.8)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
+    hana (1.3.6)
     i18n (1.8.2)
       concurrent-ruby (~> 1.0)
     json (2.3.0)
+    json_schemer (0.2.11)
+      ecma-re-validator (~> 0.2)
+      hana (~> 1.3)
+      regexp_parser (~> 1.5)
+      uri_template (~> 0.7)
     listen (3.2.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -275,6 +283,7 @@ GEM
     rchardet (1.8.0)
     redcarpet (3.5.0)
     redis (4.1.4)
+    regexp_parser (1.7.1)
     rexml (3.2.4)
     rspec (3.9.0)
       rspec-core (~> 3.9.0)
@@ -355,6 +364,7 @@ GEM
     tzinfo (1.2.7)
       thread_safe (~> 0.1)
     unicode-display_width (1.7.0)
+    uri_template (0.7.0)
     urlcrypt (0.1.1)
     websocket-driver (0.7.2)
       websocket-extensions (>= 0.1.0)
@@ -366,6 +376,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  json_schemer
   kit-api!
   kit-app-container!
   kit-contract!

@@ -16,4 +16,11 @@ RSpec.shared_context 'json:api' do
     JSON.parse(response.body, symbolize_names: true)
   end
 
+  shared_examples 'a valid json:api response' do
+    it 'validates against json:api json-schema' do
+      status, = Kit::Api::JsonApi::Services::SchemaValidation.valid?(data: jsonapi_response_body)
+      expect(status).to eq :ok
+    end
+  end
+
 end
