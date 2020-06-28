@@ -81,7 +81,7 @@ module Kit::Api::Contracts
   Request = Hash[
     top_level_resource: Delayed[-> { Resource }],
     singular:           Boolean,
-    related_resources:  Optional[Hash.of(String => Delayed[-> { Resource }]).named('Request[:related_resources]')],
+    related_resources:  Optional[Or[Hash.of(String => Delayed[-> { Resource }]), Hash.of(Nil => Nil)]].named('Request[:related_resources]'),
     sparse_fieldsets:   Optional[Hash.of(ResourceName => FieldNames).named('Request[:sparse_fieldsets]')],
     limits:             Optional[Hash.named('Request[:limits]')],
     #sorting:          {},

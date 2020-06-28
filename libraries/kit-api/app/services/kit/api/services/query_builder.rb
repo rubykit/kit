@@ -138,6 +138,7 @@ module Kit::Api::Services::QueryBuilder
   # Get the limit value (size of the subset)
   def self.get_limit(api_request:, path:, singular:)
     limit = nil
+    path  = :top_level if path == ''
 
     if singular == true
       limit = 1

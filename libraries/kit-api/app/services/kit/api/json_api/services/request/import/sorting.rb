@@ -111,7 +111,7 @@ module Kit::Api::JsonApi::Services::Request::Import::Sorting
         resource = api_request[:related_resources][path]
       end
 
-      if !resource
+      if !resource && !api_request[:related_resources].key?(nil)
         errors << { detail: "Sort: `#{ path }` is not an included relationship" }
         next
       end

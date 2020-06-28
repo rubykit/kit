@@ -69,6 +69,10 @@ module Kit::Api::JsonApi::Services::Request::Export::RelatedResources
     list = included_paths[:list]
     path = included_paths[:path]
 
+    if list == { nil => nil }
+      return [:ok, query_params: { include: '' }]
+    end
+
     # Remove all paths that are included in another, starting by the longest ones.
     keys = list.keys.sort_by(&:length).reverse
     idx  = 0

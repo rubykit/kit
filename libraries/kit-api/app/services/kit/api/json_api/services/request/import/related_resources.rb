@@ -109,7 +109,12 @@ module Kit::Api::JsonApi::Services::Request::Import::RelatedResources
   end
 
   # When inclusion data is valid, add it to the `Request`.
-  def self.add_to_api_request(parsed_query_params_include:, api_request:)
+  def self.add_to_api_request(parsed_query_params_include:, query_params:, api_request:)
+    # Quick hack for empty include (embed nothing)
+    if parsed_query_params_include.size == 0 && query_params.key?(:include)
+      parsed_query_params_include = { nil => nil }
+    end
+
     api_request[:related_resources] = parsed_query_params_include
 
     [:ok, api_request: api_request]

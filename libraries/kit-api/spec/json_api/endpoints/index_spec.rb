@@ -1,15 +1,19 @@
 require_relative '../../rails_helper'
 
 describe 'Json:Api Index requests', type: :request do
-  include_context 'json:api'
   include_context 'config dummy app'
+  include_context 'json:api'
+  include_context 'url'
 
-  let(:subject) { get path, headers: jsonapi_headers }
+  let(:subject) { get request_path, headers: jsonapi_headers }
 
   before { subject }
 
   shared_examples 'returns valid JSON:API data' do
-    let(:path) { Kit::Router::Services::Adapters::Http::Mountpoints.path(id: "specs|api|#{ resource_name }|index") }
+    let(:path_id) { "specs|api|#{ resource_name }|index" }
+    let(:query_params) do
+      { include: '' }
+    end
 
     let(:expected_count) do
       [config_dummy_app_ar_models[resource_name].count, KIT_DUMMY_APP_API_CONFIG[:page_size]].select(&:positive?).min

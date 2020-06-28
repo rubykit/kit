@@ -146,7 +146,7 @@ module Kit::Api::JsonApi::Services::Request::Import::Filtering
         resource = api_request[:related_resources][path]
       end
 
-      if !resource
+      if !resource && !api_request[:related_resources].key?(nil)
         errors << { detail: "Filter: `#{ path }` is not an included relationship" }
         next
       end

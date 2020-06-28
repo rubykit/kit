@@ -12,7 +12,7 @@ module Kit::Api::JsonApi::Services::Request::Export::SparseFieldsets
     path_name  = included_paths[:path]
 
     # Expected resource types given `include`
-    included_resources = paths_list.values.map { |el| el[:name] }
+    included_resources = paths_list.values.map { |el| el&.dig(:name) }
 
     qp = (api_request[:fields] || {})
       .select do |resource_name, _fields|

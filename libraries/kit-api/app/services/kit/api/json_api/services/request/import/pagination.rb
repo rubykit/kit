@@ -128,7 +128,7 @@ module Kit::Api::JsonApi::Services::Request::Import::Pagination
     parsed_query_params_page.each do |path, _list|
       resource = (path == :top_level) ? api_request[:top_level_resource] : api_request[:related_resources][path]
 
-      if !resource
+      if !resource && !api_request[:related_resources].key?(nil)
         errors << { detail: "Page: `#{ path }` is not an included relationship" }
       end
     end
