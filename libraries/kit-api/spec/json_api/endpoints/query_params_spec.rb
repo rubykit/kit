@@ -6,7 +6,7 @@ describe 'Json:Api query_params requests', type: :request do
   include_context 'url'
 
   let(:subject)       { get request_path, headers: jsonapi_headers }
-  let(:path_id)       { "specs|api|#{ resource_name }|index" }
+  let(:route_id)      { "specs|api|#{ resource_name }|index" }
   let(:resource_name) { :author }
 
   before { subject }

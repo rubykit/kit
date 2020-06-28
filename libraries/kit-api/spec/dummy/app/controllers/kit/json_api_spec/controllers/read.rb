@@ -7,7 +7,7 @@ module Kit::JsonApiSpec::Controllers::Read # rubocop:disable Style/Documentation
     api_request = {
       config:             KIT_DUMMY_APP_API_CONFIG,
       top_level_resource: top_level_resource,
-      singular:           false,
+      singular:           singular,
     }
 
     Kit::Organizer.call({
