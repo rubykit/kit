@@ -12,4 +12,8 @@ RSpec.shared_context 'json:api' do
     }
   end
 
+  let(:jsonapi_response_body) do
+    JSON.parse(response.body, symbolize_names: true)
+  end
+
 end
