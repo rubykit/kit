@@ -4,21 +4,9 @@ describe 'Aliases' do
   let(:service)       { Kit::Router::Services::Store }
   let(:default_types) { [[:any, :any]] }
 
-  let(:aliases_list) do
-    [
-      { id: :c, target_id: :d },
-      { id: :b, target_id: :c },
-      { id: :a, target_id: :b },
-      { id: :m, target_id: :b },
-      { id: :y, target_id: :c },
-      { id: :x, target_id: :y },
-      { id: :c, target_id: :e },
-    ]
-  end
-
   let(:aliases) do
     aliases_list.each do |data|
-      service.add_alias(
+      service::Alias.add_alias(
         alias_id:     data[:id],
         target_id:    data[:target_id],
         router_store: router_store,
@@ -28,16 +16,9 @@ describe 'Aliases' do
 
   let(:router_store) { service.create_store }
 
-  let(:endpoints_list) do
-    [
-      { uid: :d, target: -> {}, types: default_types },
-      { uid: :e, target: -> {}, types: default_types },
-    ]
-  end
-
   let(:endpoints) do
     endpoints_list.each do |data|
-      service.add_endpoint(
+      service::Endpoint.add_endpoint(
         uid:          data[:uid],
         target:       data[:target],
         types:        data[:types],
@@ -48,7 +29,7 @@ describe 'Aliases' do
 
   let(:resolve) do
     aliases_list.each do |data|
-      service.resolve_endpoint(
+      service::Endpoint.resolve_endpoint(
         alias_record: router_store[:aliases][data[:id]],
         router_store: router_store,
       )
@@ -56,16 +37,56 @@ describe 'Aliases' do
   end
 
   context 'Registering aliases' do
-    before do
-      endpoints
-      aliases
-      resolve
+
+    context 'with a valid dependency tree' do
+      let(:endpoints_list) do
+        [
+          { uid: :d, target: -> {}, types: default_types },
+          { uid: :e, target: -> {}, types: default_types },
+        ]
+      end
+
+      let(:aliases_list) do
+        [
+          { id: :c, target_id: :d },
+          { id: :b, target_id: :c },
+          { id: :a, target_id: :b },
+          { id: :c, target_id: :e },
+        ]
+      end
+
+      it 'register aliases correctly' do
+        endpoints
+        aliases
+
+        alias_record = router_store[:aliases][:a]
+        expect(alias_record[:target_id]).to eq :b
+
+        endpoint_record = service::Endpoint.get_endpoint(id: :a, router_store: router_store)
+        expect(endpoint_record[:id]).to eq :e
+      end
     end
 
-    it 'register aliases correctly' do
-      alias_record = router_store[:aliases][:a]
-      expect(alias_record[:target_id]).to eq :b
-      expect(alias_record[:cached_endpoint][:uid]).to eq :e
+    context 'with a circular reference' do
+      let(:endpoints_list) do
+        [
+          { uid: :a, target: -> {}, types: default_types },
+        ]
+      end
+
+      let(:aliases_list) do
+        [
+          { id: :b, target_id: :a },
+          { id: :c, target_id: :b },
+          { id: :d, target_id: :c },
+          { id: :b, target_id: :d },
+        ]
+      end
+
+      it 'detects the issue' do
+        endpoints
+        expect { aliases }.to raise_error('Kit::Router | aliasing `b` to `d` would create a circular reference')
+      end
     end
   end
 

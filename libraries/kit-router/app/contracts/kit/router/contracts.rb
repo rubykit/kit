@@ -1,71 +1,56 @@
 # Contracts for the project
 module Kit::Router::Contracts
 
-  include Kit::Contract::BuiltInContracts
+  include Kit::Organizer::Contracts
 
-  EndpointUid     = Or[Symbol, String]
-  AliasId         = Or[Symbol, String]
-  EndpointId      = Or[EndpointUid, AliasId]
+  EndpointUid     = Or[Symbol, String].named('EndpointUid')
+  AliasId         = Or[Symbol, String].named('AliasId')
+  EndpointId      = Or[EndpointUid, AliasId].named('EndpointUid')
 
-  Protocol        = In[:any, :http, :async]
-  MountSubTypes   = In[:any, :rails, :sidekiq]
-  MountType       = Tupple[Protocol, MountSubTypes]
-  MountTypes      = Array.of(MountType)
+  Protocol        = In[:any, :http, :async].named('Protocol')
+  MountSubTypes   = In[:any, :rails, :sidekiq].named('MountSubTypes')
+  MountType       = Tupple[Protocol, MountSubTypes].named('MountType')
+  MountTypes      = Array.of(MountType).named('MountTypes')
 
-  MountPointData  = Hash
-  MountTypeHash   = Hash.of(MountType => MountPointData)
+  MountPointData  = Hash.named('MountPointData')
+  MountTypeHash   = Hash.of(MountType => Array.of(MountPointData)).named('MountTypeHash')
 
-  HttpVerb        = In[*Kit::Router::Services::Adapters::Http::VERBS]
-  MountPointHttp  = Hash[verb: HttpVerb, path: String]
+  HttpVerb        = In[*Kit::Router::Services::Adapters::Http::VERBS].named('HttpVerb')
+  MountPointHttp  = Hash[verb: HttpVerb, path: String].named('MountPointHttp')
   #MountPointAsync = Hash[id: String]
   MountPoint      = Or[
     MountPointHttp,
     #MountPointAsync,
   ]
 
-=begin
   # TODO: Links should be Stores ?
 
-  EndpointRecord = And[
-    IsA[Kit::Router::Types::EndpointRecord],
-    Hash[
-      uid:             EndpointUid,
-      target:          Optional[Callable],
-      #types:          Array.of(MountType),
-      supported_types: Array.of(MountType),
-      mountpoints:     Hash.of(MountType => Array.of(MountPointData)),
-      meta:            Hash,
-    ],
-  ]
-=end
-  EndpointRecord = IsA[Kit::Router::Types::EndpointRecord]
+  EndpointRecord = Hash[
+    id:              EndpointUid.named('EndpointRecord: uid'),
+    target:          Optional[Callable].named('EndpointRecord: target'),
 
-=begin
+    types:           Hash.of(MountType => Hash).named('EndpointRecord: types'), # NO CLUE WHY
+    #supported_types: Array.of(MountType),
+    #mountpoints:     MountTypeHash,
+    meta:            Hash.named('EndpointRecord: meta'),
+
+    cached_aliases:  Array.of(AliasId),
+
+  ].named('EndpointRecord')
+
   # NOTE: For now let's keep 1 alias = 1 mountpoint (and not 1 mountpoint per adapter type)
 
-  AliasRecord = And[
-    IsA[Kit::Router::Types::AliasRecord],
-    Hash[
-      alias_id:        AliasId,
-      target_id:       Symbol,
-      cached_endpoint: Optional[EndpointRecord],
-      mountpoint:      Optional[MountPoint],
-      #aliases:         Hash.of(AliasId => AliasRecord),
-    ],
-  ]
-=end
-  AliasRecord = IsA[Kit::Router::Types::AliasRecord]
+  AliasRecord = Hash[
+    id:                 AliasId.named('AliasRecord: alias_id'),
+    target_id:          Optional[Or[AliasId, EndpointId]],
+    cached_aliases:     Array.of(AliasId),
+    cached_mountpoints: Array.of(MountPoint),
+  ].named('AliasRecord')
 
-=begin
-  RouterStore = And[
-    IsA[Kit::Router::Types::RouterStore],
-    Hash[
-      endpoints:   Hash.of(EndpointUid => EndpointRecord),
-      aliases:     Hash.of(AliasId     => AliasRecord),
-      mountpoints: Hash.of(Symbol      => MountPoint),
-    ],
-  ]
-=end
-  RouterStore = IsA[Kit::Router::Types::RouterStore]
+  RouterStore = Hash[
+    endpoints:   Hash.of(EndpointUid => EndpointRecord),
+    aliases:     Hash.of(AliasId     => AliasRecord),
+    mountpoints: Array,
+  ].named('RouterStore')
 
 end

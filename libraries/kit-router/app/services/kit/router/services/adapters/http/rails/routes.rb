@@ -13,6 +13,8 @@ module Kit::Router::Services::Adapters::Http::Rails
     end
 
     def self.mount_http_target(id:, path:, verb:, rails_router_context:, rails_endpoint_wrapper:)
+      return [:ok] if ENV['KIT_ROUTER'] == 'false'
+
       Kit::Organizer.call({
         list: [
           self.method(:load_record),
@@ -62,8 +64,8 @@ module Kit::Router::Services::Adapters::Http::Rails
     # --------------------------------------------------------------------------
 
     def self.load_record(id:)
-      alias_record    = Kit::Router::Services::Store.get_alias(id: id)
-      endpoint_record = Kit::Router::Services::Store.get_endpoint(id: id)
+      alias_record    = Kit::Router::Services::Store::Alias.get_alias(id: id)
+      endpoint_record = Kit::Router::Services::Store::Endpoint.get_endpoint(id: id)
 
       endpoint_types = endpoint_record[:types].keys
       if !Kit::Router::Services::Router.can_mount?(endpoint_types: endpoint_types, mounter_type: MOUNT_TYPE)
@@ -111,7 +113,7 @@ module Kit::Router::Services::Adapters::Http::Rails
 
     # NOTE: only call this directly if you understand what you are doing!
     def self.mount_in_rails(rails_router_context:, rails_target:, rails_mountpoint:, kit_router_target: nil)
-      puts "Mount in rails: #{ rails_mountpoint }"
+      # puts "Mount in rails: #{ rails_mountpoint }"
       rails_router_context.send(:match, rails_mountpoint[1], {
         controller: rails_target[0],
         action:     rails_target[1],
@@ -125,11 +127,11 @@ module Kit::Router::Services::Adapters::Http::Rails
     end
 
     def self.add_mountpoint_to_record(alias_record:, rails_mountpoint:)
-      alias_record[:mountpoints][MOUNT_TYPE] ||= []
-      alias_record[:mountpoints][MOUNT_TYPE] << rails_mountpoint
+      #alias_record[:mountpoints][MOUNT_TYPE] ||= []
+      #alias_record[:mountpoints][MOUNT_TYPE] << rails_mountpoint
 
-      alias_record[:cached_endpoint][:mountpoints][MOUNT_TYPE] ||= []
-      alias_record[:cached_endpoint][:mountpoints][MOUNT_TYPE] << rails_mountpoint
+      alias_record[:cached_mountpoints][MOUNT_TYPE] ||= []
+      alias_record[:cached_mountpoints][MOUNT_TYPE] << rails_mountpoint
 
       [:ok]
     end

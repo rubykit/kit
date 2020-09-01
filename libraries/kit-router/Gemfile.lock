@@ -52,6 +52,7 @@ PATH
     kit-router (0.1.0)
       oj
       rails (~> 6.0.3.1)
+      tabulo (~> 2.6)
 
 GEM
   remote: https://rubygems.org/
@@ -273,9 +274,13 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+    tabulo (2.6.0)
+      tty-screen (= 0.7.1)
+      unicode-display_width (= 1.7.0)
     thor (1.0.1)
     thread_safe (0.3.6)
     tilt (2.0.10)
+    tty-screen (0.7.1)
     tzinfo (1.2.7)
       thread_safe (~> 0.1)
     unicode-display_width (1.7.0)

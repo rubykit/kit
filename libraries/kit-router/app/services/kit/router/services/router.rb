@@ -8,7 +8,10 @@ module Kit::Router::Services
     Ct = Kit::Router::Contracts
 
     #Contract KeywordArgs[uid: Or[String, Symbol], target: RespondTo[:call], aliases: ArrayOf[String, Symbol], type: ArrayOf[ArrayOf[Symbol, Symbol]]]]
-    def self.register(uid:, aliases:, target:, types: { [:any, :any] => nil }, meta: nil)
+    def self.register(uid:, aliases:, target:, types: { [:any, :any] => nil }, meta: nil, router_store: nil)
+      # NOTE: temporary
+      return [:ok] if ENV['KIT_ROUTER'] == 'false'
+
       #puts "Kit::Router - Registering `#{uid}` (aliases: #{aliases})".colorize(:green)
 
       # NOTES: does this make it too complex a function signature?
@@ -18,8 +21,27 @@ module Kit::Router::Services
         types = types.keys
       end
 
-      Kit::Router::Services::Store.add_endpoint(uid: uid, target: target, types: types, meta: meta)
-      Kit::Router::Services::Store.add_aliases(target_id: uid, aliases: aliases)
+      Kit::Router::Services::Store::Endpoint.add_endpoint(uid: uid, target: target, types: types, meta: meta, router_store: router_store)
+
+      handle_aliases(target_id: uid, aliases: aliases, router_store: router_store)
+
+      [:ok]
+    end
+
+    def self.handle_aliases(target_id:, aliases:, router_store: nil)
+      if aliases.is_a?(Array)
+        aliases.each do |alias_id|
+          Kit::Router::Services::Store::Alias.add_alias(target_id: target_id, alias_id: alias_id, router_store: router_store)
+        end
+      elsif aliases.is_a?(Hash)
+        handle_aliases(target_id: target_id, aliases: aliases.keys)
+
+        aliases.each do |alias_id, aliases_sublist|
+          handle_aliases(target_id: alias_id, aliases: aliases_sublist)
+        end
+      else
+        Kit::Router::Services::Store::Alias.add_alias(target_id: target_id, alias_id: aliases, router_store: router_store)
+      end
 
       [:ok]
     end
@@ -55,8 +77,8 @@ module Kit::Router::Services
       false
     end
 
-    def self.call(id:, request: nil, params: {})
-      record = Kit::Router::Services::Store.get_endpoint(id: id)
+    def self.call(id:, request: nil, params: {}, router_store: nil)
+      record = Kit::Router::Services::Store::Endpoint.get_endpoint(id: id, router_store: router_store)
 
       if !request
         request = Kit::Router::Models::Request.new(params: OpenStruct.new(params))
