@@ -36,4 +36,7 @@ Rails.application.routes.draw do
     list:                 list_api,
   )
 
+  Kit::Router::Services::CliDisplay.show_mountpoints
+  Kit::Router::Services::CliDisplay.show_aliases
+
 end
