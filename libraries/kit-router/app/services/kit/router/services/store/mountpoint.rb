@@ -1,26 +1,39 @@
+# Store mountpoints related methods
 module Kit::Router::Services::Store::Mountpoint
 
   include Kit::Contract::Mixin
   # @doc false
   Ct = Kit::Router::Contracts
 
-  # Default to first mountpoint if N
-  contract Ct::Hash[alias_record: Ct::AliasRecord, mountpoint_type: Ct::MountType]
-  def self.get_record_mountpoint(alias_record:, mountpoint_type:, router_store: nil)
-    endpoint_record = alias_record[:cached_endpoint]
-    mountpoint      = alias_record[:mountpoint]
-    if !mountpoint
-      mountpoints = endpoint_record[:mountpoints][mountpoint_type]
-      if mountpoints.size == 1
-        mountpoint = mountpoints.first
-      end
+  # Find first mountpoint in an alias list.
+  contract Ct::Hash[mountpoint_type: Ct::MountType]
+  def self.find_mountpoint(id:, mountpoint_type:, router_store: nil)
+    router_store ||= self.router_store
+
+    mountpoint = nil
+    record_id  = id.to_sym
+
+    loop do
+      break if !record_id
+
+      record = router_store[:aliases][record_id] || router_store[:endpoints][record_id]
+      break if !record
+
+      mountpoint = record[:cached_mountpoints]&.dig(mountpoint_type)
+      break if mountpoint
+
+      record_id = record[:target_id]
     end
 
     if !mountpoint
-      raise "Kit::Router | could not find an endpoint for `#{ alias_record[:id] }` type `#{ mountpoint_type }`"
+      raise "Kit::Router | could not find a mountpoint for `#{ id }` with `#{ mountpoint_type }`"
     end
 
     mountpoint
+  end
+
+  def self.router_store
+    Kit::Router::Services::Store.router_store
   end
 
 end

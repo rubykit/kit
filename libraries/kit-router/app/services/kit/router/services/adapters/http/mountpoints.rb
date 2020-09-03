@@ -6,8 +6,7 @@ module Kit::Router::Services::Adapters::Http
   module Mountpoints
 
     def self.path(id:, params: {})
-      alias_record = Kit::Router::Services::Store.get_alias(id: id)
-      mountpoint   = Kit::Router::Services::Store.get_record_mountpoint(alias_record: alias_record, mountpoint_type: [:http, :rails])
+      mountpoint   = Kit::Router::Services::Store::Mountpoint.find_mountpoint(id: id, mountpoint_type: [:http, :rails])
       _verb, path  = mountpoint
 
       if path.blank?
@@ -62,8 +61,7 @@ module Kit::Router::Services::Adapters::Http
     end
 
     def self.verb(id:)
-      alias_record = Kit::Router::Services::Store.get_alias(id: id)
-      mountpoint   = Kit::Router::Services::Store.get_record_mountpoint(alias_record: alias_record, mountpoint_type: [:http, :rails])
+      mountpoint   = Kit::Router::Services::Store::Mountpoint.find_mountpoint(id: id, mountpoint_type: [:http, :rails])
       verb, _path  = mountpoint
 
       if verb.blank?

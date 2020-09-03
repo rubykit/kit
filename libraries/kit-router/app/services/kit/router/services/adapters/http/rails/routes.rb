@@ -130,14 +130,14 @@ module Kit::Router::Services::Adapters::Http::Rails
       #alias_record[:mountpoints][MOUNT_TYPE] ||= []
       #alias_record[:mountpoints][MOUNT_TYPE] << rails_mountpoint
 
-      alias_record[:cached_mountpoints][MOUNT_TYPE] ||= []
-      alias_record[:cached_mountpoints][MOUNT_TYPE] << rails_mountpoint
+      # TODO: add uniqueness check?
+      alias_record[:cached_mountpoints][MOUNT_TYPE] = rails_mountpoint
 
       [:ok]
     end
 
     def self.extract_rails_target_from_record(endpoint_record:)
-      rails_target = endpoint_record.dig(:meta, MOUNT_TYPE, :target)
+      rails_target = endpoint_record.dig(:meta, :types, MOUNT_TYPE, :target)
 
       if !rails_target
         raise "Kit::Router | invalid record target for #{ endpoint_record[:uid] }"

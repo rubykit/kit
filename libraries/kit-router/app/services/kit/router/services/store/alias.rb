@@ -1,3 +1,4 @@
+# Store aliases related methods
 module Kit::Router::Services::Store::Alias
 
   include Kit::Contract::Mixin

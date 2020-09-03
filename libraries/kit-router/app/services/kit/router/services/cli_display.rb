@@ -1,5 +1,6 @@
 require 'tabulo'
 
+# Helpers methods to display routes & aliases
 module Kit::Router::Services::CliDisplay
 
   def self.show_mountpoints

@@ -1,3 +1,4 @@
+# Store endpoints related methods
 module Kit::Router::Services::Store::Endpoint
 
   include Kit::Contract::Mixin
