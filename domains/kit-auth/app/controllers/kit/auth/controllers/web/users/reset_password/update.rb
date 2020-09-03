@@ -1,13 +1,13 @@
 module Kit::Auth::Controllers::Web::Users::ResetPassword
   module Update
 
-    def self.endpoint(request:)
+    def self.endpoint(router_request:)
       Kit::Organizer.call({
-        ctx:  { request: request, },
+        ctx:  { router_request: router_request, },
         list: [
           :web_require_current_user!,
           # TODO: fix this explicit dependency, not sure how?
-          ->(ctx) { Kit::Auth::Controllers::WebController.redirect_if_missing_scope!(request: ctx[:request], scope: 'update_user_secret') },
+          ->(ctx) { Kit::Auth::Controllers::WebController.redirect_if_missing_scope!(router_request: ctx[:router_request], scope: 'update_user_secret') },
           self.method(:render_view),
         ],
       })
@@ -19,11 +19,11 @@ module Kit::Auth::Controllers::Web::Users::ResetPassword
       target:  self.method(:endpoint),
     })
 
-    def self.update_password(request:)
-      model   = request.params.slice(:password, :password_confirmation)
+    def self.update_password(router_request:)
+      model   = router_request.params.slice(:password, :password_confirmation)
       context = model.merge(
-        user:    request.metadata[:current_user],
-        request: request,
+        user:    router_request.metadata[:current_user],
+        router_request: router_request,
       )
 
       status, ctx = Kit::Organizer.call({
@@ -37,7 +37,7 @@ module Kit::Auth::Controllers::Web::Users::ResetPassword
       if status == :ok
         Kit::Auth::Services::OauthAccessToken.revoke(oauth_access_token: current_user_oauth_access_token)
 
-        request.http.cookies[:access_token] = { value: ctx[:oauth_access_token_plaintext_secret], encrypted: true }
+        router_request.http.cookies[:access_token] = { value: ctx[:oauth_access_token_plaintext_secret], encrypted: true }
 
         Kit::Router::Controllers::Http.redirect_to(
           location: Kit::Router::Services::HttpRoutes.path(id: 'web|users|after_reset_password'),
@@ -48,7 +48,7 @@ module Kit::Auth::Controllers::Web::Users::ResetPassword
           component: Kit::Auth::Components::Pages::Users::ResetPassword::Edit,
           params: {
             model:       model,
-            csrf_token:  request.http[:csrf_token],
+            csrf_token:  router_request.http[:csrf_token],
             errors_list: ctx[:errors],
           },
         )

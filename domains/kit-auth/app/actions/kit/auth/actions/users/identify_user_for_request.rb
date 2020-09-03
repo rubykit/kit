@@ -1,11 +1,11 @@
 module Kit::Auth::Actions::Users::IdentifyUserForRequest
 
-  # Todo: add contract on request / cookies (based on needed access)
+  # Todo: add contract on router_request / cookies (based on needed access)
   #Contract Hash => [Symbol, KeywordArgs[user: Any]]
-  def self.call(request:, oauth_application:, allow: [:param, :cookie, :header])
+  def self.call(router_request:, oauth_application:, allow: [:param, :cookie, :header])
     status, ctx = Kit::Organizer.call({
       ctx: {
-        request:           request,
+        router_request:           router_request,
         oauth_application: oauth_application,
         allow:             allow,
       },
@@ -22,15 +22,15 @@ module Kit::Auth::Actions::Users::IdentifyUserForRequest
     end
   end
 
-  def self.extract_access_token(request:, allow:)
+  def self.extract_access_token(router_request:, allow:)
     access_tokens = {
-      param:  request.params[:access_token],
-      cookie: request.http&.cookies&.dig(:access_token, :value),
+      param:  router_request.params[:access_token],
+      cookie: router_request.http&.cookies&.dig(:access_token, :value),
       header: nil,
     }
 
     # REF: https://www.iana.org/assignments/http-authschemes/http-authschemes.xhtml
-    if !(auth_header = request.http.headers['Authorization']).blank?
+    if !(auth_header = router_request.http.headers['Authorization']).blank?
       token = auth_header.split('Bearer ')[1]
       if !token.blank?
         access_tokens[:header] = token

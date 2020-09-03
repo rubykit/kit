@@ -29,4 +29,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'omniauth',        '~> 1.6.1'
   s.add_dependency 'strong_password', '~> 0.0.8'
 
+  s.add_dependency 'seedbank'
+
 end

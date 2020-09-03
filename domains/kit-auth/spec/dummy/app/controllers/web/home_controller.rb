@@ -1,8 +1,9 @@
 class ::Web::HomeController < ::WebController
 
   Kit::Router::Services::Router.register_without_target({
-    uid:     'app|home',
+    uid:     'kit-auth|spec_app|home',
     aliases: [
+      'app|home',
       'web|users|after_sign_in',
       'web|users|after_sign_up',
     ],

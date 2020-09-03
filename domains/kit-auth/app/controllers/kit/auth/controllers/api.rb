@@ -10,12 +10,12 @@ module Kit::Auth::Controllers
       }
     end
 
-    def self.load_resource!(request:, model:, param: :resource_id, column: :id)
+    def self.load_resource!(router_request:, model:, param: :resource_id, column: :id)
       param    = param.to_sym
       column ||= param
       column   = column.to_sym
 
-      value    = request.params[param]
+      value    = router_request.params[param]
 
       if column && !value.blank?
         resource = model.find_by({ column => value, })
@@ -135,18 +135,18 @@ module Kit::Auth::Controllers
       end
     end
 
-    def self.paginate(request:, relation:, ordering:)
-      page_size       = api_page_size(size: request.params.dig(:page, :size))
+    def self.paginate(router_request:, relation:, ordering:)
+      page_size       = api_page_size(size: router_request.params.dig(:page, :size))
       where_arguments = []
       conditions      = nil
 
-      if request.params[:page]
-        cursor_str = request.params[:page][:after]
+      if router_request.params[:page]
+        cursor_str = router_request.params[:page][:after]
         if !cursor_str.blank?
           cursor_data = Kit::Pagination::Cursor.decode_cursor(cursor_str: cursor_str)
           conditions = Kit::Pagination::Conditions.conditions_for_after(ordering: ordering, cursor_data: cursor_data)
         else
-          cursor_str = request.params[:page][:before]
+          cursor_str = router_request.params[:page][:before]
           if !cursor_str.blank?
             cursor_data = Kit::Pagination::Cursor.decode_cursor(cursor_str: cursor_str)
             conditions = Kit::Pagination::Conditions.conditions_for_before(ordering: ordering, cursor_data: cursor_data)
@@ -177,7 +177,7 @@ module Kit::Auth::Controllers
       ]
 
       # NOTE: implicit dependency, should this be parametized?
-      page_size = request.params.dig(:page, :size).to_i
+      page_size = router_request.params.dig(:page, :size).to_i
       if page_size > 0
         page_size = api_page_size(size: page_size)
       end

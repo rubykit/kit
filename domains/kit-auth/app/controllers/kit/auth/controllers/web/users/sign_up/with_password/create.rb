@@ -1,13 +1,13 @@
 module Kit::Auth::Controllers::Web::Users::SignUp::WithPassword
   module Create
 
-    def self.endpoint(request:)
+    def self.endpoint(router_request:)
       Kit::Organizer.call({
         list: [
           :web_redirect_if_current_user!,
           self.method(:create_user),
         ],
-        ctx: { request: request, },
+        ctx: { router_request: router_request, },
       })
     end
 
@@ -19,10 +19,10 @@ module Kit::Auth::Controllers::Web::Users::SignUp::WithPassword
       target:  self.method(:endpoint),
     })
 
-    def self.create_user(request:)
-      model   = request.params.slice(:email, :password, :password_confirmation)
+    def self.create_user(router_request:)
+      model   = router_request.params.slice(:email, :password, :password_confirmation)
       context = model.merge(
-        request: request,
+        router_request: router_request,
       )
 
       status, ctx = Kit::Organizer.call({
@@ -34,7 +34,7 @@ module Kit::Auth::Controllers::Web::Users::SignUp::WithPassword
       })
 
       if status == :ok
-        request.http.cookies[:access_token] = { value: ctx[:oauth_access_token_plaintext_secret], encrypted: true }
+        router_request.http.cookies[:access_token] = { value: ctx[:oauth_access_token_plaintext_secret], encrypted: true }
 
         Kit::Router::Controllers::Http.redirect_to(
           location: Kit::Router::Services::HttpRoutes.path(id: 'web|users|after_sign_up')
@@ -44,7 +44,7 @@ module Kit::Auth::Controllers::Web::Users::SignUp::WithPassword
           component: Kit::Auth::Components::Pages::Users::SignUp::WithPassword::New,
           params: {
             model:       model,
-            csrf_token:  request.http[:csrf_token],
+            csrf_token:  router_request.http[:csrf_token],
             errors_list: ctx[:errors],
           },
         )

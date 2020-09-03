@@ -1,8 +1,8 @@
 module Kit::Auth::Controllers::Web::Users::ResetPasswordRequest
   module Process
 
-    def self.endpoint(request:)
-      event_record = Kit::Domain::Models::Read::Event.find(request.params[:event_id])
+    def self.endpoint(router_request:)
+      event_record = Kit::Domain::Models::Read::Event.find(router_request.params[:event_id])
 
       status, ctx = Kit::Organizer.call({
         list: [

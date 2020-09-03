@@ -1,7 +1,7 @@
 module Kit::Events::Controllers
   module EventsHandler
 
-    def self.endpoint(request:)
+    def self.endpoint(router_request:)
       # This is where we react to an event (send to segment, etc)
 
       [:ok]

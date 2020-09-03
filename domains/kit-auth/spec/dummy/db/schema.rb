@@ -10,30 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_05_114041) do
+ActiveRecord::Schema.define(version: 2019_08_03_140621) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
-
-  create_table "countries", force: :cascade do |t|
-    t.string "iso3166_alpha2", limit: 2
-    t.string "iso3166_alpha3", limit: 3
-    t.string "name"
-    t.bigint "currency_id"
-    t.index ["currency_id"], name: "index_countries_on_currency_id"
-    t.index ["iso3166_alpha2"], name: "index_countries_on_iso3166_alpha2"
-    t.index ["iso3166_alpha3"], name: "index_countries_on_iso3166_alpha3"
-    t.index ["name"], name: "index_countries_on_name"
-  end
-
-  create_table "currencies", force: :cascade do |t|
-    t.string "iso4217_alpha", limit: 3
-    t.string "name"
-    t.string "minor_unit", limit: 3
-    t.index ["iso4217_alpha"], name: "index_currencies_on_iso4217_alpha"
-    t.index ["name"], name: "index_currencies_on_name"
-  end
 
   create_table "event_store_events", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -55,15 +36,6 @@ ActiveRecord::Schema.define(version: 2019_08_05_114041) do
     t.index ["event_id"], name: "index_event_store_events_in_streams_on_event_id"
     t.index ["stream", "event_id"], name: "index_event_store_events_in_streams_on_stream_and_event_id", unique: true
     t.index ["stream", "position"], name: "index_event_store_events_in_streams_on_stream_and_position", unique: true
-  end
-
-  create_table "ip_geolocations", force: :cascade do |t|
-    t.inet "ip_start"
-    t.inet "ip_end"
-    t.bigint "country_id"
-    t.index ["country_id"], name: "index_ip_geolocations_on_country_id"
-    t.index ["ip_end"], name: "index_ip_geolocations_on_ip_end"
-    t.index ["ip_start"], name: "index_ip_geolocations_on_ip_start"
   end
 
   create_table "oauth_access_grants", force: :cascade do |t|
@@ -162,8 +134,6 @@ ActiveRecord::Schema.define(version: 2019_08_05_114041) do
     t.index ["email"], name: "index_users_on_email_unique", unique: true, where: "(deleted_at IS NULL)"
   end
 
-  add_foreign_key "countries", "currencies"
-  add_foreign_key "ip_geolocations", "countries"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_grants", "users", column: "resource_owner_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"

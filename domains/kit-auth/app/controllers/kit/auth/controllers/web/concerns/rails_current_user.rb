@@ -11,7 +11,7 @@ module Kit::Auth::Controllers::Web::Concerns
         # TODO: should there be an explicit or impliticit reference ?
         list: [
           Kit::Router::Services::Adapters::Http::Rails::Request::Import.method(:import_request),
-          :web_resolve_current_user,
+          [:alias, :web_resolve_current_user],
         ],
         ctx:  {
           rails_request:    request,

@@ -7,7 +7,7 @@ module Kit::Auth::Actions::OauthApplications::LoadWeb
     if application
       [:ok, oauth_application: application]
     else
-      [:error, detail: "Could not find `#{uid}` application"]
+      [:error, detail: "Could not find `#{ uid }` application"]
     end
   end
 

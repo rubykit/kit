@@ -1,13 +1,13 @@
 module Kit::Auth::Controllers::Web::Users::ResetPassword
   module Edit
 
-    def self.endpoint(request:)
+    def self.endpoint(router_request:)
       Kit::Organizer.call({
-        ctx:  { request: request, },
+        ctx:  { router_request: router_request, },
         list: [
           :web_require_current_user!,
           # TODO: fix this explicit dependency, not sure how?
-          ->(ctx) { Kit::Auth::Controllers::WebController.redirect_if_missing_scope!(request: ctx[:request], scope: 'update_user_secret') },
+          ->(ctx) { Kit::Auth::Controllers::WebController.redirect_if_missing_scope!(router_request: ctx[:router_request], scope: 'update_user_secret') },
           self.method(:render_view),
         ],
       })
@@ -19,14 +19,14 @@ module Kit::Auth::Controllers::Web::Users::ResetPassword
       target:  self.method(:endpoint),
     })
 
-    def self.render_view(request:)
+    def self.render_view(router_request:)
       model = { password: nil, password_confirmation: nil }
 
       Kit::Router::Controllers::Http.render(
         component: Kit::Auth::Components::Pages::Users::ResetPassword::Edit,
         params: {
           model:      model,
-          csrf_token: request.http[:csrf_token],
+          csrf_token: router_request.http[:csrf_token],
         }
       )
     end

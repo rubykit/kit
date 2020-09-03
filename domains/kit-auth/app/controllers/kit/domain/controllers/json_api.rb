@@ -3,18 +3,18 @@ module Kit::Domain::Controllers
 
     JSONAPI_MEDIA_TYPE = 'application/vnd.api+json'.freeze
 
-    def self.ensure_media_type(request:)
+    def self.ensure_media_type(router_request:)
       Kit::Organizer.call({
         list: [
           self.method(:ensure_content_type),
           self.method(:ensure_http_accept),
         ],
-        ctx: { request: request, },
+        ctx: { router_request: router_request, },
       })
     end
 
-    def self.ensure_content_type(request:)
-      content_type = request.http.headers['CONTENT_TYPE']
+    def self.ensure_content_type(router_request:)
+      content_type = router_request.http.headers['CONTENT_TYPE']
 
       if Rack::MediaType.type(content_type) == JSONAPI_MEDIA_TYPE && Rack::MediaType.params(content_type) == {}
         return [:ok]
@@ -31,8 +31,8 @@ module Kit::Domain::Controllers
       }]
     end
 
-    def self.ensure_http_accept(request:)
-      http_accept = request.http.headers['ACCEPT']
+    def self.ensure_http_accept(router_request:)
+      http_accept = router_request.http.headers['ACCEPT']
 
       if http_accept.blank?
         return [:ok]
