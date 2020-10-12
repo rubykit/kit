@@ -2,8 +2,8 @@ namespace :router do
 
   namespace :mountpoints do
 
-    task show: :environment do
-      Kit::Router::Services::CliDisplay.show_mountpoints
+    task display: :environment do
+      Kit::Router::Services::CliDisplay.display_mountpoints
     end
 
   end
@@ -11,8 +11,13 @@ namespace :router do
   namespace :aliases do
 
     desc 'Display a list of known routing aliases'
-    task show: :environment do
-      Kit::Router::Services::CliDisplay.show_aliases
+    task display: :environment do
+      Kit::Router::Services::CliDisplay.display_aliases
+    end
+
+    desc 'Display a list of known routing aliases'
+    task generate_alias_graph_assets: :environment do
+      Kit::Router::Services::CliDisplay.generate_alias_graph_assets
     end
 
   end
