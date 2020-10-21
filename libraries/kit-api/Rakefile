@@ -15,6 +15,7 @@ load 'rails/tasks/engine.rake'
 Rails.application.load_tasks
 
 import 'tasks/documentation.rake'
+import 'tasks/router.rake'
 
 require 'seedbank'
 Seedbank.seeds_root = File.expand_path('./spec/dummy/db/seeds', __dir__)

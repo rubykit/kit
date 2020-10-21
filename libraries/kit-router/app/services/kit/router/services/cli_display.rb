@@ -63,14 +63,16 @@ module Kit::Router::Services::CliDisplay
     puts display_table
   end
 
-  def self.generate_alias_graph_assets
+  def self.generate_alias_graph_assets(output_dir:)
     list = get_aliases
 
     values = list.select { |_id, data| data[:target_id] == nil }.values
     tree   = list_to_tree(list: values)
 
-    generate_data_asset_file(tree: tree)
-    copy_static_assets
+    generate_data_asset_file(tree: tree, output_dir: output_dir)
+    copy_static_assets(output_dir: output_dir)
+
+    [:ok]
   end
 
   def self.list_to_tree(list:)
@@ -88,19 +90,18 @@ module Kit::Router::Services::CliDisplay
     end
   end
 
-  DST_PATH = File.expand_path('../../../../../docs/dist/routing', __dir__)
   SRC_PATH = File.expand_path('../../../../../assets/src', __dir__)
 
-  def self.copy_static_assets
-    FileUtils.mkdir_p(DST_PATH)
+  def self.copy_static_assets(output_dir:)
+    FileUtils.mkdir_p(output_dir)
 
     ['aliases.html', 'aliases_chart.js', 'aliases_style.css'].each do |file_name|
       src = "#{ SRC_PATH }/#{ file_name }"
-      FileUtils.cp(src, "#{ DST_PATH }/")
+      FileUtils.cp(src, "#{ output_dir }/")
     end
   end
 
-  def self.generate_data_asset_file(tree:)
+  def self.generate_data_asset_file(tree:, output_dir:)
     payload = {
       'name'     => '',
       'hidden'   => true,
@@ -109,7 +110,7 @@ module Kit::Router::Services::CliDisplay
 
     file_content = "var treeData = #{ JSON.pretty_generate(payload) };"
 
-    dst = "#{ DST_PATH }/aliases_data.js"
+    dst = "#{ output_dir }/aliases_data.js"
     FileUtils.mkdir_p(File.dirname(dst))
 
     File.open(dst, 'w') { |file| file.write(file_content) }

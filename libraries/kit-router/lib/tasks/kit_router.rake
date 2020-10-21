@@ -1,3 +1,8 @@
+# Default router tasks that will be embedded in every domain.
+#
+# Tasks that require per domain configuration need to be manually added to each domain.
+# They can be found in the `Kit::Router::Services::Tasks` namespace.
+#
 namespace :router do
 
   namespace :mountpoints do
@@ -13,11 +18,6 @@ namespace :router do
     desc 'Display a list of known routing aliases'
     task display: :environment do
       Kit::Router::Services::CliDisplay.display_aliases
-    end
-
-    desc 'Display a list of known routing aliases'
-    task generate_alias_graph_assets: :environment do
-      Kit::Router::Services::CliDisplay.generate_alias_graph_assets
     end
 
   end
