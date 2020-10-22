@@ -2,7 +2,7 @@ module Kit::Auth::Controllers::Api::V1::AuthorizationTokens
   module Create
 
     ROUTE_ID  = 'api_v1|authorization_tokens|create'
-    ROUTE_UID = "kit_auth|#{ROUTE_ID}"
+    ROUTE_UID = "kit_auth|#{ ROUTE_ID }"
 
     def self.endpoint(router_request:)
       params = router_request.params[:authorization_token][:data][:attributes]
@@ -33,10 +33,9 @@ module Kit::Auth::Controllers::Api::V1::AuthorizationTokens
 
     Kit::Router::Services::Router.register(
       uid:     ROUTE_UID,
-      aliases: [
-        ROUTE_ID,
-        'api|authorization_tokens|create'
-      ],
+      aliases: {
+        ROUTE_ID => 'api|authorization_tokens|create',
+      },
       target:  self.method(:endpoint),
     )
 

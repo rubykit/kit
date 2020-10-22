@@ -29,10 +29,9 @@ module Kit::Auth::Controllers::Api::V1::AuthorizationTokens
 
     Kit::Router::Services::Router.register(
       uid:     ROUTE_UID,
-      aliases: [
-        ROUTE_ID,
-        'api|authorization_tokens|show'
-      ],
+      aliases: {
+        ROUTE_ID => 'api|authorization_tokens|show'
+      },
       target:  self.method(:endpoint),
     )
 

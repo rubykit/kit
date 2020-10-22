@@ -13,10 +13,9 @@ module Kit::Auth::Controllers::Web::Users::SignUp::WithPassword
 
     Kit::Router::Services::Router.register({
       uid:     'kit_auth|web|users|new',
-      aliases: [
-        'web|users|new',
-        'web|users|sign_up',
-      ],
+      aliases: {
+        'web|users|new' => 'web|users|sign_up',
+      },
       target:  self.method(:endpoint),
     })
 

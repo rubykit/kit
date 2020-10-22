@@ -30,10 +30,9 @@ module Kit::Auth::Controllers::Api::V1::Users
 
     Kit::Router::Services::Router.register(
       uid:     ROUTE_UID,
-      aliases: [
-        'api_v1|users|show',
-        'api|users|show',
-      ],
+      aliases: {
+        'api_v1|users|show' => 'api|users|show',
+      },
       target:  self.method(:endpoint),
     )
 
