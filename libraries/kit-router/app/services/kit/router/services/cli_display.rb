@@ -3,7 +3,8 @@ require 'tabulo'
 # Helpers methods to display routes & aliases
 module Kit::Router::Services::CliDisplay
 
-  def self.get_mountpoints
+  # Get all mountpoints registered with the router
+  def self.mountpoints
     list = []
     Kit::Router::Services::Store.router_store[:endpoints].each do |_endpoint_uid, endpoint_data|
       routes = endpoint_data.dig(:mountpoints, [:http, :rails])
@@ -16,7 +17,7 @@ module Kit::Router::Services::CliDisplay
   end
 
   def self.display_mountpoints
-    list = get_mountpoints
+    list = mountpoints
 
     display_table = Tabulo::Table.new(list) do |table|
       table.add_column('Verb') { |data| data[:verb] }
@@ -29,14 +30,24 @@ module Kit::Router::Services::CliDisplay
     puts display_table
   end
 
-  def self.get_aliases
+  # Get all aliases registered with the router
+  def self.aliases
     list = {}
 
     Kit::Router::Services::Store.router_store[:aliases].each do |id, data|
-      list[id] = { id: id, target_id: data[:target_id].to_sym, type: :alias }
+      list[id] = {
+        id:        id,
+        type:      :alias,
+        target_id: data[:target_id].to_sym,
+        mounted:   (data[:cached_mountpoints] && !data[:cached_mountpoints].empty?),
+      }
     end
     Kit::Router::Services::Store.router_store[:endpoints].each do |id, data|
-      list[id] = { id: id, type: :endpoint }
+      list[id] = {
+        id:      id,
+        type:    :endpoint,
+        mounted: (data[:cached_mountpoints] && !data[:cached_mountpoints].empty?),
+      }
     end
 
     list.each do |_id, data|
@@ -50,7 +61,7 @@ module Kit::Router::Services::CliDisplay
   end
 
   def self.display_aliases
-    list = get_aliases
+    list = aliases
 
     display_table = Tabulo::Table.new(list.values) do |table|
       table.add_column('Id')     { |data| data[:id] }
@@ -64,8 +75,7 @@ module Kit::Router::Services::CliDisplay
   end
 
   def self.generate_alias_graph_assets(output_dir:)
-    list = get_aliases
-
+    list   = aliases
     values = list.select { |_id, data| data[:target_id] == nil }.values
     tree   = list_to_tree(list: values)
 
@@ -78,12 +88,16 @@ module Kit::Router::Services::CliDisplay
   def self.list_to_tree(list:)
     list.map do |el|
       res = {
-        'name'     => el[:id],
-        'endpoint' => el[:type] == :endpoint,
+        name:           el[:id],
+        kit_properties: {
+          type:     el[:type],
+          mounted:  el[:mounted],
+          children: !!el[:children],
+        },
       }
 
       if el[:children]
-        res['children'] = list_to_tree(list: el[:children])
+        res[:children] = list_to_tree(list: el[:children])
       end
 
       res
@@ -103,9 +117,11 @@ module Kit::Router::Services::CliDisplay
 
   def self.generate_data_asset_file(tree:, output_dir:)
     payload = {
-      'name'     => '',
-      'hidden'   => true,
-      'children' => tree,
+      name:           '',
+      kit_properties: {
+        hidden: true,
+      },
+      children:       tree,
     }
 
     file_content = "var treeData = #{ JSON.pretty_generate(payload) };"

@@ -1,27 +1,46 @@
-.node {
+.node.children-true {
   cursor: pointer;
 }
 
-.overlay{
-  background-color:#EEE;
+.overlay {
+  background-color: #eee;
 }
 
 .node circle {
-  fill: #fff;
-  stroke: steelblue;
-  stroke-width: 1.5px;
+  fill:         #fff;
+  stroke:       steelblue;
+  stroke-width: 2px;
+}
+
+.node circle.collapsed {
+  stroke-width: 3px;
+}
+
+.node.type-alias circle {
+  stroke: #909497;
+}
+
+.node.type-endpoint circle {
+  stroke: #a93226;
+}
+
+.node.mounted-true circle {
+  fill: #daf7a6;
+}
+
+.node.chidren-true circle {
+
 }
 
 .node text {
-  font-size: 10px;
   font-family: Consolas;
-  text-shadow: 2px 2px white;
+  font-size:   10px;
 }
 
 .link {
-  fill: none;
-  stroke: #ccc;
-  stroke-width: 1.5px;
+  fill:         none;
+  stroke:       #ddd;
+  stroke-width: 1px;
 }
 
 .templink {
@@ -30,10 +49,6 @@
   stroke-width: 3px;
 }
 
-.ghostCircle.show{
-  display:block;
-}
-
-.ghostCircle, .activeDrag .ghostCircle {
+.hidden-true {
   display: none;
 }

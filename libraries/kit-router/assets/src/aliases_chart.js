@@ -122,12 +122,27 @@ $(function() {
     }
 
     // Function to center node when clicked/dropped so node doesn't get lost when collapsing/moving with large amount of children.
-
     function centerNode(source) {
         scale = zoomListener.scale();
         x = -source.y0;
         y = -source.x0;
         x = x * scale + viewerWidth / 2;
+        y = y * scale + viewerHeight / 2;
+        d3.select('g').transition()
+            .duration(duration)
+            .attr("transform", "translate(" + x + "," + y + ")scale(" + scale + ")");
+        zoomListener.scale(scale);
+        zoomListener.translate([x, y]);
+    }
+
+    // Function to center node when clicked/dropped so node doesn't get lost when collapsing/moving with large amount of children.
+    function moveNode(source) {
+        scale    = zoomListener.scale();
+        children = source.children[0];
+
+        x = -children.y0;
+        y = -source.x0;
+        x = x * scale + 40;
         y = y * scale + viewerHeight / 2;
         d3.select('g').transition()
             .duration(duration)
@@ -150,12 +165,13 @@ $(function() {
     }
 
     // Toggle children on click.
-
     function click(d) {
         if (d3.event.defaultPrevented) return; // click suppressed
-        d = toggleChildren(d);
-        update(d);
-        centerNode(d);
+        if (d.children || d._children) {
+            d = toggleChildren(d);
+            update(d);
+            centerNode(d);
+        }
     }
 
     function update(source) {
@@ -175,7 +191,7 @@ $(function() {
             }
         };
         childCount(0, root);
-        var newHeight = d3.max(levelWidth) * 25; // 25 pixels per line  
+        var newHeight = d3.max(levelWidth) * 25; // 25 pixels per line
         tree = tree.size([newHeight, viewerWidth]);
 
         // Compute the new tree layout.
@@ -184,10 +200,23 @@ $(function() {
 
         // Set widths between levels based on maxLabelLength.
         nodes.forEach(function(d) {
-            d.y = (d.depth * (maxLabelLength * 10)); //maxLabelLength * 10px
+            d.y = (d.depth * (maxLabelLength * 7)); //maxLabelLength * 10px
             // alternatively to keep a fixed scale one can set a fixed depth per level
             // Normalize for fixed-depth by commenting out below line
             // d.y = (d.depth * 500); //500px per level.
+        });
+
+        // Generate css classes based on the "kit_properties" key
+        nodes.forEach(function(d) {
+            var css_classes = '';
+
+            if (d.kit_properties) {
+                css_classes = Object.entries(d.kit_properties).reduce(function (str, [key, value]) {
+                    return `${ str } ${ key }-${ value }`;
+                }, css_classes);
+            }
+
+            d.css_classes = css_classes
         });
 
         // Update the nodes…
@@ -198,7 +227,9 @@ $(function() {
 
         // Enter any new nodes at the parent's previous position.
         var nodeEnter = node.enter().append("g")
-            .attr("class", "node")
+            .attr("class", function(d) {
+                return "node " + d.css_classes;
+            })
             .attr("transform", function(d) {
                 return "translate(" + source.y0 + "," + source.x0 + ")";
             })
@@ -206,10 +237,7 @@ $(function() {
 
         nodeEnter.append("circle")
             .attr('class', 'nodeCircle')
-            .attr("r", 0)
-            .style("fill", function(d) {
-                return d._children ? "lightsteelblue" : "#fff";
-            });
+            .attr("r", 0);
 
         nodeEnter.append("text")
             .attr("x", function(d) {
@@ -218,6 +246,7 @@ $(function() {
             .attr("dy", ".35em")
             .attr('class', 'nodeText')
             .attr("text-anchor", function(d) {
+                return 'start';
                 return d.children || d._children ? "end" : "start";
             })
             .text(function(d) {
@@ -225,20 +254,14 @@ $(function() {
             })
             .style("fill-opacity", 0);
 
-        // phantom node to give us mouseover in a radius around it
-        nodeEnter.append("circle")
-            .attr('class', 'ghostCircle')
-            .attr("r", 30)
-            .attr("opacity", 0.2) // change this to zero to hide the target area
-        .style("fill", "red")
-            .attr('pointer-events', 'mouseover')
-
         // Update the text to reflect whether node has children or not.
         node.select('text')
             .attr("x", function(d) {
+                return 10;
                 return d.children || d._children ? -10 : 10;
             })
             .attr("text-anchor", function(d) {
+                return "start";
                 return d.children || d._children ? "end" : "start";
             })
             .text(function(d) {
@@ -248,8 +271,14 @@ $(function() {
         // Change the circle fill depending on whether it has children and is collapsed
         node.select("circle.nodeCircle")
             .attr("r", 4.5)
-            .style("fill", function(d) {
-                return d._children ? "lightsteelblue" : "#fff";
+            .attr("class", function(d) {
+                var class_attr = this.getAttribute('class');
+                if (d._children) {
+                    class_attr = class_attr + ' collapsed';
+                } else {
+                    class_attr = class_attr.replace(' collapsed', '');
+                }
+                return class_attr;
             });
 
         // Transition nodes to their new position.
@@ -285,7 +314,9 @@ $(function() {
 
         // Enter any new links at the parent's previous position.
         link.enter().insert("path", "g")
-            .attr("class", "link")
+            .attr("class", function(d) {
+                return "link " + d.source.css_classes;
+            })
             .attr("d", function(d) {
                 var o = {
                     x: source.x0,
@@ -334,5 +365,5 @@ $(function() {
 
     // Layout the tree initially and center on the root node.
     update(root);
-    centerNode(root);
+    moveNode(root);
 });
