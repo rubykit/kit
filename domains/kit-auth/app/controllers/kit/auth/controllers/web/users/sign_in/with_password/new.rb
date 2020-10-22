@@ -13,19 +13,6 @@ module Kit::Auth::Controllers::Web::Users::SignIn::WithPassword
 
     Kit::Router::Services::Router.register({
       uid:     'kit_auth|web|authorization_tokens|new',
-      aliases: [
-        'web|authorization_tokens|new',
-        'web|users|sign_in',
-        'web|users|sign_in|new',
-        'web|users|after_sign_out',
-        'web|users|after_reset_password_request',
-      ],
-      target:  self.method(:endpoint),
-    })
-
-=begin
-    Kit::Router::Services::Router.register_endpoint({
-      uid:     'kit_auth|web|authorization_tokens|new',
       target:  self.method(:endpoint),
       aliases: {
         'web|authorization_tokens|new' => {
@@ -37,7 +24,7 @@ module Kit::Auth::Controllers::Web::Users::SignIn::WithPassword
           },
         },
       },
-=end
+    })
 
     def self.new_sign_in(router_request:)
       model = { email: nil, password: nil }
