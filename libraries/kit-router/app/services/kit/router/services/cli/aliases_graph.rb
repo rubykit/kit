@@ -2,6 +2,7 @@
 module Kit::Router::Services::Cli::AliasesGraph
 
   # Format the data for D3
+  # TODO: update mounting data to take mount-type into account.
   def self.list_to_d3_tree(list: [])
     tree = list.map do |el|
       {
@@ -10,6 +11,7 @@ module Kit::Router::Services::Cli::AliasesGraph
           type:               el[:type],
           mounted:            el[:mounted] > 0,
           mounted_indirectly: el[:mounted_indirectly] > 0,
+          mounting_warning:   (el[:mounted] > 0 && el[:mounted_indirectly] > 0),
           children:           el[:children].size > 0,
         },
         children:       list_to_d3_tree(list: el[:children])[1][:tree],

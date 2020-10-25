@@ -61,7 +61,7 @@ module Kit::Router::Services::Cli::Aliases
 
     # Recurse through children of a mounted node to update their "mounted_indirectly" counter (propagate down)
     list.each do |_id, data|
-      next if (data[:mounted] == 0)
+      next if data[:mounted] == 0
 
       apply_to_children.call(children: data[:children])
     end

@@ -36,6 +36,11 @@
   font-style: italic;
 }
 
+.node.mounting_warning-true circle {
+  stroke-width: 2px;
+  stroke: #fd151b;
+}
+
 .node text {
   font-family: Consolas;
   font-size:   10px;
