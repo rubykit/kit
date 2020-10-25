@@ -41,17 +41,19 @@ module Kit::Router::Services::Cli
 
   # Generate a visual graph of aliases
   # TODO: add routing namespace
-  def self.generate_alias_graph_assets(output_dir:)
+  def self.generate_alias_graph_assets(output_dir:, mount_type:)
     Kit::Organizer.call({
       list: [
         Kit::Router::Services::Cli::Aliases.method(:list),
         ->(list:) { [:ok, list: list.select { |_id, data| data[:target_id] == nil }.values] },
         Kit::Router::Services::Cli::AliasesGraph.method(:list_to_d3_tree),
+        Kit::Router::Services::Cli::AliasesGraph.method(:add_namespaces_to_tree),
         Kit::Router::Services::Cli::AliasesGraph.method(:generate_data_asset_file),
         Kit::Router::Services::Cli::AliasesGraph.method(:copy_static_assets),
       ],
       ctx:  {
         output_dir: output_dir,
+        mount_type: mount_type,
       },
     })
 

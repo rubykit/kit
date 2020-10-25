@@ -1,3 +1,9 @@
+body {
+  margin:  0px;
+  padding: 0px;
+}
+
+
 .node.children-true {
   cursor: pointer;
 }
@@ -44,6 +50,15 @@
 .node text {
   font-family: Consolas;
   font-size:   10px;
+}
+
+.node.namespace-true text {
+  font-weight: bold;
+  font-size:   12px;
+}
+
+.node.namespace-true circle {
+  fill:        grey;
 }
 
 .link {

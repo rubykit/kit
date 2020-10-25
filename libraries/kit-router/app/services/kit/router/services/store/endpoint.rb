@@ -16,12 +16,13 @@ module Kit::Router::Services::Store::Endpoint
     end
 
     endpoint_record = {
-      id:             uid,
-      target:         target,
-      types:          types.map { |k| [k, {}] }.to_h,
-      meta:           meta,
+      id:                 uid,
+      target:             target,
+      types:              types.map { |k| [k, {}] }.to_h,
+      meta:               meta,
 
-      cached_aliases: [],
+      cached_aliases:     [],
+      cached_mountpoints: {},
     }
 
     router_store[:endpoints][uid] = endpoint_record

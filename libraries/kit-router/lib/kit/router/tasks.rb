@@ -16,6 +16,7 @@ module Kit::Router::Tasks
 
       Kit::Router::Services::Cli.generate_alias_graph_assets(
         output_dir: output_dir,
+        mount_type: [:http, :rails],
       )
     end
   end
