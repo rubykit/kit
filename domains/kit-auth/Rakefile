@@ -15,4 +15,3 @@ import 'tasks/router.rake'
 require 'seedbank'
 Seedbank.seeds_root = File.expand_path('db/seeds', Kit::Auth::Engine.root)
 Seedbank.load_tasks
-

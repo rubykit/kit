@@ -26,15 +26,15 @@ module Kit::Router::Contracts
   # TODO: Links should be Stores ?
 
   EndpointRecord = Hash[
-    id:              EndpointUid.named('EndpointRecord: uid'),
-    target:          Optional[Callable].named('EndpointRecord: target'),
+    id:             EndpointUid.named('EndpointRecord: uid'),
+    target:         Optional[Callable].named('EndpointRecord: target'),
 
-    types:           Hash.of(MountType => Hash).named('EndpointRecord: types'), # NO CLUE WHY
+    types:          Hash.of(MountType => Hash).named('EndpointRecord: types'), # NO CLUE WHY
     #supported_types: Array.of(MountType),
     #mountpoints:     MountTypeHash,
-    meta:            Hash.named('EndpointRecord: meta'),
+    meta:           Hash.named('EndpointRecord: meta'),
 
-    cached_aliases:  Array.of(AliasId),
+    cached_aliases: Array.of(AliasId),
 
   ].named('EndpointRecord')
 
