@@ -8,8 +8,7 @@
 
 .node circle {
   fill:         #fff;
-  stroke:       steelblue;
-  stroke-width: 2px;
+  stroke-width: 0px;
 }
 
 .node circle.collapsed {
@@ -17,19 +16,24 @@
 }
 
 .node.type-alias circle {
-  stroke: #909497;
+  fill: #fff;
 }
 
 .node.type-endpoint circle {
-  stroke: #a93226;
+  fill: #f8e287;
 }
 
 .node.mounted-true circle {
-  fill: #daf7a6;
+  stroke-width: 2px;
+  stroke: #aacc00;
+}
+.node.mounted-true text {
+  font-weight: bold;
 }
 
-.node.chidren-true circle {
-
+.node.mounted_indirectly-false:not(.mounted-true) text {
+  fill:       #E6B0AA;
+  font-style: italic;
 }
 
 .node text {

@@ -14,7 +14,7 @@ module Kit::Router::Tasks
       # TODO: replace with Kit::Log
       puts "TASK: generating router graph in `#{ output_dir }`"
 
-      Kit::Router::Services::CliDisplay.generate_alias_graph_assets(
+      Kit::Router::Services::Cli.generate_alias_graph_assets(
         output_dir: output_dir,
       )
     end
