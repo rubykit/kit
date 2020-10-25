@@ -29,7 +29,7 @@ module Kit::Router::Services::Store::Mountpoint
       raise "Kit::Router | could not find a mountpoint for `#{ id }` with `#{ mountpoint_type }`"
     end
 
-    mountpoint
+    [:ok, mountpoint_data: mountpoint]
   end
 
   def self.router_store
