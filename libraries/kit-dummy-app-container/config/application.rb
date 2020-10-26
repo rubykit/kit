@@ -18,6 +18,9 @@ class Kit::DummyAppContainer::Application < ::Rails::Application # rubocop:disab
 
   Kit::AppContainer.config_application(context: self)
 
+  # TODO: replace with Kit::Log
+  puts "DEBUG: dummy container app used - GEM_APP: #{ KIT_APP_PATHS['GEM_APP'] }"
+
   if KIT_APP_PATHS['GEM_APP']
     config.paths.add KIT_APP_PATHS['GEM_APP'], {
       eager_load: true,

@@ -1,10 +1,10 @@
 module Kit::Auth::Actions::Users::SignInWeb
 
-  def self.call(user:, request:)
+  def self.call(user:, router_request:)
     Kit::Organizer.call({
       ctx: {
         user:    user,
-        request: request,
+        router_request: router_request,
       },
       list: [
         Kit::Auth::Actions::OauthApplications::LoadWeb,

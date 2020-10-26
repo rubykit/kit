@@ -1,0 +1,78 @@
+body {
+  margin:  0px;
+  padding: 0px;
+}
+
+
+.node.children-true {
+  cursor: pointer;
+}
+
+.overlay {
+  background-color: #eee;
+}
+
+.node circle {
+  fill:         #fff;
+  stroke-width: 0px;
+}
+
+.node circle.collapsed {
+  stroke-width: 3px;
+}
+
+.node.type-alias circle {
+  fill: #fff;
+}
+
+.node.type-endpoint circle {
+  fill: #f8e287;
+}
+
+.node.mounted-true circle {
+  stroke-width: 2px;
+  stroke: #aacc00;
+}
+.node.mounted-true text {
+  font-weight: bold;
+}
+
+.node.mounted_indirectly-false:not(.mounted-true) text {
+  fill:       #E6B0AA;
+  font-style: italic;
+}
+
+.node.mounting_warning-true circle {
+  stroke-width: 2px;
+  stroke: #fd151b;
+}
+
+.node text {
+  font-family: Consolas;
+  font-size:   10px;
+}
+
+.node.namespace-true text {
+  font-weight: bold;
+  font-size:   12px;
+}
+
+.node.namespace-true circle {
+  fill:        grey;
+}
+
+.link {
+  fill:         none;
+  stroke:       #ddd;
+  stroke-width: 1px;
+}
+
+.templink {
+  fill: none;
+  stroke: red;
+  stroke-width: 3px;
+}
+
+.hidden-true {
+  display: none;
+}

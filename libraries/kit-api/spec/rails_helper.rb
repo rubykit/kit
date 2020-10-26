@@ -20,6 +20,8 @@ require 'spec_helper'
 
 Dir[Rails.root.join('../support/**/*.rb')].sort.each { |f| require f }
 
+require_relative 'dummy/config/initializers/api_config'
+
 RSpec.configure do |config|
   config.use_transactional_fixtures = false
 

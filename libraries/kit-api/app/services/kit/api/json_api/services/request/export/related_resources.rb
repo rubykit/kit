@@ -10,7 +10,7 @@ module Kit::Api::JsonApi::Services::Request::Export::RelatedResources
   # ## Examples
   #
   # ```irb
-  # irb> request[:related_resources]
+  # irb> api_request[:related_resources]
   # {
   #   'books'              => BookResource,
   #   'books.author'       => AuthorResource,
@@ -18,7 +18,7 @@ module Kit::Api::JsonApi::Services::Request::Export::RelatedResources
   #   'series'             => SerieResource,
   #   'series.books'       => BookResource,
   # }
-  # irb> included_paths(request: request, path: 'books')
+  # irb> included_paths(api_request: api_request, path: 'books')
   # [ok, { included_paths: {
   #   path: 'books',
   #   list: {
@@ -28,8 +28,8 @@ module Kit::Api::JsonApi::Services::Request::Export::RelatedResources
   #   },
   # }]
   # ```
-  def self.included_paths(request:, path:)
-    list = (request[:related_resources] || {})
+  def self.included_paths(api_request:, path:)
+    list = (api_request[:related_resources] || {})
       .select { |k, _v| k.to_s.start_with?(path) }
 
     [:ok, included_paths: {
@@ -43,7 +43,7 @@ module Kit::Api::JsonApi::Services::Request::Export::RelatedResources
   # ## Examples
   #
   # ```irb
-  # irb> request[:related_resources]
+  # irb> api_request[:related_resources]
   # {
   #   'books'              => BookResource,
   #   'books.author'       => AuthorResource,
@@ -60,14 +60,18 @@ module Kit::Api::JsonApi::Services::Request::Export::RelatedResources
   #     'books.author.books' => BookResource,
   #   },
   # }
-  # irb> handle_related_resources(request: request, included_paths: included_paths)
+  # irb> handle_related_resources(api_request: api_request, included_paths: included_paths)
   # [ok, { query_params: {
   #   include: 'author.books',
   # }]
   # ```
-  def self.handle_related_resources(request:, query_params:, included_paths:)
+  def self.handle_related_resources(api_request:, query_params:, included_paths:)
     list = included_paths[:list]
     path = included_paths[:path]
+
+    if list == { nil => nil }
+      return [:ok, query_params: { include: '' }]
+    end
 
     # Remove all paths that are included in another, starting by the longest ones.
     keys = list.keys.sort_by(&:length).reverse

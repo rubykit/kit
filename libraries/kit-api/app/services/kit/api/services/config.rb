@@ -21,7 +21,7 @@ module Kit::Api::Services::Config
 
   # Returns an api config object.
   # This is per API.
-  def self.default_config(options = {})
+  def self.create_config(options = {})
     # Max page size
     page_size_max = options[:page_size_max]
     if !page_size_max.is_a?(Integer)

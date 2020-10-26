@@ -1,5 +1,5 @@
 # Exemple type for dummy app.
-class Kit::JsonApiSpec::Resources::BookStore < Kit::Api::Resources::ActiveRecordResource
+class Kit::JsonApiSpec::Resources::BookStore < Kit::JsonApiSpec::Resources::Resource
 
   def self.name
     :book_store

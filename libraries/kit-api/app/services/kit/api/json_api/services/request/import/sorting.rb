@@ -32,14 +32,14 @@ module Kit::Api::JsonApi::Services::Request::Import::Sorting
   Ct = Kit::Api::JsonApi::Contracts
 
   # Entry point. Parse & validate sorting data before adding it to the `Request`.
-  def self.handle_sorting(query_params:, request:)
-    args = { query_params: query_params, request: request }
+  def self.handle_sorting(query_params:, api_request:)
+    args = { query_params: query_params, api_request: api_request }
 
     Kit::Organizer.call({
       list: [
         self.method(:parse),
         self.method(:validate),
-        self.method(:add_to_request),
+        self.method(:add_to_api_request),
       ],
       ctx:  args,
     })
@@ -101,17 +101,17 @@ module Kit::Api::JsonApi::Services::Request::Import::Sorting
   # - sort criterias exist
   #
   # **⚠️ Warning**: in order to validate inclusion, the related resources need to have been run first.
-  def self.validate(parsed_query_params_sort:, request:)
+  def self.validate(parsed_query_params_sort:, api_request:)
     errors = []
 
     parsed_query_params_sort.each do |path, list|
       if path == :top_level
-        resource = request[:top_level_resource]
+        resource = api_request[:top_level_resource]
       else
-        resource = request[:related_resources][path]
+        resource = api_request[:related_resources][path]
       end
 
-      if !resource
+      if !resource && !api_request[:related_resources].key?(nil)
         errors << { detail: "Sort: `#{ path }` is not an included relationship" }
         next
       end
@@ -139,10 +139,10 @@ module Kit::Api::JsonApi::Services::Request::Import::Sorting
   end
 
   # When sorting data is valid, add it to the `Request`.
-  def self.add_to_request(parsed_query_params_sort:, request:)
-    request[:sorting] = parsed_query_params_sort
+  def self.add_to_api_request(parsed_query_params_sort:, api_request:)
+    api_request[:sorting] = parsed_query_params_sort
 
-    [:ok, request: request]
+    [:ok, api_request: api_request]
   end
 
 end

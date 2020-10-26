@@ -21,5 +21,9 @@ module Kit::Router::Models
       @metadata = OpenStruct.new(metadata || {})
     end
 
+    def [](name)
+      send(name.to_sym)
+    end
+
   end
 end

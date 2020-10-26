@@ -1,7 +1,7 @@
 # Namespace for Request query_params generation.
 module Kit::Api::JsonApi::Services::Request::Export
 
-  def self.export(request:, path:)
+  def self.export(api_request:, path:)
     status, ctx = Kit::Organizer.call({
       list: [
         Kit::Api::JsonApi::Services::Request::Export::RelatedResources.method(:included_paths),
@@ -12,7 +12,7 @@ module Kit::Api::JsonApi::Services::Request::Export
         Kit::Api::JsonApi::Services::Request::Export::Pagination.method(:handle_page_size),
       ],
       ctx:  {
-        request:      request,
+        api_request:  api_request,
         path:         path,
         query_params: {},
       },

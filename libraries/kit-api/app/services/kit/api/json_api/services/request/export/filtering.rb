@@ -5,12 +5,12 @@ module Kit::Api::JsonApi::Services::Request::Export::Filtering
   # @doc false
   Ct = Kit::Api::JsonApi::Contracts
 
-  def self.handle_filtering(request:, included_paths:, query_params:)
-    return [:ok] if !request[:config][:linker_config][:export_filters]
+  def self.handle_filtering(api_request:, included_paths:, query_params:)
+    return [:ok] if !api_request[:config][:linker_config][:export_filters]
 
     qp = {}
 
-    (request[:filters] || {}).each do |filters_path, filters|
+    (api_request[:filters] || {}).each do |filters_path, filters|
       adjusted_path = Kit::Api::JsonApi::Services::Request::Export
         .adjusted_path(included_paths: included_paths, current_path: filters_path)[1][:adjusted_path]
       next if !adjusted_path

@@ -1,9 +1,9 @@
 module Kit::Auth::Controllers::Web::Users::ResetPasswordRequest
   module Create
 
-    def self.endpoint(request:)
+    def self.endpoint(router_request:)
       Kit::Organizer.call({
-        ctx:  { request: request, },
+        ctx:  { router_request: router_request, },
         list: [
           :web_redirect_if_current_user!,
           self.method(:create_reset_password_request),
@@ -17,13 +17,13 @@ module Kit::Auth::Controllers::Web::Users::ResetPasswordRequest
       target:  self.method(:endpoint),
     })
 
-    def self.create_reset_password_request(request:)
-      model = request.params.slice(:email)
+    def self.create_reset_password_request(router_request:)
+      model = router_request.params.slice(:email)
 
       status, ctx = Kit::Organizer.call({
         ctx: {
           email:   model[:email],
-          request: request,
+          router_request: router_request,
           user:    nil,
         },
         list: [
@@ -44,7 +44,7 @@ module Kit::Auth::Controllers::Web::Users::ResetPasswordRequest
           component: Kit::Auth::Components::Pages::Users::ResetPasswordRequest::New,
           params: {
             model:       model,
-            csrf_token:  request.http[:csrf_token],
+            csrf_token:  router_request.http[:csrf_token],
             errors_list: ctx[:errors],
           }
         )
@@ -68,7 +68,7 @@ module Kit::Auth::Controllers::Web::Users::ResetPasswordRequest
         type: Kit::Auth::Events::ResetPasswordRequested,
         data: {
           email:               email,
-         request_metadata_id: request_metadata&.id,
+          request_metadata_id: request_metadata&.id,
         },
       })
     end

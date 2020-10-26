@@ -19,14 +19,14 @@ module Kit::Api::JsonApi::Services::Request::Import::RelatedResources
   Ct = Kit::Api::JsonApi::Contracts
 
   # Entry point. Parse & validate include data before adding it to the `Request`.
-  def self.handle_related_resources(query_params:, request:)
-    args = { query_params: query_params, request: request }
+  def self.handle_related_resources(query_params:, api_request:)
+    args = { query_params: query_params, api_request: api_request }
 
     Kit::Organizer.call({
       list: [
         self.method(:parse),
         self.method(:validate_and_parse),
-        self.method(:add_to_request),
+        self.method(:add_to_api_request),
       ],
       ctx:  args,
     })
@@ -63,7 +63,7 @@ module Kit::Api::JsonApi::Services::Request::Import::RelatedResources
   #
   # ```irb
   # irb> parsed_query_params_include = ['books.author.books', 'series.books']
-  # irb> _, ctx = validate_and_add_to_request(parsed_query_params_include: parsed_query_params_include)
+  # irb> _, ctx = validate_and_parse(parsed_query_params_include: parsed_query_params_include)
   # irb> ctx[:parsed_query_params_include]
   # {
   #   'books'              => BookResource,
@@ -73,10 +73,10 @@ module Kit::Api::JsonApi::Services::Request::Import::RelatedResources
   #   'series.books'       => BookResource,
   # }
   # ```
-  def self.validate_and_parse(parsed_query_params_include:, request:)
-    config = request[:config]
+  def self.validate_and_parse(parsed_query_params_include:, api_request:)
+    config = api_request[:config]
     errors = []
-    top_level_resource = request[:top_level_resource]
+    top_level_resource = api_request[:top_level_resource]
     related_resources  = {}
 
     parsed_query_params_include.each do |path|
@@ -109,10 +109,15 @@ module Kit::Api::JsonApi::Services::Request::Import::RelatedResources
   end
 
   # When inclusion data is valid, add it to the `Request`.
-  def self.add_to_request(parsed_query_params_include:, request:)
-    request[:related_resources] = parsed_query_params_include
+  def self.add_to_api_request(parsed_query_params_include:, query_params:, api_request:)
+    # Quick hack for empty include (embed nothing)
+    if parsed_query_params_include.size == 0 && query_params.key?(:include)
+      parsed_query_params_include = { nil => nil }
+    end
 
-    [:ok, request: request]
+    api_request[:related_resources] = parsed_query_params_include
+
+    [:ok, api_request: api_request]
   end
 
 end

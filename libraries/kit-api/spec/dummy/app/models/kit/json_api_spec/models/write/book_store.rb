@@ -1,4 +1,4 @@
-class Kit::JsonApiSpec::Models::Write::BookStore < Kit::JsonApiSpec::Models::WriteRecord
+class Kit::JsonApiSpec::Models::Write::BookStore < Kit::JsonApiSpec::Models::WriteRecord # rubocop:disable Style/Documentation
 
   self.table_name = 'kit_json_api_spec_books_stores'
 

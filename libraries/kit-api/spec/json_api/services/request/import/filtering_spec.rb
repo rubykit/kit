@@ -8,7 +8,7 @@ describe Kit::Api::JsonApi::Services::Request::Import::Filtering do
   let(:config)   { config_dummy_app }
 
   let(:query_params) { Kit::Api::JsonApi::Services::Url.parse_query_params(url: url)[1][:query_params] }
-  let(:request) do
+  let(:api_request) do
     {
       config:             config,
       top_level_resource: Kit::JsonApiSpec::Resources::Author.to_h,
@@ -20,7 +20,7 @@ describe Kit::Api::JsonApi::Services::Request::Import::Filtering do
     subject do
       params = {
         query_params: query_params,
-        request:      request,
+        api_request:  api_request,
       }
       Kit::Api::JsonApi::Services::Request::Import::RelatedResources.handle_related_resources(params)
       service.handle_filtering(params)
@@ -38,8 +38,8 @@ describe Kit::Api::JsonApi::Services::Request::Import::Filtering do
         status, ctx = subject
 
         expect(status).to eq :ok
-        expect(ctx[:request][:related_resources].keys).to eq ['books']
-        expect(ctx[:request][:filters]).to eq({
+        expect(ctx[:api_request][:related_resources].keys).to eq ['books']
+        expect(ctx[:api_request][:filters]).to eq({
           :top_level => [
             { name: :name,           op: :in, value: %w[Tolkien Rowling] },
             { name: :date_of_birth,  op: :gt, value: ['1950'] },

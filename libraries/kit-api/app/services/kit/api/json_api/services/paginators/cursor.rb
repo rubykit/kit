@@ -70,8 +70,8 @@ module Kit::Api::JsonApi::Services::Paginators::Cursor
 
   # Add condition on QueryNode.
   def self.pagination_condition(query_node:)
-    request         = query_node[:request]
-    pagination_data = request.dig(:pagination, query_node[:path])
+    api_request     = query_node[:api_request]
+    pagination_data = api_request.dig(:pagination, query_node[:path])
 
     return nil if !pagination_data
 
@@ -102,7 +102,7 @@ module Kit::Api::JsonApi::Services::Paginators::Cursor
   def self.pagination_export(query_node:, records:)
     return { current: {}, prev: {}, next: {} } if records.size == 0
 
-    config         = query_node[:request][:config]
+    config         = query_node[:api_request][:config]
     ordering       = query_node[:sorting]
     enc_key        = config[:meta][:kit_api_paginator_cursor][:encrypt_secret]
 

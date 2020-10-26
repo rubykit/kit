@@ -7,7 +7,7 @@ describe Kit::Api::JsonApi::Services::Serialization::Query do
 
   let(:config)   { config_dummy_app }
 
-  let(:request) do
+  let(:api_request) do
     {
       config:             config,
       top_level_resource: top_level_resource,
@@ -16,10 +16,10 @@ describe Kit::Api::JsonApi::Services::Serialization::Query do
   end
 
   let(:subject) do
-    entry_query_node = Kit::Api::Services::QueryBuilder.build_query(request: request)[1][:entry_query_node]
-    Kit::Api::Services::QueryResolver.resolve_query_node(query_node: entry_query_node)
+    query_node = Kit::Api::Services::QueryBuilder.build_query(api_request: api_request)[1][:query_node]
+    Kit::Api::Services::QueryResolver.resolve_query_node(query_node: query_node)
 
-    service.serialize_query(query_node: entry_query_node)
+    service.serialize_query(query_node: query_node)
   end
 
   shared_examples 'a resource is correctly serialized as a collection' do

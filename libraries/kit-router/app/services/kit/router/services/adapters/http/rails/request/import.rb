@@ -6,14 +6,14 @@ module Kit::Router::Services::Adapters::Http::Rails::Request
     # NOTE: very much a WIP!
 
     def self.import_request(rails_request:, rails_cookies:, rails_controller:)
-      if (request = rails_request.instance_variable_get(:@kit_request))
-        return [:ok, request: request]
+      if (router_request = rails_request.instance_variable_get(:@kit_router_request))
+        return [:ok, router_request: router_request]
       end
 
       _, cookies_ctx = import_rails_cookies(rails_cookies: rails_cookies)
       csrf_token     = rails_controller.session[:_csrf_token] ||= SecureRandom.base64(32)
 
-      request = Kit::Router::Models::Request.new({
+      router_request = Kit::Router::Models::Request.new({
         params: rails_request.params.to_h.symbolize_keys,
         root:   rails_request,
         ip:     rails_request.ip,
@@ -26,9 +26,9 @@ module Kit::Router::Services::Adapters::Http::Rails::Request
       })
 
       # For Rails helpers
-      rails_request.instance_variable_set(:@kit_request, request)
+      rails_request.instance_variable_set(:@kit_router_request, router_request)
 
-      [:ok, request: request]
+      [:ok, router_request: router_request]
     end
 
     # REF: https://api.rubyonrails.org/v5.2.1/classes/ActionDispatch/Cookies.html

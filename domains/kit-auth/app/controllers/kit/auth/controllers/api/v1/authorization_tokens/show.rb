@@ -4,14 +4,14 @@ module Kit::Auth::Controllers::Api::V1::AuthorizationTokens
     ROUTE_ID  = 'api_v1|authorization_tokens|show'
     ROUTE_UID = "kit_auth|#{ROUTE_ID}"
 
-    def self.endpoint(request:)
+    def self.endpoint(router_request:)
       Kit::Organizer.call({
         list: [
           Kit::Domain::Controllers::JsonApi.method(:ensure_media_type),
           :api_requires_current_user!,
-          ->(request:) do
+          ->(router_request:) do
             Kit::Auth::Controllers::Api.load_resource!(
-              request: request,
+              router_request: router_request,
               model:   Kit::Auth::Models::Read::OauthAccessToken,
             )
           end,
@@ -23,16 +23,15 @@ module Kit::Auth::Controllers::Api::V1::AuthorizationTokens
           end,
           self.method(:render),
         ],
-        ctx: { request: request, },
+        ctx: { router_request: router_request, },
       })
     end
 
     Kit::Router::Services::Router.register(
       uid:     ROUTE_UID,
-      aliases: [
-        ROUTE_ID,
-        'api|authorization_tokens|show'
-      ],
+      aliases: {
+        ROUTE_ID => 'api|authorization_tokens|show'
+      },
       target:  self.method(:endpoint),
     )
 

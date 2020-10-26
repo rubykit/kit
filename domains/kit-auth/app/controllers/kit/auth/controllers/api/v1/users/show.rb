@@ -3,16 +3,16 @@ module Kit::Auth::Controllers::Api::V1::Users
 
     ROUTE_UID = 'kit_auth|api_v1|users|show'
 
-    def self.endpoint(request:)
+    def self.endpoint(router_request:)
       Kit::Organizer.call({
         list: [
           Kit::Domain::Controllers::JsonApi.method(:ensure_media_type),
           :api_requires_current_user!,
           #[:api_load_resources!, { model: Kit::Auth::Models::Read::User, param: :id, }],
 
-          ->(request:) do
+          ->(router_request:) do
             Kit::Auth::Controllers::Api.load_resource!(
-              request: request,
+              router_request: router_request,
               model:   Kit::Auth::Models::Read::User,
             )
           end,
@@ -24,16 +24,15 @@ module Kit::Auth::Controllers::Api::V1::Users
           end,
           self.method(:render),
         ],
-        ctx: { request: request, },
+        ctx: { router_request: router_request, },
       })
     end
 
     Kit::Router::Services::Router.register(
       uid:     ROUTE_UID,
-      aliases: [
-        'api_v1|users|show',
-        'api|users|show',
-      ],
+      aliases: {
+        'api_v1|users|show' => 'api|users|show',
+      },
       target:  self.method(:endpoint),
     )
 

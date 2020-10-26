@@ -8,7 +8,7 @@ describe Kit::Api::JsonApi::Services::Request::Import::Pagination do
   let(:config)   { config_dummy_app }
 
   let(:query_params) { Kit::Api::JsonApi::Services::Url.parse_query_params(url: url)[1][:query_params] }
-  let(:request) do
+  let(:api_request) do
     {
       config:             config,
       top_level_resource: config[:resources][:author],
@@ -18,7 +18,7 @@ describe Kit::Api::JsonApi::Services::Request::Import::Pagination do
   subject do
     params = {
       query_params: query_params,
-      request:      request,
+      api_request:  api_request,
     }
     Kit::Api::JsonApi::Services::Request::Import::RelatedResources.handle_related_resources(params)
     service.handle_pagination(params)
@@ -56,7 +56,7 @@ describe Kit::Api::JsonApi::Services::Request::Import::Pagination do
       let(:fake_paginator_1) do
         {
           type:   :fake_paginator_1,
-          import: ->(request:, parsed_query_params_page:) do
+          import: ->(api_request:, parsed_query_params_page:) do
             parsed_query_params_page.each do |_path, hash|
               hash[:fp1] = hash[:fp1][0].to_i + 1
               if hash[:fp2] # Meant to catch failure
@@ -72,7 +72,7 @@ describe Kit::Api::JsonApi::Services::Request::Import::Pagination do
       let(:fake_paginator_2) do
         {
           type:   :fake_paginator_2,
-          import: ->(request:, parsed_query_params_page:) do
+          import: ->(api_request:, parsed_query_params_page:) do
             parsed_query_params_page.each do |_path, hash|
               hash[:fp2] = hash[:fp2][0].to_i + 2
               if hash[:fp1] # Meant to catch failure
@@ -99,7 +99,7 @@ describe Kit::Api::JsonApi::Services::Request::Import::Pagination do
         status, ctx = subject
 
         expect(status).to eq :ok
-        expect(ctx[:request][:pagination]).to eq({
+        expect(ctx[:api_request][:pagination]).to eq({
           :top_level       => { fp1: 11 },
           'books'          => { fp2: 22 },
           'books.chapters' => { fp1: 11 },

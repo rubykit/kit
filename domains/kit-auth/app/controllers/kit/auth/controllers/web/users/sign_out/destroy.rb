@@ -1,13 +1,13 @@
 module Kit::Auth::Controllers::Web::Users::SignOut
   module Destroy
 
-    def self.endpoint(request:)
+    def self.endpoint(router_request:)
       Kit::Organizer.call({
         list: [
           :web_require_current_user!,
           self.method(:sign_out),
         ],
-        ctx: { request: request, },
+        ctx: { router_request: router_request, },
       })
     end
 
@@ -20,12 +20,12 @@ module Kit::Auth::Controllers::Web::Users::SignOut
       target:  self.method(:endpoint),
     })
 
-    def self.sign_out(request:)
-      access_token = request.metadata[:current_user_oauth_access_token]
+    def self.sign_out(router_request:)
+      access_token = router_request.metadata[:current_user_oauth_access_token]
       if access_token
         Kit::Auth::Services::OauthAccessToken.revoke({ oauth_access_token: access_token })
 
-        request.http.cookies[:access_token] = { value: nil, encrypted: true }
+        router_request.http.cookies[:access_token] = { value: nil, encrypted: true }
       end
 
       Kit::Router::Controllers::Http.redirect_to(

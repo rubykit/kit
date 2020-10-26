@@ -11,7 +11,7 @@ class ::ApiController < ::ActionController::API # :nodoc:
     _, ctx = Kit::Organizer.call({
       list: [
         Kit::Router::Services::Adapters::Http::Rails::Request::Import.method(:import_request),
-        :api_resolve_current_user,
+        [:alias, :api_resolve_current_user],
         request.params[:kit_router_target],
       ],
       ctx: controller_ctx,

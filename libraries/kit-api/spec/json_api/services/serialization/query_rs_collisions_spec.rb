@@ -13,7 +13,7 @@ describe Kit::Api::JsonApi::Services::Serialization::Query do
 
   let(:top_level_resource) { config[:resources][:author] }
 
-  let(:request) do
+  let(:api_request) do
     {
       config:             config,
       top_level_resource: top_level_resource,
@@ -37,7 +37,7 @@ describe Kit::Api::JsonApi::Services::Serialization::Query do
 
     it 'serializes a Query with nested collections with different modifiers' do
       # Author > Books > Author > Books
-      query_node = Kit::Api::Services::QueryBuilder.build_query(request: request)[1][:entry_query_node]
+      query_node = Kit::Api::Services::QueryBuilder.build_query(api_request: api_request)[1][:query_node]
 
       Kit::Api::Services::QueryResolver.resolve_query_node(query_node: query_node)
 

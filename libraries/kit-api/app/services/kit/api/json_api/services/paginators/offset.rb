@@ -27,7 +27,7 @@ module Kit::Api::JsonApi::Services::Paginators::Offset
   end
 
   # Add condition on QueryNode.
-  def self.pagination_condition(request:, query_node:)
+  def self.pagination_condition(api_request:, query_node:)
     [:ok]
   end
 

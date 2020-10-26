@@ -6,10 +6,10 @@ module Kit::Api::JsonApi::Services::Request::Export::Pagination
   Ct = Kit::Api::JsonApi::Contracts
 
   # Add `page[size]` to query params
-  def self.handle_page_size(request:, included_paths:, query_params:)
+  def self.handle_page_size(api_request:, included_paths:, query_params:)
     qp = {}
 
-    (request[:pagination] || {}).each do |page_path, data|
+    (api_request[:pagination] || {}).each do |page_path, data|
       next if !data[:size]
 
       adjusted_path = Kit::Api::JsonApi::Services::Request::Export

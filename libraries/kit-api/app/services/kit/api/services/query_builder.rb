@@ -11,29 +11,27 @@ module Kit::Api::Services::QueryBuilder
   # @doc false
   Ct = Kit::Api::Contracts
 
-  before Ct::Hash[request: Ct::Request]
-  after  Ct::Result[entry_query_node: Ct::QueryNode]
+  before Ct::Hash[api_request: Ct::Request]
+  after  Ct::Result[query_node: Ct::QueryNode]
   # Given a `Request`, creates the complete AST of the query.
-  def self.build_query(request:, condition: nil)
-    request[:related_resources] ||= {}
+  def self.build_query(api_request:, condition: nil)
+    api_request[:related_resources] ||= {}
 
     _, ctx = build_query_node(
-      request:   request,
-
-      resource:  request[:top_level_resource],
-
-      singular:  request[:singular],
-      condition: request[:condition],
-      path:      '',
+      api_request: api_request,
+      resource:    api_request[:top_level_resource],
+      singular:    api_request[:singular],
+      condition:   api_request[:condition],
+      path:        '',
     )
 
-    [:ok, entry_query_node: ctx[:query_node]]
+    [:ok, query_node: ctx[:query_node]]
   end
 
   before Ct::Hash[resource: Ct::Resource]
   after  Ct::Result[query_node: Ct::QueryNode]
   # Creates a `QueryNode` for a given layer.
-  def self.build_query_node(request:, resource:, singular:, path:, condition: nil, resolvers: nil)
+  def self.build_query_node(api_request:, resource:, singular:, path:, condition: nil, resolvers: nil)
     # Filters
     if (filters_condition = resource.dig(:filters, path))
       condition = add_condition(initial_condition: condition, new_condition: filters_condition)
@@ -51,7 +49,7 @@ module Kit::Api::Services::QueryBuilder
     end
 
     # Limit
-    _, ctx  = get_limit(request: request, path: path, singular: singular)
+    _, ctx  = get_limit(api_request: api_request, path: path, singular: singular)
     limit   = ctx[:limit]
 
     # Pagination
@@ -73,14 +71,14 @@ module Kit::Api::Services::QueryBuilder
 
       #data_resolver: data_resolver || resource[:data_resolver],
       data:          nil,
-      request:       request,
+      api_request:   api_request,
     }
 
     # Add relationships
     build_nested_relationships(
-      request:    request,
-      query_node: query_node,
-      path:       path,
+      api_request: api_request,
+      query_node:  query_node,
+      path:        path,
     )
 
     [:ok, query_node: query_node]
@@ -89,24 +87,24 @@ module Kit::Api::Services::QueryBuilder
   # Resolves the relationships of each `QueryNode`.
   #
   # This calls back `build_query_node`, creating the AST recursively.
-  def self.build_nested_relationships(request:, query_node:, path:)
+  def self.build_nested_relationships(api_request:, query_node:, path:)
     resource = query_node[:resource]
 
     resource[:relationships].each do |relationship_name, relationship|
-      nested_resource = request[:config][:resources][relationship[:resource]]
+      nested_resource = api_request[:config][:resources][relationship[:resource]]
       nested_path     = "#{ path }#{ path.empty? ? '' : '.' }#{ relationship_name }"
       inclusion_level = (nested_path == '' ? 1 : 2) + nested_path.count('.')
 
       # Other related_resources were specified, but not this one
-      next if !request[:related_resources][nested_path] && request[:related_resources].size > 0
+      next if !api_request[:related_resources][nested_path] && api_request[:related_resources].size > 0
       # If there is a relationship specific inclusion_level, use it, otherwise default to config.
-      next if (relationship[:inclusion_level] || request[:config][:inclusion_level]) < inclusion_level
+      next if (relationship[:inclusion_level] || api_request[:config][:inclusion_level]) < inclusion_level
 
       resolvers = relationship[:resolvers]
       # Add resolver store
       if resolvers.is_a?(Array)
         _, ctx = Kit::Api::Services::Resolvers::ActiveRecord.generate_resolvers({
-          config:       request[:config],
+          config:       api_request[:config],
           relationship: relationship,
           options:      resolvers[1],
         })
@@ -114,12 +112,12 @@ module Kit::Api::Services::QueryBuilder
       end
 
       _, ctx = build_query_node(
-        resource:  nested_resource,
-        condition: resolvers[:inherited_filter],
-        resolvers: resolvers,
-        singular:  relationship[:relationship_type] == :to_one,
-        path:      nested_path,
-        request:   request,
+        resource:    nested_resource,
+        condition:   resolvers[:inherited_filter],
+        resolvers:   resolvers,
+        singular:    relationship[:relationship_type] == :to_one,
+        path:        nested_path,
+        api_request: api_request,
       )
 
       child_query_node = ctx[:query_node]
@@ -138,22 +136,23 @@ module Kit::Api::Services::QueryBuilder
   end
 
   # Get the limit value (size of the subset)
-  def self.get_limit(request:, path:, singular:)
+  def self.get_limit(api_request:, path:, singular:)
     limit = nil
+    path  = :top_level if path == ''
 
     if singular == true
       limit = 1
     elsif limit == nil
       # Note: this is kind of cheating, not sure where it belongs.
-      limit = request.dig(:pagination, path, :size)
+      limit = api_request.dig(:pagination, path, :size)
     end
 
     if !limit.is_a?(Integer) || limit < 1
-      limit = request[:config][:page_size]
+      limit = api_request[:config][:page_size]
     end
 
-    if limit > request[:config][:page_size_max]
-      limit = request[:config][:page_size_max]
+    if limit > api_request[:config][:page_size_max]
+      limit = api_request[:config][:page_size_max]
     end
 
     [:ok, limit: limit]

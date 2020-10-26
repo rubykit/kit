@@ -2,25 +2,24 @@ module Kit::Auth::Controllers::Api::V1::AuthorizationTokens
   module Index
 
     ROUTE_ID  = 'api_v1|authorization_tokens|index'
-    ROUTE_UID = "kit_auth|#{ROUTE_ID}"
+    ROUTE_UID = "kit_auth|#{ ROUTE_ID }"
 
-    def self.endpoint(request:)
+    def self.endpoint(router_request:)
       Kit::Organizer.call({
         list: [
           Kit::Domain::Controllers::JsonApi.method(:ensure_media_type),
           :api_requires_current_user!,
           self.method(:load_and_render),
         ],
-        ctx: { request: request, },
+        ctx: { router_request: router_request, },
       })
     end
 
     Kit::Router::Services::Router.register(
       uid:     ROUTE_UID,
-      aliases: [
-        ROUTE_ID,
-        'api|authorization_tokens|index',
-      ],
+      aliases: {
+        ROUTE_ID => 'api|authorization_tokens|index',
+      },
       target:  self.method(:endpoint),
     )
 

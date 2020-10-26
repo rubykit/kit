@@ -9,6 +9,10 @@ gem 'kit-organizer',  path: '../../libraries/kit-organizer' # GEMSPEC
 gem 'kit-pagination', path: '../../libraries/kit-pagination' # GEMSPEC
 
 group :test, :development do
+  gem 'listen'
+
+  gem 'json_schemer'
+
   gem 'pry'
   gem 'pry-stack_explorer'
 
@@ -31,6 +35,7 @@ group :development do
 end
 
 group :test do
+  gem 'rspec-rails'
   gem 'ruby-prof'
   gem 'stackprof'
   gem 'test-prof'

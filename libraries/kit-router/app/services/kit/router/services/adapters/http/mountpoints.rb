@@ -6,9 +6,8 @@ module Kit::Router::Services::Adapters::Http
   module Mountpoints
 
     def self.path(id:, params: {})
-      alias_record = Kit::Router::Services::Store.get_alias(id: id)
-      mountpoint   = Kit::Router::Services::Store.get_record_mountpoint(alias_record: alias_record, mountpoint_type: [:http, :rails])
-      _verb, path  = mountpoint
+      _, res = Kit::Router::Services::Store::Mountpoint.find_mountpoint(id: id, mountpoint_type: [:http, :rails])
+      path   = res.dig(:mountpoint_data, :data, 1)
 
       if path.blank?
         raise "Kit::Router | not mounted `#{ id }`"
@@ -62,9 +61,8 @@ module Kit::Router::Services::Adapters::Http
     end
 
     def self.verb(id:)
-      alias_record = Kit::Router::Services::Store.get_alias(id: id)
-      mountpoint   = Kit::Router::Services::Store.get_record_mountpoint(alias_record: alias_record, mountpoint_type: [:http, :rails])
-      verb, _path  = mountpoint
+      _, res = Kit::Router::Services::Store::Mountpoint.find_mountpoint(id: id, mountpoint_type: [:http, :rails])
+      verb   = res.dig(:mountpoint_data, :data, 0)
 
       if verb.blank?
         raise "Kit::Router | not mounted `#{ id }`"

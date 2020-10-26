@@ -1,5 +1,5 @@
 # Exemple type for dummy app.
-class Kit::JsonApiSpec::Resources::Serie < Kit::Api::Resources::ActiveRecordResource
+class Kit::JsonApiSpec::Resources::Serie < Kit::JsonApiSpec::Resources::Resource
 
   def self.name
     :serie

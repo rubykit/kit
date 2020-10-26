@@ -1,9 +1,9 @@
 module Kit::Auth::Controllers::Web::Users::Settings::Devices
   module Index
 
-    def self.endpoint(request:)
+    def self.endpoint(router_request:)
       Kit::Organizer.call({
-        ctx:  { request: request, },
+        ctx:  { router_request: router_request, },
         list: [
           :web_require_current_user!,
           self.method(:list),
@@ -17,11 +17,11 @@ module Kit::Auth::Controllers::Web::Users::Settings::Devices
       target:  self.method(:endpoint),
     })
 
-    def self.list(request:)
+    def self.list(router_request:)
       list = Kit::Auth::Models::Read::OauthAccessToken
         .where('revoked_at IS NULL')
         .where("(created_at + expires_in * INTERVAL '1 second') > ?", DateTime.now)
-        .where(resource_owner_id: request.metadata[:current_user].id)
+        .where(resource_owner_id: router_request.metadata[:current_user].id)
         .preload(:last_request_metadata)
         .load
 
