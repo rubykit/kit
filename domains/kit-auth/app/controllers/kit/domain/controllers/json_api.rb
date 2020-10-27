@@ -9,7 +9,7 @@ module Kit::Domain::Controllers
           self.method(:ensure_content_type),
           self.method(:ensure_http_accept),
         ],
-        ctx: { router_request: router_request, },
+        ctx:  { router_request: router_request },
       })
     end
 
@@ -28,7 +28,7 @@ module Kit::Domain::Controllers
             },
           },
         },
-      }]
+      },]
     end
 
     def self.ensure_http_accept(router_request:)
@@ -55,7 +55,7 @@ module Kit::Domain::Controllers
             },
           },
         },
-      }]
+      },]
     end
 
   end

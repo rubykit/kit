@@ -1,3 +1,7 @@
 # Reference: https://github.com/rubocop-hq/rubocop/blob/master/config/default.yml
 
-inherit_from: ../../.rubocop.yml
+inherit_from: ../../.rubocop_shared.yml
+
+# Note: needed because somehow running rubocop in the top level dir VS projects subdirectories has slightly different behaviours.
+Lint/RedundantCopDisableDirective:
+  Enabled: false

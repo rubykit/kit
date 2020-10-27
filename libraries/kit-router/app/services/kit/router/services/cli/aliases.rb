@@ -53,7 +53,7 @@ module Kit::Router::Services::Cli::Aliases
 
   # Propagate the "mounted indirectly" status to parent & children node.
   def self.add_mountpoints(list:)
-    apply_to_children = ->(children: [], mountpoints:) do
+    apply_to_children = ->(mountpoints:, children: []) do
       children.each do |child|
         child[:mountpoints_inherited].push(*mountpoints)
         apply_to_children.call(children: child[:children] || [], mountpoints: mountpoints)

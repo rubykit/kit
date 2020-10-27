@@ -15,7 +15,7 @@ class Kit::Auth::Services::Contracts::EmailSignup < Dry::Validation::Contract
       key.failure('has invalid format')
     # NOTE: should this be here?
     elsif response.status == :hint && values[:email] != values[:email_confirmation]
-      key.failure("Did you mean #{response.replacement} ?")
+      key.failure("Did you mean #{ response.replacement } ?")
     end
   end
 

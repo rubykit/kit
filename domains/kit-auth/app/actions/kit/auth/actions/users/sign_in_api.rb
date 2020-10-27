@@ -2,8 +2,8 @@ module Kit::Auth::Actions::Users::SignInApi
 
   def self.call(user:, router_request:)
     Kit::Organizer.call({
-      ctx: {
-        user:    user,
+      ctx:  {
+        user:           user,
         router_request: router_request,
       },
       list: [

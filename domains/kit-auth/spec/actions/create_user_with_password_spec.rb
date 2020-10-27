@@ -9,14 +9,14 @@ describe Kit::Auth::Actions::Users::CreateUserWithPassword  do
 
   let(:ctx_hash) do
     {
-      email: email,
-      password: password,
+      email:                 email,
+      password:              password,
       password_confirmation: password_confirmation,
     }
   end
 
-  let(:password_ok) { "Ax7^IhkjgF*H" }
-  let(:password_error) { "xxxxxx" }
+  let(:password_ok) { 'Ax7^IhkjgF*H' }
+  let(:password_error) { 'xxxxxx' }
 
   let(:email_ok) { 'email@gmail.com' }
   let(:email_error) { 'email@gmail..com' }
@@ -39,7 +39,7 @@ describe Kit::Auth::Actions::Users::CreateUserWithPassword  do
     let(:password) { password_ok }
 
     it 'errors out' do
-      expect(ctx_res[:errors][:email]).to eq ["has invalid format"]
+      expect(ctx_res[:errors][:email]).to eq ['has invalid format']
     end
   end
 

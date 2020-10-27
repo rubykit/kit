@@ -54,7 +54,6 @@
 
   config.localize_format = :long
 
-
   # == Meta Tags
   #   config.meta_tags = { author: 'My Company' }
   #   config.meta_tags_for_logged_out_pages = {}
@@ -82,5 +81,5 @@
   # config.order_clause = MyOrderClause
 end
 
-module Kit::Auth::Admin
+module Kit::Auth::Admin # rubocop:disable Style/Documentation
 end

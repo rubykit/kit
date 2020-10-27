@@ -30,8 +30,8 @@ module Kit::Auth::Components::Users
         name = user_agent&.platform&.name
       end
 
-      if name == "Macintosh"
-        name = "Mac"
+      if name == 'Macintosh'
+        name = 'Mac'
       end
 
       name || 'Unknown'
@@ -48,7 +48,6 @@ module Kit::Auth::Components::Users
     def last_date
       model&.dig(:request_metadata, :created_at)&.strftime('%A %F')
     end
-
 
     def user_agent
       @user_agent ||= user_agent_string ? ::Browser.new(user_agent_string) : nil

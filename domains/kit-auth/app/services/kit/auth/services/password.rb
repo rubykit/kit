@@ -1,10 +1,11 @@
 require 'bcrypt'
 
+# Service that contains password related logic.
 module Kit::Auth::Services::Password
 
   #Contract KeywordArgs[password: String, pepper: String] => [Symbol, KeywordArgs[hashed_secret: String]]
   def self.generate_hashed_secret(password:, pepper: ENV['AUTH_PEPPER'])
-    secret        = "#{password}#{pepper}"
+    #secret        = "#{ password }#{ pepper }"
     hashed_secret = ::BCrypt::Password.create(password, cost: 12).to_s
 
     [:ok, hashed_secret: hashed_secret]
@@ -15,7 +16,7 @@ module Kit::Auth::Services::Password
     bcrypt        = ::BCrypt::Password.new(reference_hashed_secret)
     salt          = bcrypt.salt
 
-    secret        = "#{password}#{pepper}"
+    secret        = "#{ password }#{ pepper }"
     hashed_secret = ::BCrypt::Engine.hash_secret(secret, salt)
 
     ActiveSupport::SecurityUtils.secure_compare(reference_hashed_secret, hashed_secret)

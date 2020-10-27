@@ -13,6 +13,8 @@ Gem::Specification.new do |s|
   s.email       = 'nathan@rubykit.org'
   s.homepage    = 'https://github.com/rubykit/kit/tree/master/domains/kit-auth'
 
+  s.required_ruby_version = '~> 2.7'
+
   s.metadata = {
     'source_code_base_uri' => 'https://github.com/rubykit/kit',
     'source_code_uri'      => "https://github.com/rubykit/kit/tree/v#{ version }/domains/kit-auth",
@@ -30,5 +32,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'strong_password', '~> 0.0.8'
 
   s.add_dependency 'seedbank'
+
+  s.add_development_dependency 'rubocop'
 
 end

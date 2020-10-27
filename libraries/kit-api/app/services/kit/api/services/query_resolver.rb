@@ -42,14 +42,12 @@ module Kit::Api::Services::QueryResolver
       condition = condition.call(query_node: query_node)
     end
 
-    if condition&.dig(:op)
-      if condition[:op].in?([:or, :and])
-        condition[:values] = condition[:values].filter_map do |value|
-          resolve_condition(condition: value, query_node: query_node)
-        end
-
-        return nil if condition[:values].size == 0
+    if condition&.dig(:op) && condition[:op].in?([:or, :and])
+      condition[:values] = condition[:values].filter_map do |value|
+        resolve_condition(condition: value, query_node: query_node)
       end
+
+      return nil if condition[:values].size == 0
     end
 
     condition

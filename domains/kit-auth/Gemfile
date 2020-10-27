@@ -3,7 +3,9 @@ git_source(:github) { |repo| "https://github.com/#{ repo }.git" }
 
 gemspec
 
-gem 'dotenv-rails', require: 'dotenv/rails-now'
+gem 'kit-dotenv',              path: '../../libraries/kit-dotenv'
+gem 'kit-dotenv-rails',        path: '../../libraries/kit-dotenv', require: 'kit/dotenv/rails-now'
+
 gem 'jsonapi-rails' # DEV MODE ?
 
 gem 'kit-active-admin', path: '../../libraries/kit-active-admin', require: 'kit/active_admin' # DEV MODE
@@ -39,7 +41,8 @@ group :development, :test do
 end
 
 group :development, :test do
-  gem 'kit-app-container', path: '../../libraries/kit-app-container'
+  gem 'kit-app-container',       path: '../../libraries/kit-app-container' # DEV MODE
+  gem 'kit-dummy-app-container', path: '../../libraries/kit-dummy-app-container' # DEV MODE
 
   gem 'factory_bot_rails'
   gem 'faker'

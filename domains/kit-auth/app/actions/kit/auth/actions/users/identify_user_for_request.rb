@@ -1,11 +1,11 @@
 module Kit::Auth::Actions::Users::IdentifyUserForRequest
 
-  # Todo: add contract on router_request / cookies (based on needed access)
+  # TODO: add contract on router_request / cookies (based on needed access)
   #Contract Hash => [Symbol, KeywordArgs[user: Any]]
   def self.call(router_request:, oauth_application:, allow: [:param, :cookie, :header])
-    status, ctx = Kit::Organizer.call({
-      ctx: {
-        router_request:           router_request,
+    _status, ctx = Kit::Organizer.call({
+      ctx:  {
+        router_request:    router_request,
         oauth_application: oauth_application,
         allow:             allow,
       },
@@ -43,9 +43,9 @@ module Kit::Auth::Actions::Users::IdentifyUserForRequest
 
     values = access_tokens.values.compact.uniq
     if values.size == 0
-      return [:error, { attribute: :access_token, desc: "is missing" }]
+      return [:error, { attribute: :access_token, desc: 'is missing' }]
     elsif values.size > 1
-      return [:error, { attribute: :access_token, desc: "Conflicting access tokens provided." }]
+      return [:error, { attribute: :access_token, desc: 'Conflicting access tokens provided.' }]
     end
 
     [:ok, access_token: values.first]
@@ -64,7 +64,7 @@ module Kit::Auth::Actions::Users::IdentifyUserForRequest
     if user
       [:ok, user: user, oauth_access_token: oauth_access_token]
     else
-      [:error, { attribute: :access_token, desc: "is invalid" }]
+      [:error, { attribute: :access_token, desc: 'is invalid' }]
     end
   end
 

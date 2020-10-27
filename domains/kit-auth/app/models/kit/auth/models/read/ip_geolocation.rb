@@ -1,8 +1,7 @@
 module Kit::Auth::Models::Read
   class IpGeolocation < Kit::Auth::Models::ReadRecord
+
     self.table_name = 'ip_geolocation'
-
-
 
     self.whitelisted_columns = [
       :id,
@@ -12,7 +11,7 @@ module Kit::Auth::Models::Read
     ]
 
     belongs_to :country,
-               class_name: 'Kit::Auth::Models::Read::Country'
+      class_name: 'Kit::Auth::Models::Read::Country'
 
   end
 end

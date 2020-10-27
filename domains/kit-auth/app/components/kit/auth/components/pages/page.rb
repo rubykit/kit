@@ -1,5 +1,6 @@
 module Kit::Auth::Components::Pages
   class Page < Kit::Auth::Components::Component
+
     attr_reader :csrf_token
 
     def initialize(csrf_token: nil, **)

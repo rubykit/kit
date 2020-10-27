@@ -3,10 +3,10 @@ module Kit::Auth::Controllers
 
     def self.serializers
       {
-        :'Kit::Auth::Models::Read::User'              => Kit::Auth::Serializers::User,
-        :'Kit::Auth::Models::Write::User'             => Kit::Auth::Serializers::User,
-        :'Kit::Auth::Models::Read::OauthAccessToken'  => Kit::Auth::Serializers::AccessToken,
-        :'Kit::Auth::Models::Write::OauthAccessToken' => Kit::Auth::Serializers::AccessToken,
+        'Kit::Auth::Models::Read::User':              Kit::Auth::Serializers::User,
+        'Kit::Auth::Models::Write::User':             Kit::Auth::Serializers::User,
+        'Kit::Auth::Models::Read::OauthAccessToken':  Kit::Auth::Serializers::AccessToken,
+        'Kit::Auth::Models::Write::OauthAccessToken': Kit::Auth::Serializers::AccessToken,
       }
     end
 
@@ -18,7 +18,7 @@ module Kit::Auth::Controllers
       value    = router_request.params[param]
 
       if column && !value.blank?
-        resource = model.find_by({ column => value, })
+        resource = model.find_by({ column => value })
         if resource
           return [:ok, resource: resource]
         end
@@ -44,10 +44,10 @@ module Kit::Auth::Controllers
         status:    status_code,
         resources: [
           {
-            status:  status_code.to_s,
-            code:   "unauthorized",
-            title:  "Unauthorized",
-            detail: "You need to authenticate in order to access this ressource.",
+            status: status_code.to_s,
+            code:   'unauthorized',
+            title:  'Unauthorized',
+            detail: 'You need to authenticate in order to access this ressource.',
           },
         ],
       )
@@ -61,9 +61,9 @@ module Kit::Auth::Controllers
         resources: [
           {
             status: status_code.to_s,
-            code:   "forbidden",
-            title:  "Forbidden",
-            detail: "You do not have the authorization to perform this action.",
+            code:   'forbidden',
+            title:  'Forbidden',
+            detail: 'You do not have the authorization to perform this action.',
           },
         ],
       )
@@ -78,9 +78,9 @@ module Kit::Auth::Controllers
         resources: [
           {
             status: status_code.to_s,
-            code:   "not-found",
-            title:  "#{model_name} Not Found",
-            detail: "#{model_name} #{id} is not available on this server",
+            code:   'not-found',
+            title:  "#{ model_name } Not Found",
+            detail: "#{ model_name } #{ id } is not available on this server",
           },
         ],
       )

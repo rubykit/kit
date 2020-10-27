@@ -10,21 +10,21 @@ class Kit::Auth::Admin::Tables::RequestMetadata < Kit::Auth::Admin::Tables::Base
       user:       :model_verbose,
 
       ip:         :code,
-      country:    [:code, ->(el) { '' }],
+      country:    [:code, ->(_el) { '' }],
 
       user_agent: :code,
-      device:    [:code, ->(el) do
+      device:     [:code, ->(el) do
         device = Browser.new(el.user_agent).device
-        "#{device.id} #{device.name}"
-      end],
-      platform:    [:code, ->(el) do
+        "#{ device.id } #{ device.name }"
+      end,],
+      platform:   [:code, ->(el) do
         platform = Browser.new(el.user_agent).platform
-        "#{platform.id} #{platform.name} #{platform.version}"
-      end],
-      app:    [:code, ->(el) do
+        "#{ platform.id } #{ platform.name } #{ platform.version }"
+      end,],
+      app:        [:code, ->(el) do
         browser = Browser.new(el.user_agent)
-        "#{browser.name} #{browser.version}"
-      end],
+        "#{ browser.name } #{ browser.version }"
+      end,],
 
       utm:        :pre_yaml,
       has_utm:    [nil, ->(el) { !el.utm.empty? }],

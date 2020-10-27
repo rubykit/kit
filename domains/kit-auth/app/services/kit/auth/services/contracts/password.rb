@@ -9,10 +9,10 @@ class Kit::Auth::Services::Contracts::Password < Dry::Validation::Contract
   end
 
   rule(:password) do
-    if !(value =~ /(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[\W_])/)
+    if !(value =~ %r{(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[\W_])})
       key.failure('Complexity requirement not met. Please use: 1 uppercase, 1 lowercase, 1 digit and 1 special character.')
-    else
 =begin
+    else
       checker = StrongPassword::StrengthChecker.new(use_dictionary: true)
       if !checker.is_strong?(value)
         key.failure('is a terrible password, please use another one!')

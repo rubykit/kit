@@ -3,7 +3,7 @@ ActiveAdmin.register Kit::Auth::Models::Write::User, as: 'User', namespace: :kit
 
   actions :all, except: [:new, :edit, :destroy]
 
-  permit_params :email#, :password, :password_confirmation
+  permit_params :email #, :password, :password_confirmation
 
   index do
     Kit::Auth::Admin::Tables::User.new(self).index
@@ -14,11 +14,11 @@ ActiveAdmin.register Kit::Auth::Models::Write::User, as: 'User', namespace: :kit
   end
 
   filter :email
-  #filter :current_sign_in_at
-  #filter :sign_in_count
-  #filter :created_at
-
 =begin
+  filter :current_sign_in_at
+  filter :sign_in_count
+  filter :created_at
+
   form do |f|
     f.inputs "Admin Details" do
       f.input :email

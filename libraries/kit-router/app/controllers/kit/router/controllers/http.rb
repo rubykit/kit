@@ -10,7 +10,7 @@ module Kit::Router::Controllers
       content = page.local_render
 
       [:ok, {
-        response: {
+        router_response: {
           mime:     :html,
           content:  content,
           metadata: {
@@ -39,7 +39,7 @@ module Kit::Router::Controllers
       content  = Oj.dump(content, mode: :compat)
 
       [:error, {
-        response: {
+        router_response: {
           mime:     :json_api,
           content:  content,
           metadata: {
@@ -68,7 +68,7 @@ module Kit::Router::Controllers
       content  = Oj.dump(content, mode: :compat)
 
       [:ok, {
-        response: {
+        router_response: {
           mime:     :json_api,
           content:  content,
           metadata: {
@@ -85,7 +85,7 @@ module Kit::Router::Controllers
       status = 302 if status.blank?
 
       [:ok_stop, {
-        response: {
+        router_response: {
           metadata: {
             http: {
               status:   status,

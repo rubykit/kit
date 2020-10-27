@@ -1,8 +1,7 @@
 module Kit::Auth::Models::Read
   class OauthIdentity < Kit::Auth::Models::ReadRecord
+
     self.table_name = 'oauth_identities'
-
-
 
     self.whitelisted_columns = [
       :id,
@@ -19,7 +18,7 @@ module Kit::Auth::Models::Read
     ]
 
     belongs_to :user,
-               class_name: 'Kit::Auth::Models::Read::User'
+      class_name: 'Kit::Auth::Models::Read::User'
 
   end
 end

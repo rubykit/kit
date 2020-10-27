@@ -1,8 +1,9 @@
 module Kit::Auth::Models
   class ReadRecord < EngineRecord
+
     include Kit::Domain::Models::Concerns::ReadRecord
 
-    establish_connection :"#{Rails.env}_readonly"
+    establish_connection :primary_readonly
 
   end
 end

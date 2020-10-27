@@ -3,7 +3,11 @@ class ::WebController < ::ActionController::Base
 
   protect_from_forgery
 
-  layout 'application'
+  if (layout_name = KIT_APP_PATHS['GEM_SPEC_VIEW_LAYOUT'])
+    layout layout_name
+  end
+
+  prepend_view_path File.expand_path('../views', __dir__)
 
   def route
     controller_ctx = {
@@ -26,7 +30,7 @@ class ::WebController < ::ActionController::Base
       list: [
         Kit::Router::Services::Adapters::Http::Rails::Request::Export.method(:export_request),
       ],
-      ctx: controller_ctx.merge(ctx.slice(:request, :response)),
+      ctx: controller_ctx.merge(ctx.slice(:router_request, :router_response)),
     })
 
     return

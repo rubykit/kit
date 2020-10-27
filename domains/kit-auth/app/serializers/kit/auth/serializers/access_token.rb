@@ -1,5 +1,6 @@
 module Kit::Auth::Serializers
   class AccessToken < JSONAPI::Serializable::Resource
+
     type 'access_tokens'
 
     attributes :created_at, :scopes

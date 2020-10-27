@@ -10,10 +10,10 @@ module Kit::Auth::Controllers::Api::V1::Users
           :api_requires_current_user!,
           #[:api_load_resources!, { model: Kit::Auth::Models::Read::User, param: :id, }],
 
-          ->(router_request:) do
+          ->(router_request:) do # rubocop:disable Lint/ShadowingOuterLocalVariable
             Kit::Auth::Controllers::Api.load_resource!(
               router_request: router_request,
-              model:   Kit::Auth::Models::Read::User,
+              model:          Kit::Auth::Models::Read::User,
             )
           end,
           ->(resource:, current_user:) do
@@ -24,7 +24,7 @@ module Kit::Auth::Controllers::Api::V1::Users
           end,
           self.method(:render),
         ],
-        ctx: { router_request: router_request, },
+        ctx:  { router_request: router_request },
       })
     end
 
@@ -40,7 +40,7 @@ module Kit::Auth::Controllers::Api::V1::Users
       Kit::Router::Controllers::Http.render_jsonapi(
         resources:   resource,
         serializers: Kit::Auth::Controllers::Api.serializers,
-        links: {
+        links:       {
           self: Kit::Router::Services::Router.url(id: ROUTE_UID, params: { resource_id: resource.id }),
         },
       )

@@ -1,8 +1,9 @@
 module Kit::Auth::Components::Inputs
   class Input < Kit::Auth::Components::Component
+
     attr_reader :help, :label, :name, :value, :errors, :ids, :input_type, :placeholder, :required
 
-    def initialize(help: nil, label:, name:, placeholder: nil, required: false, value:, errors: [], **)
+    def initialize(label:, name:, value:, help: nil, placeholder: nil, required: false, errors: [], **)
       super
 
       @label       = label
@@ -18,7 +19,7 @@ module Kit::Auth::Components::Inputs
     end
 
     def help_id
-      "#{input_id}-help"
+      "#{ input_id }-help"
     end
 
   end

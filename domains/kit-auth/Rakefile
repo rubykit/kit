@@ -4,14 +4,18 @@ rescue LoadError
   puts 'You must `gem install bundler` and `bundle install` to run rake tasks'
 end
 
-APP_RAKEFILE = File.expand_path("spec/dummy/Rakefile", __dir__)
-load 'rails/tasks/engine.rake'
-load 'rails/tasks/statistics.rake'
-
 require 'bundler/gem_tasks'
+
+require_relative 'config/kit_runtime_config'
+require 'kit/dummy-app-container/rails_application'
+
+APP_RAKEFILE = File.expand_path('spec/dummy/Rakefile', __dir__)
+load 'rails/tasks/engine.rake'
+
+Rails.application.load_tasks
 
 import 'tasks/router.rake'
 
 require 'seedbank'
-Seedbank.seeds_root = File.expand_path('db/seeds', Kit::Auth::Engine.root)
-Seedbank.load_tasks
+Seedbank.seeds_root = File.expand_path('spec/dummy/Rakefile', __dir__)
+Seedbank.load_tasks if defined?(Seedbank)

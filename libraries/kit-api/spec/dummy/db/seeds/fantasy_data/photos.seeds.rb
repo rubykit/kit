@@ -4,11 +4,12 @@ data[:photos].each do |el_data|
   id   = el_data.delete(:imageable_id)
   type = el_data.delete(:imageable_type)
 
-  if type == 'authors'
+  case type
+  when 'authors'
     model_class = Kit::JsonApiSpec::Models::Write::Author
-  elsif type == 'books'
+  when 'books'
     model_class = Kit::JsonApiSpec::Models::Write::Book
-  elsif type == 'series'
+  when 'series'
     model_class = Kit::JsonApiSpec::Models::Write::Serie
   end
 

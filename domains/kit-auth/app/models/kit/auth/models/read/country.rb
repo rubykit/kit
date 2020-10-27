@@ -1,8 +1,7 @@
 module Kit::Auth::Models::Read
   class Country < Kit::Auth::Models::ReadRecord
+
     self.table_name = 'countries'
-
-
 
     self.whitelisted_columns = [
       :id,
@@ -12,11 +11,11 @@ module Kit::Auth::Models::Read
       :currency_id,
     ]
 
-    has_many   :ip_geolocations,
-               class_name: 'Kit::Auth::Models::Read::IpGeolocation'
+    has_many :ip_geolocations,
+      class_name: 'Kit::Auth::Models::Read::IpGeolocation'
 
     def model_verbose_name
-      "#{model_log_name}|#{name}"
+      "#{ model_log_name }|#{ name }"
     end
 
   end

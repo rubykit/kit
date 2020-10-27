@@ -3,7 +3,7 @@ module Kit::Auth::Controllers::Web::Users::ResetPassword
 
     def self.endpoint(router_request:)
       Kit::Organizer.call({
-        ctx:  { router_request: router_request, },
+        ctx:  { router_request: router_request },
         list: [
           :web_require_current_user!,
           # TODO: fix this explicit dependency, not sure how?
@@ -24,10 +24,10 @@ module Kit::Auth::Controllers::Web::Users::ResetPassword
 
       Kit::Router::Controllers::Http.render(
         component: Kit::Auth::Components::Pages::Users::ResetPassword::Edit,
-        params: {
+        params:    {
           model:      model,
           csrf_token: router_request.http[:csrf_token],
-        }
+        },
       )
     end
 

@@ -1,4 +1,4 @@
-class CreateEventStoreEventsInStreams < ActiveRecord::Migration[5.2]
+class CreateEventStoreEventsInStreams < ActiveRecord::Migration[5.2] # rubocop:disable Style/Documentation
 
   def change
     create_table(:event_store_events_in_streams, force: false) do |t|

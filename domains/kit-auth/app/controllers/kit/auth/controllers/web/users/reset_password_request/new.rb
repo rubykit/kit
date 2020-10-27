@@ -3,9 +3,9 @@ module Kit::Auth::Controllers::Web::Users::ResetPasswordRequest
 
     def self.endpoint(router_request:)
       Kit::Organizer.call({
-        ctx:  { router_request: router_request, },
+        ctx:  { router_request: router_request },
         list: [
-          :web_redirect_if_current_user!,
+          [:alias, :web_redirect_if_current_user!],
           self.method(:new_reset_password_request),
         ],
       })
@@ -22,7 +22,7 @@ module Kit::Auth::Controllers::Web::Users::ResetPasswordRequest
 
       Kit::Router::Controllers::Http.render(
         component: Kit::Auth::Components::Pages::Users::ResetPasswordRequest::New,
-        params: {
+        params:    {
           model:      model,
           csrf_token: router_request.http[:csrf_token],
         },

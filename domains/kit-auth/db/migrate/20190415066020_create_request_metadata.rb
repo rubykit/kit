@@ -1,4 +1,4 @@
-class CreateRequestMetadata < ActiveRecord::Migration[5.2]
+class CreateRequestMetadata < ActiveRecord::Migration[5.2] # rubocop:disable Style/Documentation
 
   def change
     create_table   :request_metadata do |t|

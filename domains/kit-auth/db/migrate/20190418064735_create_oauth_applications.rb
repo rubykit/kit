@@ -1,8 +1,8 @@
-class CreateOauthApplications < ActiveRecord::Migration[5.2]
+class CreateOauthApplications < ActiveRecord::Migration[5.2] # rubocop:disable Style/Documentation
 
   def change
-    create_table   :oauth_applications do |t|
-      t.timestamps                                                 null: false
+    create_table :oauth_applications do |t|
+      t.timestamps null: false
       t.datetime   :deleted_at,         default: nil, index: true
 
       t.string     :name,                                          null: false

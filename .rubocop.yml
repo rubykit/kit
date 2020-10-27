@@ -1,12 +1,12 @@
-inherit_from:
-  - .rubocop_shared.yml
+inherit_from: ./.rubocop_shared.yml
 
 AllCops:
 
   Exclude:
     - '**/Gemfile.lock'
     - 'apps/**/*'
-    - 'domains/**/*'
+    - 'domains/kit-geolocation/**/*'
+    - 'domains/kit-payment/**/*'
     - 'libraries/kit-api/spec/dummy/db/schema.rb'
     - 'libraries/kit-doc/specs/dummy/**/*.rb'
     - 'libraries/kit-doc/node_modules/**/*'

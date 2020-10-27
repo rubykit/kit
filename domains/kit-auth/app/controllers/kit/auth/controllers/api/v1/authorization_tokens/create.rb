@@ -15,10 +15,10 @@ module Kit::Auth::Controllers::Api::V1::AuthorizationTokens
           Kit::Auth::Actions::Users::SignInApi,
           self.method(:render),
         ],
-        ctx: {
+        ctx:  {
           router_request: router_request,
-          email:    params[:uid],
-          password: params[:secret],
+          email:          params[:uid],
+          password:       params[:secret],
         },
       })
 

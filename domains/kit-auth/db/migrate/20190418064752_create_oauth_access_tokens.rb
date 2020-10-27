@@ -1,8 +1,8 @@
-class CreateOauthAccessTokens < ActiveRecord::Migration[5.2]
+class CreateOauthAccessTokens < ActiveRecord::Migration[5.2] # rubocop:disable Style/Documentation
 
   def change
-    create_table   :oauth_access_tokens do |t|
-      t.timestamps                                                 null: false
+    create_table :oauth_access_tokens do |t|
+      t.timestamps null: false
       t.datetime   :deleted_at,         default: nil, index: true
 
       t.references :resource_owner,                   index: true, null: false, foreign_key: { to_table: :users }

@@ -1,5 +1,6 @@
 module Kit::Auth::Models::Write
   class RequestMetadata < Kit::Auth::Models::WriteRecord
+
     self.table_name = 'request_metadata'
 
     acts_as_paranoid
@@ -16,8 +17,8 @@ module Kit::Auth::Models::Write
     ]
 
     belongs_to :user,
-               class_name: 'Kit::Auth::Models::Write::User',
-               optional: true
+      class_name: 'Kit::Auth::Models::Write::User',
+      optional:   true
 
   end
 end

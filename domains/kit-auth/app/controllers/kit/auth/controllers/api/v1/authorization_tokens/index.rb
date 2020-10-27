@@ -11,7 +11,7 @@ module Kit::Auth::Controllers::Api::V1::AuthorizationTokens
           :api_requires_current_user!,
           self.method(:load_and_render),
         ],
-        ctx: { router_request: router_request, },
+        ctx:  { router_request: router_request },
       })
     end
 
@@ -37,7 +37,7 @@ module Kit::Auth::Controllers::Api::V1::AuthorizationTokens
       Kit::Router::Controllers::Http.render_jsonapi(
         resources:   resources,
         serializers: Kit::Auth::Controllers::Api.serializers,
-        links: {
+        links:       {
           prev: Kit::Router::Services::Router.url(id: ROUTE_UID, params: pagination_params[:prev]),
           next: Kit::Router::Services::Router.url(id: ROUTE_UID, params: pagination_params[:next]),
         },

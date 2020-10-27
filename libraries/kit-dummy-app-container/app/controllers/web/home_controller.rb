@@ -1,5 +1,9 @@
 class ::Web::HomeController < ::WebController # rubocop:disable Style/Documentation
 
+  if (layout_name = KIT_APP_PATHS['GEM_SPEC_VIEW_LAYOUT'])
+    layout layout_name
+  end
+
 =begin
   Kit::Router::Services::Router.register_without_target({
     uid:     'app|home',

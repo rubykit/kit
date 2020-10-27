@@ -1,4 +1,5 @@
 list = [
+  'app/controllers/web_controller',
   'app/controllers/web/home_controller',
 ]
 

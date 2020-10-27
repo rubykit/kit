@@ -9,12 +9,12 @@ class Kit::Auth::Admin::Tables::OauthAccessToken < Kit::Auth::Admin::Tables::Bas
       user:              :model_verbose,
       oauth_application: :model_verbose,
       token:             :code,
-      active:            [nil, ->(el) { Kit::Auth::Services::OauthAccessToken.is_active?(oauth_access_token: el) }],
+      active:            [nil, ->(el) { Kit::Auth::Services::OauthAccessToken.active?(oauth_access_token: el) }],
       refresh_token:     :code,
       expires_in:        :code,
       scopes:            :code,
       revoked_at:        nil,
-      last_urm:          [:model, ->(el) { el.last_request_metadata } ],
+      last_urm:          [:model, ->(el) { el.last_request_metadata }],
     )
   end
 
