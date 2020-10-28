@@ -23,6 +23,7 @@ documentation_build_dir="${kit_dir}/docs/dist"
 declare -A documentation_targets=(
   ["kit"]=$kit_dir
   ["kit-api"]="${kit_dir}/libraries/kit-api"
+  ["kit-auth"]="${kit_dir}/libraries/kit-auth"
   ["kit-contract"]="${kit_dir}/libraries/kit-contract"
   ["kit-doc"]="${kit_dir}/libraries/kit-doc"
   ["kit-organizer"]="${kit_dir}/libraries/kit-organizer"

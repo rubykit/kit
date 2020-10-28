@@ -1,43 +1,29 @@
+<!--pp {} -->
+<img align="left" width="50" height="90" src="https://raw.githubusercontent.com/rubykit/kit/master/docs/assets/images/rubykit-framework-logo.svg">
+<!-- pp-->
+
+[Kit::Auth]: https://github.com/rubykit/kit/tree/master/libraries/kit-auth
+
 # Kit::Auth
-Short description and motivation.
 
-## Usage
-How to use my plugin.
+[Kit::Auth] is a `Kit::Domain` (a "microservice" if you will, including a web interface, api, web admin) that can be used standalone, or extended through another domain.
 
-## Installation
-Add this line to your application's Gemfile:
+- To learn more about [Kit::Auth], see [Kit::Auth's documentation](https://docs.rubykit.org/kit-auth/edge).
+- To learn how to use [Kit::Auth] in your projects, see the [Usage](docs/guides/usage.md) guide.
 
-```ruby
-gem 'kit-auth'
-```
+## Features
 
-And then execute:
-```bash
-$ bundle
-```
+It is fully functional and provides the following features:
+- [ ] Sign-up
+- [ ] Sign-in
+- [ ] Email verification
+- [ ] Single-link sign-in
+- [ ] Password reset
+- [ ] OAuth bindings (facebook / google)
+- [ ] 2 Step authentication
 
-Or install it yourself as:
-```bash
-$ gem install kit-auth
-```
+## Copyright & License
 
-## Local development
-Note: `schema.rb` is generated in the dummy app.
+Copyright (c) 2020, Nathan Appere.
 
-```
-RAILS_ENV=development DB=development_write rails db:create
-RAILS_ENV=development DB=development_write rails db:migrate
-```
-
-## Testing
-```
-RAILS_ENV=test DB=test_write rails db:create
-RAILS_ENV=test DB=test_write rails db:migrate
-```
-
-
-## Contributing
-Contribution directions go here.
-
-## License
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+[Kit::Auth] is licensed under [MIT License](MIT_LICENSE.md).
