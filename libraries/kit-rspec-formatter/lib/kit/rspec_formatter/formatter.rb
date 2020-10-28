@@ -3,7 +3,7 @@ require 'rspec'
 RSpec::Support.require_rspec_core 'formatters/base_text_formatter'
 
 # RSpec formatter that display spec name as they are running + spent time
-class KitRspecFormatter < RSpec::Core::Formatters::BaseTextFormatter
+class Kit::RspecFormatter::Formatter < RSpec::Core::Formatters::BaseTextFormatter
 
   RSpec::Core::Formatters.register self,
     :example_started, :example_passed, :example_failed, :example_pending

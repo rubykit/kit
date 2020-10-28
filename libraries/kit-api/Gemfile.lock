@@ -86,6 +86,11 @@ PATH
       tabulo (~> 2.6)
 
 PATH
+  remote: ../kit-rspec-formatter
+  specs:
+    kit-rspec-formatter (0.1.0)
+
+PATH
   remote: .
   specs:
     kit-api (0.1.0)
@@ -396,6 +401,7 @@ DEPENDENCIES
   kit-organizer!
   kit-pagination!
   kit-router!
+  kit-rspec-formatter!
   listen
   pg
   pry
