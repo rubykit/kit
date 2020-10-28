@@ -2,8 +2,8 @@
 
 - [MIT license](http://www.opensource.org/licenses/mit-license.php)
 - **Copyright (c) 2020 Nathan Appere**
-- https://github.com/rubykit/kit/tree/master/libraries/kit-doc
-- https://github.com/rubykit/kit/tree/master/libraries/kit-doc/MIT_LICENSE.md
+- https://github.com/rubykit/kit/tree/master/libraries/kit-rspec-formatter
+- https://github.com/rubykit/kit/tree/master/libraries/kit-rspec-formatter/MIT_LICENSE.md
 
 The license itself:
 
