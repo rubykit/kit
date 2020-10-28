@@ -28,6 +28,14 @@
 
 Currently working towards [v0.1.0](https://github.com/rubykit/kit/projects/1), so expect daily changes.
 
+## Domains documentation
+
+<!--pp {
+  * [Kit::Auth](https://docs.rubykit.org/kit-auth/$CURRENT_VERSION)
+} -->
+  * [Kit::Auth](https://docs.rubykit.org/kit-auth/edge)
+<!-- pp-->
+
 ## Libraries documentation
 
 <!--pp {

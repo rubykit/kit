@@ -14,6 +14,7 @@ load 'rails/tasks/engine.rake'
 
 Rails.application.load_tasks
 
+import 'tasks/documentation.rake'
 import 'tasks/router.rake'
 
 require 'seedbank'

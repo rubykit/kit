@@ -10,6 +10,7 @@ gem 'jsonapi-rails' # DEV MODE ?
 
 gem 'kit-active-admin', path: '../../libraries/kit-active-admin', require: 'kit/active_admin' # DEV MODE
 gem 'kit-contract',     path: '../../libraries/kit-contract' # DEV MODE
+gem 'kit-doc',          path: '../../libraries/kit-doc' # DEV MODE
 gem 'kit-domain',       path: '../../libraries/kit-domain' # DEV MODE
 gem 'kit-engine',       path: '../../libraries/kit-engine' # DEV MODE
 gem 'kit-error',        path: '../../libraries/kit-error' # DEV MODE
