@@ -1,7 +1,7 @@
 plugins:
   rubocop:
     enabled: true
-    channel: rubocop-0-83
+    channel: rubocop-0-92
 
 checks:
   # 2 objections:

@@ -53,7 +53,7 @@ module Kit::Auth::Actions::Users::CreateWithPassword
 
   def self.persist_user(email:, hashed_secret:)
     begin
-      user  = Kit::Auth::Models::Write::User.create({
+      user = Kit::Auth::Models::Write::User.create({
         email:         email,
         hashed_secret: hashed_secret,
       })

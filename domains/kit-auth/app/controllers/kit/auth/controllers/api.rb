@@ -14,7 +14,6 @@ module Kit::Auth::Controllers
       param    = param.to_sym
       column ||= param
       column   = column.to_sym
-
       value    = router_request.params[param]
 
       if column && !value.blank?
