@@ -1,4 +1,4 @@
-class CreateEventStoreEvents < ActiveRecord::Migration[5.2]
+class CreateEventStoreEvents < ActiveRecord::Migration[5.2] # rubocop:disable Style/Documentation
 
   def change
     enable_extension 'pgcrypto'

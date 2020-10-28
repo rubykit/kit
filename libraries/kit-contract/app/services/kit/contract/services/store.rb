@@ -2,7 +2,7 @@
 # TODO: move this to Kit::Store when available
 module Kit::Contract::Services::Store
 
-  def self.add_and_generate_key(store: nil, value:)
+  def self.add_and_generate_key(value:, store: nil)
     store ||= self.local_store
     _, ctx  = get_next_key(store: store, sequence: store[:metadata][:sequences][:keys])
     key     = ctx[:key]
@@ -12,7 +12,7 @@ module Kit::Contract::Services::Store
     [:ok, key: key]
   end
 
-  def self.get_next_key(store: nil, sequence:)
+  def self.get_next_key(sequence:, store: nil)
     store ||= self.local_store
 
     new_value = nil
@@ -27,7 +27,7 @@ module Kit::Contract::Services::Store
     [:ok, key: new_value]
   end
 
-  def self.get(store: nil, key:)
+  def self.get(key:, store: nil)
     store ||= self.local_store
 
     value = store[:data]&.dig(key) || {}

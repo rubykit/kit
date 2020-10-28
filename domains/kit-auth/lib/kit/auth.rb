@@ -1,11 +1,11 @@
-require "doorkeeper"
+require 'doorkeeper'
 
-module Kit
-  module Auth
-    Doorkeeper = ::Doorkeeper
-
-  end
+module Kit # rubocop:disable Style/Documentation
 end
 
-require "kit/auth/engine"
-require "kit/auth/routes"
+module Kit::Auth # rubocop:disable Style/Documentation
+  Doorkeeper = ::Doorkeeper
+end
+
+require 'kit/auth/engine'
+require 'kit/auth/routes'

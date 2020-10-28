@@ -25,7 +25,7 @@ module Kit::Router::Services::Adapters::Http::Rails::Request
       mime          = router_response[:mime]
       content       = router_response[:content]
 
-      http_metadata = metadata.dig(:http) || {}
+      http_metadata = metadata[:http] || {}
       content_type  = mime ? Mime[mime.to_sym].to_s : nil
       status        = http_metadata[:status] || 200
 

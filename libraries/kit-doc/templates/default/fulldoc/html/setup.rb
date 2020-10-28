@@ -48,7 +48,7 @@ def handle_readme
   return if first_file&.name != 'README'
 
   kit_files_extra = config[:files_extra] || []
-  if !kit_files_extra.find { |path| path.end_with?(first_file.filename) } # rubocop:disable Style/GuardClause
+  if !kit_files_extra.find { |path| path.end_with?(first_file.filename) }
     options.files.shift
   end
 end
@@ -164,7 +164,7 @@ end
 def serialize_file(file, title = nil)
   options.object = Registry.root
   options.file   = file
-  outfile_name   = file.name + '.html'
+  outfile_name   = "#{ file.name }.html"
 
   serialize_index(options) if file == options.readme
   Templates::Engine.with_serializer(outfile_name, options.serializer) do

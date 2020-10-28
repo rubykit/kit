@@ -2,7 +2,7 @@
 #   a `Kit::Contract::Error` exception is raised when a contract failure happens.
 class Kit::Organizer::Error < ::StandardError
 
-  def initialize(msg)
+  def initialize(msg) # rubocop:disable Lint/UselessMethodDefinition
     super
   end
 

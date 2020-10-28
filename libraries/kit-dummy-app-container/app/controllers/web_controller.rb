@@ -2,7 +2,7 @@ class ::WebController < ::ActionController::Base # rubocop:disable Style/Documen
 
   protect_from_forgery
 
-  layout 'application'
+  layout 'dummy_application'
 
   def route
     controller_ctx = {
@@ -15,7 +15,6 @@ class ::WebController < ::ActionController::Base # rubocop:disable Style/Documen
     _status, ctx = Kit::Organizer.call({
       list: [
         Kit::Router::Services::Adapters::Http::Rails::Request::Import.method(:import_request),
-        :web_resolve_current_user,
         request.params[:kit_router_target],
       ],
       ctx:  controller_ctx,
@@ -25,7 +24,7 @@ class ::WebController < ::ActionController::Base # rubocop:disable Style/Documen
       list: [
         Kit::Router::Services::Adapters::Http::Rails::Request::Export.method(:export_request),
       ],
-      ctx:  controller_ctx.merge(ctx.slice(:request, :response)),
+      ctx:  controller_ctx.merge(ctx.slice(:router_request, :router_response)),
     })
 
     return

@@ -1,3 +1,1 @@
-# Reference: https://github.com/rubocop-hq/rubocop/blob/master/config/default.yml
-
-inherit_from: ../../.rubocop.yml
+inherit_from: ../../.rubocop_shared.yml

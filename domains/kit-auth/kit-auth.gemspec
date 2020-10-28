@@ -21,6 +21,8 @@ Gem::Specification.new do |s|
 
   s.files = Dir['{app,config,db,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
 
+  s.required_ruby_version = '~> 2.7'
+
   s.add_dependency 'bcrypt'
   s.add_dependency 'browser'
   s.add_dependency 'doorkeeper',      '~> 5.2.0.rc2'
@@ -30,5 +32,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'strong_password', '~> 0.0.8'
 
   s.add_dependency 'seedbank'
+
+  s.add_development_dependency 'rubocop'
 
 end

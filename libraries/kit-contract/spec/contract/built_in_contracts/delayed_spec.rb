@@ -4,12 +4,12 @@ require_relative '../../../lib/kit/contract'
 
 describe Kit::Contract::BuiltInContracts::Delayed do
 
-  Contract1 = Kit::Contract::BuiltInContracts::Hash[
+  Contract1 = Kit::Contract::BuiltInContracts::Hash[ # rubocop:disable Lint/ConstantDefinitionInBlock
     v:    Kit::Contract::BuiltInContracts::Eq[1],
     obj2: Kit::Contract::BuiltInContracts::Optional[described_class[-> { Contract2 }]],
   ]
 
-  Contract2 = Kit::Contract::BuiltInContracts::Hash[
+  Contract2 = Kit::Contract::BuiltInContracts::Hash[ # rubocop:disable Lint/ConstantDefinitionInBlock
     v:    Kit::Contract::BuiltInContracts::Eq[2],
   ]
 

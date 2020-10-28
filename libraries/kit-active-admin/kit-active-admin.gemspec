@@ -21,6 +21,8 @@ Gem::Specification.new do |s|
 
   s.files = Dir['{app,config,db,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
 
+  s.required_ruby_version = '~> 2.7'
+
   s.add_dependency 'activeadmin',        '~> 2.2'
   s.add_dependency 'activeadmin_addons', '~> 1.7.1'
   s.add_dependency 'bootstrap',          '~> 4.0'

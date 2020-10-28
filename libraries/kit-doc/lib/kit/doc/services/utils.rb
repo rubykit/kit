@@ -22,7 +22,7 @@ module Kit::Doc::Services::Utils
 
   # Remove html tags from a string.
   def self.remove_html_tags(str)
-    str.gsub(%r{<\/?[^>]*>}, '')
+    str.gsub(%r{</?[^>]*>}, '')
   end
 
   # Remove html entities from a string.
@@ -55,7 +55,7 @@ module Kit::Doc::Services::Utils
 
       # Note: in YARD, options.object is never an `ExtraFileObject`.
       #   Reference: https://github.com/lsegal/yard/blob/master/templates/default/fulldoc/html/setup.rb#L64
-      if @object.is_a?(::YARD::CodeObjects::ExtraFileObject) # rubocop:disable Style/GuardClause
+      if @object.is_a?(::YARD::CodeObjects::ExtraFileObject)
         @file   = @object
         @object = ::YARD::Registry.root
       end
@@ -91,13 +91,12 @@ module Kit::Doc::Services::Utils
     })[1][:processed_content]
 
     template_helper = TemplateHelper.new(object: yard_code_object)
-    html_content    = template_helper.to_html({
+    template_helper.to_html({
       content:          content,
       markup:           markup,
       yard_code_object: yard_code_object,
     })
 
-    html_content
   end
 
   # If a text matches a reference object, add a link to it.

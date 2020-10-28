@@ -1,15 +1,15 @@
 JSONAPI::Rails.configure do |config|
   # Set a default serializable class mapping.
-  config.jsonapi_class = Hash.new { |h, k|
+  config.jsonapi_class = Hash.new do |h, k|
     names = k.to_s.split('::')
     klass = names.pop
 
     if names[-2] == 'Models'
-      names = names.slice(0..(-3)).push('Serializers')
+      names = names.slice(0..-3).push('Serializers')
     end
 
     h[k] = [*names, klass].join('::').safe_constantize
-  }
+  end
 
   # # Set a default serializable class mapping for errors.
   # config.jsonapi_errors_class = Hash.new { |h, k|

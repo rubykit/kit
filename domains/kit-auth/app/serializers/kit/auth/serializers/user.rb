@@ -1,5 +1,6 @@
 module Kit::Auth::Serializers
   class User < JSONAPI::Serializable::Resource
+
     type 'users'
 
     attributes :created_at, :confirmed_at

@@ -1,9 +1,9 @@
 Kit::Auth::Engine.routes.draw do
   #use_doorkeeper
 
-  Rails.application.routes.draw do
-    use_doorkeeper# scope: 'api/v1/oauth'
-  end
+  #Rails.application.routes.draw do
+  #  use_doorkeeper # scope: 'api/v1/oauth'
+  #end
 
   ActiveAdmin.routes(self)
 

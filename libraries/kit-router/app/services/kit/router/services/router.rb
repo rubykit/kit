@@ -31,11 +31,12 @@ module Kit::Router::Services::Router
   # Add aliases.
   # This supports nested logic.
   def self.handle_aliases(target_id:, aliases:, router_store: nil)
-    if aliases.is_a?(Array)
+    case aliases
+    when Array
       aliases.each do |alias_id|
         Kit::Router::Services::Store::Alias.add_alias(target_id: target_id, alias_id: alias_id, router_store: router_store)
       end
-    elsif aliases.is_a?(Hash)
+    when Hash
       handle_aliases(target_id: target_id, aliases: aliases.keys)
 
       aliases.each do |alias_id, aliases_sublist|

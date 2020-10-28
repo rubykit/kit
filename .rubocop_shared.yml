@@ -1,135 +1,29 @@
+# Reference: https://github.com/rubocop-hq/rubocop/blob/master/config/default.yml
+
 AllCops:
 
   TargetRubyVersion: 2.7
+  NewCops: enable
 
-Metrics:
-  Enabled: false
 
-Layout/LineLength:
-  Enabled: false
+# Layouts ----------------------------------------------------------------------
 
-Style/Alias:
-  EnforcedStyle: prefer_alias_method
+Layout/ArgumentAlignment:
+  EnforcedStyle: with_fixed_indentation
 
-Style/AsciiComments:
-  Enabled: false
+Layout/ArrayAlignment:
+  EnforcedStyle: with_fixed_indentation
 
-Style/CommandLiteral:
-  EnforcedStyle: percent_x
+Layout/EmptyLinesAroundClassBody:
+  EnforcedStyle: empty_lines
 
-Style/NonNilCheck:
-  Enabled: false
-
-Style/ClassAndModuleChildren:
-  EnforcedStyle: compact
-
-Style/DoubleNegation:
-  Enabled: false
-
-Lint/UnusedMethodArgument:
-  Enabled: false
-
-Style/IfUnlessModifier:
-  Enabled: false
-
-Style/MultipleComparison:
-  Enabled: false
-
-Style/FrozenStringLiteralComment:
-  Enabled: false
-
-Style/RedundantSelf:
-  Enabled: false
-
-Layout/SpaceInsideStringInterpolation:
-  EnforcedStyle: space
-
-Style/NegatedIf:
-  Enabled: false
-
-Style/TernaryParentheses:
-  EnforcedStyle: require_parentheses
-
-Style/ConditionalAssignment:
-  Enabled: false
-
-Style/SymbolArray:
-  Enabled: false
-
-Style/BlockComments:
-  Enabled: false
-
-Style/EmptyMethod:
-  Enabled: false
-
-Style/SingleLineMethods:
-  Enabled: false
-
-Style/MutableConstant:
-  Enabled: false
-
-Style/PerlBackrefs:
-  Enabled: false
-
-Style/InverseMethods:
+Layout/EmptyLineAfterMagicComment:
   Enabled: false
 
 Layout/EmptyLinesAroundArguments:
   Enabled: false
 
-Naming/ConstantName:
-  Enabled: false
-
-Style/WhileUntilDo:
-  Enabled: false
-
-Style/RedundantInterpolation:
-  Enabled: false
-
-Style/RegexpLiteral:
-  EnforcedStyle: percent_r
-
-Style/MultilineBlockChain:
-  Enabled: false
-
-# Gets it wrong when it's a no op
-Style/Next:
-  Enabled: false
-
-Style/RaiseArgs:
-  EnforcedStyle: compact
-
-# Gets it wrong when you want to avoid usage of **
-Lint/UnusedBlockArgument:
-  AllowUnusedKeywordArguments: true
-
-# Gets it wrong on empty return.
-Style/RedundantReturn:
-  Enabled: false
-
-# Prevents some block alignment.
-Layout/ExtraSpacing:
-  Enabled: false
-
-# Indentation related
-
-Layout/MultilineMethodCallIndentation:
-  EnforcedStyle: indented
-
-
-# Empty lines / spaces
-
-Layout/EmptyLinesAroundModuleBody:
-  #EnforcedStyle: empty_lines
-  Enabled: false
-
-Layout/EmptyLinesAroundClassBody:
-  EnforcedStyle: empty_lines
-
-Layout/LeadingCommentSpace:
-  Enabled: false
-
-Layout/EmptyLineAfterMagicComment:
+Layout/EmptyLinesAroundAttributeAccessor:
   Enabled: false
 
 Layout/EmptyLinesAroundBlockBody:
@@ -138,16 +32,29 @@ Layout/EmptyLinesAroundBlockBody:
 Layout/EmptyLinesAroundMethodBody:
   Enabled: false
 
-Style/EmptyElse:
-  EnforcedStyle: empty
+Layout/EmptyLinesAroundModuleBody:
+  #EnforcedStyle: empty_lines
+  Enabled: false
 
+# NOTE: Prevents some block alignment.
+Layout/ExtraSpacing:
+  Enabled: false
 
-# Lambda
-Style/Lambda:
-  EnforcedStyle: literal
+Layout/FirstArrayElementIndentation:
+  EnforcedStyle: consistent
 
+Layout/FirstHashElementIndentation:
+  EnforcedStyle: consistent
 
-# Hash / Array
+Layout/HashAlignment:
+  EnforcedHashRocketStyle: table
+  EnforcedColonStyle: table
+
+Layout/LineLength:
+  Enabled: false
+
+Layout/LeadingCommentSpace:
+  Enabled: false
 
 Layout/MultilineArrayBraceLayout:
   Enabled: false
@@ -155,36 +62,169 @@ Layout/MultilineArrayBraceLayout:
 Layout/MultilineHashBraceLayout:
   EnforcedStyle: new_line
 
-
-# Visual blocks
-
-Layout/HashAlignment:
-  EnforcedHashRocketStyle: table
-  EnforcedColonStyle: table
-
-Layout/ArrayAlignment:
-  EnforcedStyle: with_fixed_indentation
-
-Layout/FirstHashElementIndentation:
-  EnforcedStyle: consistent
-
-Layout/FirstArrayElementIndentation:
-  EnforcedStyle: consistent
-
-
-# Methods
-
-Layout/ArgumentAlignment:
-  EnforcedStyle: with_fixed_indentation
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
 
 Layout/ParameterAlignment:
   EnforcedStyle: with_fixed_indentation
 
-Style/MethodCallWithoutArgsParentheses:
+Layout/SpaceAroundMethodCallOperator:
+  Enabled: true
+
+Layout/SpaceInsideStringInterpolation:
+  EnforcedStyle: space
+
+
+# Lint -------------------------------------------------------------------------
+
+Lint/DeprecatedOpenSSLConstant:
+  Enabled: true
+
+Lint/RaiseException:
+  Enabled: true
+
+Lint/StructNewOverride:
+  Enabled: true
+
+# NOTE: gets it wrong when you want to avoid usage of **
+Lint/UnusedBlockArgument:
+  AllowUnusedKeywordArguments: true
+
+Lint/UnusedMethodArgument:
   Enabled: false
 
 
-# Commas
+# Metrics ----------------------------------------------------------------------
+
+Metrics:
+  Enabled: false
+
+
+# Naming -----------------------------------------------------------------------
+
+Naming/ConstantName:
+  Enabled: false
+
+
+# Style ------------------------------------------------------------------------
+
+Style/Alias:
+  EnforcedStyle: prefer_alias_method
+
+Style/AsciiComments:
+  Enabled: false
+
+Style/BlockComments:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  EnforcedStyle: compact
+
+# REF: https://docs.rubocop.org/rubocop/cops_style.html#stylecombinableloops
+Style/CombinableLoops:
+  Enabled: false
+
+Style/CommandLiteral:
+  EnforcedStyle: percent_x
+
+Style/ConditionalAssignment:
+  Enabled: false
+
+Style/DoubleNegation:
+  Enabled: false
+
+Style/EmptyElse:
+  EnforcedStyle: empty
+
+Style/EmptyMethod:
+  Enabled: false
+
+Style/ExponentialNotation:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/GuardClause:
+  Enabled: false
+
+Style/HashEachMethods:
+  Enabled: true
+
+# REF: https://docs.rubocop.org/rubocop/cops_style.html#stylehashaslastarrayitem
+Style/HashAsLastArrayItem:
+  Enabled: false
+
+Style/HashTransformKeys:
+  Enabled: false
+
+Style/HashTransformValues:
+  Enabled: false
+
+Style/IfUnlessModifier:
+  Enabled: false
+
+Style/InverseMethods:
+  Enabled: false
+
+Style/Lambda:
+  EnforcedStyle: literal
+
+Style/MethodCallWithoutArgsParentheses:
+  Enabled: false
+
+Style/MutableConstant:
+  Enabled: false
+
+Style/MultilineBlockChain:
+  Enabled: false
+
+Style/MultipleComparison:
+  Enabled: false
+
+Style/NegatedIf:
+  Enabled: false
+
+# NOTE: Gets it wrong when it's a no op
+Style/Next:
+  Enabled: false
+
+Style/NilComparison:
+  EnforcedStyle: comparison
+
+Style/NonNilCheck:
+  Enabled: false
+
+Style/NumericPredicate:
+  Enabled: false
+
+Style/PerlBackrefs:
+  Enabled: false
+
+Style/RaiseArgs:
+  EnforcedStyle: compact
+
+Style/RedundantInterpolation:
+  Enabled: false
+
+# NOTE: Gets it wrong on empty return.
+Style/RedundantReturn:
+  Enabled: false
+
+Style/RedundantSelf:
+  Enabled: false
+
+Style/RegexpLiteral:
+  EnforcedStyle: percent_r
+
+Style/SingleLineMethods:
+  Enabled: false
+
+Style/SlicingWithRange:
+  Enabled: true
+
+Style/SymbolArray:
+  Enabled: false
 
 Style/TrailingCommaInArguments:
   EnforcedStyleForMultiline: consistent_comma
@@ -196,47 +236,11 @@ Style/TrailingCommaInArrayLiteral:
 Style/TrailingCommaInHashLiteral:
   EnforcedStyleForMultiline: consistent_comma
 
+Style/TernaryParentheses:
+  EnforcedStyle: require_parentheses
 
-# Predicates
-
-Style/NumericPredicate:
+Style/WhileUntilDo:
   Enabled: false
-
-Style/NilComparison:
-  EnforcedStyle: comparison
 
 Style/ZeroLengthPredicate:
   Enabled: false
-
-
-# Required by Rubocop
-
-Lint/RaiseException:
-  Enabled: true
-
-Lint/StructNewOverride:
-  Enabled: true
-
-Style/HashEachMethods:
-  Enabled: true
-
-Style/HashTransformKeys:
-  Enabled: false
-
-Style/HashTransformValues:
-  Enabled: false
-
-Layout/EmptyLinesAroundAttributeAccessor:
-  Enabled: false
-
-Layout/SpaceAroundMethodCallOperator:
-  Enabled: true
-
-Lint/DeprecatedOpenSSLConstant:
-  Enabled: true
-
-Style/ExponentialNotation:
-  Enabled: false
-
-Style/SlicingWithRange:
-  Enabled: true

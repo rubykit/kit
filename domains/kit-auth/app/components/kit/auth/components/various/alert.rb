@@ -1,5 +1,6 @@
 module Kit::Auth::Components::Various
   class Alert < Kit::Auth::Components::Component
+
     attr_reader :type
 
     def initialize(type:, **)
@@ -8,8 +9,8 @@ module Kit::Auth::Components::Various
     end
 
     def alert_type_class
-      if type.in? ['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark']
-        "alert-#{type}"
+      if type.in? %w[primary secondary success danger warning info light dark]
+        "alert-#{ type }"
       else
         nil
       end

@@ -1,8 +1,7 @@
 module Kit::Auth::Models::Read
   class RequestMetadata < Kit::Auth::Models::ReadRecord
+
     self.table_name = 'request_metadata'
-
-
 
     self.whitelisted_columns = [
       :id,
@@ -16,7 +15,7 @@ module Kit::Auth::Models::Read
     ]
 
     belongs_to :user,
-               class_name: 'Kit::Auth::Models::Read::User'
+      class_name: 'Kit::Auth::Models::Read::User'
 
   end
 end

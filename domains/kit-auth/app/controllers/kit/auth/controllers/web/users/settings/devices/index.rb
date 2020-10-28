@@ -3,7 +3,7 @@ module Kit::Auth::Controllers::Web::Users::Settings::Devices
 
     def self.endpoint(router_request:)
       Kit::Organizer.call({
-        ctx:  { router_request: router_request, },
+        ctx:  { router_request: router_request },
         list: [
           :web_require_current_user!,
           self.method(:list),
@@ -46,7 +46,7 @@ module Kit::Auth::Controllers::Web::Users::Settings::Devices
 
       Kit::Router::Controllers::Http.render(
         component: Kit::Auth::Components::Pages::Users::Settings::Devices::Index,
-        params: {
+        params:    {
           list: list,
         },
       )

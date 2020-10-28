@@ -43,7 +43,8 @@ module Kit::Api::JsonApi::Services::Serialization::ResourceObject
 
     record[:resource_object]   = resource_object
 
-    ro_cache[:records][record.object_id] = true
+    record_object_id = record.object_id
+    ro_cache[:records][record_object_id] = true
 
     [:ok, document: document, record: record, resource_object: resource_object]
   end

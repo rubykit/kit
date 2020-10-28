@@ -1,12 +1,15 @@
-inherit_from:
-  - .rubocop_shared.yml
+# Reference: https://github.com/rubocop-hq/rubocop/blob/master/config/default.yml
+
+inherit_from: ./.rubocop_shared.yml
 
 AllCops:
 
   Exclude:
     - '**/Gemfile.lock'
+    - '**/db/schema.rb'
     - 'apps/**/*'
-    - 'domains/**/*'
+    - 'domains/kit-geolocation/**/*'
+    - 'domains/kit-payment/**/*'
     - 'libraries/kit-api/spec/dummy/db/schema.rb'
     - 'libraries/kit-doc/specs/dummy/**/*.rb'
     - 'libraries/kit-doc/node_modules/**/*'
@@ -15,10 +18,8 @@ AllCops:
 
 # ------------------------------------------------------------------------------
 
-# Re-add config/default.yml parameters for nested spec directories.
-# Reference: https://github.com/rubocop-hq/rubocop/blob/master/config/default.yml
-#
-# Weirdly enough this is only applied when specifying the config file with `rubocop --config .rubocop.yml`
+# Note: re-add config/default.yml parameters for nested spec directories.
+#   Weirdly enough this is only applied when specifying the config file with `rubocop --config .rubocop.yml`
 
 Naming/PredicateName:
   Exclude:

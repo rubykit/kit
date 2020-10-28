@@ -4,15 +4,15 @@ module Kit::Auth::Controllers::Web::Users::ResetPasswordRequest
     def self.endpoint(router_request:)
       event_record = Kit::Domain::Models::Read::Event.find(router_request.params[:event_id])
 
-      status, ctx = Kit::Organizer.call({
-        list: [
+      Kit::Organizer.call({
+        list:   [
           self.method(:find_user),
           Kit::Auth::Actions::OauthApplications::LoadWeb,
           Kit::Auth::Actions::OauthAccessTokens::CreateForPasswordReset,
           self.method(:create_event),
           self.method(:target_email_system),
         ],
-        ctx:    { event_record: event_record, },
+        ctx:    { event_record: event_record },
         expose: { ok: [:user, :oauth_access_token], error: [:errors] },
       })
     end
@@ -26,12 +26,12 @@ module Kit::Auth::Controllers::Web::Users::ResetPasswordRequest
     def self.find_user(event_record:)
       email = event_record.data[:email]
       if email.blank?
-        return [:error, detail: "Unknown email `#{email}`"]
+        return [:error, detail: "Unknown email `#{ email }`"]
       end
 
       user = Kit::Domain::Models::Read::User.find_by(email: email)
       if !user
-        return [:error, detail: "Could not find user for email `#{email}`"]
+        return [:error, detail: "Could not find user for email `#{ email }`"]
       end
 
       [:ok, user: user]
@@ -39,8 +39,8 @@ module Kit::Auth::Controllers::Web::Users::ResetPasswordRequest
 
     def self.create_event(user:, oauth_access_token:)
       Kit::Events::Actions::CreateEvent.call({
-        type: Kit::Auth::Events::ResetPasswordTokenCreated,
-        data: {
+        type:    Kit::Auth::Events::ResetPasswordTokenCreated,
+        data:    {
           user_id:            user.id,
           oauth_access_token: oauth_access_token.id,
         },
@@ -62,7 +62,7 @@ module Kit::Auth::Controllers::Web::Users::ResetPasswordRequest
               oauth_access_token_plaintext_secret: oauth_access_token_plaintext_secret,
             },
           },
-        })
+        },)
 
       [:ok]
     end

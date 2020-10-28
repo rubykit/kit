@@ -17,9 +17,10 @@ class Kit::Contract::BuiltInContracts::In < Kit::Contract::BuiltInContracts::Ins
     expected_values = @state[:expected_values]
 
     passed = expected_values.any? do |expected_value|
-      if expected_value.is_a?(::Range)
+      case expected_value
+      when ::Range
         expected_value.include?(value)
-      elsif expected_value.is_a?(self.class)
+      when self.class
         expected_value.call(value)[0] == :ok
       else
         expected_value == value

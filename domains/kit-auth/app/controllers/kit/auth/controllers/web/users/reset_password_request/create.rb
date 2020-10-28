@@ -3,9 +3,9 @@ module Kit::Auth::Controllers::Web::Users::ResetPasswordRequest
 
     def self.endpoint(router_request:)
       Kit::Organizer.call({
-        ctx:  { router_request: router_request, },
+        ctx:  { router_request: router_request },
         list: [
-          :web_redirect_if_current_user!,
+          [:alias, :web_redirect_if_current_user!],
           self.method(:create_reset_password_request),
         ],
       })
@@ -21,10 +21,10 @@ module Kit::Auth::Controllers::Web::Users::ResetPasswordRequest
       model = router_request.params.slice(:email)
 
       status, ctx = Kit::Organizer.call({
-        ctx: {
-          email:   model[:email],
+        ctx:  {
+          email:          model[:email],
           router_request: router_request,
-          user:    nil,
+          user:           nil,
         },
         list: [
           self.method(:validate_email),
@@ -42,11 +42,11 @@ module Kit::Auth::Controllers::Web::Users::ResetPasswordRequest
       else
         Kit::Router::Controllers::Http.render(
           component: Kit::Auth::Components::Pages::Users::ResetPasswordRequest::New,
-          params: {
+          params:    {
             model:       model,
             csrf_token:  router_request.http[:csrf_token],
             errors_list: ctx[:errors],
-          }
+          },
         )
       end
     end

@@ -15,14 +15,16 @@ DOC_CONFIG = Kit::Doc::Services::Config.create_config(
   groups_for_modules:      {},
 
   files_extras:            {
-    '.' => { include: %w[README.md] },
+    '.'                           => { include: %w[README.md] },
     #'docs/guides' => { include: %w[**/*.md] },
+    'docs/guides/kit_development' => { include: %w[**/*.md] },
   },
   groups_for_extras:       {
-    'Introduction' => [%r{guides/introduction/.?}],
-    'Guides'       => [%r{guides/[^/]+.md}],
-    'Architecture' => [%r{guides/architecture/.?}],
-    'Various'      => [%r{guides/various/.?}],
+    'Introduction'    => [%r{guides/introduction/.?}],
+    'Guides'          => [%r{guides/[^/]+.md}],
+    'Architecture'    => [%r{guides/architecture/.?}],
+    'Various'         => [%r{guides/various/.?}],
+    'Kit Development' => [%r{guides/kit_development/.?}],
   },
 )
 

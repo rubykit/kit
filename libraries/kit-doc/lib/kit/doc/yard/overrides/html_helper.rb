@@ -25,9 +25,8 @@ module YARD::Templates::Helpers::HtmlHelper # rubocop:disable Style/Documentatio
       html = html.force_encoding(text.encoding) # for libs that mess with encoding
       html = html.encode(invalid: :replace, replace: '?')
     end
-    html = resolve_links(html)
 
-    html
+    resolve_links(html)
   end
 
   # Overidden to add `:with_toc_data` to `RedCarpet`.
@@ -37,9 +36,10 @@ module YARD::Templates::Helpers::HtmlHelper # rubocop:disable Style/Documentatio
   #
   def html_markup_markdown(text)
     provider = markup_class(:markdown)
-    if provider.to_s == 'RDiscount'
+    case provider.to_s
+    when 'RDiscount'
       provider.new(text, :autolink).to_html
-    elsif provider.to_s == 'RedcarpetCompat'
+    when 'RedcarpetCompat'
       provider.new(text, :no_intraemphasis, :gh_blockcode, :fenced_code, :autolink, :tables, :lax_spacing, :with_toc_data).to_html
     else
       provider.new(text).to_html
@@ -51,7 +51,7 @@ module YARD::Templates::Helpers::HtmlHelper # rubocop:disable Style/Documentatio
   # References
   # - https://github.com/lsegal/yard/blob/master/lib/yard/templates/helpers/html_helper.rb#L365
   #
-  def url_for(obj, anchor = nil, relative = true)
+  def url_for(obj, anchor = nil, relative = true) # rubocop:disable Style/OptionalBooleanParameter
     link = nil
     return link unless serializer
     return link if obj.is_a?(::YARD::CodeObjects::Base) && run_verifier([obj]).empty?
@@ -67,7 +67,7 @@ module YARD::Templates::Helpers::HtmlHelper # rubocop:disable Style/Documentatio
 
     link = objpath
 
-    link + (anchor ? '#' + urlencode(anchor_for(anchor)) : '')
+    link + (anchor ? '#' + urlencode(anchor_for(anchor)) : '') # rubocop:disable Style/StringConcatenation
   end
 
 end

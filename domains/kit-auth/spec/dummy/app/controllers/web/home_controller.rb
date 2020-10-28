@@ -8,7 +8,7 @@ class ::Web::HomeController < ::WebController
         'web|users|after_sign_up',
       ],
     },
-    types: {
+    types:   {
       [:http, :rails] => {
         target: [self, :index],
       },

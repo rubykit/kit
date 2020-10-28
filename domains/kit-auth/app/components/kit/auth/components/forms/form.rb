@@ -1,8 +1,9 @@
 module Kit::Auth::Components::Forms
   class Form < Kit::Auth::Components::Component
+
     attr_reader :csrf_token, :model, :errors_list
 
-    def initialize(csrf_token: nil, model:, errors_list: [], **)
+    def initialize(model:, csrf_token: nil, errors_list: [], **)
       super
 
       @csrf_token  = csrf_token
@@ -31,7 +32,7 @@ module Kit::Auth::Components::Forms
     end
 
     def fields_name
-      raise "IMPLEMENT ME"
+      raise 'IMPLEMENT ME'
     end
 
   end

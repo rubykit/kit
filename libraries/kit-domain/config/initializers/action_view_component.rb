@@ -54,7 +54,7 @@ module ActionView # rubocop:disable Style/ClassAndModuleChildren
       call
     end
 
-    def initialize(*); end
+    def initialize(*); end # rubocop:disable Lint/MissingSuper
 
     class << self
 
@@ -70,11 +70,7 @@ module ActionView # rubocop:disable Style/ClassAndModuleChildren
         @compiled ||= nil
         return if @compiled && !Rails.env.development?
 
-        class_eval(
-          'def call; @output_buffer = ActionView::OutputBuffer.new; ' +
-          compiled_template +
-          '; end',
-        )
+        class_eval("def call; @output_buffer = ActionView::OutputBuffer.new; #{ compiled_template }; end", __FILE__, __LINE__)
 
         @compiled = true
       end

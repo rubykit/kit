@@ -107,7 +107,6 @@ module Kit::Auth::Controllers::Api
       param    = param.to_sym
       column ||= param
       column   = column.to_sym
-
       value    = params[param]
 
       if !value.blank?
@@ -145,9 +144,9 @@ module Kit::Auth::Controllers::Api
       errors = [
         {
           status: status_code.to_s,
-          code:   "unauthorized",
-          title:  "Unauthorized",
-          detail: "You need to authenticate in order to access this ressource.",
+          code:   'unauthorized',
+          title:  'Unauthorized',
+          detail: 'You need to authenticate in order to access this ressource.',
         },
       ]
 
@@ -168,9 +167,9 @@ module Kit::Auth::Controllers::Api
       errors = [
         {
           status: status_code.to_s,
-          code:   "forbidden",
-          title:  "Forbidden",
-          detail: "You do not have the authorization to perform this action.",
+          code:   'forbidden',
+          title:  'Forbidden',
+          detail: 'You do not have the authorization to perform this action.',
         },
       ]
 
@@ -187,9 +186,9 @@ module Kit::Auth::Controllers::Api
       errors = [
         {
           status: status_code.to_s,
-          code:   "not-found",
-          title:  "#{model_name} Not Found",
-          detail: "#{model_name} #{id} is not available on this server",
+          code:   'not-found',
+          title:  "#{ model_name } Not Found",
+          detail: "#{ model_name } #{ id } is not available on this server",
         },
       ]
 

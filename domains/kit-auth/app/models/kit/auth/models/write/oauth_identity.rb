@@ -1,5 +1,6 @@
 module Kit::Auth::Models::Write
   class OauthIdentity < Kit::Auth::Models::WriteRecord
+
     self.table_name = 'oauth_identities'
 
     acts_as_paranoid
@@ -19,7 +20,7 @@ module Kit::Auth::Models::Write
     ]
 
     belongs_to :user,
-               class_name: 'Kit::Auth::Models::Write::User'
+      class_name: 'Kit::Auth::Models::Write::User'
 
   end
 end

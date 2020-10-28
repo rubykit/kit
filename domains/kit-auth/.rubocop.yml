@@ -1,0 +1,15 @@
+inherit_from: ../../.rubocop_shared.yml
+
+# Project specific setup.
+
+AllCops:
+
+  Exclude:
+    - 'spec/dummy/**/*'
+
+# Note: needed because running rubocop in the top level dir VS projects subdirectories has slightly different behaviours due to setup
+Lint/RedundantCopDisableDirective:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false

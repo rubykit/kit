@@ -104,9 +104,8 @@ module Kit::Doc::Services::Search
       .gsub(%r{\s+}, ' ')
 
     # Generate text version
-    content = Nokogiri::HTML.parse(content).text
+    Nokogiri::HTML.parse(content).text
 
-    content
   end
 
 end

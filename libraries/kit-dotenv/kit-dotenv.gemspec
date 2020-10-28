@@ -21,6 +21,8 @@ Gem::Specification.new do |s|
 
   s.files = Dir['{lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
 
+  s.required_ruby_version = '~> 2.7'
+
   s.add_dependency 'dotenv'
 
 end

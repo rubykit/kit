@@ -4,10 +4,10 @@ class Kit::Auth::Admin::Tables::User < Kit::Auth::Admin::Tables::BaseTable
 
   def attributes_for_all
     base_attributes.merge(
-      email:              :code,
-      created_at:         nil,
-      updated_at:         nil,
-      confirmed_at:       nil,
+      email:        :code,
+      created_at:   nil,
+      updated_at:   nil,
+      confirmed_at: nil,
     )
   end
 

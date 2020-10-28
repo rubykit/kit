@@ -32,9 +32,8 @@ module Kit::Doc::Services::Modules
       .select  { |el| el.type == :module }
       .sort_by { |el| el.name.to_s }
 
-    list = verifier_runner.call(list)
+    verifier_runner.call(list)
 
-    list
   end
 
   # Get the class / modules that have been included into `object`.
@@ -115,9 +114,8 @@ module Kit::Doc::Services::Modules
       .select  { |el| el.type == :class }
       .sort_by { |el| el.name.to_s }
 
-    list = verifier_runner.call(list)
+    verifier_runner.call(list)
 
-    list
   end
 
   # Get all subclasses of `object`.
@@ -138,10 +136,9 @@ module Kit::Doc::Services::Modules
     subclasses = globals.subclasses[object.path] || []
     return [] if subclasses.size == 0
 
-    list = subclasses
+    subclasses
       .sort_by(&:path)
 
-    list
   end
 
   # Methods --------------------------------------------------------------------

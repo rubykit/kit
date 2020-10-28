@@ -8,7 +8,7 @@ module Comparable
 
     attr_reader :orderings
 
-    def initialize(orderings)
+    def initialize(orderings) # rubocop:disable Lint/MissingSuper
       # Adding keyword options like `allow_nil` (`:first`/`:last`) would be great.
       replace(orderings.map do |key, dir|
         desc =

@@ -11,7 +11,7 @@ module Kit::Auth::Controllers::Api::V1::Users
           Kit::Auth::Actions::Users::CreateUserWithPassword,
           self.method(:render),
         ],
-        ctx: router_request.params.slice(:email, :password, :password_confirmation),
+        ctx:  router_request.params.slice(:email, :password, :password_confirmation),
       })
 
       if status == :ok
@@ -26,9 +26,9 @@ module Kit::Auth::Controllers::Api::V1::Users
     Kit::Router::Services::Router.register(
       uid:     ROUTE_UID,
       aliases: {
-        ROUTE_ID => 'api|users|create'
+        ROUTE_ID => 'api|users|create',
       },
-      target: self.method(:endpoint),
+      target:  self.method(:endpoint),
     )
 
     def self.render(user:)
@@ -36,7 +36,7 @@ module Kit::Auth::Controllers::Api::V1::Users
         status:      201,
         resources:   user,
         serializers: Kit::Auth::Controllers::Api.serializers,
-        links: {
+        links:       {
           self: Kit::Router::Services::Router.url(id: ROUTE_UID, params: { resource_id: user.id }),
         },
       )

@@ -3,7 +3,7 @@ module Kit::Auth::Actions::OauthAccessTokens::Create
   #Contract Hash => [Symbol, KeywordArgs[oauth_access_token: Any, errors: Any]]
   def self.call(user:, oauth_application:, oauth_access_token_expires_in:, scopes:)
     Kit::Organizer.call({
-      ctx: {
+      ctx:  {
         user:                          user,
         oauth_application:             oauth_application,
         oauth_access_token_expires_in: oauth_access_token_expires_in,
@@ -25,7 +25,7 @@ module Kit::Auth::Actions::OauthAccessTokens::Create
       user,
       {
         scope: scopes,
-      }
+      },
     )
 
     request_object.validate
@@ -52,7 +52,7 @@ module Kit::Auth::Actions::OauthAccessTokens::Create
       resource_owner_id,
       scopes,
       oauth_access_token_expires_in,
-      refresh_token_enabled
+      refresh_token_enabled,
     )
 
     [:ok, doorkeeper_access_token: access_token]
@@ -68,7 +68,7 @@ module Kit::Auth::Actions::OauthAccessTokens::Create
       oauth_access_token:                  oauth_access_token,
       oauth_access_token_created:          just_created,
       oauth_access_token_plaintext_secret: plaintext_secret,
-    }]
+    },]
   end
 
 end

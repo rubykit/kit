@@ -14,7 +14,7 @@ module Kit::Auth::Controllers::Api
     end
 
     def self.requires_current_user!(router_request:)
-      _, ctx = api_resolve_current_user(router_request: router_request)
+      api_resolve_current_user(router_request: router_request)
 
       if (model = current_user(router_request: router_request))
         return [:ok, current_user: model]
@@ -25,9 +25,8 @@ module Kit::Auth::Controllers::Api
 
     Kit::Organizer::Services::Callable::Alias.register(id: :api_requires_current_user!, target: self.method(:requires_current_user!))
 
-
     def self.requires_scope!(router_request:, scope:)
-      _, ctx = api_resolve_current_user(router_request: router_request)
+      api_resolve_current_user(router_request: router_request)
 
       if (model = current_user_oauth_access_token(router_request: router_request))
         model_scopes = OAuth::Scopes.from_string(model.scopes)
@@ -39,13 +38,12 @@ module Kit::Auth::Controllers::Api
 
     Kit::Organizer::Services::Callable::Alias.register(id: :api_requires_scope!, target: self.method(:requires_scope!))
 
-
     def self.resolve_current_user(router_request:)
       if !router_request.metadata[METADATA_KEY_CURRENT_USER_ATTEMPTED_RESOLVED]
         status, ctx = Kit::Organizer.call({
           list: [
             Kit::Auth::Actions::OauthApplications::LoadApi,
-            ->(router_request:, oauth_application:) do
+            ->(router_request:, oauth_application:) do # rubocop:disable Lint/ShadowingOuterLocalVariable
               Kit::Auth::Actions::Users::IdentifyUserForRequest.call(
                 router_request:    router_request,
                 oauth_application: oauth_application,
@@ -53,12 +51,12 @@ module Kit::Auth::Controllers::Api
               )
             end,
           ],
-          ctx: {
+          ctx:  {
             router_request: router_request,
           },
         })
 
-        router_request.metadata[METADATA_KEY_CURRENT_USER_ATTEMPTED_RESOLVED]   = true
+        router_request.metadata[METADATA_KEY_CURRENT_USER_ATTEMPTED_RESOLVED] = true
 
         if status == :ok
           router_request.metadata[METADATA_KEY_CURRENT_USER]                    = ctx[:user]
@@ -73,7 +71,6 @@ module Kit::Auth::Controllers::Api
     end
 
     Kit::Organizer::Services::Callable::Alias.register(id: :api_resolve_current_user, target: self.method(:resolve_current_user))
-
 
   end
 end

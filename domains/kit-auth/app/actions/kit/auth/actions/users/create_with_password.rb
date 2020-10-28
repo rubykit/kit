@@ -2,8 +2,8 @@ module Kit::Auth::Actions::Users::CreateWithPassword
 
   #Contract Hash => [Symbol, KeywordArgs[user: Any, errors: Any]]
   def self.call(email:, password:, password_confirmation:, email_confirmation: nil)
-    status, ctx = Kit::Organizer.call({
-      ctx: {
+    _status, ctx = Kit::Organizer.call({
+      ctx:  {
         email:                 email,
         email_confirmation:    email_confirmation,
         password:              password,
@@ -53,12 +53,12 @@ module Kit::Auth::Actions::Users::CreateWithPassword
 
   def self.persist_user(email:, hashed_secret:)
     begin
-      user  = Kit::Auth::Models::Write::User.create({
+      user = Kit::Auth::Models::Write::User.create({
         email:         email,
         hashed_secret: hashed_secret,
       })
     rescue ActiveRecord::RecordNotUnique
-      return [:error, user: nil, errors: { attribute: :email, detail: "$attribute is alreadky taken." }]
+      return [:error, user: nil, errors: { attribute: :email, detail: '$attribute is alreadky taken.' }]
     end
 
     if user.persisted?
@@ -69,7 +69,7 @@ module Kit::Auth::Actions::Users::CreateWithPassword
   end
 
   def self.fire_user_created_event(user:)
-    puts "Fire user_created event"
+    puts 'Fire user_created event'
     [:ok]
   end
 

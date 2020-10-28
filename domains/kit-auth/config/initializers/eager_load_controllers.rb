@@ -16,7 +16,7 @@ list = [
 
   # WEB ------------------------------------------------------------------------
 
-  #'kit/auth/controllers/web_controller',
+  #'kit/auth/controllers/web/web_controller',
   'kit/auth/controllers/web/current_user',
 
   'kit/auth/controllers/web/users/reset_password/edit',
@@ -39,8 +39,8 @@ list = [
 ]
 
 autoloader   = Rails.autoloaders.main
-default_path = File.expand_path("../../../app/controllers", __FILE__)
+default_path = File.expand_path('../../app/controllers', __dir__)
 
 list.each do |file|
-  autoloader.preload("#{default_path}/#{file}.rb")
+  autoloader.preload("#{ default_path }/#{ file }.rb")
 end

@@ -1,5 +1,6 @@
 module Kit::Auth::Components::Various
   class Flash < Kit::Auth::Components::Component
+
     attr_reader :flash
 
     def initialize(flash:, **)
@@ -10,9 +11,9 @@ module Kit::Auth::Components::Various
     def flash_type_to_bootstrap_type(type)
       case type.to_sym
       when :alert
-        "danger"
+        'danger'
       when :notice
-        "info"
+        'info'
       else
         type
       end

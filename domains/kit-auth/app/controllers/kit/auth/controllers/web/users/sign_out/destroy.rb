@@ -7,7 +7,7 @@ module Kit::Auth::Controllers::Web::Users::SignOut
           :web_require_current_user!,
           self.method(:sign_out),
         ],
-        ctx: { router_request: router_request, },
+        ctx:  { router_request: router_request },
       })
     end
 

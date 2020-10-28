@@ -46,12 +46,9 @@ Rails.application.routes.draw do
 
   Kit::Router::Services::Adapters::Http::Rails::Routes.mount_http_targets(rails_router_context: self, list: list_web)
 
-
-
   list_admin = []
 
   Kit::Router::Services::Adapters::Http::Rails::Routes.mount_http_targets(rails_router_context: self, list: list_admin)
-
 
   # ----------------------------------------------------------------------------
   # Local to this app container
