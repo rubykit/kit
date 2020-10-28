@@ -13,8 +13,6 @@ Gem::Specification.new do |s|
   s.email       = 'nathan@rubykit.org'
   s.homepage    = 'https://github.com/rubykit/kit/tree/master/domains/kit-auth'
 
-  s.required_ruby_version = '~> 2.7'
-
   s.metadata = {
     'source_code_base_uri' => 'https://github.com/rubykit/kit',
     'source_code_uri'      => "https://github.com/rubykit/kit/tree/v#{ version }/domains/kit-auth",
@@ -22,6 +20,8 @@ Gem::Specification.new do |s|
   }
 
   s.files = Dir['{app,config,db,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
+
+  s.required_ruby_version = '~> 2.7'
 
   s.add_dependency 'bcrypt'
   s.add_dependency 'browser'

@@ -95,6 +95,11 @@ The default is:
 edge:master
 ```
 
+3 - Add it to your project `Rakefile`:
+```
+import 'tasks/documentation.rake'
+```
+
 ## Generate documentation
 
 Now you are ready to generate your project documentation.

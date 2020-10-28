@@ -1,3 +1,5 @@
+# Reference: https://github.com/rubocop-hq/rubocop/blob/master/config/default.yml
+
 AllCops:
 
   TargetRubyVersion: 2.7

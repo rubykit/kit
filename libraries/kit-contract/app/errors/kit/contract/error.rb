@@ -40,7 +40,7 @@ class Kit::Contract::Error < ::StandardError
           #contracts << [name, el.inspect].to_s
         end
 
-        list << '  Hierarchy: ' + contracts.join(' > ')
+        list << "  Hierarchy: #{ contracts.join(' > ') }"
       end
 
       if @contract_error[:args]
@@ -72,7 +72,7 @@ class Kit::Contract::Error < ::StandardError
 
     method   = "#{ @target_class.name }#{ (@method_type == :singleton_method) ? '#' : '.' }#{ @method_name }"
     str      = "Contract failure #{ @type } `#{ method }`"
-    if contract&.respond_to?(:get_name)
+    if contract.respond_to?(:get_name)
       str += " - Name: `#{ contract.get_name }`"
     end
 

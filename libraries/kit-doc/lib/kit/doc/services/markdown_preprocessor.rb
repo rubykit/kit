@@ -55,7 +55,7 @@ module Kit::Doc::Services::MarkdownPreprocessor
   #
   # ### References
   # - https://regex101.com/r/BNbn0Y/8
-  PREPROC_REGEX = %r{(?:<!--pp )(?:.*?)(?<!\\)(?:{)(?:\n| )?(?<prepoc_content>[^\>]*?)(?:\n| )?(?<!\\)(?:}){1}(?:.*?)(?:pp-->)}m
+  PREPROC_REGEX = %r{(?:<!--pp )(?:.*?)(?<!\\)(?:{)(?:\n| )?(?<prepoc_content>[^>]*?)(?:\n| )?(?<!\\)(?:}){1}(?:.*?)(?:pp-->)}m
 
   # Replace static content: by dynamic one hidden in html comments.
   #

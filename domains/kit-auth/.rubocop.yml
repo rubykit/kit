@@ -1,15 +1,15 @@
-# Reference: https://github.com/rubocop-hq/rubocop/blob/master/config/default.yml
-
 inherit_from: ../../.rubocop_shared.yml
+
+# Project specific setup.
 
 AllCops:
 
   Exclude:
     - 'spec/dummy/**/*'
 
-Style/Documentation:
+# Note: needed because running rubocop in the top level dir VS projects subdirectories has slightly different behaviours due to setup
+Lint/RedundantCopDisableDirective:
   Enabled: false
 
-# Note: needed because somehow running rubocop in the top level dir VS projects subdirectories has slightly different behaviours.
-Lint/RedundantCopDisableDirective:
+Style/Documentation:
   Enabled: false

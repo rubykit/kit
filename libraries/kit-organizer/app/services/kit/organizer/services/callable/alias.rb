@@ -8,7 +8,7 @@ module Kit::Organizer::Services::Callable::Alias
   # ALlows to ?
   # @note The expected format is `[:alias, :alias_name]`.
   contract Ct::Hash[args: Ct::Tupple[Ct::Eq[:alias], Ct::Symbol]]
-  def self.resolve(store: nil, args:)
+  def self.resolve(args:, store: nil)
     _, alias_name = args
     store ||= local_store
 
@@ -16,7 +16,7 @@ module Kit::Organizer::Services::Callable::Alias
   end
 
   contract Ct::Hash[id: Ct::Symbol, target: Ct::Callable]
-  def self.register(store: nil, id:, target:)
+  def self.register(id:, target:, store: nil)
     store ||= local_store
 
     store[id.to_sym] = {
@@ -25,7 +25,7 @@ module Kit::Organizer::Services::Callable::Alias
   end
 
   contract Ct::Hash[id: Ct::Symbol]
-  def self.get(store: nil, id:)
+  def self.get(id:, store: nil)
     store ||= local_store
     record = store[id.to_sym]
 

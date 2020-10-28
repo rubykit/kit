@@ -107,7 +107,6 @@ module Kit::Auth::Controllers::Api
       param    = param.to_sym
       column ||= param
       column   = column.to_sym
-
       value    = params[param]
 
       if !value.blank?

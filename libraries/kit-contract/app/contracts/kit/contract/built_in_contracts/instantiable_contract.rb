@@ -74,7 +74,7 @@ class Kit::Contract::BuiltInContracts::InstantiableContract
 
   # When enabled, outputs the Contract arguments when called.
   def debug(args:)
-    return if !@state[:meta].dig(:debug)
+    return if !@state[:meta][:debug]
 
     name = @state[:meta][:name]
     if name

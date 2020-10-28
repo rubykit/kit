@@ -13,7 +13,7 @@ module TestModules::Organizer
   Ct = Kit::Contract::BuiltInContracts
 
   contract Ct::Hash[list: Ct::Array.of(Ct::Or[Ct::Callable, Ct::Symbol]), ctx: Ct::Optional[Ct::Hash], filter: Ct::Optional[Ct::Boolean]] => Kit::Organizer::Contracts::ResultTupple
-  def self.organize(list:, ctx: nil, filter: nil, result:)
+  def self.organize(list:, result:, ctx: nil, filter: nil)
     result
   end
 

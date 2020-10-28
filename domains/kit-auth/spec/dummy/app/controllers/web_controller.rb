@@ -1,4 +1,5 @@
 class ::WebController < ::ActionController::Base
+
   include Kit::Auth::Controllers::Web::Concerns::RailsCurrentUser
 
   protect_from_forgery
@@ -23,14 +24,14 @@ class ::WebController < ::ActionController::Base
         [:alias, :web_resolve_current_user],
         request.params[:kit_router_target],
       ],
-      ctx: controller_ctx,
+      ctx:  controller_ctx,
     })
 
     Kit::Organizer.call({
       list: [
         Kit::Router::Services::Adapters::Http::Rails::Request::Export.method(:export_request),
       ],
-      ctx: controller_ctx.merge(ctx.slice(:router_request, :router_response)),
+      ctx:  controller_ctx.merge(ctx.slice(:router_request, :router_response)),
     })
 
     return

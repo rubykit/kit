@@ -11,7 +11,7 @@ module Kit::Contract::Mixin
 
   class_methods do
 
-    def inherited(child_class)
+    def inherited(child_class) # rubocop:disable Lint/MissingSuper
       child_class.reset_tmp_contracts
     end
 

@@ -82,7 +82,7 @@ YARD::Rake::YardocTask.new do |t|
     # Overwrite `Kit::Doc::Yard::FileSerializer`
     ::YARD::CLI::YardocOptions.default_attr :serializer, -> { ::YARD::Serializers::FileSystemSerializer.new }
 
-    FileUtils.rm_rf(Dir[output_dir + '/*'])
+    FileUtils.rm_rf(Dir["#{ output_dir }/*"])
   end
 
   t.files    = (DOC_CONFIG_DUMMY_APP[:files_modules] + ['-'] + DOC_CONFIG_DUMMY_APP[:files_extras]).flatten

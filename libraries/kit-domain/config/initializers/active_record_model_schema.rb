@@ -28,7 +28,7 @@ module ActiveRecord::ModelSchema::ClassMethods
       @whitelisted_columns = []
     end
 
-    if @whitelisted_columns.size > 0 || (respond_to?(:columns_whitelisting) && columns_whitelisting) # rubocop:disable Style/GuardClause
+    if @whitelisted_columns.size > 0 || (respond_to?(:columns_whitelisting) && columns_whitelisting)
       @columns_hash.slice!(*@whitelisted_columns)
     end
   end

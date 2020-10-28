@@ -12,4 +12,4 @@
 //
 // require rails-ujs
 
-// require kit/auth/application
+// require kit/dummy-app-container/application

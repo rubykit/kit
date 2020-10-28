@@ -25,8 +25,9 @@ module Kit::Doc::Services::Tasks
         puts "Generating documentation for `#{ config[:project] }` in `#{ config[:output_dir_current_version] }`"
 
         if clean_output_dir && !config[:output_dir_current_version].empty?
-          puts "  Cleaning out dst directory: rm -rf #{ config[:output_dir_current_version] + '/*' }"
-          FileUtils.rm_rf(Dir[config[:output_dir_current_version] + '/*'])
+          dst = "#{ config[:output_dir_current_version] }/*"
+          puts "  Cleaning out dst directory: rm -rf #{ dst }"
+          FileUtils.rm_rf(Dir[dst])
         end
 
         puts ''
@@ -120,7 +121,7 @@ module Kit::Doc::Services::Tasks
     initial_git_ref = Git.open(config[:git_project_path]).current_branch
 
     config[:all_versions].each do |version:, source_ref:|
-      before_version.call(version: version, source_ref: source_ref) if before_version&.respond_to?(:call)
+      before_version.call(version: version, source_ref: source_ref) if before_version.respond_to?(:call)
 
       result = %x(
         # Go back to the git top level directory for checkout
@@ -142,7 +143,7 @@ module Kit::Doc::Services::Tasks
         [[ -e '#{ config[:output_dir_all_versions] }/docs_config.js' ]] && cp '#{ config[:output_dir_all_versions] }/docs_config.js' '#{ config[:output_dir_all_versions] }/#{ version }/'
       )
 
-      after_version.call(version: version, source_ref: source_ref, result: result) if after_version&.respond_to?(:call)
+      after_version.call(version: version, source_ref: source_ref, result: result) if after_version.respond_to?(:call)
     end
 
     # Checkout the initial_git_ref before exiting

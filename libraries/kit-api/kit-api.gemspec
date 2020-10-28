@@ -13,14 +13,14 @@ Gem::Specification.new do |s|
   s.email       = 'nathan@rubykit.org'
   s.homepage    = 'https://github.com/rubykit/kit/tree/master/libraries/kit-api'
 
-  s.required_ruby_version = '~> 2.7'
-
   s.metadata = {
     'documentation_uri' => "https://docs.rubykit.org/kit-api/v#{ version }",
     'source_code_uri'   => "https://github.com/rubykit/kit/tree/v#{ version }/libraries/kit-api",
   }
 
   s.files = Dir['{app,config,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
+
+  s.required_ruby_version = '~> 2.7'
 
   s.add_dependency 'oj',       '~> 3.3', '>= 3.3.5'
   s.add_dependency 'rails',    '~> 6.0'

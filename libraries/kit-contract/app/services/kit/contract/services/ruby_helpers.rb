@@ -120,7 +120,7 @@ module Kit::Contract::Services::RubyHelpers
   # Given some callable `parameters`, generate the a callable definition
   # @note Default values are not available, so they are lost. Kudos to Ruby.
   def self.parameters_as_signature_to_s(parameters:)
-    signature = parameters
+    parameters
       .map do |type, name|
         case type
         when :req
@@ -143,7 +143,6 @@ module Kit::Contract::Services::RubyHelpers
       end
       .join(', ')
 
-    signature
   end
 
   # Given some callable `parameters`, attempt to generate the array we would have gotten when using a single splat.

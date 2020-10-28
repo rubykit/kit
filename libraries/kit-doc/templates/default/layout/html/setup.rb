@@ -1,7 +1,7 @@
 include YARD::Templates::Helpers::HtmlHelper # rubocop:disable Style/MixinUsage
 include ::Kit::Doc::Yard::TemplatePluginHelper # rubocop:disable Style/MixinUsage
 
-def init
+def init # rubocop:disable Lint/UselessMethodDefinition
   super
 end
 

@@ -1,7 +1,7 @@
 # Namespace for runtime logic.
 module Kit::Contract::Services::Runtime
 
-  def self.instrument(args:, block: nil, target:, target_class:, method_name:, method_type:, aliased_name:, contracts_before_uid:, contracts_after_uid:)
+  def self.instrument(args:, target:, target_class:, method_name:, method_type:, aliased_name:, contracts_before_uid:, contracts_after_uid:, block: nil)
     _, ctx    = Kit::Contract::Services::Store.get(key: contracts_before_uid)
     contracts = ctx[:value]
 

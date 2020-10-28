@@ -13,14 +13,14 @@ Gem::Specification.new do |s|
   s.email       = 'nathan@rubykit.org'
   s.homepage    = 'https://github.com/rubykit/kit/tree/master/libraries/kit-router'
 
-  s.required_ruby_version = '~> 2.7'
-
   s.metadata = {
     'documentation_uri' => "https://docs.rubykit.org/kit-router/v#{ version }",
     'source_code_uri'   => "https://github.com/rubykit/kit/tree/v#{ version }/libraries/kit-router",
   }
 
   s.files = Dir['{app,config,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
+
+  s.required_ruby_version = '~> 2.7'
 
   s.add_dependency             'oj'
   s.add_dependency             'rails', '~> 6.0.3.1'
