@@ -1,29 +1,51 @@
-require 'dry-validation'
 require 'strong_password'
 
-class Kit::Auth::Services::Contracts::Password < Dry::Validation::Contract
+module Kit::Auth::Services::Contracts::Password
 
-  params do
-    required(:password).filled(min_size?: 10, max_size?: 128)
-    required(:password_confirmation)
+  def self.validate(password:, password_confirmation:)
+    status, ctx = Kit::Contract::Services::Validation.all(
+      contracts: [
+        self.method(:check_length),
+        self.method(:check_complexity),
+        self.method(:check_confirmation),
+      ],
+      args:      [{
+        password:              password,
+        password_confirmation: password_confirmation,
+      }],
+    )
+
+    [status, ctx]
   end
 
-  rule(:password) do
-    if !(value =~ %r{(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[\W_])})
-      key.failure('Complexity requirement not met. Please use: 1 uppercase, 1 lowercase, 1 digit and 1 special character.')
-=begin
+  def self.check_length(password:)
+    if password.size < 10 || password.size > 128
+      [:error, detail: 'Please use a password longer than 10 characters and shorter than 128.', attribute: :password]
     else
-      checker = StrongPassword::StrengthChecker.new(use_dictionary: true)
-      if !checker.is_strong?(value)
-        key.failure('is a terrible password, please use another one!')
-      end
-=end
+      [:ok]
     end
   end
 
-  rule(:password_confirmation, :password) do
-    if values[:password] != values[:password_confirmation]
-      key.failure('Password confirmation does not match.')
+  def self.check_complexity(password:)
+=begin
+    checker = StrongPassword::StrengthChecker.new(use_dictionary: true)
+    if !checker.is_strong?(password)
+      [:error, 'This is a terrible password, please use another one!']
+    end
+=end
+
+    if !(password =~ %r{(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[\W_])})
+      [:error, detail: 'Complexity requirement not met. Please use: 1 uppercase, 1 lowercase, 1 digit and 1 special character.', attribute: :password]
+    else
+      [:ok]
+    end
+  end
+
+  def self.check_confirmation(password:, password_confirmation:)
+    if password == password_confirmation
+      [:ok]
+    else
+      [:error, detail: 'Password confirmation does not match.', attribute: :password_confirmation]
     end
   end
 

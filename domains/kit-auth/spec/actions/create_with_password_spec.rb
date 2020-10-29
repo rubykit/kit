@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Kit::Auth::Actions::Users::CreateUserWithPassword  do
+describe Kit::Auth::Actions::Users::CreateWithPassword  do
   let(:interactor) { described_class }
   let(:subject)    { interactor.call ctx_hash }
 
@@ -39,7 +39,9 @@ describe Kit::Auth::Actions::Users::CreateUserWithPassword  do
     let(:password) { password_ok }
 
     it 'errors out' do
-      expect(ctx_res[:errors][:email]).to eq ['has invalid format']
+      first_error = ctx_res[:errors][0]
+      expect(first_error[:attribute]).to eq :email
+      expect(first_error[:detail]).to    eq 'This email is not valid.'
     end
   end
 

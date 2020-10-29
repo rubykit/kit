@@ -27,7 +27,7 @@ module Kit::Auth::Controllers::Web::Users::ResetPasswordRequest
           user:           nil,
         },
         list: [
-          self.method(:validate_email),
+          Kit::Auth::Services::Contracts::Email.method(:validate),
           Kit::Auth::Actions::RequestMetadata::Create,
           self.method(:create_event),
           self.method(:schedule_process_action),
@@ -48,18 +48,6 @@ module Kit::Auth::Controllers::Web::Users::ResetPasswordRequest
             errors_list: ctx[:errors],
           },
         )
-      end
-    end
-
-    def self.validate_email(email:)
-      res = Kit::Auth::Services::Contracts::Email.new.call({
-        email: email,
-      })
-
-      if res.errors.count > 0
-        [:error, errors: Kit::Error.from_contract(res)]
-      else
-        [:ok]
       end
     end
 
