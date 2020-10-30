@@ -170,7 +170,7 @@ jobs:
       - run:
           name: Upload coverage results to Code Climate
           command: |
-            ~/workspace/code_climate/cc-test-reporter sum-coverage ~/workspace/code_climate/codeclimate.*.json -p 4 -o ~/workspace/code_climate/codeclimate.total.json
+            ~/workspace/code_climate/cc-test-reporter sum-coverage ~/workspace/code_climate/codeclimate.*.json -p 5 -o ~/workspace/code_climate/codeclimate.total.json
             ~/workspace/code_climate/cc-test-reporter upload-coverage -i ~/workspace/code_climate/codeclimate.total.json
 
   test-kit-auth:
