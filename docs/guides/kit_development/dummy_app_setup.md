@@ -11,6 +11,7 @@ Here is a list of files that need to be changed in order to use `kit-app-dummy-c
 - `Rakefile`
 - `bin/rails`
 - `kit_runtime_config.rb`
+- `spec/rails_helper.rb`
 
 ## `kit_runtime_config.rb`
 

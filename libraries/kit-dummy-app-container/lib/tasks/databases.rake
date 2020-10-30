@@ -45,7 +45,6 @@ db_namespace = namespace :db do
         task spec_name => [:load_config, :check_protected_environments] do
           env_name  = Rails.env
           db_config = ActiveRecord::Base.configurations.configs_for(env_name: env_name, spec_name: spec_name)
-          #binding.pry
 
           ActiveRecord::Tasks::DatabaseTasks.load_schema(db_config.config, ActiveRecord::Base.schema_format, nil, env_name, spec_name)
         end

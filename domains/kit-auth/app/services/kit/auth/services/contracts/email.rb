@@ -1,17 +1,25 @@
-require 'dry-validation'
 require 'email_inquire'
 
-class Kit::Auth::Services::Contracts::Email < Dry::Validation::Contract
+module Kit::Auth::Services::Contracts::Email
 
-  params do
-    required(:email).filled(:string)
+  def self.validate(email:)
+    Kit::Contract::Services::Validation.all(
+      contracts: [
+        self.method(:check_format),
+      ],
+      args:      [
+        email: email,
+      ],
+    )
   end
 
-  rule(:email) do
-    response = EmailInquire.validate(values[:email])
+  def self.check_format(email:, email_confirmation: nil)
+    response = EmailInquire.validate(email)
 
     if response.status == :invalid
-      key.failure('has invalid format')
+      [:error, detail: 'This email is not valid.', attribute: :email]
+    else
+      [:ok]
     end
   end
 

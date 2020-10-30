@@ -40,7 +40,7 @@ module Kit
     #
     # ### References
     # - https://dry-rb.org/gems/dry-validation/
-    def self.from_contract(errors)
+    def self.from_dry_validation(errors)
       if errors.respond_to?(:errors)
         errors = errors.errors
       end

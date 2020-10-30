@@ -48,7 +48,8 @@ module Kit::Auth::Actions::Users::UpdatePassword
   end
 
   def self.fire_user_password_updated_event(user:)
-    puts 'Fire user_created event'
+    # TODO: fire event!
+
     [:ok]
   end
 

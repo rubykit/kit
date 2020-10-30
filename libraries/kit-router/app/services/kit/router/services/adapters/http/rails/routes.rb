@@ -118,7 +118,7 @@ module Kit::Router::Services::Adapters::Http::Rails::Routes
   # NOTE: please only call this directly if you understand what you are doing!
   def self.mount_in_rails(rails_router_context:, rails_target:, rails_mountpoint:, kit_router_target: nil)
     http_verb, http_path = rails_mountpoint[:data]
-    puts "DEBUG: mount in rails: #{ http_verb } #{ http_path }"
+    #puts "DEBUG: mount in rails: #{ http_verb } #{ http_path }"
     rails_router_context.send(:match, http_path, {
       controller: rails_target[0],
       action:     rails_target[1],

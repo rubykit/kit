@@ -1,21 +1,37 @@
-require 'dry-validation'
 require 'email_inquire'
 
-class Kit::Auth::Services::Contracts::EmailSignup < Dry::Validation::Contract
+module Kit::Auth::Services::Contracts::EmailSignup
 
-  params do
-    required(:email).filled(:string)
-    optional(:email_confirmation)
+  def self.validate(email:, email_confirmation: nil)
+    Kit::Contract::Services::Validation.all(
+      contracts: [
+        self.method(:check_emptiness),
+        self.method(:check_format),
+      ],
+      args:      [{
+        email:              email,
+        email_confirmation: email_confirmation,
+      }],
+    )
   end
 
-  rule(:email, :email_confirmation) do
-    response = EmailInquire.validate(values[:email])
+  def self.check_emptiness(email:)
+    if email.empty?
+      [:error, detail: 'The email is empty.', attribute: :email]
+    else
+      [:ok]
+    end
+  end
+
+  def self.check_format(email:, email_confirmation: nil)
+    response = EmailInquire.validate(email)
 
     if response.status == :invalid
-      key.failure('has invalid format')
-    # NOTE: should this be here?
-    elsif response.status == :hint && values[:email] != values[:email_confirmation]
-      key.failure("Did you mean #{ response.replacement } ?")
+      [:error, detail: 'This email is not valid.', attribute: :email]
+    elsif response.status == :hint && email != email_confirmation
+      [:error, detail: "Did you mean #{ response.replacement } ?", attribute: :email, type: :warning]
+    else
+      [:ok]
     end
   end
 

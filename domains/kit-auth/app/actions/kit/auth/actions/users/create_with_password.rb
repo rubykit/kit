@@ -10,8 +10,8 @@ module Kit::Auth::Actions::Users::CreateWithPassword
         password_confirmation: password_confirmation,
       },
       list: [
-        self.method(:validate_email),
-        self.method(:validate_password),
+        Kit::Auth::Services::Contracts::EmailSignup.method(:validate),
+        Kit::Auth::Services::Contracts::Password.method(:validate),
         Kit::Auth::Services::Password.method(:generate_hashed_secret),
         self.method(:persist_user),
         self.method(:fire_user_created_event),
@@ -22,32 +22,6 @@ module Kit::Auth::Actions::Users::CreateWithPassword
       [:error, user: nil, errors: ctx[:errors]]
     else
       [:ok, user: ctx[:user]]
-    end
-  end
-
-  def self.validate_password(password:, password_confirmation:)
-    res = Kit::Auth::Services::Contracts::Password.new.call({
-      password:              password,
-      password_confirmation: password_confirmation,
-    })
-
-    if res.errors.count > 0
-      [:error, Kit::Error.from_contract(res)]
-    else
-      [:ok]
-    end
-  end
-
-  def self.validate_email(email:, email_confirmation:)
-    res = Kit::Auth::Services::Contracts::EmailSignup.new.call({
-      email:              email,
-      email_confirmation: email_confirmation,
-    })
-
-    if res.errors.count > 0
-      [:error, errors: Kit::Error.from_contract(res)]
-    else
-      [:ok]
     end
   end
 
@@ -69,7 +43,8 @@ module Kit::Auth::Actions::Users::CreateWithPassword
   end
 
   def self.fire_user_created_event(user:)
-    puts 'Fire user_created event'
+    # TODO: fire event!
+
     [:ok]
   end
 

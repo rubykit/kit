@@ -95,6 +95,11 @@ PATH
       tabulo (~> 2.6)
 
 PATH
+  remote: ../../libraries/kit-rspec-formatter
+  specs:
+    kit-rspec-formatter (0.1.0)
+
+PATH
   remote: .
   specs:
     kit-auth (0.1.0)
@@ -225,6 +230,7 @@ GEM
     database_cleaner (1.8.5)
     debug_inspector (0.0.3)
     diff-lcs (1.3)
+    docile (1.3.2)
     doorkeeper (5.2.6)
       railties (>= 5)
     dotenv (2.7.6)
@@ -267,6 +273,7 @@ GEM
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
+    json (2.3.1)
     jsonapi-deserializable (0.2.0)
     jsonapi-parser (0.1.1)
     jsonapi-rails (0.4.0)
@@ -472,6 +479,11 @@ GEM
       rack (~> 2.0)
       rack-protection (>= 2.0.0)
       redis (>= 4.1.0)
+    simplecov (0.17.1)
+      docile (~> 1.1)
+      json (>= 1.8, < 3)
+      simplecov-html (~> 0.10.0)
+    simplecov-html (0.10.2)
     sinatra (2.0.8.1)
       mustermann (~> 1.0)
       rack (~> 2.0)
@@ -540,6 +552,7 @@ DEPENDENCIES
   kit-organizer!
   kit-pagination!
   kit-router!
+  kit-rspec-formatter!
   listen
   paranoia
   pry
@@ -548,6 +561,7 @@ DEPENDENCIES
   rspec-rails
   rubocop
   sidekiq
+  simplecov (~> 0.17.1)
   slim-rails
 
 BUNDLED WITH
