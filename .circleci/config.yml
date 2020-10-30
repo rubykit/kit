@@ -11,7 +11,7 @@ version: 2.1
 
 docker_ruby: &docker_ruby
   docker:
-    - image: circleci/ruby:2.7.0
+    - image: circleci/ruby:2.7.0-node-browsers
       environment:
         RAILS_ENV: 'test'
         RUBYOPT: '-W:no-deprecated'
@@ -124,6 +124,15 @@ commands:
       #    path: ~/workspace/code_climate/codeclimate.<< parameters.project >>.json
       #    destination: codeclimate.<< parameters.project >>.json
 
+  # kit-auth -------------------------------------------------------------------
+
+  kit-auth__prepare-database:
+    description: 'Loading DBs schemas && running seed'
+    steps:
+      - run:
+          command: |
+            bundle exec rails db:schema:load:primary_ops --trace
+
   # kit-api --------------------------------------------------------------------
 
   kit-api__prepare-database:
@@ -163,6 +172,26 @@ jobs:
           command: |
             ~/workspace/code_climate/cc-test-reporter sum-coverage ~/workspace/code_climate/codeclimate.*.json -p 4 -o ~/workspace/code_climate/codeclimate.total.json
             ~/workspace/code_climate/cc-test-reporter upload-coverage -i ~/workspace/code_climate/codeclimate.total.json
+
+  test-kit-auth:
+    working_directory: ~/kit/domains/kit-auth
+    <<: *docker_ruby
+    #executor: ruby/default
+    steps:
+      - checkout-code
+      - attach_workspace:
+          at: ~/workspace
+      - install-bundler
+      - show-bundler-version
+      - restore-cache-gems:
+          project: kit-auth
+      - install-gems
+      - save-cache-gems:
+          project: kit-auth
+      - kit-auth__prepare-database
+      - run-rspec
+      - save-simple-cov-coverage:
+          project: kit-auth
 
   test-kit-api:
     working_directory: ~/kit/libraries/kit-api
@@ -249,6 +278,9 @@ workflows:
   test-all:
     jobs:
       - code-climate-setup
+      - test-kit-auth:
+          requires:
+            - code-climate-setup
       - test-kit-api:
           requires:
             - code-climate-setup
@@ -263,6 +295,7 @@ workflows:
             - code-climate-setup
       - code-climate-upload-coverage:
           requires:
+            - test-kit-auth
             - test-kit-api
             - test-kit-contract
             - test-kit-organizer
