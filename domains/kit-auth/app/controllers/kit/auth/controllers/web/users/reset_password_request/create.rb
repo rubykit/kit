@@ -36,7 +36,7 @@ module Kit::Auth::Controllers::Web::Users::ResetPasswordRequest
 
       if status == :ok
         Kit::Router::Controllers::Http.redirect_to({
-          location: Kit::Router::Services::HttpRoutes.path(id: 'web|users|after_reset_password_request'),
+          location: Kit::Router::Services::Adapters::Http::Mountpoints.path(id: 'web|users|after_reset_password_request'),
           notice:   I18n.t('kit.auth.passwords.send_paranoid_instructions'),
         })
       else

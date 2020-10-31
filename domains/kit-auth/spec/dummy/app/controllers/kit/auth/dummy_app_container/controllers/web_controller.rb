@@ -1,8 +1,16 @@
-class ::WebController < ::ActionController::Base # rubocop:disable Style/Documentation
+class Kit::Auth::DummyAppContainer::Controllers::WebController < ::ActionController::Base
+
+  include Kit::Auth::Controllers::Web::Concerns::RailsCurrentUser
 
   protect_from_forgery
 
-  layout 'dummy_application'
+  if (layout_name = KIT_APP_PATHS['GEM_SPEC_VIEW_LAYOUT'])
+    layout layout_name
+  end
+
+  if (views_path = KIT_APP_PATHS['GEM_SPEC_VIEWS'])
+    prepend_view_path views_path
+  end
 
   def route
     controller_ctx = {
@@ -12,9 +20,10 @@ class ::WebController < ::ActionController::Base # rubocop:disable Style/Documen
       rails_response:   self.response,
     }
 
-    _status, ctx = Kit::Organizer.call({
+    _, ctx = Kit::Organizer.call({
       list: [
         Kit::Router::Services::Adapters::Http::Rails::Request::Import.method(:import_request),
+        [:alias, :web_resolve_current_user],
         request.params[:kit_router_target],
       ],
       ctx:  controller_ctx,

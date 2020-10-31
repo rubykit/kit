@@ -1,19 +1,9 @@
-class ::WebController < ::ActionController::Base
-
-  include Kit::Auth::Controllers::Web::Concerns::RailsCurrentUser
-
-  protect_from_forgery
-
-  if (layout_name = KIT_APP_PATHS['GEM_SPEC_VIEW_LAYOUT'])
-    layout layout_name
-  end
-
-  prepend_view_path File.expand_path('../views', __dir__)
+class Kit::DummyAppContainer::Controllers::ApiController < ::ActionController::API # rubocop:disable Style/Documentation
 
   def route
     controller_ctx = {
       rails_request:    self.request,
-      rails_cookies:    cookies,
+      rails_cookies:    {},
       rails_controller: self,
       rails_response:   self.response,
     }
@@ -21,7 +11,7 @@ class ::WebController < ::ActionController::Base
     _, ctx = Kit::Organizer.call({
       list: [
         Kit::Router::Services::Adapters::Http::Rails::Request::Import.method(:import_request),
-        [:alias, :web_resolve_current_user],
+        :api_resolve_current_user,
         request.params[:kit_router_target],
       ],
       ctx:  controller_ctx,

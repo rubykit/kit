@@ -5,7 +5,7 @@ module Kit::Auth::Controllers::Web::Users::ResetPassword
       Kit::Organizer.call({
         ctx:  { router_request: router_request },
         list: [
-          :web_require_current_user!,
+          [:alias, :web_require_current_user!],
           # TODO: fix this explicit dependency, not sure how?
           ->(ctx) { Kit::Auth::Controllers::WebController.redirect_if_missing_scope!(router_request: ctx[:router_request], scope: 'update_user_secret') },
           self.method(:render_view),

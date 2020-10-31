@@ -8,7 +8,13 @@ module Kit::Auth::Components::Forms
 
       @csrf_token  = csrf_token
       @model       = model
-      @errors_list = errors_list || []
+      @errors_list = [errors_list].flatten || []
+
+      @errors_list.each do |el|
+        if el[:detail].include?('$attribute') && el[:attribute]
+          el[:detail].gsub!('$attribute', el[:attribute].to_s)
+        end
+      end
     end
 
     def generic_errors

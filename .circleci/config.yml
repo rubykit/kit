@@ -132,6 +132,7 @@ commands:
       - run:
           command: |
             bundle exec rails db:schema:load:primary_ops --trace
+            bundle exec rails db:seed:oauth_applications
 
   # kit-api --------------------------------------------------------------------
 

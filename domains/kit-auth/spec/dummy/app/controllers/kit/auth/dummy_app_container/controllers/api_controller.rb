@@ -1,4 +1,4 @@
-class ::ApiController < ::ActionController::API # :nodoc:
+class Kit::Auth::DummyAppContainer::Controllers::ApiController < ::ActionController::API # :nodoc:
 
   def route
     controller_ctx = {

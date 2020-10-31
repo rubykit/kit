@@ -1,17 +1,20 @@
-class ::ApiController < ::ActionController::API # rubocop:disable Style/Documentation
+class Kit::DummyAppContainer::Controllers::WebController < ::ActionController::Base # rubocop:disable Style/Documentation
+
+  protect_from_forgery
+
+  layout 'dummy_application'
 
   def route
     controller_ctx = {
       rails_request:    self.request,
-      rails_cookies:    {},
+      rails_cookies:    cookies,
       rails_controller: self,
       rails_response:   self.response,
     }
 
-    _, ctx = Kit::Organizer.call({
+    _status, ctx = Kit::Organizer.call({
       list: [
         Kit::Router::Services::Adapters::Http::Rails::Request::Import.method(:import_request),
-        :api_resolve_current_user,
         request.params[:kit_router_target],
       ],
       ctx:  controller_ctx,
