@@ -37,6 +37,14 @@ PATH
       rails (~> 6.0.3.1)
 
 PATH
+  remote: ../kit-router
+  specs:
+    kit-router (0.1.0)
+      oj
+      rails (~> 6.0.3.1)
+      tabulo (~> 2.6)
+
+PATH
   remote: .
   specs:
     kit-contract (0.1.0)
@@ -146,6 +154,7 @@ GEM
     nio4r (2.5.2)
     nokogiri (1.10.9)
       mini_portile2 (~> 2.4.0)
+    oj (3.10.15)
     parallel (1.19.2)
     parser (2.7.2.0)
       ast (~> 2.4.1)
@@ -266,9 +275,13 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+    tabulo (2.6.1)
+      tty-screen (= 0.8.1)
+      unicode-display_width (= 1.7.0)
     thor (1.0.1)
     thread_safe (0.3.6)
     tilt (2.0.10)
+    tty-screen (0.8.1)
     tzinfo (1.2.7)
       thread_safe (~> 0.1)
     unicode-display_width (1.7.0)
@@ -291,6 +304,7 @@ DEPENDENCIES
   kit-dummy-app-container!
   kit-error!
   kit-organizer!
+  kit-router!
   pry
   rspec-rails
   rubocop

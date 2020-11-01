@@ -9,6 +9,9 @@ gem 'kit-contract',            path: '../../libraries/kit-contract'
 gem 'kit-dummy-app-container', path: '../../libraries/kit-dummy-app-container'
 gem 'kit-error',               path: '../../libraries/kit-error'
 
+# TODO: move this to `kit-dummy-app-container` gemspec when released
+gem 'kit-router',              path: '../../libraries/kit-router'
+
 group :development do
   gem 'kit-doc',               path: '../../libraries/kit-doc'
 end
