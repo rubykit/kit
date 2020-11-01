@@ -8,9 +8,25 @@ Add this line to your application's Gemfile:
 gem 'kit-auth'
 ```
 
-And then execute:
+And run:
 ```sh
 $ bundle install
+```
+
+## Tasks
+
+### Documentation
+
+Run:
+```sh
+$ bundle exec rake documentation:generate
+```
+
+### Router aliases
+
+Run:
+```sh
+$ bundle exec router:generate_graph
 ```
 
 ## Databases setup

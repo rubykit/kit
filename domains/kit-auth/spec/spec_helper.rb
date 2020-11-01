@@ -1,5 +1,6 @@
 #require 'test_prof/recipes/rspec/sample'
 require 'rspec'
+require 'capybara/rspec'
 
 require 'kit-rspec-formatter'
 

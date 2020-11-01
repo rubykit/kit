@@ -8,6 +8,8 @@ RSpec.configure do |config|
       cleaner.clean_with(:truncation)
       cleaner.strategy = :truncation
     end
+
+    load File.expand_path('../../db/seeds/oauth_applications.seeds.rb', __dir__)
   end
 
 end

@@ -6,6 +6,7 @@ class Kit::Auth::DummyAppContainer::Controllers::Web::HomeController < Kit::Auth
       'app|home' => [
         'web|users|after_sign_in',
         'web|users|after_sign_up',
+        'web|users|after_sign_out',
       ],
     },
     types:   {

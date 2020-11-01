@@ -28,7 +28,7 @@ module Kit::Auth::Controllers::Web::Users::SignOut
       end
 
       Kit::Router::Controllers::Http.redirect_to(
-        location: Kit::Router::Services::Adapters::Http::Mountpoints.path(id: 'web|users|sign_in'),
+        location: Kit::Router::Services::Adapters::Http::Mountpoints.path(id: 'web|users|after_sign_out'),
       )
     end
 
