@@ -38,7 +38,7 @@ module Kit::Auth::Controllers::Web::Users::SignIn::WithPassword
         router_request.http.cookies[:access_token] = { value: ctx[:oauth_access_token_plaintext_secret], encrypted: true }
 
         Kit::Router::Controllers::Http.redirect_to(
-          location: Kit::Router::Services::HttpRoutes.path(id: 'web|users|after_sign_in'),
+          location: Kit::Router::Services::Adapters::Http::Mountpoints.path(id: 'web|users|after_sign_in'),
         )
       else
         Kit::Router::Controllers::Http.render(

@@ -105,6 +105,9 @@ Metrics:
 Naming/ConstantName:
   Enabled: false
 
+Naming/MethodParameterName:
+  Enabled: false
+
 
 # Style ------------------------------------------------------------------------
 

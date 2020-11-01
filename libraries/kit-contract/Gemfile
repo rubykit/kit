@@ -11,6 +11,12 @@ gem 'kit-dummy-app-container', path: '../../libraries/kit-dummy-app-container'
 gem 'kit-error',               path: '../../libraries/kit-error'
 gem 'kit-organizer',           path: '../../libraries/kit-organizer'
 
+# TODO: move this to `kit-dummy-app-container` gemspec when released
+gem 'kit-router',              path: '../../libraries/kit-router'
+
+# TODO: move this to `kit-router` gemspec when released
+gem 'kit-engine',              path: '../../libraries/kit-engine'
+
 group :development do
   gem 'kit-doc',               path: '../../libraries/kit-doc'
 end

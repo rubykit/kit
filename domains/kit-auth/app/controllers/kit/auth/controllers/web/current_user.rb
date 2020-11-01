@@ -5,7 +5,7 @@ module Kit::Auth::Controllers::Web
       return [:ok] if router_request.metadata[:current_user]
 
       Kit::Router::Controllers::Http.redirect_to({
-        location: Kit::Router::Services::HttpRoutes.path(id: 'web|users|sign_in'),
+        location: Kit::Router::Services::Adapters::Http::Mountpoints.path(id: 'web|users|sign_in'),
       })
     end
 
@@ -15,7 +15,7 @@ module Kit::Auth::Controllers::Web
       return [:ok] if !router_request.metadata[:current_user]
 
       Kit::Router::Controllers::Http.redirect_to({
-        location: Kit::Router::Services::HttpRoutes.path(id: 'web|users|after_sign_in'),
+        location: Kit::Router::Services::Adapters::Http::Mountpoints.path(id: 'web|users|after_sign_in'),
       })
     end
 
@@ -29,7 +29,7 @@ module Kit::Auth::Controllers::Web
       end
 
       Kit::Router::Controllers::Http.redirect_to({
-        location: Kit::Router::Services::HttpRoutes.path(id: 'web|users|sign_in'),
+        location: Kit::Router::Services::Adapters::Http::Mountpoints.path(id: 'web|users|sign_in'),
       })
     end
 

@@ -12,7 +12,7 @@ Rails.application.routes.draw do
 
   list_api.each do |entry|
     entry.merge!({
-      rails_endpoint_wrapper: [::ApiController, :route],
+      rails_endpoint_wrapper: [Kit::Auth::DummyAppContainer::Controllers::ApiController, :route],
       namespace:              [:kit_auth, :api].concat(entry[:namespace] || []),
     })
   end
@@ -39,7 +39,7 @@ Rails.application.routes.draw do
 
   list_web.each do |entry|
     entry.merge!({
-      rails_endpoint_wrapper: [::WebController, :route],
+      rails_endpoint_wrapper: [Kit::Auth::DummyAppContainer::Controllers::WebController, :route],
       namespace:              [:kit_auth, :web].concat(entry[:namespace] || []),
     })
   end

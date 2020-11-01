@@ -1,8 +1,7 @@
 module Kit::Auth::Actions::Users::VerifyPassword
 
-  #Contract Hash => [Symbol, KeywordArgs[user: Any]]
   def self.call(user:, password:)
-    # Pass of 'xxxxxx' with the same value as the pepper
+    # `fake_secret` is a hashed string of 'xxxxxx' with the default pepper.
     fake_secret = '$2a$12$spVnVb9KnpswJhqU3cbCiucCvciHvHD09bpo62CoIVfXl1bwiNuXi'
     reference_hashed_secret = user&.hashed_secret || fake_secret
 

@@ -5,7 +5,7 @@ module Kit::Auth::Controllers::Web::Users::Settings::Devices
       Kit::Organizer.call({
         ctx:  { router_request: router_request },
         list: [
-          :web_require_current_user!,
+          [:alias, :web_require_current_user!],
           self.method(:list),
         ],
       })

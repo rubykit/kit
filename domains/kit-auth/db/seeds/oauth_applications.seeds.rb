@@ -1,3 +1,5 @@
+Kit::Auth::Log.log(msg: 'seeding defaults `oauth_applications`', flags: [:debug, :db, :seed])
+
 list = [
   {
     uid:          'api',

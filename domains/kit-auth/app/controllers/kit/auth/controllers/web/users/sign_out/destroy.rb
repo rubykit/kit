@@ -4,7 +4,7 @@ module Kit::Auth::Controllers::Web::Users::SignOut
     def self.endpoint(router_request:)
       Kit::Organizer.call({
         list: [
-          :web_require_current_user!,
+          [:alias, :web_require_current_user!],
           self.method(:sign_out),
         ],
         ctx:  { router_request: router_request },
@@ -13,10 +13,9 @@ module Kit::Auth::Controllers::Web::Users::SignOut
 
     Kit::Router::Services::Router.register({
       uid:     'kit_auth|web|authorization_tokens|destroy',
-      aliases: [
-        'web|authorization_tokens|destroy',
-        'web|users|sign_out',
-      ],
+      aliases: {
+        'web|authorization_tokens|destroy': ['web|users|sign_out'],
+      },
       target:  self.method(:endpoint),
     })
 
@@ -29,7 +28,7 @@ module Kit::Auth::Controllers::Web::Users::SignOut
       end
 
       Kit::Router::Controllers::Http.redirect_to(
-        location: Kit::Router::Services::HttpRoutes.path(id: 'web|users|sign_in'),
+        location: Kit::Router::Services::Adapters::Http::Mountpoints.path(id: 'web|users|after_sign_out'),
       )
     end
 

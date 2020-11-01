@@ -32,7 +32,7 @@ module Kit::Auth::Actions::Users::CreateWithPassword
         hashed_secret: hashed_secret,
       })
     rescue ActiveRecord::RecordNotUnique
-      return [:error, user: nil, errors: { attribute: :email, detail: '$attribute is alreadky taken.' }]
+      return [:error, user: nil, errors: [{ attribute: :email, detail: '$attribute is alreadky taken.' }]]
     end
 
     if user.persisted?
