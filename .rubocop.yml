@@ -6,11 +6,10 @@ AllCops:
 
   Exclude:
     - '**/Gemfile.lock'
-    - '**/db/schema.rb'
+    - '**/db/*.rb'
     - 'apps/**/*'
     - 'domains/kit-geolocation/**/*'
     - 'domains/kit-payment/**/*'
-    - 'libraries/kit-api/spec/dummy/db/schema.rb'
     - 'libraries/kit-doc/specs/dummy/**/*.rb'
     - 'libraries/kit-doc/node_modules/**/*'
     - 'libraries/kit-active-admin/**/*'

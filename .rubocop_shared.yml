@@ -68,6 +68,9 @@ Layout/MultilineMethodCallIndentation:
 Layout/ParameterAlignment:
   EnforcedStyle: with_fixed_indentation
 
+Lint/RedundantCopDisableDirective:
+  Enabled: false
+
 Layout/SpaceAroundMethodCallOperator:
   Enabled: true
 

@@ -75,6 +75,11 @@ PATH
     kit-error (0.1.0)
 
 PATH
+  remote: ../../libraries/kit-log
+  specs:
+    kit-log (0.1.0)
+
+PATH
   remote: ../../libraries/kit-organizer
   specs:
     kit-organizer (0.1.0)
@@ -572,6 +577,7 @@ DEPENDENCIES
   kit-dummy-app-container!
   kit-engine!
   kit-error!
+  kit-log!
   kit-organizer!
   kit-pagination!
   kit-router!
