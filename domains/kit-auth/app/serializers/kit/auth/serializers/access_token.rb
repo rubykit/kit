@@ -23,12 +23,12 @@ module Kit::Auth::Serializers
 
     belongs_to :user do
       link :related do
-        Kit::Router::Services::Router.url(id: 'api|users|show', params: { resource_id: @object.resource_owner_id })
+        Kit::Router::Services::Adapters::Http::Mountpoints.path(id: 'api|users|show', params: { resource_id: @object.resource_owner_id })
       end
     end
 
     link :self do
-      Kit::Router::Services::Router.url(id: 'api|authorization_tokens|show', params: { resource_id: @object.id })
+      Kit::Router::Services::Adapters::Http::Mountpoints.path(id: 'api|authorization_tokens|show', params: { resource_id: @object.id })
     end
 
   end

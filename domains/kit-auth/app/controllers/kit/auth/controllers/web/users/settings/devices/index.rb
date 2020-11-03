@@ -29,6 +29,7 @@ module Kit::Auth::Controllers::Web::Users::Settings::Devices
         request_metadata = model.last_request_metadata
         country          = nil
 
+=begin
         if request_metadata
           country = Kit::Auth::Models::Read::IpGeolocation
             .where('ip_start <= ?', request_metadata.ip.to_s)
@@ -36,6 +37,7 @@ module Kit::Auth::Controllers::Web::Users::Settings::Devices
             .first
             &.country
         end
+=end
 
         {
           oauth_access_token: model.attributes&.symbolize_keys,

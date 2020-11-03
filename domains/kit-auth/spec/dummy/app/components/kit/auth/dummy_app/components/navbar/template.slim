@@ -10,7 +10,7 @@ nav.navbar.navbar-expand-lg.fixed-top.navbar-dark.bg-dark
     ul.navbar-nav
       - if current_user
         li.nav-item
-          a.nav-link href="#"
+          = router_link_to(id: 'web|authorization_tokens|index', html: { class: 'nav-link' }, request: request)
             = current_user.email
         li.nav-item
           = router_link_to(id: 'web|users|sign_out', html: { class: 'nav-link' }, request: request)

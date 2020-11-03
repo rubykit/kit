@@ -38,7 +38,7 @@ module Kit::Auth::Controllers::Api
 
     Kit::Organizer::Services::Callable::Alias.register(id: :api_requires_scope!, target: self.method(:requires_scope!))
 
-    def self.resolve_current_user(router_request:)
+    def self.api_resolve_current_user(router_request:)
       if !router_request.metadata[METADATA_KEY_CURRENT_USER_ATTEMPTED_RESOLVED]
         status, ctx = Kit::Organizer.call({
           list: [
@@ -70,7 +70,7 @@ module Kit::Auth::Controllers::Api
       ]
     end
 
-    Kit::Organizer::Services::Callable::Alias.register(id: :api_resolve_current_user, target: self.method(:resolve_current_user))
+    Kit::Organizer::Services::Callable::Alias.register(id: :api_resolve_current_user, target: self.method(:api_resolve_current_user))
 
   end
 end

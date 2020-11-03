@@ -21,7 +21,7 @@ module Kit::Domain::Controllers
       end
 
       [:error, {
-        response: {
+        router_response: {
           metadata: {
             http: {
               status: 415,
@@ -48,7 +48,7 @@ module Kit::Domain::Controllers
       end
 
       [:error, {
-        response: {
+        router_response: {
           metadata: {
             http: {
               status: 406,

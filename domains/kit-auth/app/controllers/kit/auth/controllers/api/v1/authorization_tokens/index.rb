@@ -7,8 +7,8 @@ module Kit::Auth::Controllers::Api::V1::AuthorizationTokens
     def self.endpoint(router_request:)
       Kit::Organizer.call({
         list: [
-          Kit::Domain::Controllers::JsonApi.method(:ensure_media_type),
-          :api_requires_current_user!,
+          #Kit::Domain::Controllers::JsonApi.method(:ensure_media_type),
+          [:alias, :api_requires_current_user!],
           self.method(:load_and_render),
         ],
         ctx:  { router_request: router_request },
@@ -38,8 +38,8 @@ module Kit::Auth::Controllers::Api::V1::AuthorizationTokens
         resources:   resources,
         serializers: Kit::Auth::Controllers::Api.serializers,
         links:       {
-          prev: Kit::Router::Services::Router.url(id: ROUTE_UID, params: pagination_params[:prev]),
-          next: Kit::Router::Services::Router.url(id: ROUTE_UID, params: pagination_params[:next]),
+          prev: Kit::Router::Services::Adapters::Http::Mountpoints.path(id: ROUTE_ID, params: pagination_params[:prev]),
+          next: Kit::Router::Services::Adapters::Http::Mountpoints.path(id: ROUTE_ID, params: pagination_params[:next]),
         },
       )
     end

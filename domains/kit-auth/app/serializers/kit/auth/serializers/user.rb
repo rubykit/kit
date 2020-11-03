@@ -7,12 +7,12 @@ module Kit::Auth::Serializers
 
     has_many :oauth_access_tokens do
       link :related do
-        Kit::Router::Services::Router.url(id: 'api|authorization_tokens|index', params: { user_id: @object.id })
+        Kit::Router::Services::Adapters::Http::Mountpoints.path(id: 'api|authorization_tokens|index', params: { user_id: @object.id })
       end
     end
 
     link :self do
-      Kit::Router::Services::Router.url(id: 'api|users|show', params: { resource_id: @object.id })
+      Kit::Router::Services::Adapters::Http::Mountpoints.path(id: 'api|users|show', params: { resource_id: @object.id })
     end
 
   end

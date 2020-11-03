@@ -8,6 +8,14 @@ PATH
       popper_js
 
 PATH
+  remote: ../../libraries/kit-api
+  specs:
+    kit-api (0.1.0)
+      oj (~> 3.3, >= 3.3.5)
+      rails (~> 6.0)
+      urlcrypt (~> 0.1.1)
+
+PATH
   remote: ../../libraries/kit-app-container
   specs:
     kit-app-container (0.1.0)
@@ -536,6 +544,7 @@ GEM
     tzinfo (1.2.7)
       thread_safe (~> 0.1)
     unicode-display_width (1.7.0)
+    urlcrypt (0.1.1)
     webdrivers (4.4.1)
       nokogiri (~> 1.6)
       rubyzip (>= 1.3.0)
@@ -567,6 +576,7 @@ DEPENDENCIES
   faker
   jsonapi-rails
   kit-active-admin!
+  kit-api!
   kit-app-container!
   kit-auth!
   kit-contract!

@@ -7,20 +7,22 @@ module Kit::Auth::Controllers::Api::V1::AuthorizationTokens
     def self.endpoint(router_request:)
       Kit::Organizer.call({
         list: [
-          Kit::Domain::Controllers::JsonApi.method(:ensure_media_type),
-          :api_requires_current_user!,
+          #Kit::Domain::Controllers::JsonApi.method(:ensure_media_type),
+          #[:alias, :api_requires_current_user!],
           ->(router_request:) do # rubocop:disable Lint/ShadowingOuterLocalVariable
             Kit::Auth::Controllers::Api.load_resource!(
               router_request: router_request,
               model:          Kit::Auth::Models::Read::OauthAccessToken,
             )
           end,
+=begin
           ->(resource:, current_user:) do
             Kit::Auth::Controllers::Api.require_belongs_to!(
               parent: current_user,
               child:  resource,
             )
           end,
+=end
           self.method(:render),
         ],
         ctx:  { router_request: router_request },
@@ -40,7 +42,7 @@ module Kit::Auth::Controllers::Api::V1::AuthorizationTokens
         resources:   resource,
         serializers: Kit::Auth::Controllers::Api.serializers,
         links:       {
-          self: Kit::Router::Services::Router.url(id: ROUTE_UID, params: { resource_id: resource.id }),
+          self: Kit::Router::Services::Adapters::Http::Mountpoints.path(id: ROUTE_ID, params: { resource_id: resource.id }),
         },
       )
     end

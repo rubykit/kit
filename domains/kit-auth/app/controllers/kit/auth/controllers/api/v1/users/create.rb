@@ -37,7 +37,7 @@ module Kit::Auth::Controllers::Api::V1::Users
         resources:   user,
         serializers: Kit::Auth::Controllers::Api.serializers,
         links:       {
-          self: Kit::Router::Services::Router.url(id: ROUTE_UID, params: { resource_id: user.id }),
+          self: Kit::Router::Services::Adapters::Http::Mountpoints.path(id: ROUTE_UID, params: { resource_id: user.id }),
         },
       )
     end

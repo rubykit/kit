@@ -46,7 +46,7 @@ module Kit::Auth::Controllers::Api::V1::AuthorizationTokens
         resources:   oauth_access_token,
         serializers: Kit::Auth::Controllers::Api.serializers,
         #links: {
-        #  self: Kit::Router::Services::Router.url(id: ROUTE_UID, params: { resource_id: oauth_access_token.id }),
+        #  self: Kit::Router::Services::Adapters::Http::Mountpoints.path(id: ROUTE_UID, params: { resource_id: oauth_access_token.id }),
         #},
       )
     end

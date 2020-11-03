@@ -26,7 +26,7 @@ $ bundle exec rake documentation:generate
 
 Run:
 ```sh
-$ bundle exec router:generate_graph
+$ bundle exec rake router:generate_graph
 ```
 
 ## Databases setup
