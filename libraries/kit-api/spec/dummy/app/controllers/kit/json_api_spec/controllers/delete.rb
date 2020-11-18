@@ -1,8 +1,7 @@
 require_relative '../../../../../config/initializers/api_config'
 
-module Kit::JsonApiSpec::Controllers::Read # rubocop:disable Style/Documentation
+module Kit::JsonApiSpec::Controllers::Delete # rubocop:disable Style/Documentation
 
-  # Generic `Json:Api` endpoint that works for `show` & `index` requests.
   def self.endpoint(router_request:, top_level_resource:, singular:)
     api_request = {
       config:             KIT_DUMMY_APP_API_CONFIG,
@@ -14,8 +13,7 @@ module Kit::JsonApiSpec::Controllers::Read # rubocop:disable Style/Documentation
       list: [
         Kit::Api::JsonApi::Controllers::JsonApi.method(:ensure_media_type),
         Kit::Api::JsonApi::Services::Request::Import.method(:import),
-        Kit::Api::Services::QueryBuilder.method(:build_query),
-        Kit::Api::Services::QueryResolver.method(:resolve_query_node),
+        self.method(:delete),
         Kit::Api::JsonApi::Services::Serialization::Query.method(:serialize_query),
         Kit::Api::JsonApi::Controllers::JsonApi.method(:generate_router_response),
       ],
@@ -31,9 +29,12 @@ module Kit::JsonApiSpec::Controllers::Read # rubocop:disable Style/Documentation
     config:   KIT_DUMMY_APP_API_CONFIG,
     endpoint: self.method(:endpoint),
     routes:   [
-      { route_type: :index, singular: false },
-      { route_type: :show,  singular: true  },
+      { route_type: :delete, singular: true },
     ],
   )
+
+  def self.delete(router_request:)
+    [:ok]
+  end
 
 end

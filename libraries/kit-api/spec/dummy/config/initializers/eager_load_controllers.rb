@@ -1,6 +1,9 @@
 list = [
   'api_controller',
+  'kit/json_api_spec/controllers/create',
+  'kit/json_api_spec/controllers/delete',
   'kit/json_api_spec/controllers/read',
+  'kit/json_api_spec/controllers/update',
 ]
 
 autoloader   = Rails.autoloaders.main
