@@ -1,5 +1,5 @@
-=begin
 module Kit::Contract::Services::ProcWrapper
+=begin
 
   # 3 types of check:
   #  - callable CAN receive specified payload
@@ -69,5 +69,5 @@ module Kit::Contract::Services::ProcWrapper
     wrapped_callable
   end
 
-end
 =end
+end
