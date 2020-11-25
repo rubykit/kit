@@ -5,7 +5,11 @@ class Kit::JsonApiSpec::Resources::Chapter < Kit::JsonApiSpec::Resources::Resour
     :chapter
   end
 
-  def self.model
+  def self.model_read
+    Kit::JsonApiSpec::Models::Read::Chapter
+  end
+
+  def self.model_write
     Kit::JsonApiSpec::Models::Write::Chapter
   end
 

@@ -5,7 +5,11 @@ class Kit::JsonApiSpec::Resources::Photo < Kit::JsonApiSpec::Resources::Resource
     :photo
   end
 
-  def self.model
+  def self.model_read
+    Kit::JsonApiSpec::Models::Read::Photo
+  end
+
+  def self.model_write
     Kit::JsonApiSpec::Models::Write::Photo
   end
 

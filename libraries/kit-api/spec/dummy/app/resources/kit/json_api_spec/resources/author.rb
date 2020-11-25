@@ -5,7 +5,11 @@ class Kit::JsonApiSpec::Resources::Author < Kit::JsonApiSpec::Resources::Resourc
     :author
   end
 
-  def self.model
+  def self.model_read
+    Kit::JsonApiSpec::Models::Read::Author
+  end
+
+  def self.model_write
     Kit::JsonApiSpec::Models::Write::Author
   end
 

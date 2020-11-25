@@ -5,7 +5,11 @@ class Kit::JsonApiSpec::Resources::Store < Kit::JsonApiSpec::Resources::Resource
     :store
   end
 
-  def self.model
+  def self.model_read
+    Kit::JsonApiSpec::Models::Read::Store
+  end
+
+  def self.model_write
     Kit::JsonApiSpec::Models::Write::Store
   end
 

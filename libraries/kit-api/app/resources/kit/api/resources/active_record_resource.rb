@@ -66,7 +66,8 @@ class Kit::Api::Resources::ActiveRecordResource
       paginator:         self.paginator,
 
       extra:             {
-        model: self.model,
+        model_read:  self.model_read,
+        model_write: self.model_write,
       },
     }
   end
@@ -77,8 +78,12 @@ class Kit::Api::Resources::ActiveRecordResource
   end
 
   # Should contain the ActiveRecord model
-  def self.model
-    raise 'ActiveRecordResource - Please implement the `model` module method.'
+  def self.model_read
+    raise 'ActiveRecordResource - Please implement the `model_read` module method.'
+  end
+
+  def self.model_write
+    raise 'ActiveRecordResource - Please implement the `model_write` module method.'
   end
 
   # Hold data to generate `fields`, `filters` && `sort_fields`.
@@ -175,7 +180,10 @@ class Kit::Api::Resources::ActiveRecordResource
   end
 
   def self.data_resolver(query_node:)
-    Kit::Api::Services::Resolvers::ActiveRecord.data_resolver(model: model, query_node: query_node)
+    Kit::Api::Services::Resolvers::ActiveRecord.data_resolver(
+      query_node: query_node,
+      model:      query_node[:resource][:extra][:model_read],
+    )
   end
 
   def self.record_serializer(record:)
