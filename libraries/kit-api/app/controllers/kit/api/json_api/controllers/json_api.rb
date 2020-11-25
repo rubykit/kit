@@ -1,14 +1,16 @@
 # Shared controller logic
 module Kit::Api::JsonApi::Controllers::JsonApi
 
-  def self.generate_router_response(document:)
+  def self.generate_router_response(document:, status_code: nil)
+    status_code ||= 200
+
     [:ok, {
       router_response: {
         mime:     :json_api,
         content:  JSON.pretty_generate(document[:response]),
         metadata: {
           http: {
-            status: 200,
+            status: status_code,
           },
         },
       },
