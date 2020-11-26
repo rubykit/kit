@@ -7,7 +7,7 @@ module Kit::Api::JsonApi::Controllers::JsonApi
     if status_code == 204
       content = nil
     else
-      content = Oj.dump(document[:response])
+      content = Oj.dump(document[:response], mode: :json)
     end
 
     [:ok, {

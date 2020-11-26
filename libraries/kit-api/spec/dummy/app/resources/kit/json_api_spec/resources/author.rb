@@ -82,9 +82,9 @@ class Kit::JsonApiSpec::Resources::Author < Kit::JsonApiSpec::Resources::Resourc
 
   def self.writeable_attributes
     {
-      name:            :name,
-      'date-of-birth': ->(data:, value:) { [:date_of_birth, value ? Date.parse(value) : nil] },
-      'date-of-death': ->(data:, value:) { [:date_of_death, value ? Date.parse(value) : nil] },
+      name:          :name,
+      date_of_birth: ->(data:, value:) { [:date_of_birth, value ? Date.parse(value) : nil] },
+      date_of_death: ->(data:, value:) { [:date_of_death, value ? Date.parse(value) : nil] },
     }
   end
 

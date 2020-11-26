@@ -1,6 +1,8 @@
 require 'test_prof/recipes/rspec/sample'
 require 'rspec'
 
+require 'oj'
+
 require 'kit-rspec-formatter'
 
 RSpec.configure do |config|

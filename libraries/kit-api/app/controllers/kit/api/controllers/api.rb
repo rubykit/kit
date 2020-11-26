@@ -19,6 +19,7 @@ module Kit::Api::Controllers::Api
       ],
       resolvers:     { data_resolver: resource[:data_resolver] },
       relationships: {},
+      singular:      api_request[:singular],
       api_request:   api_request,
     }
 
