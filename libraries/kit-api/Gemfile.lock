@@ -195,6 +195,8 @@ GEM
     ecma-re-validator (0.2.1)
       regexp_parser (~> 1.2)
     erubi (1.9.0)
+    faker (2.14.0)
+      i18n (>= 1.6, < 2)
     ffi (1.13.1)
     flamegraph (0.9.5)
     get_process_mem (0.2.7)
@@ -409,6 +411,7 @@ PLATFORMS
 
 DEPENDENCIES
   derailed_benchmarks
+  faker
   flamegraph
   json_schemer
   kit-api!

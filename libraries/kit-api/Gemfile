@@ -36,25 +36,19 @@ group :development do
   gem 'kit-doc',                 path: '../../libraries/kit-doc'
 end
 
-group :development do
-  gem 'rack-mini-profiler'
-
-  gem 'memory_profiler'
-
+group :development, :test do
   gem 'derailed_benchmarks'
-
   gem 'flamegraph'
+  gem 'memory_profiler'
+  gem 'rack-mini-profiler'
+  gem 'ruby-prof'
   gem 'stackprof'
 end
 
-# Note: not sure about this
-group :development, :test do
-  gem 'ruby-prof'
-  gem 'test-prof'
-end
-
 group :test do
+  gem 'faker'
+
   gem 'rspec-rails'
 
-
+  gem 'test-prof'
 end
