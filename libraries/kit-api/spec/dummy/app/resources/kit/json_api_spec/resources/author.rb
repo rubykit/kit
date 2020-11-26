@@ -80,14 +80,12 @@ class Kit::JsonApiSpec::Resources::Author < Kit::JsonApiSpec::Resources::Resourc
     [:ok, sql_str: sql]
   end
 
-=begin
-  def self.resource_url(resource_id:)
-    "/authors/#{ resource_id }"
+  def self.writeable_attributes
+    {
+      name:            :name,
+      'date-of-birth': ->(data:, value:) { [:date_of_birth, value ? Date.parse(value) : nil] },
+      'date-of-death': ->(data:, value:) { [:date_of_death, value ? Date.parse(value) : nil] },
+    }
   end
-
-  def self.relationship_url(resource_id:, relationship_name:)
-    "/articles/#{ resource_id }/relationships/#{ relationship_name }"
-  end
-=end
 
 end

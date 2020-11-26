@@ -52,20 +52,22 @@ class Kit::Api::Resources::ActiveRecordResource
   # after Ct::Resource # TODO: in order for this to work, add `ActiveSupport::Concern` support in `Kit::Contract`
   def self.to_h
     {
-      name:              name,
+      name:                 name,
 
-      fields:            fields,
-      sort_fields:       sort_fields,
-      filters:           filters,
-      relationships:     relationships,
+      fields:               fields,
+      sort_fields:          sort_fields,
+      filters:              filters,
+      relationships:        relationships,
 
-      data_resolver:     self.method(:data_resolver),
-      record_serializer: self.method(:record_serializer),
+      data_resolver:        self.method(:data_resolver),
+      record_serializer:    self.method(:record_serializer),
 
-      linker:            self.linker,
-      paginator:         self.paginator,
+      linker:               self.linker,
+      paginator:            self.paginator,
 
-      extra:             {
+      writeable_attributes: self.writeable_attributes,
+
+      extra:                {
         model_read:  self.model_read,
         model_write: self.model_write,
       },
@@ -162,7 +164,7 @@ class Kit::Api::Resources::ActiveRecordResource
     list
       .map do |name, data|
         [name, {
-          order:   [[name, (data[:order] == :asc) ? :asc : :desc], (!data[:unique] ? tie_breaker_sort : nil)].compact,
+          order:   [[name, (data[:order] == :asc) ? :asc : :desc], (data[:unique] ? nil : tie_breaker_sort)].compact,
           default: (data[:default] == true),
         },]
       end
@@ -196,6 +198,10 @@ class Kit::Api::Resources::ActiveRecordResource
 
   def self.paginator
     Kit::Api::JsonApi::Services::Paginators::Cursor.to_h
+  end
+
+  def self.writeable_attributes
+    {}
   end
 
 =begin

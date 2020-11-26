@@ -4,10 +4,16 @@ module Kit::Api::JsonApi::Controllers::JsonApi
   def self.generate_router_response(document:, status_code: nil)
     status_code ||= 200
 
+    if status_code == 204
+      content = nil
+    else
+      content = Oj.dump(document[:response])
+    end
+
     [:ok, {
       router_response: {
         mime:     :json_api,
-        content:  JSON.pretty_generate(document[:response]),
+        content:  content,
         metadata: {
           http: {
             status: status_code,

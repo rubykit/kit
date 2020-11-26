@@ -171,30 +171,4 @@ module Kit::Api::Services::QueryBuilder
     end
   end
 
-  # Helper to generate a valid `Query` that's already resolved to a single object.
-  #
-  # Note: this is useful for edition actions.
-  def self.build_resolved_query(api_request:, resource:, raw_data:)
-    query_node = {
-      path:          '',
-      condition:     nil,
-      sorting:       [[:id, :asc]],
-      resource:      resource,
-      limit:         1,
-      records:       [
-        {
-          raw_data:      raw_data,
-          relationships: {},
-        },
-      ],
-      resolvers:     { data_resolver: resource[:data_resolver] },
-      relationships: {},
-      api_request:   api_request,
-    }
-
-    query_node[:records][0][:query_node] = query_node
-
-    [:ok, query_node: query_node]
-  end
-
 end

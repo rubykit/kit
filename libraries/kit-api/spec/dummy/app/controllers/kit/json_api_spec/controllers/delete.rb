@@ -14,13 +14,13 @@ module Kit::JsonApiSpec::Controllers::Delete # rubocop:disable Style/Documentati
         Kit::Api::JsonApi::Controllers::JsonApi.method(:ensure_media_type),
         Kit::Api::JsonApi::Services::Request::Import.method(:import),
         self.method(:delete),
-        Kit::Api::JsonApi::Services::Serialization::Query.method(:serialize_query),
         Kit::Api::JsonApi::Controllers::JsonApi.method(:generate_router_response),
       ],
       ctx:  {
         api_request:    api_request,
         query_params:   router_request[:params],
         router_request: router_request,
+        resource:       top_level_resource,
       },
     })
   end
@@ -33,8 +33,15 @@ module Kit::JsonApiSpec::Controllers::Delete # rubocop:disable Style/Documentati
     ],
   )
 
-  def self.delete(router_request:)
-    [:ok]
+  def self.delete(router_request:, resource:)
+    model_class    = resource[:extra][:model_write]
+    resource_id    = router_request.params[:resource_id]
+
+    model_instance = model_class.find_by(id: resource_id)
+
+    model_instance.destroy
+
+    [:ok, status_code: 204, document: {}]
   end
 
 end
