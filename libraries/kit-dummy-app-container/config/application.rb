@@ -14,6 +14,8 @@ end
 module Kit::DummyAppContainer # rubocop:disable Style/Documentation
 end
 
+require 'kit-app-container'
+
 class Kit::DummyAppContainer::Application < ::Rails::Application # rubocop:disable Style/Documentation
 
   Kit::AppContainer.config_application(context: self)
@@ -62,6 +64,12 @@ class Kit::DummyAppContainer::Application < ::Rails::Application # rubocop:disab
       config.assets.paths << path_el
       #config.paths.add path_el, { glob: '*' }
     end
+  end
+
+  # Profiling
+
+  if ENV['PROFILE'] == 'true'
+    config.middleware.use Rack::RubyProf, :path => './tmp/profile'
   end
 
 end
