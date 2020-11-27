@@ -49,7 +49,7 @@ module Kit::Router::Services::Router
     [:ok]
   end
 
-  EMPTY_TARGET = -> {}
+  EMPTY_TARGET = -> {} # rubocop:disable Lint/EmptyBlock
 
   def self.register_without_target(uid:, aliases:, types:)
     register(
@@ -84,7 +84,7 @@ module Kit::Router::Services::Router
     record = Kit::Router::Services::Store::Endpoint.get_endpoint(id: id, router_store: router_store)
 
     if !request
-      request = Kit::Router::Models::Request.new(params: OpenStruct.new(params))
+      request = Kit::Router::Models::RouterRequest.new(params: OpenStruct.new(params))
     end
 
     target = record[:target]
