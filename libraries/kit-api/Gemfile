@@ -5,6 +5,7 @@ gemspec
 
 gem 'kit-contract',   path: '../../libraries/kit-contract' # GEMSPEC
 gem 'kit-error',      path: '../../libraries/kit-error' # GEMSPEC
+gem 'kit-log',        path: '../../libraries/kit-log' # GEMSPEC
 gem 'kit-organizer',  path: '../../libraries/kit-organizer' # GEMSPEC
 gem 'kit-pagination', path: '../../libraries/kit-pagination' # GEMSPEC
 
@@ -47,6 +48,8 @@ end
 
 group :test do
   gem 'faker'
+
+  gem 'database_cleaner'
 
   gem 'rspec-rails'
 

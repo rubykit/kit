@@ -66,6 +66,11 @@ PATH
     kit-error (0.1.0)
 
 PATH
+  remote: ../kit-log
+  specs:
+    kit-log (0.1.0)
+
+PATH
   remote: ../kit-organizer
   specs:
     kit-organizer (0.1.0)
@@ -175,6 +180,7 @@ GEM
     concurrent-ruby (1.1.6)
     connection_pool (2.2.2)
     crass (1.0.6)
+    database_cleaner (1.8.5)
     debug_inspector (0.0.3)
     derailed_benchmarks (1.8.1)
       benchmark-ips (~> 2)
@@ -410,6 +416,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  database_cleaner
   derailed_benchmarks
   faker
   flamegraph
@@ -424,6 +431,7 @@ DEPENDENCIES
   kit-dummy-app-container!
   kit-engine!
   kit-error!
+  kit-log!
   kit-organizer!
   kit-pagination!
   kit-router!

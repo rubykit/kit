@@ -64,12 +64,11 @@ class Kit::RspecFormatter::Formatter < RSpec::Core::Formatters::BaseTextFormatte
 
   def dump_summary(notification)
     @output << "\n"
-    @output << "⏱️  Total time: #{ wrap("#{ notification.duration }s", :bold) }"
+    @output << "⏱️  Total time: #{ wrap("#{ notification.duration }s", :bold) }\n"
   end
 
   def seed(notification)
-    @output << "\n"
-    @output << "🌱 Seed used: #{ wrap(notification.seed, :bold) }"
+    @output << "🌱 Specs seed value: #{ wrap(notification.seed, :bold) }\n"
   end
 
 end
