@@ -3,10 +3,18 @@ require 'rspec'
 RSpec::Support.require_rspec_core 'formatters/base_text_formatter'
 
 # RSpec formatter that display spec name as they are running + spent time
+#
+# ### Ressources
+# - https://ieftimov.com/post/how-to-write-rspec-formatters-from-scratch/
 class Kit::RspecFormatter::Formatter < RSpec::Core::Formatters::BaseTextFormatter
 
   RSpec::Core::Formatters.register self,
-    :example_started, :example_passed, :example_failed, :example_pending
+    :example_started,
+    :example_passed,
+    :example_failed,
+    :example_pending,
+    :dump_summary,
+    :seed
 
   def wrap(text, code)
     codes = {
@@ -53,5 +61,15 @@ class Kit::RspecFormatter::Formatter < RSpec::Core::Formatters::BaseTextFormatte
   alias_method :example_passed,  :example_done
   alias_method :example_failed,  :example_done
   alias_method :example_pending, :example_done
+
+  def dump_summary(notification)
+    @output << "\n"
+    @output << "⏱️  Total time: #{ wrap("#{ notification.duration }s", :bold) }"
+  end
+
+  def seed(notification)
+    @output << "\n"
+    @output << "🌱 Seed used: #{ wrap(notification.seed, :bold) }"
+  end
 
 end
