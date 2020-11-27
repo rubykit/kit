@@ -69,7 +69,7 @@ class Kit::DummyAppContainer::Application < ::Rails::Application # rubocop:disab
   # Profiling
 
   if ENV['PROFILE'] == 'true'
-    config.middleware.use Rack::RubyProf, :path => './tmp/profile'
+    config.middleware.use Rack::RubyProf, path: './tmp/profile'
   end
 
 end

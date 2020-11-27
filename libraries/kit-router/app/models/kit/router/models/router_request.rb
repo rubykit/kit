@@ -50,7 +50,7 @@ module Kit::Router::Models
     # Note: hacky way to not polute output with `root`, not proud of it.
     def ai(*options)
       root_saved = @root
-      @root  = '<HIDDEN FOR BREVITY>'
+      @root = '<HIDDEN FOR BREVITY>'
 
       result = self.to_h.ai(*options)
 
