@@ -12,14 +12,14 @@ after :'fantasy_data:empty' do
 
     case type
     when 'authors'
-      model_class = Kit::JsonApiSpec::Models::Write::Author
+      target_model_class = Kit::JsonApiSpec::Models::Write::Author
     when 'books'
-      model_class = Kit::JsonApiSpec::Models::Write::Book
+      target_model_class = Kit::JsonApiSpec::Models::Write::Book
     when 'series'
-      model_class = Kit::JsonApiSpec::Models::Write::Serie
+      target_model_class = Kit::JsonApiSpec::Models::Write::Serie
     end
 
-    el_data[:imageable] = model_class.find(id)
+    el_data[:imageable] = target_model_class.find(id)
 
     model_class.create!(el_data)
   rescue StandardError => e
