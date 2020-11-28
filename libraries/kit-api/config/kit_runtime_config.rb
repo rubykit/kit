@@ -18,11 +18,11 @@ KIT_APP_PATHS['GEM_SPEC_INITIALIZERS'] = [
 
 KIT_APP_PATHS['EXECUTE'] ||= []
 KIT_APP_PATHS['EXECUTE'] << ->(config:) do
-
   if Rails.env.development? || Rails.env.test?
     config.factory_bot.definition_file_paths = [
       File.expand_path('../spec/factories', __dir__),
     ]
   end
-
 end
+
+KIT_APP_PATHS['GEM_LOGGER_PATH'] = File.expand_path('../log', __dir__)

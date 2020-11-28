@@ -74,4 +74,29 @@ class Kit::DummyAppContainer::Application < ::Rails::Application # rubocop:disab
 
   (KIT_APP_PATHS['EXECUTE'] || []).each { |callable| callable.call(config: config) }
 
+
+  # ### References
+  # - https://github.com/rails/rails/blob/master/railties/lib/rails/application/configuration.rb#L348
+  # - https://github.com/rails/rails/blob/master/railties/lib/rails/application/bootstrap.rb#L34
+  if KIT_APP_PATHS['GEM_LOGGER_PATH']
+    path     = KIT_APP_PATHS['GEM_LOGGER_PATH']
+    filename = KIT_APP_PATHS['GEM_LOGGER_FILENAME'] || "#{ Rails.env }.log"
+
+    path    += '/' + filename
+
+    if !File.exist?(File.dirname(path))
+      FileUtils.mkdir_p File.dirname(path)
+    end
+
+    file = File.open path, 'a'
+    file.binmode
+    file.sync = true
+
+    logger = ActiveSupport::Logger.new(file)
+    logger.formatter = config.log_formatter
+    logger = ActiveSupport::TaggedLogging.new(logger)
+
+    Rails.logger = logger
+  end
+
 end
