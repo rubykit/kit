@@ -50,6 +50,13 @@ class Kit::JsonApiSpec::Resources::Chapter < Kit::JsonApiSpec::Resources::Resour
     [:ok, resource_object: resource_object]
   end
 
+  def self.writeable_attributes
+    {
+      title: :title,
+      index: :index,
+    }
+  end
+
 =begin
   def self.resource_url(resource_id:)
     "/chapters/#{ resource_id }"

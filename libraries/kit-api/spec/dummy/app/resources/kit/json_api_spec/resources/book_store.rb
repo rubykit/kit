@@ -37,6 +37,12 @@ class Kit::JsonApiSpec::Resources::BookStore < Kit::JsonApiSpec::Resources::Reso
     }
   end
 
+  def self.writeable_attributes
+    {
+      in_stock: :in_stock,
+    }
+  end
+
 =begin
   def self.resource_url(resource_id:)
     "/book_stores/#{ resource_id }"

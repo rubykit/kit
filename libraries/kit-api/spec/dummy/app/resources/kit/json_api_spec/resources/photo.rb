@@ -48,6 +48,13 @@ class Kit::JsonApiSpec::Resources::Photo < Kit::JsonApiSpec::Resources::Resource
     }
   end
 
+  def self.writeable_attributes
+    {
+      title: :title,
+      uri:   :uri,
+    }
+  end
+
 =begin
   def self.resource_url(resource_id:)
     "/photos/#{ resource_id }"

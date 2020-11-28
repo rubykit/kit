@@ -71,6 +71,12 @@ class Kit::JsonApiSpec::Resources::Serie < Kit::JsonApiSpec::Resources::Resource
     [:ok, sql_str: sql]
   end
 
+  def self.writeable_attributes
+    {
+      title: :title,
+    }
+  end
+
 =begin
   def self.resource_url(resource_id:)
     "/series/#{ resource_id }"

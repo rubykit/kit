@@ -64,6 +64,13 @@ class Kit::JsonApiSpec::Resources::Book < Kit::JsonApiSpec::Resources::Resource
     }
   end
 
+  def self.writeable_attributes
+    {
+      title:          :title,
+      date_published: ->(data:, value:) { [:date_published, value ? Date.parse(value) : nil] },
+    }
+  end
+
 =begin
   def self.resource_url(resource_id:)
     "/books/#{ resource_id }"

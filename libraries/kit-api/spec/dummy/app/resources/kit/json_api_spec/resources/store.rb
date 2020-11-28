@@ -32,6 +32,12 @@ class Kit::JsonApiSpec::Resources::Store < Kit::JsonApiSpec::Resources::Resource
     }
   end
 
+  def self.writeable_attributes
+    {
+      name: :name,
+    }
+  end
+
 =begin
   def self.resource_url(resource_id:)
     "/stores/#{ resource_id }"

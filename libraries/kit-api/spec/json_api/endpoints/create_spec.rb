@@ -44,11 +44,8 @@ describe 'Json:Api Show requests', type: :request do
     it_behaves_like 'a valid json:api response'
   end
 
-  whitelist = [:author]
-
   KIT_DUMMY_APP_API_CONFIG[:resources].each do |_, resource|
     tmp_resource_name = resource[:name]
-    next if !whitelist.include?(tmp_resource_name)
 
     context "for #{ tmp_resource_name } resources" do
       let(:resource_name) { tmp_resource_name }
