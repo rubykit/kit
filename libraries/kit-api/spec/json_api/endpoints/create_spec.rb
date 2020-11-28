@@ -7,20 +7,6 @@ describe 'Json:Api Show requests', type: :request do
 
   let(:subject) { post request_path, headers: jsonapi_headers, params: body }
 
-  let(:write_attributes) do
-    {
-      author: {
-        before: {
-          name:          Faker::Book.author,
-          date_of_birth: Faker::Date.birthday(min_age: 18, max_age: 65),
-        },
-        after: ->(before:) do
-          before.slice(:name).merge(date_of_birth: before[:date_of_birth].strftime('%Y-%m-%d'))
-        end,
-      },
-    }
-  end
-
   shared_examples 'returns valid JSON:API data' do
     let(:route_id) { "specs|api|#{ resource_name }|create" }
 
@@ -28,18 +14,16 @@ describe 'Json:Api Show requests', type: :request do
       { include: '' }
     end
 
-    let(:attributes_before) { write_attributes[resource_name][:before] }
-    let(:attributes_after) do
-      write_attributes[resource_name][:after].call(before: attributes_before)
-    end
+    let(:attributes) { FactoryBot.build(resource_name).slice(resource[:writeable_attributes].keys) }
+    let(:attributes_serialized) { Oj.safe_load(Oj.dump(attributes, mode: :json)) }
 
     let(:body) do
       Oj.dump({
         data: {
-          attributes: attributes_before,
+          attributes: attributes,
           type:       resource_name,
         },
-      }, mode: :json)
+      }, mode: :json,)
     end
 
     before { subject }
@@ -52,12 +36,12 @@ describe 'Json:Api Show requests', type: :request do
       expect(data).to be_a Hash
       expect(data[:type]).to eq resource_name.to_s
 
-      attributes_after.each do |k, v|
-        expect(data[:attributes][k]).to eq v
+      attributes.each do |k, _v|
+        expect(data[:attributes][k.to_sym]).to eq attributes_serialized[k]
       end
     end
 
-    #it_behaves_like 'a valid json:api response'
+    it_behaves_like 'a valid json:api response'
   end
 
   whitelist = [:author]
@@ -68,6 +52,7 @@ describe 'Json:Api Show requests', type: :request do
 
     context "for #{ tmp_resource_name } resources" do
       let(:resource_name) { tmp_resource_name }
+      let(:resource)      { config_dummy_app[:resources][resource_name] }
 
       it_behaves_like 'returns valid JSON:API data'
     end

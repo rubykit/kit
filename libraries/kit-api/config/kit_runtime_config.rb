@@ -15,3 +15,14 @@ KIT_APP_PATHS['GEM_SPEC_DB']     = File.expand_path('../spec/dummy/db', __dir__)
 KIT_APP_PATHS['GEM_SPEC_INITIALIZERS'] = [
   File.expand_path('../spec/dummy/config/initializers/eager_load_controllers.rb', __dir__),
 ]
+
+KIT_APP_PATHS['EXECUTE'] ||= []
+KIT_APP_PATHS['EXECUTE'] << ->(config:) do
+
+  if Rails.env.development? || Rails.env.test?
+    config.factory_bot.definition_file_paths = [
+      File.expand_path('../spec/factories', __dir__),
+    ]
+  end
+
+end

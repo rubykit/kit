@@ -72,4 +72,6 @@ class Kit::DummyAppContainer::Application < ::Rails::Application # rubocop:disab
     config.middleware.use Rack::RubyProf, path: './tmp/profile'
   end
 
+  (KIT_APP_PATHS['EXECUTE'] || []).each { |callable| callable.call(config: config) }
+
 end
