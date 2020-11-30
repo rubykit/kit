@@ -34,7 +34,7 @@ class Kit::JsonApiSpec::Resources::Store < Kit::JsonApiSpec::Resources::Resource
 
   def self.writeable_attributes
     {
-      name: :name,
+      name: nil,
     }
   end
 

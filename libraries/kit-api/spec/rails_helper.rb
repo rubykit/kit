@@ -24,7 +24,7 @@ Dir[File.expand_path('support/**/*.rb', __dir__)].sort.each { |f| require f }
 require_relative 'dummy/config/initializers/api_config'
 
 RSpec.configure do |config|
-  config.use_transactional_fixtures = true
+  config.use_transactional_fixtures = false
 
   config.infer_spec_type_from_file_location!
 

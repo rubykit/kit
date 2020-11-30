@@ -52,8 +52,18 @@ class Kit::JsonApiSpec::Resources::Chapter < Kit::JsonApiSpec::Resources::Resour
 
   def self.writeable_attributes
     {
-      title: :title,
-      index: :index,
+      title:    nil,
+      ordering: {
+        field: :index,
+      },
+    }
+  end
+
+  def self.writeable_relationships
+    {
+      book: {
+        field: :kit_json_api_spec_book_id,
+      },
     }
   end
 

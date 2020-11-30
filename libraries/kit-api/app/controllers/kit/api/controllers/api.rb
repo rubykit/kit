@@ -28,27 +28,38 @@ module Kit::Api::Controllers::Api
     [:ok, query_node: query_node]
   end
 
-  def self.sanitize_writeable_parameters(template:, data:)
+  def self.sanitize_writeable_attributes(template:, data:)
     result = {}
 
-    template.each do |name, tpl_action|
-      next if !data.key?(name)
+    template.each do |attr_name, attr_properties|
+      next if !data.key?(attr_name)
 
-      param_value = data[name]
-      if tpl_action.is_a?(::Symbol)
-        res = [tpl_action, param_value]
-      else
-        begin
-          res = tpl_action.call(data: data, value: param_value)
-        rescue
-          # Generate error
-        end
-      end
+      attr_value = attr_properties[:parse].call(
+        data:  data,
+        value: data[attr_name],
+      )
 
-      result[res[0]] = res[1]
+      result[attr_properties[:field]] = attr_value
     end
 
-    [:ok, values: result]
+    [:ok, model_attributes: result]
+  end
+
+  def self.sanitize_writeable_relationships(template:, data:)
+    result = {}
+
+    template.each do |relationship_name, relationship_data|
+      attr_rs_value = data.dig(relationship_name.to_s, :data.to_s)
+      next if !attr_rs_value
+
+      if attr_rs_value['type'] == relationship_data[:type].to_s
+        result[relationship_data[:field]] = attr_rs_value['id']
+      else
+        # Generate error?
+      end
+    end
+
+    [:ok, model_attributes: result]
   end
 
 end

@@ -66,14 +66,7 @@ class Kit::DummyAppContainer::Application < ::Rails::Application # rubocop:disab
     end
   end
 
-  # Profiling
-
-  if ENV['PROFILE'] == 'true'
-    config.middleware.use Rack::RubyProf, path: './tmp/profile'
-  end
-
   (KIT_APP_PATHS['EXECUTE'] || []).each { |callable| callable.call(config: config) }
-
 
   # ### References
   # - https://github.com/rails/rails/blob/master/railties/lib/rails/application/configuration.rb#L348
@@ -82,13 +75,13 @@ class Kit::DummyAppContainer::Application < ::Rails::Application # rubocop:disab
     path     = KIT_APP_PATHS['GEM_LOGGER_PATH']
     filename = KIT_APP_PATHS['GEM_LOGGER_FILENAME'] || "#{ Rails.env }.log"
 
-    path    += '/' + filename
+    path    += "/#{ filename }"
 
     if !File.exist?(File.dirname(path))
       FileUtils.mkdir_p File.dirname(path)
     end
 
-    file = File.open path, 'a'
+    file = File.open(path, 'a')
     file.binmode
     file.sync = true
 
@@ -97,6 +90,12 @@ class Kit::DummyAppContainer::Application < ::Rails::Application # rubocop:disab
     logger = ActiveSupport::TaggedLogging.new(logger)
 
     Rails.logger = logger
+  end
+
+  # Profiling
+
+  if ENV['PROFILE'] == 'true'
+    config.middleware.use Rack::RubyProf, path: './tmp/profile'
   end
 
 end

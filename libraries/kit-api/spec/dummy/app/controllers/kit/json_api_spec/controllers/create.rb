@@ -39,13 +39,17 @@ module Kit::JsonApiSpec::Controllers::Create # rubocop:disable Style/Documentati
   )
 
   def self.create(router_request:, resource:)
-    attrs_template = resource[:writeable_attributes]
-    model_class    = resource[:extra][:model_write]
+    model_class = resource[:extra][:model_write]
 
-    data   = router_request.params.dig(:data, :attributes) || {}
-    _, ctx = Kit::Api::Controllers::Api.sanitize_writeable_parameters(data: data, template: attrs_template)
+    data       = router_request.params.dig(:data, :attributes) || {}
+    _, ctx     = Kit::Api::Controllers::Api.sanitize_writeable_attributes(data: data, template: resource[:writeable_attributes])
+    attributes = ctx[:model_attributes]
 
-    model_instance = model_class.new(ctx[:values])
+    data       = router_request.params.dig(:data, :relationships) || {}
+    _, ctx     = Kit::Api::Controllers::Api.sanitize_writeable_relationships(data: data, template: resource[:writeable_relationships])
+    relationships = ctx[:model_attributes]
+
+    model_instance = model_class.new({}.merge(attributes).merge(relationships))
     model_instance.save
 
     [:ok, model_instance: model_instance, status_code: 201]

@@ -52,22 +52,23 @@ class Kit::Api::Resources::ActiveRecordResource
   # after Ct::Resource # TODO: in order for this to work, add `ActiveSupport::Concern` support in `Kit::Contract`
   def self.to_h
     {
-      name:                 name,
+      name:                    name,
 
-      fields:               fields,
-      sort_fields:          sort_fields,
-      filters:              filters,
-      relationships:        relationships,
+      fields:                  fields,
+      sort_fields:             sort_fields,
+      filters:                 filters,
+      relationships:           relationships,
 
-      data_resolver:        self.method(:data_resolver),
-      record_serializer:    self.method(:record_serializer),
+      data_resolver:           self.method(:data_resolver),
+      record_serializer:       self.method(:record_serializer),
 
-      linker:               self.linker,
-      paginator:            self.paginator,
+      linker:                  self.linker,
+      paginator:               self.paginator,
 
-      writeable_attributes: self.writeable_attributes,
+      writeable_attributes:    self.expand_writeable_attributes,
+      writeable_relationships: self.expand_writeable_relationships,
 
-      extra:                {
+      extra:                   {
         model_read:  self.model_read,
         model_write: self.model_write,
       },
@@ -202,6 +203,37 @@ class Kit::Api::Resources::ActiveRecordResource
 
   def self.writeable_attributes
     {}
+  end
+
+  def self.writeable_relationships
+    {}
+  end
+
+  def self.expand_writeable_attributes
+    writeable_attributes
+      .map do |name, properties|
+        properties ||= {}
+
+        [name, {
+          field: properties[:field] || name,
+          parse: properties[:parse] || ->(value:, **) { value },
+        },]
+      end
+      .to_h
+  end
+
+  def self.expand_writeable_relationships
+    writeable_relationships
+      .map do |name, properties|
+        properties ||= {}
+        type         = properties[:type] || name
+
+        [name, {
+          type:  type,
+          field: properties[:field] || "#{ type }_id".to_sym,
+        },]
+      end
+      .to_h
   end
 
 =begin

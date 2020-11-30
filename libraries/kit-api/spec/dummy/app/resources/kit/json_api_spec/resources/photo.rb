@@ -25,6 +25,14 @@ class Kit::JsonApiSpec::Resources::Photo < Kit::JsonApiSpec::Resources::Resource
 
   def self.relationships
     {
+=begin
+      # TODO: add dynamic relationships?
+      target:  {
+        resource:          ???,
+        relationship_type: :to_one,
+        resolvers:         [:active_record, parent_field: { id: :imageable_id, type: :imageable_type, model_name: ??? }],
+      },
+=end
       author:  {
         resource:          :author,
         relationship_type: :to_one,
@@ -50,8 +58,14 @@ class Kit::JsonApiSpec::Resources::Photo < Kit::JsonApiSpec::Resources::Resource
 
   def self.writeable_attributes
     {
-      title: :title,
-      uri:   :uri,
+      title: nil,
+      uri:   nil,
+    }
+  end
+
+  def self.writeable_relationships
+    {
+
     }
   end
 

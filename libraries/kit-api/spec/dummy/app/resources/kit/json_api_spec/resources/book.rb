@@ -66,8 +66,21 @@ class Kit::JsonApiSpec::Resources::Book < Kit::JsonApiSpec::Resources::Resource
 
   def self.writeable_attributes
     {
-      title:          :title,
-      date_published: ->(data:, value:) { [:date_published, value ? Date.parse(value) : nil] },
+      title:          {},
+      date_published: {
+        parse: ->(data:, value:) { value ? Date.parse(value) : nil },
+      },
+    }
+  end
+
+  def self.writeable_relationships
+    {
+      author: {
+        field: :kit_json_api_spec_author_id,
+      },
+      serie:  {
+        field: :kit_json_api_spec_serie_id,
+      },
     }
   end
 

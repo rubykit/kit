@@ -39,7 +39,18 @@ class Kit::JsonApiSpec::Resources::BookStore < Kit::JsonApiSpec::Resources::Reso
 
   def self.writeable_attributes
     {
-      in_stock: :in_stock,
+      in_stock: nil,
+    }
+  end
+
+  def self.writeable_relationships
+    {
+      book:  {
+        field: :kit_json_api_spec_book_id,
+      },
+      store: {
+        field: :kit_json_api_spec_store_id,
+      },
     }
   end
 

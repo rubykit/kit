@@ -73,7 +73,7 @@ class Kit::JsonApiSpec::Resources::Serie < Kit::JsonApiSpec::Resources::Resource
 
   def self.writeable_attributes
     {
-      title: :title,
+      title: nil,
     }
   end
 
