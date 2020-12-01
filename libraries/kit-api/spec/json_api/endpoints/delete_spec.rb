@@ -1,6 +1,6 @@
 require_relative '../../rails_helper'
 
-describe 'Json:Api Show requests', type: :request do
+describe 'Json:Api DELETE requests', type: :request do
   include_context 'config dummy app'
   include_context 'json:api'
   include_context 'url'

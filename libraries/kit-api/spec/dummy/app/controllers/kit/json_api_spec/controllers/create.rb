@@ -2,9 +2,6 @@ require_relative '../../../../../config/initializers/api_config'
 
 module Kit::JsonApiSpec::Controllers::Create # rubocop:disable Style/Documentation
 
-  def self.to_object(router_request:)
-  end
-
   def self.endpoint(router_request:, top_level_resource:, singular:)
     api_request = {
       config:             KIT_DUMMY_APP_API_CONFIG,
@@ -49,7 +46,9 @@ module Kit::JsonApiSpec::Controllers::Create # rubocop:disable Style/Documentati
     _, ctx     = Kit::Api::Controllers::Api.sanitize_writeable_relationships(data: data, template: resource[:writeable_relationships])
     relationships = ctx[:model_attributes]
 
-    model_instance = model_class.new({}.merge(attributes).merge(relationships))
+    values = {}.merge(attributes).merge(relationships)
+
+    model_instance = model_class.new(values)
     model_instance.save
 
     [:ok, model_instance: model_instance, status_code: 201]

@@ -36,15 +36,21 @@ module Kit::JsonApiSpec::Controllers::Update # rubocop:disable Style/Documentati
   )
 
   def self.update(router_request:, resource:)
-    attrs_template = resource[:writeable_attributes]
-    model_class    = resource[:extra][:model_write]
-    resource_id    = router_request.params[:resource_id]
+    resource_id = router_request.params[:resource_id]
+    model_class = resource[:extra][:model_write]
 
-    data   = router_request.params.dig(:data, :attributes) || {}
-    _, ctx = Kit::Api::Controllers::Api.sanitize_writeable_parameters(data: data, template: attrs_template)
+    data       = router_request.params.dig(:data, :attributes) || {}
+    _, ctx     = Kit::Api::Controllers::Api.sanitize_writeable_attributes(data: data, template: resource[:writeable_attributes])
+    attributes = ctx[:model_attributes]
+
+    data       = router_request.params.dig(:data, :relationships) || {}
+    _, ctx     = Kit::Api::Controllers::Api.sanitize_writeable_relationships(data: data, template: resource[:writeable_relationships])
+    relationships = ctx[:model_attributes]
+
+    values = {}.merge(attributes).merge(relationships)
 
     model_instance = model_class.find_by(id: resource_id)
-    model_instance.update(ctx[:values])
+    model_instance.update(values)
 
     [:ok, model_instance: model_instance, status_code: 200]
   end
