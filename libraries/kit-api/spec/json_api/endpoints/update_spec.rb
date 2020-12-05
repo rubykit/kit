@@ -20,7 +20,7 @@ describe 'Json:Api UPDATE requests', type: :request do
       Kernel.loop do
         tmp_instance = FactoryBot.build(resource_name)
         different = resource[:writeable_attributes]
-          .map do |name, properties|
+          .map do |_name, properties|
             field = properties[:field]
             model_instance.send(field) == nil || model_instance.send(field) != tmp_instance.send(field)
           end
@@ -82,7 +82,6 @@ describe 'Json:Api UPDATE requests', type: :request do
       expect(response.status).to eq 200
 
       data = jsonapi_response_body[:data]
-
 
       expect(data).to be_a Hash
       expect(data[:type]).to eq resource_name.to_s

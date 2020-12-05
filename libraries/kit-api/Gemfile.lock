@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/rubykit/awesome_print.git
+  revision: c1a4a9467027d7ebc2708585e7bd34eba72699bb
+  branch: feature/custom-nesting
+  specs:
+    awesome_print (1.8.0)
+      paint (~> 2.2)
+
 PATH
   remote: ../kit-app-container
   specs:
@@ -170,7 +178,6 @@ GEM
     arkency-command_bus (0.4.0)
       thread_safe
     ast (2.4.1)
-    awesome_print (1.8.0)
     benchmark-ips (2.8.3)
     binding_of_caller (0.8.0)
       debug_inspector (>= 0.0.1)
@@ -254,6 +261,7 @@ GEM
     nokogiri (1.10.9)
       mini_portile2 (~> 2.4.0)
     oj (3.10.6)
+    paint (2.2.0)
     parallel (1.19.2)
     paranoia (2.4.2)
       activerecord (>= 4.0, < 6.1)
@@ -421,6 +429,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  awesome_print!
   database_cleaner
   derailed_benchmarks
   factory_bot_rails (~> 6.1)

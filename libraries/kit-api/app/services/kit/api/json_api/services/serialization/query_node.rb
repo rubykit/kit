@@ -54,7 +54,7 @@ module Kit::Api::JsonApi::Services::Serialization::QueryNode
     return [:ok] if query_node[:parent_relationship]
 
     if query_node[:singular]
-      links = query_node[:records][0][:resource_object][:links]
+      links = query_node[:records][0]&.dig(:resource_object, :links)
     else
       links = query_node[:resource][:linker][:collection].call(
         query_node: query_node,
@@ -62,6 +62,7 @@ module Kit::Api::JsonApi::Services::Serialization::QueryNode
         paginator:  query_node[:resource][:paginator],
       )[1][:links]
     end
+
     document[:response][:links] = links
 
     [:ok, document: document]

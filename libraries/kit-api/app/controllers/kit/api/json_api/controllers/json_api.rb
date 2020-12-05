@@ -1,19 +1,23 @@
+require 'oj'
+
 # Shared controller logic
 module Kit::Api::JsonApi::Controllers::JsonApi
 
-  def self.generate_router_response(document:, status_code: nil)
+  def self.generate_success_router_response(document:, status_code: nil)
     status_code ||= 200
 
     if status_code == 204
       content = nil
     else
-      content = Oj.dump(document[:response], mode: :json)
+      content = document[:response]
     end
+
+    content_json = content ? ::Oj.dump(content, mode: :json) : nil
 
     [:ok, {
       router_response: {
         mime:     :json_api,
-        content:  content,
+        content:  content_json,
         metadata: {
           http: {
             status: status_code,
@@ -35,6 +39,8 @@ module Kit::Api::JsonApi::Controllers::JsonApi
     })
   end
 
+  # ### References
+  # - https://jsonapi.org/format/1.1/#content-negotiation-servers
   def self.ensure_content_type(router_request:)
     content_type = router_request.http.headers['CONTENT_TYPE']
 
@@ -44,17 +50,11 @@ module Kit::Api::JsonApi::Controllers::JsonApi
 
     return [:ok] if Kit::Config[:ENV_TYPE].include?(:development)
 
-    [:error, {
-      router_response: {
-        metadata: {
-          http: {
-            status: 415,
-          },
-        },
-      },
-    },]
+    [:error, { status_code: 415, detail: "Expected Content-Type header `#{ JSONAPI_MEDIA_TYPE }` but got `#{ content_type }`." }]
   end
 
+  # ### References
+  # - https://jsonapi.org/format/1.1/#content-negotiation-servers
   def self.ensure_http_accept(router_request:)
     http_accept = router_request.http.headers['ACCEPT']
 
@@ -73,15 +73,7 @@ module Kit::Api::JsonApi::Controllers::JsonApi
 
     return [:ok] if Kit::Config[:ENV_TYPE].include?(:development)
 
-    [:error, {
-      router_response: {
-        metadata: {
-          http: {
-            status: 406,
-          },
-        },
-      },
-    },]
+    [:error, { status_code: 406, detail: "Expected Accept header to contain `#{ JSONAPI_MEDIA_TYPE }`." }]
   end
 
 end

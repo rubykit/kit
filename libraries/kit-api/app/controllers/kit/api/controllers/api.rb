@@ -4,7 +4,9 @@ module Kit::Api::Controllers::Api
   # Helper to generate a valid `Query` that's already resolved to a single object.
   #
   # Note: this is useful for edition actions.
-  def self.generate_resolved_query(api_request:, resource:, model_instance:)
+  def self.generate_resolved_query(api_request:, model_instance:)
+    resource   = api_request[:top_level_resource]
+
     query_node = {
       path:          '',
       condition:     nil,
@@ -34,10 +36,21 @@ module Kit::Api::Controllers::Api
     template.each do |attr_name, attr_properties|
       next if !data.key?(attr_name)
 
-      attr_value = attr_properties[:parse].call(
-        data:  data,
-        value: data[attr_name],
-      )
+      begin
+        attr_value = attr_properties[:parse].call(
+          data:  data,
+          value: data[attr_name],
+        )
+      rescue StandardError => _e
+        # TODO: notice `_e` ?
+        return [:error, {
+          detail:    "Could not parse attribute `#{ attr_name }`",
+          attribute: attr_name,
+          json_api:  {
+            pointer: "data/attributes/#{ attr_name }",
+          },
+        },]
+      end
 
       result[attr_properties[:field]] = attr_value
     end
@@ -55,7 +68,7 @@ module Kit::Api::Controllers::Api
       if attr_rs_value['type'] == relationship_data[:type].to_s
         result[relationship_data[:field]] = attr_rs_value['id']
       else
-        # Generate error?
+        return [:error, { detail: "Invalid relationship type. Expected `#{ relationship_data[:type] }`, got `#{ attr_rs_value['type'] }`" }]
       end
     end
 

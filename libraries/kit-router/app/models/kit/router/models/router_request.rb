@@ -50,7 +50,12 @@ module Kit::Router::Models
     # Note: hacky way to not polute output with `root`, not proud of it.
     def ai(*options)
       root_saved = @root
-      @root = '<HIDDEN FOR BREVITY>'
+
+      tmp_hash = {}
+      tmp_hash.__ap_nest__ = true
+      tmp_hash.__ap_log_name__ = ->(*) { 'ActionDispatch::Request' }
+
+      @root = tmp_hash
 
       result = self.to_h.ai(*options)
 

@@ -48,6 +48,10 @@ group :development, :test do
 
   # Seeding
   gem 'factory_bot_rails', '~> 6.1'
+
+  # Logging
+  #gem 'awesome_print', path: '../../../awesome_print'
+  gem 'awesome_print', github: 'rubykit/awesome_print', branch: 'feature/custom-nesting'
 end
 
 group :test do

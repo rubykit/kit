@@ -16,3 +16,9 @@ KIT_DUMMY_APP_API_CONFIG = Kit::Api::Services::Config.create_config({
     },
   },
 })
+
+# AwesomePrint nesting setup: this avoids huge unreadable object dumps
+KIT_DUMMY_APP_API_CONFIG[:resources].each do |_k, v|
+  v.__ap_log_name__ = ->(object) { "(Resource##{ object[:name].to_s.capitalize })" } if v.respond_to?(:'__ap_log_name__=')
+  v.__ap_nest__     = true                                                           if v.respond_to?(:'__ap_nest__=')
+end
