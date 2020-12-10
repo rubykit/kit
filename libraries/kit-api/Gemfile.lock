@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/rubykit/awesome_print.git
+  revision: c1a4a9467027d7ebc2708585e7bd34eba72699bb
+  branch: feature/custom-nesting
+  specs:
+    awesome_print (1.8.0)
+      paint (~> 2.2)
+
 PATH
   remote: ../kit-app-container
   specs:
@@ -64,6 +72,11 @@ PATH
   remote: ../kit-error
   specs:
     kit-error (0.1.0)
+
+PATH
+  remote: ../kit-log
+  specs:
+    kit-log (0.1.0)
 
 PATH
   remote: ../kit-organizer
@@ -165,7 +178,7 @@ GEM
     arkency-command_bus (0.4.0)
       thread_safe
     ast (2.4.1)
-    awesome_print (1.8.0)
+    benchmark-ips (2.8.3)
     binding_of_caller (0.8.0)
       debug_inspector (>= 0.0.1)
     bounded_context (1.0.0)
@@ -174,7 +187,18 @@ GEM
     concurrent-ruby (1.1.6)
     connection_pool (2.2.2)
     crass (1.0.6)
+    database_cleaner (1.8.5)
     debug_inspector (0.0.3)
+    derailed_benchmarks (1.8.1)
+      benchmark-ips (~> 2)
+      get_process_mem (~> 0)
+      heapy (~> 0)
+      memory_profiler (~> 0)
+      mini_histogram (>= 0.2.1)
+      rack (>= 1)
+      rake (> 10, < 14)
+      ruby-statistics (>= 2.1)
+      thor (>= 0.19, < 2)
     diff-lcs (1.3)
     docile (1.3.2)
     dotenv (2.7.5)
@@ -184,12 +208,24 @@ GEM
     ecma-re-validator (0.2.1)
       regexp_parser (~> 1.2)
     erubi (1.9.0)
+    factory_bot (6.1.0)
+      activesupport (>= 5.0.0)
+    factory_bot_rails (6.1.0)
+      factory_bot (~> 6.1.0)
+      railties (>= 5.0.0)
+    faker (2.14.0)
+      i18n (>= 1.6, < 2)
     ffi (1.13.1)
+    flamegraph (0.9.5)
+    get_process_mem (0.2.7)
+      ffi (~> 1.0)
     git (1.7.0)
       rchardet (~> 1.8)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     hana (1.3.6)
+    heapy (0.2.0)
+      thor
     i18n (1.8.2)
       concurrent-ruby (~> 1.0)
     json (2.3.0)
@@ -208,8 +244,10 @@ GEM
       mini_mime (>= 0.1.1)
     marcel (0.3.3)
       mimemagic (~> 0.3.2)
+    memory_profiler (0.9.14)
     method_source (1.0.0)
     mimemagic (0.3.5)
+    mini_histogram (0.3.1)
     mini_mime (1.0.2)
     mini_portile2 (2.4.0)
     minitest (5.14.1)
@@ -223,6 +261,7 @@ GEM
     nokogiri (1.10.9)
       mini_portile2 (~> 2.4.0)
     oj (3.10.6)
+    paint (2.2.0)
     parallel (1.19.2)
     paranoia (2.4.2)
       activerecord (>= 4.0, < 6.1)
@@ -236,6 +275,8 @@ GEM
       binding_of_caller (~> 0.7)
       pry (~> 0.13)
     rack (2.2.2)
+    rack-mini-profiler (2.2.0)
+      rack (>= 1.2.0)
     rack-protection (2.0.8.1)
       rack
     rack-test (1.1.0)
@@ -325,6 +366,7 @@ GEM
       parser (>= 2.7.1.5)
     ruby-prof (1.4.1)
     ruby-progressbar (1.10.1)
+    ruby-statistics (2.1.2)
     ruby2_keywords (0.0.2)
     ruby_event_store (1.0.0)
       concurrent-ruby (~> 1.0, >= 1.1.6)
@@ -387,6 +429,12 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  awesome_print!
+  database_cleaner
+  derailed_benchmarks
+  factory_bot_rails (~> 6.1)
+  faker
+  flamegraph
   json_schemer
   kit-api!
   kit-app-container!
@@ -398,14 +446,17 @@ DEPENDENCIES
   kit-dummy-app-container!
   kit-engine!
   kit-error!
+  kit-log!
   kit-organizer!
   kit-pagination!
   kit-router!
   kit-rspec-formatter!
   listen
+  memory_profiler
   pg
   pry
   pry-stack_explorer
+  rack-mini-profiler
   rspec-rails
   rubocop
   ruby-prof

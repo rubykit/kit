@@ -35,7 +35,7 @@ module Kit::Api::Services::Resolvers::ActiveRecord
     end
     if !data_resolver
       _, ctx = generate_data_resolver({
-        model: config[:resources][relationship[:resource]][:extra][:model],
+        model: config[:resources][relationship[:resource]][:extra][:model_read],
       })
 
       data_resolver = ctx[:data_resolver]

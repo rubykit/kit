@@ -2,38 +2,42 @@ require 'kit_api'
 
 Rails.application.routes.draw do
 
-  list_api = [
-    { id: 'specs|api|author|index',     path: '/dummy_app/json_api/authors',                   verb: :get },
-    { id: 'specs|api|author|show',      path: '/dummy_app/json_api/authors/:resource_id',      verb: :get },
-
-    { id: 'specs|api|book|index',       path: '/dummy_app/json_api/books',                     verb: :get },
-    { id: 'specs|api|book|show',        path: '/dummy_app/json_api/books/:resource_id',        verb: :get },
-
-    { id: 'specs|api|book_store|index', path: '/dummy_app/json_api/book_stores',               verb: :get },
-    { id: 'specs|api|book_store|show',  path: '/dummy_app/json_api/book_stores/:resource_id',  verb: :get },
-
-    { id: 'specs|api|chapter|index',    path: '/dummy_app/json_api/chapters',                  verb: :get },
-    { id: 'specs|api|chapter|show',     path: '/dummy_app/json_api/chapters/:resource_id',     verb: :get },
-
-    { id: 'specs|api|photo|index',      path: '/dummy_app/json_api/photos',                    verb: :get },
-    { id: 'specs|api|photo|show',       path: '/dummy_app/json_api/photos/:resource_id',       verb: :get },
-
-    { id: 'specs|api|serie|index',      path: '/dummy_app/json_api/series',                    verb: :get },
-    { id: 'specs|api|serie|show',       path: '/dummy_app/json_api/series/:resource_id',       verb: :get },
-
-    { id: 'specs|api|store|index',      path: '/dummy_app/json_api/stores',                    verb: :get },
-    { id: 'specs|api|store|show',       path: '/dummy_app/json_api/stores/:resource_id',       verb: :get },
-  ]
-
-  list_api.each do |entry|
-    entry.merge!({
-      rails_endpoint_wrapper: [::ApiController, :route],
-    })
+  endpoints = ->(resource_singular:, resource_plural:) do
+    [
+      { id: "specs|api|#{ resource_singular }|index",  path: "/dummy_app/json_api/#{ resource_plural }",              verb: :get    },
+      { id: "specs|api|#{ resource_singular }|show",   path: "/dummy_app/json_api/#{ resource_plural }/:resource_id", verb: :get    },
+      { id: "specs|api|#{ resource_singular }|create", path: "/dummy_app/json_api/#{ resource_plural }",              verb: :post   },
+      { id: "specs|api|#{ resource_singular }|update", path: "/dummy_app/json_api/#{ resource_plural }/:resource_id", verb: :patch  },
+      { id: "specs|api|#{ resource_singular }|delete", path: "/dummy_app/json_api/#{ resource_plural }/:resource_id", verb: :delete },
+    ]
   end
 
-  Kit::Router::Services::Adapters::Http::Rails::Routes.mount_http_targets(
-    rails_router_context: self,
-    list:                 list_api,
-  )
+  list_api = {
+    authors:     :author,
+    books:       :book,
+    book_stores: :book_store,
+    chapters:    :chapter,
+    photos:      :photo,
+    series:      :serie,
+    stores:      :store,
+  }
+
+  list_api.each do |k, v|
+    list_api[k] = endpoints.call(resource_plural: k, resource_singular: v)
+  end
+
+  list_api.each do |namespace, mountpoints|
+    mountpoints.each do |mountpoint|
+      mountpoint.merge!({
+        rails_endpoint_wrapper: [::ApiController, :route],
+        namespace:              [:specs_api, namespace],
+      })
+    end
+
+    Kit::Router::Services::Adapters::Http::Rails::Routes.mount_http_targets(
+      rails_router_context: self,
+      list:                 mountpoints,
+    )
+  end
 
 end

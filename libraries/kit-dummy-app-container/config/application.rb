@@ -14,6 +14,8 @@ end
 module Kit::DummyAppContainer # rubocop:disable Style/Documentation
 end
 
+require 'kit-app-container'
+
 class Kit::DummyAppContainer::Application < ::Rails::Application # rubocop:disable Style/Documentation
 
   Kit::AppContainer.config_application(context: self)
@@ -62,6 +64,38 @@ class Kit::DummyAppContainer::Application < ::Rails::Application # rubocop:disab
       config.assets.paths << path_el
       #config.paths.add path_el, { glob: '*' }
     end
+  end
+
+  (KIT_APP_PATHS['EXECUTE'] || []).each { |callable| callable.call(config: config) }
+
+  # ### References
+  # - https://github.com/rails/rails/blob/master/railties/lib/rails/application/configuration.rb#L348
+  # - https://github.com/rails/rails/blob/master/railties/lib/rails/application/bootstrap.rb#L34
+  if KIT_APP_PATHS['GEM_LOGGER_PATH']
+    path     = KIT_APP_PATHS['GEM_LOGGER_PATH']
+    filename = KIT_APP_PATHS['GEM_LOGGER_FILENAME'] || "#{ Rails.env }.log"
+
+    path    += "/#{ filename }"
+
+    if !File.exist?(File.dirname(path))
+      FileUtils.mkdir_p File.dirname(path)
+    end
+
+    file = File.open(path, 'a')
+    file.binmode
+    file.sync = true
+
+    logger = ActiveSupport::Logger.new(file)
+    logger.formatter = config.log_formatter
+    logger = ActiveSupport::TaggedLogging.new(logger)
+
+    Rails.logger = logger
+  end
+
+  # Profiling
+
+  if ENV['PROFILE'] == 'true'
+    config.middleware.use Rack::RubyProf, path: './tmp/profile'
   end
 
 end

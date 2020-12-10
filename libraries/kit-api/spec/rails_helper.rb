@@ -19,6 +19,7 @@ require 'kit/dummy-app-container/rails_rspec'
 require 'spec_helper'
 
 Dir[Rails.root.join('../support/**/*.rb')].sort.each { |f| require f }
+Dir[File.expand_path('support/**/*.rb', __dir__)].sort.each { |f| require f }
 
 require_relative 'dummy/config/initializers/api_config'
 

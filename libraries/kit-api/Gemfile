@@ -5,6 +5,7 @@ gemspec
 
 gem 'kit-contract',   path: '../../libraries/kit-contract' # GEMSPEC
 gem 'kit-error',      path: '../../libraries/kit-error' # GEMSPEC
+gem 'kit-log',        path: '../../libraries/kit-log' # GEMSPEC
 gem 'kit-organizer',  path: '../../libraries/kit-organizer' # GEMSPEC
 gem 'kit-pagination', path: '../../libraries/kit-pagination' # GEMSPEC
 
@@ -36,9 +37,29 @@ group :development do
   gem 'kit-doc',                 path: '../../libraries/kit-doc'
 end
 
-group :test do
-  gem 'rspec-rails'
+group :development, :test do
+  # Profiling
+  gem 'derailed_benchmarks'
+  gem 'flamegraph'
+  gem 'memory_profiler'
+  gem 'rack-mini-profiler'
   gem 'ruby-prof'
   gem 'stackprof'
+
+  # Seeding
+  gem 'factory_bot_rails', '~> 6.1'
+
+  # Logging
+  #gem 'awesome_print', path: '../../../awesome_print'
+  gem 'awesome_print', github: 'rubykit/awesome_print', branch: 'feature/custom-nesting'
+end
+
+group :test do
+  gem 'faker'
+
+  gem 'database_cleaner'
+
+  gem 'rspec-rails'
+
   gem 'test-prof'
 end

@@ -5,7 +5,11 @@ class Kit::JsonApiSpec::Resources::Chapter < Kit::JsonApiSpec::Resources::Resour
     :chapter
   end
 
-  def self.model
+  def self.model_read
+    Kit::JsonApiSpec::Models::Read::Chapter
+  end
+
+  def self.model_write
     Kit::JsonApiSpec::Models::Write::Chapter
   end
 
@@ -44,6 +48,23 @@ class Kit::JsonApiSpec::Resources::Chapter < Kit::JsonApiSpec::Resources::Resour
     }
 
     [:ok, resource_object: resource_object]
+  end
+
+  def self.writeable_attributes
+    {
+      title:    nil,
+      ordering: {
+        field: :index,
+      },
+    }
+  end
+
+  def self.writeable_relationships
+    {
+      book: {
+        field: :kit_json_api_spec_book_id,
+      },
+    }
   end
 
 =begin

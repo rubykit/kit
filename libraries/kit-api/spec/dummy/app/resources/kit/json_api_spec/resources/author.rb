@@ -5,7 +5,11 @@ class Kit::JsonApiSpec::Resources::Author < Kit::JsonApiSpec::Resources::Resourc
     :author
   end
 
-  def self.model
+  def self.model_read
+    Kit::JsonApiSpec::Models::Read::Author
+  end
+
+  def self.model_write
     Kit::JsonApiSpec::Models::Write::Author
   end
 
@@ -76,14 +80,16 @@ class Kit::JsonApiSpec::Resources::Author < Kit::JsonApiSpec::Resources::Resourc
     [:ok, sql_str: sql]
   end
 
-=begin
-  def self.resource_url(resource_id:)
-    "/authors/#{ resource_id }"
+  def self.writeable_attributes
+    {
+      name:          nil,
+      date_of_birth: {
+        parse: ->(data:, value:) { value ? Date.parse(value) : nil },
+      },
+      date_of_death: {
+        parse: ->(data:, value:) { value ? Date.parse(value) : nil },
+      },
+    }
   end
-
-  def self.relationship_url(resource_id:, relationship_name:)
-    "/articles/#{ resource_id }/relationships/#{ relationship_name }"
-  end
-=end
 
 end

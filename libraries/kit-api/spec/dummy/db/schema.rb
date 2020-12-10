@@ -15,7 +15,7 @@ ActiveRecord::Schema.define(version: 2019_12_08_143026) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "kit_json_api_spec_authors", force: :cascade do |t|
+  create_table "kit_json_api_spec_authors", id: :serial, force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.text "name", null: false
@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 2019_12_08_143026) do
     t.date "date_of_death"
   end
 
-  create_table "kit_json_api_spec_books", force: :cascade do |t|
+  create_table "kit_json_api_spec_books", id: :serial, force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "kit_json_api_spec_author_id"
@@ -34,7 +34,7 @@ ActiveRecord::Schema.define(version: 2019_12_08_143026) do
     t.index ["kit_json_api_spec_serie_id"], name: "index_kit_json_api_spec_books_on_kit_json_api_spec_serie_id"
   end
 
-  create_table "kit_json_api_spec_books_stores", force: :cascade do |t|
+  create_table "kit_json_api_spec_books_stores", id: :serial, force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "kit_json_api_spec_book_id", null: false
@@ -44,7 +44,7 @@ ActiveRecord::Schema.define(version: 2019_12_08_143026) do
     t.index ["kit_json_api_spec_store_id"], name: "index_kjas_books_stores_on_kjas_store_id"
   end
 
-  create_table "kit_json_api_spec_chapters", force: :cascade do |t|
+  create_table "kit_json_api_spec_chapters", id: :serial, force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "kit_json_api_spec_book_id"
@@ -53,7 +53,7 @@ ActiveRecord::Schema.define(version: 2019_12_08_143026) do
     t.index ["kit_json_api_spec_book_id"], name: "index_kit_json_api_spec_chapters_on_kit_json_api_spec_book_id"
   end
 
-  create_table "kit_json_api_spec_photos", force: :cascade do |t|
+  create_table "kit_json_api_spec_photos", id: :serial, force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "imageable_type"
@@ -63,13 +63,13 @@ ActiveRecord::Schema.define(version: 2019_12_08_143026) do
     t.index ["imageable_type", "imageable_id"], name: "index_kjas_photos_on_imageable_type_and_imageable_id"
   end
 
-  create_table "kit_json_api_spec_series", force: :cascade do |t|
+  create_table "kit_json_api_spec_series", id: :serial, force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.text "title"
   end
 
-  create_table "kit_json_api_spec_stores", force: :cascade do |t|
+  create_table "kit_json_api_spec_stores", id: :serial, force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.text "name", null: false

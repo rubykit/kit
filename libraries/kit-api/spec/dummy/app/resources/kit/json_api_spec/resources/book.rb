@@ -5,7 +5,11 @@ class Kit::JsonApiSpec::Resources::Book < Kit::JsonApiSpec::Resources::Resource
     :book
   end
 
-  def self.model
+  def self.model_read
+    Kit::JsonApiSpec::Models::Read::Book
+  end
+
+  def self.model_write
     Kit::JsonApiSpec::Models::Write::Book
   end
 
@@ -56,6 +60,26 @@ class Kit::JsonApiSpec::Resources::Book < Kit::JsonApiSpec::Resources::Resource
         resource:          :serie,
         relationship_type: :to_one,
         resolvers:         [:active_record, foreign_key_field: :kit_json_api_spec_serie_id],
+      },
+    }
+  end
+
+  def self.writeable_attributes
+    {
+      title:          {},
+      date_published: {
+        parse: ->(data:, value:) { value ? Date.parse(value) : nil },
+      },
+    }
+  end
+
+  def self.writeable_relationships
+    {
+      author: {
+        field: :kit_json_api_spec_author_id,
+      },
+      serie:  {
+        field: :kit_json_api_spec_serie_id,
       },
     }
   end

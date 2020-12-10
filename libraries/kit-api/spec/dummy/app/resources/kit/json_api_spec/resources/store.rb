@@ -5,7 +5,11 @@ class Kit::JsonApiSpec::Resources::Store < Kit::JsonApiSpec::Resources::Resource
     :store
   end
 
-  def self.model
+  def self.model_read
+    Kit::JsonApiSpec::Models::Read::Store
+  end
+
+  def self.model_write
     Kit::JsonApiSpec::Models::Write::Store
   end
 
@@ -25,6 +29,12 @@ class Kit::JsonApiSpec::Resources::Store < Kit::JsonApiSpec::Resources::Resource
         relationship_type: :to_many,
         resolvers:         [:active_record, child_field: :kit_json_api_spec_store_id],
       },
+    }
+  end
+
+  def self.writeable_attributes
+    {
+      name: nil,
     }
   end
 

@@ -5,7 +5,11 @@ class Kit::JsonApiSpec::Resources::BookStore < Kit::JsonApiSpec::Resources::Reso
     :book_store
   end
 
-  def self.model
+  def self.model_read
+    Kit::JsonApiSpec::Models::Read::BookStore
+  end
+
+  def self.model_write
     Kit::JsonApiSpec::Models::Write::BookStore
   end
 
@@ -29,6 +33,23 @@ class Kit::JsonApiSpec::Resources::BookStore < Kit::JsonApiSpec::Resources::Reso
         resource:          :store,
         relationship_type: :to_one,
         resolvers:         [:active_record, parent_field: :kit_json_api_spec_store_id],
+      },
+    }
+  end
+
+  def self.writeable_attributes
+    {
+      in_stock: nil,
+    }
+  end
+
+  def self.writeable_relationships
+    {
+      book:  {
+        field: :kit_json_api_spec_book_id,
+      },
+      store: {
+        field: :kit_json_api_spec_store_id,
       },
     }
   end

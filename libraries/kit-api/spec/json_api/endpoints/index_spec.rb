@@ -1,6 +1,6 @@
 require_relative '../../rails_helper'
 
-describe 'Json:Api Index requests', type: :request do
+describe 'Json:Api INDEX requests', type: :request do
   include_context 'config dummy app'
   include_context 'json:api'
   include_context 'url'

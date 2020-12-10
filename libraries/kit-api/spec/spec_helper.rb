@@ -1,6 +1,8 @@
 require 'test_prof/recipes/rspec/sample'
 require 'rspec'
 
+require 'oj'
+
 require 'kit-rspec-formatter'
 
 RSpec.configure do |config|
@@ -21,6 +23,4 @@ RSpec.configure do |config|
 
 end
 
-require_relative 'shared/config_dummy_app'
-require_relative 'shared/json_api'
-require_relative 'shared/url'
+Dir[File.expand_path('shared/**/*.rb', __dir__)].sort.each { |f| require f }

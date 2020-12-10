@@ -5,7 +5,11 @@ class Kit::JsonApiSpec::Resources::Serie < Kit::JsonApiSpec::Resources::Resource
     :serie
   end
 
-  def self.model
+  def self.model_read
+    Kit::JsonApiSpec::Models::Read::Serie
+  end
+
+  def self.model_write
     Kit::JsonApiSpec::Models::Write::Serie
   end
 
@@ -65,6 +69,12 @@ class Kit::JsonApiSpec::Resources::Serie < Kit::JsonApiSpec::Resources::Resource
     puts sql if ENV['KIT_API_DEBUG']
 
     [:ok, sql_str: sql]
+  end
+
+  def self.writeable_attributes
+    {
+      title: nil,
+    }
   end
 
 =begin

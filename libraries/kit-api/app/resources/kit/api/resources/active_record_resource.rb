@@ -52,21 +52,25 @@ class Kit::Api::Resources::ActiveRecordResource
   # after Ct::Resource # TODO: in order for this to work, add `ActiveSupport::Concern` support in `Kit::Contract`
   def self.to_h
     {
-      name:              name,
+      name:                    name,
 
-      fields:            fields,
-      sort_fields:       sort_fields,
-      filters:           filters,
-      relationships:     relationships,
+      fields:                  fields,
+      sort_fields:             sort_fields,
+      filters:                 filters,
+      relationships:           relationships,
 
-      data_resolver:     self.method(:data_resolver),
-      record_serializer: self.method(:record_serializer),
+      data_resolver:           self.method(:data_resolver),
+      record_serializer:       self.method(:record_serializer),
 
-      linker:            self.linker,
-      paginator:         self.paginator,
+      linker:                  self.linker,
+      paginator:               self.paginator,
 
-      extra:             {
-        model: self.model,
+      writeable_attributes:    self.expand_writeable_attributes,
+      writeable_relationships: self.expand_writeable_relationships,
+
+      extra:                   {
+        model_read:  self.model_read,
+        model_write: self.model_write,
       },
     }
   end
@@ -77,8 +81,12 @@ class Kit::Api::Resources::ActiveRecordResource
   end
 
   # Should contain the ActiveRecord model
-  def self.model
-    raise 'ActiveRecordResource - Please implement the `model` module method.'
+  def self.model_read
+    raise 'ActiveRecordResource - Please implement the `model_read` module method.'
+  end
+
+  def self.model_write
+    raise 'ActiveRecordResource - Please implement the `model_write` module method.'
   end
 
   # Hold data to generate `fields`, `filters` && `sort_fields`.
@@ -157,7 +165,7 @@ class Kit::Api::Resources::ActiveRecordResource
     list
       .map do |name, data|
         [name, {
-          order:   [[name, (data[:order] == :asc) ? :asc : :desc], (!data[:unique] ? tie_breaker_sort : nil)].compact,
+          order:   [[name, (data[:order] == :asc) ? :asc : :desc], (data[:unique] ? nil : tie_breaker_sort)].compact,
           default: (data[:default] == true),
         },]
       end
@@ -175,7 +183,10 @@ class Kit::Api::Resources::ActiveRecordResource
   end
 
   def self.data_resolver(query_node:)
-    Kit::Api::Services::Resolvers::ActiveRecord.data_resolver(model: model, query_node: query_node)
+    Kit::Api::Services::Resolvers::ActiveRecord.data_resolver(
+      query_node: query_node,
+      model:      query_node[:resource][:extra][:model_read],
+    )
   end
 
   def self.record_serializer(record:)
@@ -188,6 +199,41 @@ class Kit::Api::Resources::ActiveRecordResource
 
   def self.paginator
     Kit::Api::JsonApi::Services::Paginators::Cursor.to_h
+  end
+
+  def self.writeable_attributes
+    {}
+  end
+
+  def self.writeable_relationships
+    {}
+  end
+
+  def self.expand_writeable_attributes
+    writeable_attributes
+      .map do |name, properties|
+        properties ||= {}
+
+        [name, {
+          field: properties[:field] || name,
+          parse: properties[:parse] || ->(value:, **) { value },
+        },]
+      end
+      .to_h
+  end
+
+  def self.expand_writeable_relationships
+    writeable_relationships
+      .map do |name, properties|
+        properties ||= {}
+        type         = properties[:type] || name
+
+        [name, {
+          type:  type,
+          field: properties[:field] || "#{ type }_id".to_sym,
+        },]
+      end
+      .to_h
   end
 
 =begin
