@@ -21,7 +21,7 @@ gem 'kit-router',       path: '../../libraries/kit-router' # DEV MODE
 
 gem 'browser'  # DEV MODE ? doesn't get loaded otherwise
 gem 'doorkeeper', require: 'doorkeeper'
-gem 'paranoia',   require: 'paranoia'
+gem 'paranoia',   require: 'paranoia', github: 'walski/paranoia', branch: 'rails-6-1'
 gem 'sidekiq'  # DEV MODE ? doesn't get loaded otherwise
 gem 'slim-rails' # DEV MODE ? doesn't get loaded otherwise
 

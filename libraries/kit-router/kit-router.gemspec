@@ -22,8 +22,6 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '~> 2.7'
 
-  s.add_dependency             'oj'
-  s.add_dependency             'rails', '~> 6.0.3.1'
   s.add_dependency             'tabulo', '~> 2.6'
 
   s.add_development_dependency 'listen'
