@@ -5,7 +5,7 @@ Kit::Auth::Engine.routes.draw do
   #  use_doorkeeper # scope: 'api/v1/oauth'
   #end
 
-  ActiveAdmin.routes(self)
+  Kit::Auth::Admin.routes(self)
 
   namespace :api, module: 'controllers/api' do
     namespace :v1 do

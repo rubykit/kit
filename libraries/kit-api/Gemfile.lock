@@ -27,7 +27,6 @@ PATH
     kit-doc (0.1.0)
       git
       nokogiri
-      rails
       rake
       redcarpet
       rspec

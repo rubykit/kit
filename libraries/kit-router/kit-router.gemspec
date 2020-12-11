@@ -22,6 +22,9 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '~> 2.7'
 
+  # TODO: kill this when using Kit::Api properly
+  s.add_dependency             'oj'
+
   s.add_dependency             'tabulo', '~> 2.6'
 
   s.add_development_dependency 'listen'

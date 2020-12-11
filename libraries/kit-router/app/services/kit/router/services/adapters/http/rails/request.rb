@@ -4,11 +4,11 @@ module Kit::Router::Services::Adapters::Http::Rails
   module Request
 
     def self.cookies_encrypted_prefix
-      'enc|'
+      '__enc_'
     end
 
     def self.cookies_signed_prefix
-      'sig|'
+      '__sig_'
     end
 
   end

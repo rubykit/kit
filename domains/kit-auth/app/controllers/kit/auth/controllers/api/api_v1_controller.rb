@@ -43,15 +43,15 @@ module Kit::Auth::Controllers::Api
 
       if request.params[:page]
         cursor_str = request.params[:page][:after]
-        if !cursor_str.blank?
-          cursor_data = Kit::Pagination::Cursor.decode_cursor(cursor_str: cursor_str)
-          conditions = Kit::Pagination::Conditions.conditions_for_after(ordering: ordering, cursor_data: cursor_data)
-        else
+        if cursor_str.blank?
           cursor_str = request.params[:page][:before]
           if !cursor_str.blank?
             cursor_data = Kit::Pagination::Cursor.decode_cursor(cursor_str: cursor_str)
             conditions = Kit::Pagination::Conditions.conditions_for_before(ordering: ordering, cursor_data: cursor_data)
           end
+        else
+          cursor_data = Kit::Pagination::Cursor.decode_cursor(cursor_str: cursor_str)
+          conditions = Kit::Pagination::Conditions.conditions_for_after(ordering: ordering, cursor_data: cursor_data)
         end
 
         if conditions
