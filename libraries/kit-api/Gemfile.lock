@@ -91,6 +91,7 @@ PATH
   remote: ../kit-router
   specs:
     kit-router (0.1.0)
+      oj
       tabulo (~> 2.6)
 
 PATH
