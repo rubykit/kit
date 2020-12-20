@@ -23,9 +23,9 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '~> 2.7'
 
-  s.add_dependency 'activeadmin'#,        '~> 2.8.1'
+  s.add_dependency 'activeadmin',        '~> 2.9.0'
   s.add_dependency 'activeadmin_addons', '~> 1.7.1'
-  s.add_dependency 'bootstrap',          '~> 4.0'
-  s.add_dependency 'popper_js'
+  s.add_dependency 'bootstrap',          '~> 4.5.3'
+  s.add_dependency 'popper_js',          '~> 1.16'
 
 end
