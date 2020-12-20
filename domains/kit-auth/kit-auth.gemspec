@@ -25,11 +25,12 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'bcrypt'
   s.add_dependency 'browser'
-  s.add_dependency 'doorkeeper',      '~> 5.4.0'
-  s.add_dependency 'email_inquire',   '~> 0.10.0'
-  s.add_dependency 'oauth2',          '~> 1.4.4'
-  s.add_dependency 'omniauth',        '~> 1.9.1'
-  s.add_dependency 'strong_password', '~> 0.0.8'
+  s.add_dependency 'doorkeeper',                     '~> 5.4.0'
+  s.add_dependency 'email_inquire',                  '~> 0.10.0'
+  s.add_dependency 'oauth2',                         '~> 1.4.4'
+  s.add_dependency 'omniauth',                       '~> 1.9.1'
+  s.add_dependency 'omniauth-rails_csrf_protection', '~> 0.1.2'
+  s.add_dependency 'strong_password',                '~> 0.0.8'
 
   s.add_dependency 'sass-rails'
 
