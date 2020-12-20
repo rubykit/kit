@@ -8,11 +8,6 @@ gem 'kit-dotenv-rails',        path: '../../libraries/kit-dotenv', require: 'kit
 
 gem 'jsonapi-rails' # DEV MODE ?
 
-# TODO: kill this, only needed because AA is not yet compatible with Rails 6.1
-gem 'inherited_resources', github: 'activeadmin/inherited_resources'
-# TODO: kill this, only needed because AA is not yet compatible with Rails 6.1
-gem 'activeadmin',         github: 'activeadmin/activeadmin', ref: 'f7b24c8e7816cd3e655e64cfa2c44d8b0a8b696f'
-
 gem 'kit-active-admin', path: '../../libraries/kit-active-admin', require: 'kit/active_admin' # DEV MODE
 gem 'kit-contract',     path: '../../libraries/kit-contract' # DEV MODE
 gem 'kit-doc',          path: '../../libraries/kit-doc' # DEV MODE
@@ -26,7 +21,7 @@ gem 'kit-router',       path: '../../libraries/kit-router' # DEV MODE
 
 gem 'browser'  # DEV MODE ? doesn't get loaded otherwise
 gem 'doorkeeper', require: 'doorkeeper'
-gem 'paranoia',   require: 'paranoia', github: 'walski/paranoia', branch: 'rails-6-1'
+gem 'paranoia',   require: 'paranoia'
 gem 'sidekiq'  # DEV MODE ? doesn't get loaded otherwise
 gem 'slim-rails' # DEV MODE ? doesn't get loaded otherwise
 
