@@ -34,10 +34,10 @@ module Kit::Auth::Services::Contracts::Password
     end
 =end
 
-    if !(password =~ %r{(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[\W_])})
-      [:error, detail: 'Complexity requirement not met. Please use: 1 uppercase, 1 lowercase, 1 digit and 1 special character.', attribute: :password]
-    else
+    if password =~ %r{(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[\W_])}
       [:ok]
+    else
+      [:error, detail: 'Complexity requirement not met. Please use: 1 uppercase, 1 lowercase, 1 digit and 1 special character.', attribute: :password]
     end
   end
 

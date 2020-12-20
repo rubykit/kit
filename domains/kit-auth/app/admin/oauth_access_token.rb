@@ -1,4 +1,4 @@
-::ActiveAdmin.register Kit::Auth::Models::Read::OauthAccessToken, as: 'OauthAccessToken', namespace: :kit_auth_admin do
+Kit::Auth::Admin.register Kit::Auth::Models::Read::OauthAccessToken, as: 'OauthAccessToken', namespace: :kit_auth_admin do
   menu label: 'OAuthAccessToken', parent: 'OAuth'
 
   actions :all, except: [:new, :edit, :destroy]

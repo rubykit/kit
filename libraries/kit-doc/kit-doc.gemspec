@@ -23,10 +23,10 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '~> 2.7'
 
-  # @todo All of these should be development dependencies, but that prevent them from being added to to projects using the gem.
+  # TODO: All of these should be development dependencies, but that prevent them from being added to projects using the gem.
   s.add_dependency 'git'
   s.add_dependency 'nokogiri'
-  s.add_dependency 'rails'
+  #s.add_dependency 'rails'
   s.add_dependency 'rake'
   s.add_dependency 'redcarpet'
   s.add_dependency 'rspec'

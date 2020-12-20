@@ -111,6 +111,9 @@ Naming/ConstantName:
 Naming/MethodParameterName:
   Enabled: false
 
+Naming/VariableNumber:
+  Enabled: false
+
 
 # Style ------------------------------------------------------------------------
 

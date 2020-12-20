@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '~> 2.7'
 
   s.add_dependency 'activerecord-nulldb-adapter'
-  s.add_dependency 'rails',                       '~> 6.0.3.1'
+  s.add_dependency 'rails',                       '~> 6.1.0'
 
   s.add_development_dependency 'rspec-rails'
   s.add_development_dependency 'rubocop'

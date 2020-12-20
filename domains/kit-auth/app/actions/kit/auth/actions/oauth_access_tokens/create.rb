@@ -21,7 +21,7 @@ module Kit::Auth::Actions::OauthAccessTokens::Create
   def self.create_doorkeeper_request_object(user:, oauth_application:, scopes: nil)
     request_object = ::Doorkeeper::OAuth::PasswordAccessTokenRequest.new(
       ::Doorkeeper.configuration,
-      ::Doorkeeper::Application.find(oauth_application.id),
+      ::Doorkeeper::OAuth::Client.new(::Doorkeeper::Application.find(oauth_application.id)),
       user,
       {
         scope: scopes,
@@ -44,15 +44,15 @@ module Kit::Auth::Actions::OauthAccessTokens::Create
 
     client                = doorkeeper_request_object.client
     scopes                = doorkeeper_request_object.scopes
-    resource_owner_id     = doorkeeper_request_object.resource_owner.id
+    resource_owner        = doorkeeper_request_object.resource_owner
     refresh_token_enabled = false
 
     access_token = ::Doorkeeper::AccessToken.find_or_create_for(
-      client,
-      resource_owner_id,
-      scopes,
-      oauth_access_token_expires_in,
-      refresh_token_enabled,
+      application:       client,
+      resource_owner:    resource_owner,
+      scopes:            scopes,
+      expires_in:        oauth_access_token_expires_in,
+      use_refresh_token: refresh_token_enabled,
     )
 
     [:ok, doorkeeper_access_token: access_token]

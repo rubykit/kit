@@ -11,6 +11,8 @@ Rails.application.config.assets.paths << Rails.root.join('node_modules')
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in the app/assets
 # folder are already added.
-Rails.application.config.assets.precompile += %w[active_admin.js active_admin.css]
+if defined?(::ActiveAdmin)
+  Rails.application.config.assets.precompile += %w[active_admin.js active_admin.css]
+end
 
 Rails.application.config.assets.precompile += %w[kit_auth_dummy_application.js kit_auth_dummy_application.css]
