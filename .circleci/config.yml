@@ -11,7 +11,7 @@ version: 2.1
 
 docker_ruby: &docker_ruby
   docker:
-    - image: circleci/ruby:2.7.0-node-browsers
+    - image: circleci/ruby:3.0.0-node-browsers
       environment:
         RAILS_ENV: 'test'
         RUBYOPT: '-W:no-deprecated'
@@ -27,7 +27,7 @@ docker_ruby: &docker_ruby
 
 docker_ruby_no_db: &docker_ruby_no_db
   docker:
-    - image: circleci/ruby:2.7.0
+    - image: circleci/ruby:3.0.0
 
 
 # Rspec ------------------------------------------------------------------------

@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
 
   s.files = Dir['{lib}/**/*', 'MIT-LICENSE.md', 'Rakefile', 'README.md']
 
-  s.required_ruby_version = '~> 2.7'
+  s.required_ruby_version = '>= 2.7'
 
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'rubocop'
