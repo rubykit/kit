@@ -52,8 +52,8 @@ module Kit::Contract::Services::MethodWrapper
   def self.create_method_wrapper(extension_target:, target_class:, method_name:, method_type:, aliased_name:, contracts_before_uid:, contracts_after_uid:)
     #class_name    = target_class.name
     parameters    = target_class.method(aliased_name).parameters
-    signature_str = Kit::Contract::Services::RubyHelpers.parameters_as_signature_to_s(parameters: parameters)
-    args_str      = Kit::Contract::Services::RubyHelpers.parameters_as_array_to_s(parameters: parameters)
+    signature_str = Kit::Contract::Services::RubyHelpers.parameters_to_string_signature(parameters: parameters)
+    args_str      = Kit::Contract::Services::RubyHelpers.parameters_to_string_arguments(parameters: parameters)
 
     extension_target.module_eval <<-METHOD, __FILE__, __LINE__ + 1
       def #{ method_name }(#{ signature_str })
