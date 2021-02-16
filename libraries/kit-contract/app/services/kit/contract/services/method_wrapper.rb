@@ -51,9 +51,9 @@ module Kit::Contract::Services::MethodWrapper
   # @note We are forced to avoid splat as it makes it impossible to perform any introspection on the parameters of the method. This leads to this akward parameter forwarding.
   def self.create_method_wrapper(extension_target:, target_class:, method_name:, method_type:, aliased_name:, contracts_before_uid:, contracts_after_uid:)
     #class_name    = target_class.name
-    parameters    = target_class.method(aliased_name).parameters
-    signature_str = Kit::Contract::Services::RubyHelpers.parameters_to_string_signature(parameters: parameters)
-    args_str      = Kit::Contract::Services::RubyHelpers.parameters_to_string_arguments(parameters: parameters)
+    parameters     = target_class.method(aliased_name).parameters
+    signature_str  = Kit::Contract::Services::RubyHelpers.parameters_to_string_signature(parameters: parameters)
+    parameters_str = Kit::Contract::Services::RubyHelpers.parameters_to_string_arguments(parameters: parameters)
 
     extension_target.module_eval <<-METHOD, __FILE__, __LINE__ + 1
       def #{ method_name }(#{ signature_str })
@@ -65,7 +65,7 @@ module Kit::Contract::Services::MethodWrapper
           contracts_after_uid:  #{ contracts_after_uid },
           target:               self,
           target_class:         #{ (method_type == :singleton_method) ? 'self' : 'self.class' },
-          args:                 #{ args_str },
+          parameters:           #{ parameters_str },
         )
       end
     METHOD

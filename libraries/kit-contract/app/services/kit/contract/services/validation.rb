@@ -7,15 +7,16 @@ module Kit::Contract::Services::Validation
 
   #EXPECTED_CALLABLE_RESULT_TYPE = Or[Boolean, ResultTupple]
 
-  #contract Hash[contract: Callable, args: Any] => ResultTupple
+  #contract Hash[contract: Callable, parameters: Any] => ResultTupple
   # Run a contract & normalize output.
-  def self.valid?(contract:, args:)
-    args_in = Kit::Contract::Services::RubyHelpers.generate_args_in(callable: contract, args: args)
+  def self.valid?(contract:, parameters:)
+    parameters_in = Kit::Contract::Services::RubyHelpers.generate_parameters_in(callable: contract, parameters: parameters)
 
     if ENV['KIT_CONTRACT_DEBUG'] == 'true'
-      puts "# Calling `#{ contract }` with args: `#{ args_in }`".yellow
+      puts "# Calling `#{ contract }` with parameters: `#{ parameters }`".yellow
     end
-    result = contract.call(*args_in)
+
+    result = contract.call(*parameters_in[:args], **parameters_in[:kwargs], &parameters_in[:block])
     if ENV['KIT_CONTRACT_DEBUG'] == 'true'
       puts "#   Result |#{ result }|".blue
     end
@@ -41,10 +42,10 @@ module Kit::Contract::Services::Validation
         (ctx[:errors] ||= []) << { detail: 'Invalid result type for contract' }
       end
 
-      if !ctx[:contract_error]
-        ctx[:contract_error] = { callable: contract, args: args, contracts_stack: [contract] }
-      else
+      if ctx[:contract_error]
         ctx[:contract_error][:contracts_stack] << contract
+      else
+        ctx[:contract_error] = { callable: contract, parameters: parameters, contracts_stack: [contract] }
       end
     end
 
@@ -54,13 +55,13 @@ module Kit::Contract::Services::Validation
     result
   end
 
-  #contract Hash[contracts: Array.of(Callable), args: Array] => ResultTupple
-  def self.all(contracts:, args:)
+  #contract Hash[contracts: Array.of(Callable), parameters: Hash] => ResultTupple
+  def self.all(contracts:, parameters:)
     status = :ok
     ctx    = {}
 
     contracts.each do |contract|
-      status, ctx = valid?(contract: contract, args: args)
+      status, ctx = valid?(contract: contract, parameters: parameters)
 
       break if status == :error
     end

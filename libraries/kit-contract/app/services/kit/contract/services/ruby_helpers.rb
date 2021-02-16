@@ -5,44 +5,43 @@ module Kit::Contract::Services::RubyHelpers
   # Attempt to generate a version of `args` that can be sent to `callable`
   #
   # @note a valid order looks like: `[:req, :opt], :rest, [:req, :opt], [:key, :keyreq], :keyrest, :block`
-  def self.generate_args_in(callable:, args:)
-    args       = args.dup
-    parameters = get_parameters(callable: callable).dup
+  def self.generate_parameters_in(callable:, parameters:)
+    sig_params = get_parameters(callable: callable).dup
 
-    payload    = {
+    parameters_out = {
       args:   [],
       kwargs: {},
       block:  nil,
     }
 
-    if parameters.last&.last == :block
-      payload[:block] = args.pop
-      parameters.pop
+    if sig_params.last&.last == :block
+      parameters_out[:block] = parameters[:block]
+      sig_params.pop
     end
 
     kwargs_types = [:key, :keyrest, :keyreq]
-    if parameters.last&.first&.in?(kwargs_types)
-      keyargs_hash = args.pop
+    if sig_params.last&.first&.in?(kwargs_types)
+      kwargs_hash = parameters[:kwargs].dup
 
-      parameters_kwargs = parameters.select { |type, _name| type.in?(kwargs_types) }
+      parameters_kwargs = sig_params.select { |type, _name| type.in?(kwargs_types) }
 
       # So that we can use the remaining
-      parameters.delete_if { |el| el[0].in?(kwargs_types) }
+      sig_params.delete_if { |el| el[0].in?(kwargs_types) }
 
       # If there is :keyreq, everything goes! Otherwise slice.
       has_keyreq = parameters_kwargs.any? { |type, _name| type == :keyrest }
       if !has_keyreq
-        keyargs_hash = keyargs_hash.slice(*(parameters_kwargs.map { |_type, name| name }))
+        kwargs_hash = kwargs_hash.slice(*(parameters_kwargs.map { |_type, name| name }))
       end
 
-      payload[:kwargs] = keyargs_hash
+      parameters_out[:kwargs] = kwargs_hash
     end
 
-    if parameters.size > 0
-      payload[:args] = *args
+    if sig_params.size > 0
+      parameters_out[:args] = parameters[:args].dup
     end
 
-    payload
+    parameters_out
   end
 
   # Given a `callable`, get its `parameters` data
@@ -112,27 +111,19 @@ module Kit::Contract::Services::RubyHelpers
       end
     end
 
-    keyargs = parameters.select { |type, _name| type == :key || type == :keyreq }
+    kwargs = parameters.select { |type, _name| type == :key || type == :keyreq } || []
 
     # Generate string
 
     str = '{ '
+    str << "args: [#{ named.join(', ') }], "
+    str << "kwargs: { #{ kwargs.map { |_type, name| "#{ name }: #{ name }" }.join(', ') } }"
 
-    if named.size > 0
-      str << "named: [#{ named.join(', ') }], "
+    if keyrest
+      str << ".merge(#{ keyrest })" if keyrest
     end
 
-    if keyargs.size > 0 || keyrest
-       str << "keyargs: { #{ keyargs.map { |_type, name| "#{ name }: #{ name }" }.join(', ') } }"
-       str << ".merge(#{ keyrest })" if keyrest
-       str << ', '
-    end
-
-    if block
-      str << "block: #{ block }, "
-    end
-
-    str << '}'
+    str << ", block: #{ block || 'nil' }, }"
 
     str
   end
