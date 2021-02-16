@@ -2,39 +2,44 @@
 # This should be part of the language in one form or another.
 module Kit::Contract::Services::RubyHelpers
 
-=begin
-  # Given a `callable`, check if it can receive `args` as a payload
-  def self.can_receive?(callable:, signature:)
-  end
-=end
-
-  # Given a `callable`, attempt to transform `args` to make it compatible with the signature
+  # Attempt to generate a version of `args` that can be sent to `callable`
+  #
   # @note a valid order looks like: `[:req, :opt], :rest, [:req, :opt], [:key, :keyreq], :keyrest, :block`
   def self.generate_args_in(callable:, args:)
     args       = args.dup
     parameters = get_parameters(callable: callable).dup
-    payload    = []
+
+    payload    = {
+      args:   [],
+      kwargs: {},
+      block:  nil,
+    }
 
     if parameters.last&.last == :block
+      payload[:block] = args.pop
       parameters.pop
-      payload << args.pop
     end
 
-    if parameters.last&.first&.in?([:key, :keyrest, :keyreq])
-      keyargs_hash   = args.pop
-      parameters_key = parameters
-        .select { |el| el[0].in?([:key, :keyrest, :keyreq]) }
+    kwargs_types = [:key, :keyrest, :keyreq]
+    if parameters.last&.first&.in?(kwargs_types)
+      keyargs_hash = args.pop
 
-      parameters
-        .delete_if { |el| el[0].in?([:key, :keyrest, :keyreq]) }
+      parameters_kwargs = parameters.select { |type, _name| type.in?(kwargs_types) }
 
-      payload.unshift(*handle_key_args(hash: keyargs_hash, parameters: parameters_key))
+      # So that we can use the remaining
+      parameters.delete_if { |el| el[0].in?(kwargs_types) }
+
+      # If there is :keyreq, everything goes! Otherwise slice.
+      has_keyreq = parameters_kwargs.any? { |type, _name| type == :keyrest }
+      if !has_keyreq
+        keyargs_hash = keyargs_hash.slice(*(parameters_kwargs.map { |_type, name| name }))
+      end
+
+      payload[:kwargs] = keyargs_hash
     end
 
     if parameters.size > 0
-      #payload.unshift(*handle_regular_args(args: args, parameters: parameters))
-
-      payload.unshift(*args)
+      payload[:args] = *args
     end
 
     payload
@@ -52,70 +57,6 @@ module Kit::Contract::Services::RubyHelpers
       raise "Unsupported callable #{ callable.class } `#{ callable }`"
     end
   end
-
-  # Given a `hash` and some callable `parameters`, attempts to generate a compatible version of that `hash`.
-  def self.handle_key_args(hash:, parameters:)
-    raise 'Expected hash' if !hash.is_a?(::Hash)
-
-    payload    = []
-    keys       = hash.keys
-    named_keys = parameters
-      .map { |el| el[0].in?([:keyreq, :key]) ? el[1] : nil }
-      .compact
-
-    if named_keys.size > 0
-      arg_available_keys = named_keys
-        .select { |name| hash.key?(name) }
-
-      payload << hash.slice(*arg_available_keys)
-    end
-
-    if parameters.last[0] == :keyrest
-      rest_keys          = keys - named_keys
-      arg_available_keys = rest_keys
-        .select { |name| hash.key?(name) }
-
-      if arg_available_keys.size > 0
-        payload << hash.slice(*arg_available_keys)
-      end
-    end
-
-    payload
-  end
-
-=begin
-  def self.handle_regular_args(args:, parameters:)
-    payload     = []
-    payload_end = []
-
-    # Start left, if we find `rest`, pause, start right, assign whatever is left
-    while parameters.size > 0
-      type, name = parameters.first
-
-      if type == :req || type == :opt
-        parameters.shift
-        payload << args.shift
-      elsif type == :rest
-        parameters.shift
-        while parameters.size > 0
-          type, name = parameters.last
-
-          if type == :req || type == :opt
-            payload_end.unshift args.pop
-            parameters.pop
-          end
-        end
-
-        payload << args
-        payload.concat(payload_end)
-      else
-        "Unsupported parameter type `#{type}` (named `#{name}`)"
-      end
-    end
-
-    payload
-  end
-=end
 
   # Given `parameters` of a callable, generate a function signature able to receive these parameters seamlessly.
   #
