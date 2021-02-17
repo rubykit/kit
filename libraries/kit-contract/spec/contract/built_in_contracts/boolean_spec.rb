@@ -7,15 +7,15 @@ describe Kit::Contract::BuiltInContracts::Boolean do
   let(:contract) { described_class }
   let(:args_valid) do
     [
-      [true],
-      [false],
+      { args: [true] },
+      { args: [false] },
     ]
   end
   let(:args_invalid) do
     {
-      [nil] => 'OR failed',
-      [1]   => 'OR failed',
-      ['1'] => 'OR failed',
+      { args: [nil] } => 'OR failed',
+      { args: [1] }   => 'OR failed',
+      { args: ['1'] } => 'OR failed',
     }
   end
 

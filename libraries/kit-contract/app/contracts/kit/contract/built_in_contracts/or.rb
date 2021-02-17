@@ -7,9 +7,11 @@ class Kit::Contract::BuiltInContracts::Or < Kit::Contract::BuiltInContracts::Ins
 
   # Note: not sure what the correct behaviour is here with safe_nested_call.
   #  Should it remove circular reference contracts or pretend they succeeded? Does it make a difference?
-  def call(*args)
-    results = safe_nested_call(list: @state[:contracts_list], args: args, contract: self) do |local_contract|
-      status, _ctx = result = Kit::Contract::Services::Validation.valid?(contract: local_contract, args: args)
+  def call(*args, **kwargs)
+    parameters = { args: args || [], kwargs: kwargs || {}, }
+
+    results = safe_nested_call(list: @state[:contracts_list], parameters: parameters, contract: self) do |local_contract|
+      status, _ctx = result = Kit::Contract::Services::Validation.valid?(contract: local_contract, parameters: parameters)
 
       return [:ok] if status == :ok
 

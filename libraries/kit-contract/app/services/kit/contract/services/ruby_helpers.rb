@@ -21,7 +21,7 @@ module Kit::Contract::Services::RubyHelpers
 
     kwargs_types = [:key, :keyrest, :keyreq]
     if sig_params.last&.first&.in?(kwargs_types)
-      kwargs_hash = parameters[:kwargs].dup
+      kwargs_hash = (parameters[:kwargs] || {}).dup
 
       parameters_kwargs = sig_params.select { |type, _name| type.in?(kwargs_types) }
 

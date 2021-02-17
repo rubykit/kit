@@ -9,13 +9,16 @@ CtA = Kit::Contract::BuiltInContracts::Hash[
 
 context 'in a circular reference scenario' do
 
-  let(:subject) { Kit::Contract::Services::Validation.valid?(contract: contract, args: args) }
+  let(:subject) do
+    Kit::Contract::Services::Validation.valid?(contract: contract, parameters: parameters)
+  end
 
   let(:contract) { CtA }
-  let(:args) do
+  let(:parameters) do
     hash = { kA: nil, kB: should_succeed }
     hash[:kA] = hash
-    [hash]
+
+    { kwargs: hash }
   end
 
   context 'in unsafe mode' do

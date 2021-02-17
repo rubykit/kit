@@ -3,8 +3,8 @@ RSpec.shared_examples_for 'a signature contract that succeeds on valid values' d
   it 'suceeds with valid values' do
     callable ||= subject
 
-    args_valid.each do |args, result|
-      expect(callable.call(*args)).to eq result
+    args_valid.each do |parameters, result|
+      expect(callable.call(*(parameters[:args] || []), **(parameters[:kwargs] || {}), &parameters[:block])).to eq result
     end
   end
 
@@ -15,14 +15,14 @@ RSpec.shared_examples_for 'a signature contract that fails on invalid values' do
   it 'fails with invalid values' do
     callable ||= subject
 
-    args_invalid.each do |args, error_msg|
+    args_invalid.each do |parameters, error_msg|
       if error_msg.is_a?(Array)
         exception_class, error_msg = error_msg
       else
         exception_class = Kit::Contract::Error
       end
 
-      expect { callable.call(*args) }.to(
+      expect { callable.call(*(parameters[:args] || []), **(parameters[:kwargs] || {}), &parameters[:block]) }.to(
         raise_error(
           an_instance_of(exception_class).and(having_attributes(message: a_string_starting_with(error_msg))),
         ),

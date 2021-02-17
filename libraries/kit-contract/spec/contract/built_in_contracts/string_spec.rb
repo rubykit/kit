@@ -7,15 +7,15 @@ describe Kit::Contract::BuiltInContracts::String do
   let(:contract) { described_class }
   let(:args_valid) do
     [
-      ['a'],
+      { args: ['a'] },
     ]
   end
   let(:expected_type) { String }
   let(:args_invalid) do
     {
-      [nil] => nil,
-      [:a]  => nil,
-      [1]   => nil,
+      { args: [nil] } => nil,
+      { args: [:a] }  => nil,
+      { args: [1] }   => nil,
     }
   end
 

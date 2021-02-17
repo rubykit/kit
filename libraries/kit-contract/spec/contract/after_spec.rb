@@ -34,7 +34,7 @@ describe 'before' do
 
     let(:args_valid) do
       {
-        [{ value: 2 }] => 2,
+        { kwargs: { value: 2 } } => 2,
       }
     end
 
@@ -42,8 +42,8 @@ describe 'before' do
 
     let(:args_invalid) do
       {
-        [{ value: 0  }] => 'Contract failure after `TestModules::After#test_after_multiple_contracts`',
-        [{ value: 10 }] => 'Contract failure after `TestModules::After#test_after_multiple_contracts`',
+        { kwargs: { value: 0  } } => 'Contract failure after `TestModules::After#test_after_multiple_contracts`',
+        { kwargs: { value: 10 } } => 'Contract failure after `TestModules::After#test_after_multiple_contracts`',
       }
     end
 
@@ -55,7 +55,7 @@ describe 'before' do
 
     let(:args_valid) do
       {
-        [{ value: 2 }] => 2,
+        { kwargs: { value: 2 } } => 2,
       }
     end
 
@@ -63,8 +63,8 @@ describe 'before' do
 
     let(:args_invalid) do
       {
-        [{ value: 0  }] => 'Contract failure after `TestModules::After#test_after_multiple_contracts_array`',
-        [{ value: 10 }] => 'Contract failure after `TestModules::After#test_after_multiple_contracts_array`',
+        { kwargs: { value: 0  } } => 'Contract failure after `TestModules::After#test_after_multiple_contracts_array`',
+        { kwargs: { value: 10 } } => 'Contract failure after `TestModules::After#test_after_multiple_contracts_array`',
       }
     end
 

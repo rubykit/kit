@@ -16,7 +16,7 @@ module Kit::Contract::Services::Validation
       puts "# Calling `#{ contract }` with parameters: `#{ parameters }`".yellow
     end
 
-    result = contract.call(*parameters_in[:args], **parameters_in[:kwargs], &parameters_in[:block])
+    result = contract.call(*(parameters_in[:args] || []), **(parameters_in[:kwargs] || {}), &parameters_in[:block])
     if ENV['KIT_CONTRACT_DEBUG'] == 'true'
       puts "#   Result |#{ result }|".blue
     end

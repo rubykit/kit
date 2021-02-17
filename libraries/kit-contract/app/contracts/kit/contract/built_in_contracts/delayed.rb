@@ -6,9 +6,9 @@ class Kit::Contract::BuiltInContracts::Delayed < Kit::Contract::BuiltInContracts
     @state[:callable] = callable
   end
 
-  def call(*args)
+  def call(*args, **kwargs)
     contract = @state[:callable].call()
-    Kit::Contract::Services::Validation.valid?(contract: contract, args: args)
+    Kit::Contract::Services::Validation.valid?(contract: contract, parameters: { args: args })
   end
 
 end

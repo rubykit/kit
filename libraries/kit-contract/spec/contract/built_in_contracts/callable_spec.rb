@@ -29,15 +29,15 @@ describe Kit::Contract::BuiltInContracts::Callable do
   let(:contract) { described_class }
   let(:args_valid) do
     [
-      [->(_v) { true }],
-      [TestModules::FunctorContainer.method(:callable_method)],
-      [TestModules::FunctorContainer::Functor.new],
+      { args: [->(_v) { true }] },
+      { args: [TestModules::FunctorContainer.method(:callable_method)] },
+      { args: [TestModules::FunctorContainer::Functor.new] },
     ]
   end
   let(:args_invalid) do
     {
-      [nil] => 'RESPOND_TO failed: object does not respond_to `call`',
-      [3]   => 'RESPOND_TO failed: object does not respond_to `call`',
+      { args: [nil] } => 'RESPOND_TO failed: object does not respond_to `call`',
+      { args: [3] }   => 'RESPOND_TO failed: object does not respond_to `call`',
     }
   end
 

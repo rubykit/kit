@@ -6,10 +6,10 @@ class Kit::Contract::BuiltInContracts::None < Kit::Contract::BuiltInContracts::I
   end
 
   def call(*args)
-    debug(args: args)
+    debug(parameters: parameters)
 
-    safe_nested_call(list: @state[:contracts_list], args: args, contract: self) do |local_contract|
-      status, ctx = result = Kit::Contract::Services::Validation.valid?(contract: local_contract, args: args)
+    safe_nested_call(list: @state[:contracts_list], parameters: parameters, contract: self) do |local_contract|
+      status, ctx = result = Kit::Contract::Services::Validation.valid?(contract: local_contract, parameters: parameters)
       if status == :ok
         ctx[:errors].unshift({ detail: 'NONE failed.' })
 

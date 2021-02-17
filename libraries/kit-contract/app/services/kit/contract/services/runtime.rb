@@ -17,7 +17,7 @@ module Kit::Contract::Services::Runtime
       },
     )
 
-    result = target.send(aliased_name, *parameters[:args], **parameters[:kwargs], &parameters[:block])
+    result = target.send(aliased_name, *(parameters[:args] || []), **(parameters[:kwargs] || {}), &parameters[:block])
 
     _, ctx    = Kit::Contract::Services::Store.get(key: contracts_after_uid)
     contracts = ctx[:value]

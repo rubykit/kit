@@ -36,7 +36,7 @@ describe TestModules::RGB do
 
   let(:args_valid) do
     {
-      [{ r: 128, g: 32, b: 12 }] => '#80200C',
+      { kwargs: { r: 128, g: 32, b: 12 } } => '#80200C',
     }
   end
 

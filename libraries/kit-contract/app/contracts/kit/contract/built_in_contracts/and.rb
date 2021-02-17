@@ -6,12 +6,14 @@ class Kit::Contract::BuiltInContracts::And < Kit::Contract::BuiltInContracts::In
   end
 
   def call(*args)
-    debug(args: args)
+    parameters = { args: args }
+
+    debug(parameters: parameters)
 
 =begin
     failed_list = []
 
-    safe_nested_call(list: @state[:contracts_list], args: args, contract: self) do |local_contract|
+    safe_nested_call(list: @state[:contracts_list], parameters: parameters, contract: self) do |local_contract|
       status, res = Kit::Contract::Services::Validation.valid?(contract: local_contract, args: args)
 
       if status == :err
@@ -26,8 +28,9 @@ class Kit::Contract::BuiltInContracts::And < Kit::Contract::BuiltInContracts::In
     end
 =end
 
-    safe_nested_call(list: @state[:contracts_list], args: args, contract: self) do |local_contract|
-      status, ctx = result = Kit::Contract::Services::Validation.valid?(contract: local_contract, args: args)
+    safe_nested_call(list: @state[:contracts_list], parameters: parameters, contract: self) do |local_contract|
+      status, ctx = result = Kit::Contract::Services::Validation.valid?(contract: local_contract, parameters: parameters)
+
       if status == :error
         if ctx[:contracts_stack]
           ctx[:contracts_stack] << contract

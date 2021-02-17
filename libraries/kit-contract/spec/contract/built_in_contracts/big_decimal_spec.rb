@@ -7,16 +7,16 @@ describe Kit::Contract::BuiltInContracts::BigDecimal do
   let(:contract) { described_class }
   let(:args_valid) do
     [
-      [BigDecimal(1)],
+      { args: [BigDecimal(1)] },
     ]
   end
   let(:expected_type) { BigDecimal }
   let(:args_invalid) do
     {
-      [nil]                   => nil,
-      [1]                     => nil,
-      [1.0]                   => nil,
-      [::Kernel::Rational(1)] => nil,
+      { args: [nil] }                   => nil,
+      { args: [1] }                     => nil,
+      { args: [1.0] }                   => nil,
+      { args: [::Kernel::Rational(1)] } => nil,
     }
   end
 

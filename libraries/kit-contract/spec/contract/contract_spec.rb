@@ -8,7 +8,6 @@ end
 
 # Dummy module.
 module TestModules::Contract
-
   include Kit::Contract::Mixin
 
   contract((->(input) { input < 10 }) => (->(output) { output > 10 }))
@@ -30,7 +29,7 @@ describe 'contract' do
 
     let(:args_valid) do
       {
-        [5] => 15,
+        { args: [5] } => 15,
       }
     end
 
@@ -38,8 +37,8 @@ describe 'contract' do
 
     let(:args_invalid) do
       {
-        [15] => 'Contract failure before `TestModules::Contract#test_contract_hash`',
-        [-5] => 'Contract failure after `TestModules::Contract#test_contract_hash`',
+        { args: [15] } => 'Contract failure before `TestModules::Contract#test_contract_hash`',
+        { args: [-5] } => 'Contract failure after `TestModules::Contract#test_contract_hash`',
       }
     end
 
@@ -51,7 +50,7 @@ describe 'contract' do
 
     let(:args_valid) do
       {
-        [5] => 15,
+        { args: [5] } => 15,
       }
     end
 
@@ -59,7 +58,7 @@ describe 'contract' do
 
     let(:args_invalid) do
       {
-        [10] => 'Contract failure before `TestModules::Contract#test_contract_callable`',
+        { args: [10] } => 'Contract failure before `TestModules::Contract#test_contract_callable`',
       }
     end
 

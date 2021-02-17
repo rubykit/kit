@@ -7,15 +7,15 @@ describe Kit::Contract::BuiltInContracts::IsA do
   let(:contract) { described_class[::String] }
   let(:args_valid) do
     [
-      ['a'],
+      { args: ['a'] },
     ]
   end
   let(:expected_type) { String }
   let(:args_invalid) do
     {
-      [nil]        => nil,
-      [1]          => nil,
-      [{ c: :ok }] => nil,
+      { args: [nil] }        => nil,
+      { args: [1] }          => nil,
+      { args: [{ c: :ok }] } => nil,
     }
   end
 

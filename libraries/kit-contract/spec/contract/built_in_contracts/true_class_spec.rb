@@ -7,16 +7,16 @@ describe Kit::Contract::BuiltInContracts::TrueClass do
   let(:contract) { described_class }
   let(:args_valid) do
     [
-      [true],
+      { args: [true] },
     ]
   end
   let(:expected_type) { TrueClass }
   let(:args_invalid) do
     {
-      [false] => nil,
-      [nil]   => nil,
-      [1]     => nil,
-      ['1']   => nil,
+      { args: [false] } => nil,
+      { args: [nil] }   => nil,
+      { args: [1] }     => nil,
+      { args: ['1'] }   => nil,
     }
   end
 
