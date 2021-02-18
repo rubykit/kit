@@ -22,11 +22,11 @@ module SpecDb
     end
 
     def select_before(ordered_set:, condition:, limit:)
-      select_after({
+      select_after(
         ordered_set: ordered_set.reverse,
         condition:   condition,
         limit:       limit,
-      }).reverse
+      ).reverse
     end
 
     protected
