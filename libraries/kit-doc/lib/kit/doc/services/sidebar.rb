@@ -100,7 +100,7 @@ module Kit::Doc::Services::Sidebar
       if current_matcher.is_a?(Hash)
         matcher[:display_title] = current_matcher[:display_title]
         matcher[:css_classes]   = current_matcher[:css_classes]
-        matcher[:display]       = (current_matcher[:display] == false) ? false : true
+        matcher[:display]       = !(current_matcher[:display] == false)
         current_matcher         = current_matcher[:inclusion]
       end
 

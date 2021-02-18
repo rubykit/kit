@@ -8,12 +8,12 @@ describe 'RubyHelpers' do
 
     tests = [
       {
-        callable:       ->(n1, n2 = :value, *args, n3, k1: :value2, k2:, **opts, &block) { [:ok] }, # rubocop:disable Lint/UnusedBlockArgument
+        callable:       ->(n1, n2 = :value, *args, n3, k2:, k1: :value2, **opts, &block) { [:ok] }, # rubocop:disable Lint/UnusedBlockArgument
         parameters_str: '{ args: [n1, n2, *args, n3], kwargs: { k2: k2, k1: k1 }.merge(opts), block: block, }',
         signature_str:  'n1, n2 = nil, *args, n3, k2:, k1: nil, **opts, &block',
       },
       {
-        callable:       ->(n1, n2 = :value, *, k1: :value2, k2:, **, &block) { [:ok] }, # rubocop:disable Lint/UnusedBlockArgument
+        callable:       ->(n1, n2 = :value, *, k2:, k1: :value2, **, &block) { [:ok] }, # rubocop:disable Lint/UnusedBlockArgument
         parameters_str: '{ args: [n1, n2, *_KC_REST], kwargs: { k2: k2, k1: k1 }.merge(_KC_KEYREST), block: block, }',
         signature_str:  'n1, n2 = nil, *_KC_REST, k2:, k1: nil, **_KC_KEYREST, &block',
       },

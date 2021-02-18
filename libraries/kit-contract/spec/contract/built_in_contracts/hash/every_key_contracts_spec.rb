@@ -21,9 +21,9 @@ describe Kit::Contract::BuiltInContracts::Hash do
 
     let(:args_invalid) do
       {
-        { kwargs:{ 'str' => :b } }       => 'Invalid result type for contract',
-        { kwargs:{ :a => 2, 'b' => 2 } } => 'Invalid result type for contract',
-        { kwargs:{ 2 => :c } }           => 'Invalid result type for contract',
+        { kwargs: { 'str' => :b } }       => 'Invalid result type for contract',
+        { kwargs: { :a => 2, 'b' => 2 } } => 'Invalid result type for contract',
+        { kwargs: { 2 => :c } }           => 'Invalid result type for contract',
       }
     end
 

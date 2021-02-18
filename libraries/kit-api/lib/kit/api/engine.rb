@@ -16,7 +16,7 @@ class Kit::Api::Engine < ::Rails::Engine
 
     parser = ->(body) { Oj.safe_load(body) }
 
-    #Note: `ActionDispatch::IntegrationTest.register_encoder` does not seem to work
+    # NOTE: `ActionDispatch::IntegrationTest.register_encoder` does not seem to work
     ActionDispatch::Request.parameter_parsers[:json_api] = parser
   end
 

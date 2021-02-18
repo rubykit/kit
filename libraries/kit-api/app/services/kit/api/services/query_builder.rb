@@ -143,7 +143,7 @@ module Kit::Api::Services::QueryBuilder
     if singular == true
       limit = 1
     elsif limit == nil
-      # Note: this is kind of cheating, not sure where it belongs.
+      # NOTE: this is kind of cheating, not sure where it belongs.
       limit = api_request.dig(:pagination, path, :size)
     end
 

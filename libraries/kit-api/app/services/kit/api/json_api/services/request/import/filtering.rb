@@ -154,7 +154,6 @@ module Kit::Api::JsonApi::Services::Request::Import::Filtering
       #list.each do |name:, op:, value:|
       list.each do |el|
         name  = el[:name]
-        value = el[:value]
         op    = el[:op]
 
         operators  = resource[:filters][name.to_sym]

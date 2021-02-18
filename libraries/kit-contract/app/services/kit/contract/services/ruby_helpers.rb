@@ -103,7 +103,7 @@ module Kit::Contract::Services::RubyHelpers
     block   = (parameters.last&.first == :block)   ?  parameters.pop[1]                   : nil
     keyrest = (parameters.last&.first == :keyrest) ? (parameters.pop[1] || '_KC_KEYREST') : nil
 
-    named   = parameters.filter_map do |type,  name|
+    named   = parameters.filter_map do |type, name|
       if type == :req || type == :opt
         name
       elsif type == :rest
@@ -120,7 +120,7 @@ module Kit::Contract::Services::RubyHelpers
     str << "kwargs: { #{ kwargs.map { |_type, name| "#{ name }: #{ name }" }.join(', ') } }"
 
     if keyrest
-      str << ".merge(#{ keyrest })" if keyrest
+      str << ".merge(#{ keyrest })"
     end
 
     str << ", block: #{ block || 'nil' }, }"

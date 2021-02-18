@@ -11,7 +11,7 @@ module Kit::Contract::Services::MethodWrapper
     return if method_name.to_s.start_with?(METHOD_PREFIX)
     return if class_self.respond_to?(aliased_name)
 
-    # Note: we have to add this indirection as we can not use closures from evaled code.
+    # NOTE: we have to add this indirection as we can not use closures from evaled code.
     _, ctx = Kit::Contract::Services::Store.add_and_generate_key(value: contracts_before)
     store_contracts_before_uid = ctx[:key]
     _, ctx = Kit::Contract::Services::Store.add_and_generate_key(value: contracts_after)

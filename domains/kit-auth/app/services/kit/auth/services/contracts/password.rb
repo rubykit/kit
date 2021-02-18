@@ -13,7 +13,7 @@ module Kit::Auth::Services::Contracts::Password
         kwargs: {
           password:              password,
           password_confirmation: password_confirmation,
-        }
+        },
       },
     )
 

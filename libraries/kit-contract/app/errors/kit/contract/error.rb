@@ -44,7 +44,7 @@ class Kit::Contract::Error < ::StandardError
       end
 
       if @contract_error[:parameters]
-        arguments = @contract_error[:parameters].ai
+        parameters = @contract_error[:parameters].ai
         list << "  Arguments used: #{ parameters }"
       end
       error_callable = @contract_error[:callable]

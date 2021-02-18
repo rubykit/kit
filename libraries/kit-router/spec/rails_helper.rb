@@ -14,7 +14,7 @@ require 'kit/dummy-app-container/rails_rspec'
 
 require 'spec_helper'
 
-Dir[Rails.root.join('../support/**/*.rb')].sort.each { |f| require f }
+Dir[Rails.root.join('../support/**/*.rb')].each { |f| require f }
 
 RSpec.configure do |config|
   config.use_transactional_fixtures = false

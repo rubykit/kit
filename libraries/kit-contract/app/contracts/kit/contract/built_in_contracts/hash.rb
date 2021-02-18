@@ -5,7 +5,7 @@ module Kit::Contract::BuiltInContracts
 
     def self.get_keyword_arg_contract(key:, contract:)
       ->(*args, **kwargs) do
-        kwargs = args[0] if !kwargs || kwargs.empty? && args[0]&.is_a?(::Hash)
+        kwargs = args[0] if !kwargs || kwargs.empty? && args[0].is_a?(::Hash)
 
         # TODO: add key in errors?
         Kit::Contract::Services::Validation.valid?(contract: contract, parameters: { args: [kwargs[key]] })
@@ -14,7 +14,7 @@ module Kit::Contract::BuiltInContracts
 
     def self.get_instance_contract(contract:)
       ->(*args, **kwargs) do
-        kwargs = args[0] if !kwargs || kwargs.empty? && args[0]&.is_a?(::Hash)
+        kwargs = args[0] if !kwargs || kwargs.empty? && args[0].is_a?(::Hash)
 
         Kit::Contract::Services::Validation.valid?(contract: contract, parameters: { args: [kwargs] })
       end
@@ -23,7 +23,7 @@ module Kit::Contract::BuiltInContracts
     def self.get_every_key_value_contract(contract:)
       ->(*args, **kwargs) do
         kwargs.each do |key, value|
-          kwargs = args[0] if !kwargs || kwargs.empty? && args[0]&.is_a?(::Hash)
+          kwargs = args[0] if !kwargs || kwargs.empty? && args[0].is_a?(::Hash)
 
           result       = Kit::Contract::Services::Validation.valid?(contract: contract, parameters: { args: [key, value] })
           status, _ctx = result
@@ -36,7 +36,7 @@ module Kit::Contract::BuiltInContracts
     def self.get_every_key_contract(contract:)
       ->(*args, **kwargs) do
         kwargs.each_key do |key|
-          kwargs = args[0] if !kwargs || kwargs.empty? && args[0]&.is_a?(::Hash)
+          kwargs = args[0] if !kwargs || kwargs.empty? && args[0].is_a?(::Hash)
 
           result       = Kit::Contract::Services::Validation.valid?(contract: contract, parameters: { args: [key] })
           status, _ctx = result
@@ -49,7 +49,7 @@ module Kit::Contract::BuiltInContracts
     def self.get_every_value_contract(contract:)
       ->(*args, **kwargs) do
         kwargs.each_value do |value|
-          kwargs = args[0] if !kwargs || kwargs.empty? && args[0]&.is_a?(::Hash)
+          kwargs = args[0] if !kwargs || kwargs.empty? && args[0].is_a?(::Hash)
 
           result       = Kit::Contract::Services::Validation.valid?(contract: contract, parameters: { args: [value] })
           status, _ctx = result
@@ -93,7 +93,7 @@ module Kit::Contract::BuiltInContracts
     def call(*args, **kwargs)
       return self if !Kit::Contract::Services::Runtime.active?
 
-      parameters = { args: args || [], kwargs: kwargs || {}, }
+      parameters = { args: args || [], kwargs: kwargs || {} }
 
       debug(parameters: parameters)
 

@@ -156,7 +156,7 @@ module Kit::Api::Services::Resolvers::ActiveRecord
 
   # ----------------------------------------------------------------------------
 
-  # Note: we use read_attribute for JOINs where we added the data on the element.
+  # NOTE: we use read_attribute for JOINs where we added the data on the element.
   after Ct::Callable
   def self.generate_records_selector(relationship_type:, child_field:, parent_field:)
     ->(parent_record:) do

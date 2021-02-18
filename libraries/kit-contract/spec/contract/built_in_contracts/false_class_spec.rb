@@ -7,7 +7,7 @@ describe Kit::Contract::BuiltInContracts::FalseClass do
   let(:contract) { described_class }
   let(:args_valid) do
     [
-      { args: [false] }
+      { args: [false] },
     ]
   end
   let(:expected_type) { FalseClass }

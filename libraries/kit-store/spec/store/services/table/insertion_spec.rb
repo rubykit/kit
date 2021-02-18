@@ -31,7 +31,7 @@ describe 'Table Insertion' do
   context 'inserting data' do
     subject do
       results = test_values.map do |v|
-        data = v.reject { |k, _v| k == :_id }
+        data = v.except(:_id)
         service.insert(store: store, table_name: table_name, data: data)
       end
 

@@ -1,4 +1,4 @@
-module Kit::Contract::Services::ProcWrapper
+module Kit::Contract::Services::ProcWrapper # rubocop:disable Style/Documentation
 =begin
 
   # 3 types of check:

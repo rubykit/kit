@@ -119,7 +119,7 @@ class Kit::Contract::BuiltInContracts::InstantiableContract
         parameters_oid = parameters[:args].map(&:object_id)
 
         if parameters[:kwargs] && !parameters[:kwargs].empty?
-          key = parameters[:kwargs].map { |k, v| "#{k.object_id}:#{v.object_id}" }.join('|')
+          key = parameters[:kwargs].map { |k, v| "#{ k.object_id }:#{ v.object_id }" }.join('|')
           parameters_oid << key
         end
 
@@ -128,7 +128,9 @@ class Kit::Contract::BuiltInContracts::InstantiableContract
         cache_value = cache_ref.value
         cache_value[contract_oid] ||= {}
 
-        if !cache_value[contract_oid].include?(parameters_oid)
+        if cache_value[contract_oid].include?(parameters_oid)
+          [:ok]
+        else
           cache_value[contract_oid][parameters_oid] = parameters_oid
 
           cache_ref.value = cache_value
@@ -136,8 +138,6 @@ class Kit::Contract::BuiltInContracts::InstantiableContract
           cache_removal << [contract_oid, parameters_oid]
 
           yield local_contract
-        else
-          [:ok]
         end
       end
     end

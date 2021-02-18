@@ -26,7 +26,7 @@ class ::YARD::CodeObjects::ExtraFileObject
 
   # Cache the TOC version (usefull for the file title for instance).
   #
-  # Note: this is an addition, not present in the original class.
+  # NOTE: this is an addition, not present in the original class.
   #
   def contents_toc
     @contents_toc ||= Kit::Doc::Services::Docstring.get_content_toc(content: self.contents)
@@ -36,7 +36,7 @@ class ::YARD::CodeObjects::ExtraFileObject
   #
   # This allows us to access the rendered version anywhere, and to cache it.
   #
-  # Note: this is an addition, not present in the original class.
+  # NOTE: this is an addition, not present in the original class.
   #
   def contents_rendered
     @contents_rendered ||= Kit::Doc::Services::Utils.htmlify({

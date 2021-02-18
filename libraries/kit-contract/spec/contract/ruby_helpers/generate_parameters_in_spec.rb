@@ -6,7 +6,7 @@ describe 'RubyHelpers' do
   context 'given some arguments and a callable signature' do
     let(:service) { Kit::Contract::Services::RubyHelpers }
 
-    test_block = proc {}
+    test_block = proc {} # rubocop:disable Lint/EmptyBlock
 
     tests = [
       {

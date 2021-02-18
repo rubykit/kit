@@ -74,14 +74,14 @@ module Kit::Api::JsonApi::Services::Request::Import::SparseFieldsets
     parsed_query_params_fields.each do |type_name, fields|
       resource = config[:resources][type_name]
 
-      if !resource
-        errors << { detail: "Sparse fieldsets: `#{ type_name }` is not an available type" }
-      else
+      if resource
         fields.each do |field_name|
           if !resource[:fields].include?(field_name)
             errors << { detail: "Sparse fieldsets: `#{ type_name }`.`#{ field_name }` is not an available field" }
           end
         end
+      else
+        errors << { detail: "Sparse fieldsets: `#{ type_name }` is not an available type" }
       end
     end
 

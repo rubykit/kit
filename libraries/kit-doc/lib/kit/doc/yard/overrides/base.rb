@@ -4,7 +4,7 @@ class ::YARD::CodeObjects::Base # rubocop:disable Style/Documentation
   #
   # This addition allows us to access the rendered version anywhere, and to cache it.
   #
-  # Note: this is an addition, not present in the original class.
+  # NOTE: this is an addition, not present in the original class.
   #
   def docstring_rendered(locale = nil)
     locale ||= ::YARD::I18n::Locale.default

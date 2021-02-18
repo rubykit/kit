@@ -49,7 +49,7 @@ class Kit::JsonApiSpec::Resources::Serie < Kit::JsonApiSpec::Resources::Resource
     }
   end
 
-  # Note: we might want to add helpers to handle JOINs. Or leave it as is as an exemple since it's something we want to discourage.
+  # NOTE: we might want to add helpers to handle JOINs. Or leave it as is as an exemple since it's something we want to discourage.
   def self.assemble_authors_relationship_sql_query(table_name:, sanitized_filtering_sql:, sanitized_sorting_sql:, sanitized_limit_sql:, foreign_key_column_name: nil)
     joined_table = 'kit_json_api_spec_books'
     sql = %{

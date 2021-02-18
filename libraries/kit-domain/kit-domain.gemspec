@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
 
   s.files = Dir['{app,config,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
 
-  s.required_ruby_version = '>= 2.7'
+  s.required_ruby_version = '>= 3.0'
 
   s.add_dependency 'activerecord-nulldb-adapter', '~> 0.4.0'
   s.add_dependency 'multiverse',                  '~> 0.2.1'

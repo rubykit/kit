@@ -42,7 +42,7 @@ describe 'before' do
 
     let(:args_invalid) do
       {
-        { kwargs: { value: 0 }  }  => 'Contract failure before `TestModules::Before#test_before_multiple_contracts`',
+        { kwargs: { value: 0 }  } => 'Contract failure before `TestModules::Before#test_before_multiple_contracts`',
         { kwargs: { value: 10 } } => 'Contract failure before `TestModules::Before#test_before_multiple_contracts`',
       }
     end
