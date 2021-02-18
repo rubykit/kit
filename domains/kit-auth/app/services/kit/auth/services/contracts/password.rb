@@ -4,15 +4,17 @@ module Kit::Auth::Services::Contracts::Password
 
   def self.validate(password:, password_confirmation:)
     status, ctx = Kit::Contract::Services::Validation.all(
-      contracts: [
+      contracts:  [
         self.method(:check_length),
         self.method(:check_complexity),
         self.method(:check_confirmation),
       ],
-      args:      [{
-        password:              password,
-        password_confirmation: password_confirmation,
-      }],
+      parameters: {
+        kwargs: {
+          password:              password,
+          password_confirmation: password_confirmation,
+        }
+      },
     )
 
     [status, ctx]

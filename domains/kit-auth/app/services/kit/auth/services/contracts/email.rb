@@ -4,12 +4,14 @@ module Kit::Auth::Services::Contracts::Email
 
   def self.validate(email:)
     Kit::Contract::Services::Validation.all(
-      contracts: [
+      contracts:  [
         self.method(:check_format),
       ],
-      args:      [
-        email: email,
-      ],
+      parameters: {
+        kwargs: {
+          email: email,
+        },
+      },
     )
   end
 

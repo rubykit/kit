@@ -4,14 +4,16 @@ module Kit::Auth::Services::Contracts::EmailSignup
 
   def self.validate(email:, email_confirmation: nil)
     Kit::Contract::Services::Validation.all(
-      contracts: [
+      contracts:  [
         self.method(:check_emptiness),
         self.method(:check_format),
       ],
-      args:      [{
-        email:              email,
-        email_confirmation: email_confirmation,
-      }],
+      parameters: {
+        kwargs: {
+          email:              email,
+          email_confirmation: email_confirmation,
+        },
+      },
     )
   end
 
