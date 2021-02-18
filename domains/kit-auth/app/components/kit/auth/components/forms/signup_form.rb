@@ -1,7 +1,7 @@
 module Kit::Auth::Components::Forms
   class SignupForm < Kit::Auth::Components::Forms::Form
 
-    def initialize(*) # rubocop:disable Lint/UselessMethodDefinition
+    def initialize(*, **) # rubocop:disable Lint/UselessMethodDefinition
       super
     end
 

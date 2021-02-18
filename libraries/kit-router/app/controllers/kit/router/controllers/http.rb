@@ -6,7 +6,7 @@ module Kit::Router::Controllers
   module Http
 
     def self.render(component:, params:, status: 200)
-      page    = component.new(params)
+      page    = component.new(**params)
       content = page.local_render
 
       [:ok, {

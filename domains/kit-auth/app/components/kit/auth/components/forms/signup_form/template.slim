@@ -5,34 +5,34 @@
   .text-center.mb-4
     h1.h3.mb-3.font-weight-normal = t('kit.auth.registrations.sign_up.title')
 
-  = render Kit::Auth::Components::Various::ErrorsAlert.new({ \
+  = render Kit::Auth::Components::Various::ErrorsAlert.new(\
     errors: generic_errors,
-  })
+  )
 
-  = render Kit::Auth::Components::Inputs::Email.new({ \
+  = render Kit::Auth::Components::Inputs::Email.new(\
     value:    model[:email],
     name:     'email',
     label:    'Email',
     errors:   errors_by_field[:email],
     required: true,
-  })
+  )
 
-  = render Kit::Auth::Components::Inputs::Password.new({ \
+  = render Kit::Auth::Components::Inputs::Password.new(\
     value:    model[:password],
     name:     'password',
     label:    'Password',
     errors:   errors_by_field[:password],
     help:     t('kit.auth.passwords.requirements'),
     required: true,
-  })
+  )
 
-  = render Kit::Auth::Components::Inputs::Password.new({ \
+  = render Kit::Auth::Components::Inputs::Password.new(\
     value:    model[:password_confirmation],
     name:     'password_confirmation',
     label:    'Password confirmation',
     errors:   errors_by_field[:password_confirmation],
     required: true,
-  })
+  )
 
   .actions
     button.btn.btn-lg.btn-primary.btn-block type="submit"

@@ -19,6 +19,7 @@ class Kit::Organizer::Contracts::Result < Kit::Organizer::Contracts::Instantiabl
 
   def call(*args, **kwargs)
     parameters = { args: args, kwargs: kwargs, }
+
     Kit::Contract::Services::Validation.valid?(contract: @state[:contract], parameters: parameters)
   end
 
