@@ -24,10 +24,10 @@ module Kit::Router::Services::Store::Alias
 
   VALID_TARGET_ID = ->(target_id:, router_store:) do
     target_record = router_store[:endpoints][target_id] || router_store[:aliases][target_id]
-    if !target_record
-      [:error, "Kit::Router | unknown target `#{ target_id }`"]
-    else
+    if target_record
       [:ok]
+    else
+      [:error, "Kit::Router | unknown target `#{ target_id }`"]
     end
   end
 

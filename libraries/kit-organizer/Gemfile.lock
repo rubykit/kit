@@ -12,6 +12,7 @@ PATH
     kit-contract (0.1.0)
       awesome_print
       concurrent-ruby
+      rails (~> 6.1)
 
 PATH
   remote: ../kit-doc

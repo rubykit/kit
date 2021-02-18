@@ -4,7 +4,7 @@ class Kit::DummyAppContainer::Controllers::Web::HomeController < Kit::DummyAppCo
     layout layout_name
   end
 
-  Kit::Router::Services::Router.register_without_target({
+  Kit::Router::Services::Router.register_without_target(
     uid:     'kit-dummy-container|web|home',
     aliases: ['app|home'],
     types:   {
@@ -12,7 +12,7 @@ class Kit::DummyAppContainer::Controllers::Web::HomeController < Kit::DummyAppCo
         target: [self, :index],
       },
     },
-  })
+  )
 
   def index
     render

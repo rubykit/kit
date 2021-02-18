@@ -7,6 +7,8 @@ module Kit::Router::Services::Router
 
   # Register an endpoint.
   def self.register(uid:, aliases:, target:, types: { [:any, :any] => nil }, meta: nil, router_store: nil)
+    types ||= { [:any, :any] => nil }
+
     # NOTE: temporary
     return [:ok] if ENV['KIT_ROUTER'] == 'false'
 
@@ -68,11 +70,11 @@ module Kit::Router::Services::Router
     endpoint_types.each do |record_type|
       record_protocol, record_lib = record_type
 
-      if record_protocol == mounter_protocol && record_lib == mounter_lib # rubocop:disable Style/GuardClause
+      if record_protocol == mounter_protocol && (record_lib == mounter_lib || record_lib == :any)
         return true
-      elsif record_protocol == mounter_protocol && record_lib == :any
-        return true
-      elsif record_protocol == :any
+      end
+
+      if record_protocol == :any
         return true
       end
     end
