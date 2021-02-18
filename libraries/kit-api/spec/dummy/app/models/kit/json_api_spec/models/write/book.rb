@@ -12,32 +12,32 @@ class Kit::JsonApiSpec::Models::Write::Book < Kit::JsonApiSpec::Models::WriteRec
     :date_published,
   ]
 
-  belongs_to :author, {
+  belongs_to(:author,
     class_name:  'Kit::JsonApiSpec::Models::Write::Author',
     foreign_key: 'kit_json_api_spec_author_id',
-  }
+  )
 
-  belongs_to :serie, {
+  belongs_to(:serie,
     class_name:  'Kit::JsonApiSpec::Models::Write::Serie',
     foreign_key: 'kit_json_api_spec_serie_id',
     optional:    true,
-  }
+  )
 
-  has_many :chapters, {
+  has_many(:chapters,
     class_name:  'Kit::JsonApiSpec::Models::Write::Chapter',
     foreign_key: 'kit_json_api_spec_book_id',
-  }
+  )
 
-  has_many :photos, {
+  has_many(:photos,
     class_name: 'Kit::JsonApiSpec::Models::Write::Photo',
     as:         :imageable,
-  }
+  )
 
-  has_and_belongs_to_many :stores, {
+  has_and_belongs_to_many(:stores,
     class_name:              'Kit::JsonApiSpec::Models::Write::Store',
     join_table:              'kit_json_api_spec_books_stores',
     foreign_key:             'kit_json_api_spec_book_id',
     association_foreign_key: 'kit_json_api_spec_store_id',
-  }
+  )
 
 end

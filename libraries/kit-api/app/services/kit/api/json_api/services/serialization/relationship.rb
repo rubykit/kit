@@ -8,7 +8,7 @@ module Kit::Api::JsonApi::Services::Serialization::Relationship
   before Ct::Hash[document: Ct::Document, record: Ct::Record, relationship: Ct::Relationship]
   after  Ct::Result[document: Ct::Document]
   def self.serialize_record_relationship(document:, record:, relationship:)
-    Kit::Organizer.call({
+    Kit::Organizer.call(
       list: [
         self.method(:get_relationship_pathname),
         self.method(:get_document_relationship_container),
@@ -20,7 +20,7 @@ module Kit::Api::JsonApi::Services::Serialization::Relationship
         record:       record,
         relationship: relationship,
       },
-    })
+    )
 
     [:ok, document: document]
   end

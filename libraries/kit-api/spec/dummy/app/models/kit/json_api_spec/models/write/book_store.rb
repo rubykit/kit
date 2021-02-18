@@ -11,14 +11,14 @@ class Kit::JsonApiSpec::Models::Write::BookStore < Kit::JsonApiSpec::Models::Wri
     :in_stock,
   ]
 
-  belongs_to :book, {
+  belongs_to(:book,
     class_name:  'Kit::JsonApiSpec::Models::Write::Book',
     foreign_key: 'kit_json_api_spec_book_id',
-  }
+  )
 
-  belongs_to :store, {
+  belongs_to(:store,
     class_name:  'Kit::JsonApiSpec::Models::Write::Store',
     foreign_key: 'kit_json_api_spec_store_id',
-  }
+  )
 
 end

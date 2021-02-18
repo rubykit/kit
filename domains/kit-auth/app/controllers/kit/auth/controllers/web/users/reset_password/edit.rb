@@ -2,7 +2,7 @@ module Kit::Auth::Controllers::Web::Users::ResetPassword
   module Edit
 
     def self.endpoint(router_request:)
-      Kit::Organizer.call({
+      Kit::Organizer.call(
         ctx:  { router_request: router_request },
         list: [
           [:alias, :web_require_current_user!],
@@ -10,14 +10,14 @@ module Kit::Auth::Controllers::Web::Users::ResetPassword
           ->(ctx) { Kit::Auth::Controllers::WebController.redirect_if_missing_scope!(router_request: ctx[:router_request], scope: 'update_user_secret') },
           self.method(:render_view),
         ],
-      })
+      )
     end
 
-    Kit::Router::Services::Router.register({
+    Kit::Router::Services::Router.register(
       uid:     'kit_auth|web|users|reset_password|edit',
       aliases: ['web|users|reset_password|edit'],
       target:  self.method(:endpoint),
-    })
+    )
 
     def self.render_view(router_request:)
       model = { password: nil, password_confirmation: nil }

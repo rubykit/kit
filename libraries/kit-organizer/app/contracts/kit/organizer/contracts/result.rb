@@ -17,8 +17,9 @@ class Kit::Organizer::Contracts::Result < Kit::Organizer::Contracts::Instantiabl
     ].named('Result:Or')
   end
 
-  def call(*args)
-    Kit::Contract::Services::Validation.valid?(contract: @state[:contract], args: args)
+  def call(*args, **kwargs)
+    parameters = { args: args, kwargs: kwargs, }
+    Kit::Contract::Services::Validation.valid?(contract: @state[:contract], parameters: parameters)
   end
 
 end

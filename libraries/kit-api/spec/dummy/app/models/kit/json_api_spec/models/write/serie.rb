@@ -9,13 +9,13 @@ class Kit::JsonApiSpec::Models::Write::Serie < Kit::JsonApiSpec::Models::WriteRe
     :title,
   ]
 
-  has_many :photos, {
+  has_many(:photos,
     class_name: 'Kit::JsonApiSpec::Models::Write::Photo',
     as:         :imageable,
-  }
+  )
 
-  has_many :books, {
+  has_many(:books,
     class_name: 'Kit::JsonApiSpec::Models::Write::Books',
-  }
+  )
 
 end

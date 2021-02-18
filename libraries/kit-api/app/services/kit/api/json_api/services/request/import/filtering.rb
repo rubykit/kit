@@ -57,14 +57,14 @@ module Kit::Api::JsonApi::Services::Request::Import::Filtering
   def self.handle_filtering(query_params:, api_request:)
     args = { query_params: query_params, api_request: api_request }
 
-    Kit::Organizer.call({
+    Kit::Organizer.call(
       list: [
         self.method(:parse),
         self.method(:validate),
         self.method(:add_to_api_request),
       ],
       ctx:  args,
-    })
+    )
   end
 
   # Extract `filter` query params and transform it into a normalized hash.
@@ -151,7 +151,12 @@ module Kit::Api::JsonApi::Services::Request::Import::Filtering
         next
       end
 
-      list.each do |name:, op:, value:|
+      #list.each do |name:, op:, value:|
+      list.each do |el|
+        name  = el[:name]
+        value = el[:value]
+        op    = el[:op]
+
         operators  = resource[:filters][name.to_sym]
         error_path = (path == :top_level) ? "#{ name }" : "#{ path }.#{ name }"
 

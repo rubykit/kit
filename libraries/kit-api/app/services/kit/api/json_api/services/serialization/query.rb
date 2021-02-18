@@ -9,13 +9,13 @@ module Kit::Api::JsonApi::Services::Serialization::Query
   after  Ct::Result[document: Ct::Document]
   # Entry point to serialize a query AST
   def self.serialize_query(query_node:)
-    Kit::Organizer.call({
+    Kit::Organizer.call(
       list: [
         self.method(:create_document),
         Kit::Api::JsonApi::Services::Serialization::QueryNode.method(:serialize_query_node),
       ],
       ctx:  { query_node: query_node },
-    })
+    )
   end
 
   after Ct::Result[document: Ct::Document]

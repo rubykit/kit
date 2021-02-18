@@ -6,11 +6,11 @@ module Kit::Auth::Actions::Users::VerifyPassword
     reference_hashed_secret = user&.hashed_secret || fake_secret
 
     # We attempt to validate the password anyway to avoid a timing attack
-    valid_password = Kit::Auth::Services::Password.valid_password?({
+    valid_password = Kit::Auth::Services::Password.valid_password?(
       reference_hashed_secret: reference_hashed_secret,
       password:                password,
       pepper:                  ENV['AUTH_PEPPER'],
-    })
+    )
 
     if user&.hashed_secret && valid_password
       [:ok, user: user]

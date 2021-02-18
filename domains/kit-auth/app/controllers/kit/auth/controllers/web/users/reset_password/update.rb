@@ -2,22 +2,22 @@ module Kit::Auth::Controllers::Web::Users::ResetPassword
   module Update
 
     def self.endpoint(router_request:)
-      Kit::Organizer.call({
-        ctx:  { router_request: router_request },
+      Kit::Organizer.call(
         list: [
           [:alias, :web_require_current_user!],
           # TODO: fix this explicit dependency, not sure how?
           ->(ctx) { Kit::Auth::Controllers::WebController.redirect_if_missing_scope!(router_request: ctx[:router_request], scope: 'update_user_secret') },
           self.method(:render_view),
         ],
-      })
+        ctx:  { router_request: router_request },
+      )
     end
 
-    Kit::Router::Services::Router.register({
+    Kit::Router::Services::Router.register(
       uid:     'kit_auth|web|users|reset_password|update',
       aliases: ['web|users|reset_password|update'],
       target:  self.method(:endpoint),
-    })
+    )
 
     def self.update_password(router_request:)
       model   = router_request.params.slice(:password, :password_confirmation)
@@ -26,13 +26,13 @@ module Kit::Auth::Controllers::Web::Users::ResetPassword
         router_request: router_request,
       )
 
-      status, ctx = Kit::Organizer.call({
+      status, ctx = Kit::Organizer.call(
         ctx:  context,
         list: [
           Kit::Auth::Actions::Users::UpdatePassword,
           Kit::Auth::Actions::Users::SignInWeb,
         ],
-      })
+      )
 
       if status == :ok
         Kit::Auth::Services::OauthAccessToken.revoke(oauth_access_token: current_user_oauth_access_token)

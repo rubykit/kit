@@ -3,7 +3,7 @@ require_relative '../../../../../config/initializers/api_config'
 module Kit::JsonApiSpec::Controllers::Index # rubocop:disable Style/Documentation
 
   def self.endpoint(router_request:, query_params:, api_request:)
-    Kit::Organizer.call({
+    Kit::Organizer.call(
       list: [
         Kit::Api::JsonApi::Services::Request::Import.method(:import),
         Kit::Api::Services::QueryBuilder.method(:build_query),
@@ -15,7 +15,7 @@ module Kit::JsonApiSpec::Controllers::Index # rubocop:disable Style/Documentatio
         query_params:   query_params,
         api_request:    api_request,
       },
-    })
+    )
   end
 
   Kit::JsonApiSpec::Controllers.register_endpoints(

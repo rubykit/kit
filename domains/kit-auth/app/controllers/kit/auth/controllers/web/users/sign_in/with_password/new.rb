@@ -2,16 +2,16 @@ module Kit::Auth::Controllers::Web::Users::SignIn::WithPassword
   module New
 
     def self.endpoint(router_request:)
-      Kit::Organizer.call({
+      Kit::Organizer.call(
         list: [
           [:alias, :web_redirect_if_current_user!],
           self.method(:new_sign_in),
         ],
         ctx:  { router_request: router_request },
-      })
+      )
     end
 
-    Kit::Router::Services::Router.register({
+    Kit::Router::Services::Router.register(
       uid:     'kit_auth|web|authorization_tokens|new',
       target:  self.method(:endpoint),
       aliases: {
@@ -24,7 +24,7 @@ module Kit::Auth::Controllers::Web::Users::SignIn::WithPassword
           },
         },
       },
-    })
+    )
 
     def self.new_sign_in(router_request:)
       model = { email: nil, password: nil }

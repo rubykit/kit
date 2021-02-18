@@ -22,14 +22,14 @@ module Kit::Api::JsonApi::Services::Request::Import::RelatedResources
   def self.handle_related_resources(query_params:, api_request:)
     args = { query_params: query_params, api_request: api_request }
 
-    Kit::Organizer.call({
+    Kit::Organizer.call(
       list: [
         self.method(:parse),
         self.method(:validate_and_parse),
         self.method(:add_to_api_request),
       ],
       ctx:  args,
-    })
+    )
   end
 
   # Extract `include` query-param and transform it into a normalized array.

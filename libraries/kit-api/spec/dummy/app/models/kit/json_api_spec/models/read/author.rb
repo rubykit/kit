@@ -11,14 +11,14 @@ class Kit::JsonApiSpec::Models::Read::Author < Kit::JsonApiSpec::Models::ReadRec
     :date_of_death,
   ]
 
-  has_many :books, {
+  has_many(:books,
     class_name:  'Kit::JsonApiSpec::Models::Read::Books',
     foreign_key: 'kit_json_api_spec_author_id',
-  }
+  )
 
-  has_many :photos, {
+  has_many(:photos,
     class_name: 'Kit::JsonApiSpec::Models::Read::Photo',
     as:         :imageable,
-  }
+  )
 
 end

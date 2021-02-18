@@ -30,7 +30,7 @@ module Kit::Store::Services::Table::Selection
       self.method(:deep_clone),
     ].flatten
 
-    Kit::Organizer.call({
+    Kit::Organizer.call(
       list:   list,
       ctx:    {
         store:        store,
@@ -39,7 +39,7 @@ module Kit::Store::Services::Table::Selection
         order:        order,
       },
       filter: { ok: [:records] },
-    })
+    )
   end
 
   contract Ct::Hash[table: Ct::Table]

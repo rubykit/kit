@@ -22,14 +22,14 @@ module Kit::Api::JsonApi::Services::Request::Import::SparseFieldsets
   def self.handle_sparse_fieldsets(query_params:, api_request:)
     args = { query_params: query_params, api_request: api_request }
 
-    Kit::Organizer.call({
+    Kit::Organizer.call(
       list: [
         self.method(:parse),
         self.method(:validate_params),
         self.method(:add_to_api_request),
       ],
       ctx:  args,
-    })
+    )
   end
 
   # Extract `fields` query params and transform it into a normalized hash.

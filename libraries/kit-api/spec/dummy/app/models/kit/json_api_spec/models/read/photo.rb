@@ -12,8 +12,8 @@ class Kit::JsonApiSpec::Models::Read::Photo < Kit::JsonApiSpec::Models::ReadReco
     :uri,
   ]
 
-  belongs_to :imageable, {
+  belongs_to(:imageable,
     polymorphic: true,
-  }
+  )
 
 end

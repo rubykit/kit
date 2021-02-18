@@ -1,18 +1,18 @@
 module Kit::Auth::Actions::Users::UpdatePassword
 
   def self.call(user:, password:, password_confirmation:)
-    _status, ctx = Kit::Organizer.call({
-      ctx:  {
-        password:              password,
-        password_confirmation: password_confirmation,
-      },
+    _status, ctx = Kit::Organizer.call(
       list: [
         self.method(:validate_password),
         Kit::Auth::Services::Password.method(:generate_hashed_secret),
         self.method(:update_user),
         self.method(:fire_user_password_updated_event),
       ],
-    })
+      ctx:  {
+        password:              password,
+        password_confirmation: password_confirmation,
+      },
+    )
 
     if ctx[:errors]
       [:error, user: nil, errors: ctx[:errors]]
@@ -22,10 +22,10 @@ module Kit::Auth::Actions::Users::UpdatePassword
   end
 
   def self.validate_password(password:, password_confirmation:)
-    res = Kit::Auth::Services::Contracts::Password.new.call({
+    res = Kit::Auth::Services::Contracts::Password.new.call(
       password:              password,
       password_confirmation: password_confirmation,
-    })
+    )
 
     if res.errors.count > 0
       [:error, Kit::Error.from_contract(res)]

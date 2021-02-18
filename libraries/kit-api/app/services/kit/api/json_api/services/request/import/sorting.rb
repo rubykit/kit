@@ -35,14 +35,14 @@ module Kit::Api::JsonApi::Services::Request::Import::Sorting
   def self.handle_sorting(query_params:, api_request:)
     args = { query_params: query_params, api_request: api_request }
 
-    Kit::Organizer.call({
+    Kit::Organizer.call(
       list: [
         self.method(:parse),
         self.method(:validate),
         self.method(:add_to_api_request),
       ],
       ctx:  args,
-    })
+    )
   end
 
   # Extract `sort` query-param and transform it into a normalized hash.
@@ -116,7 +116,10 @@ module Kit::Api::JsonApi::Services::Request::Import::Sorting
         next
       end
 
-      list.each do |direction:, sort_name:|
+      list.each do |el|
+        #direction = el[:direction]
+        sort_name = el[:sort_name]
+
         sorter = resource[:sort_fields][sort_name.to_sym]
         if !sorter
           if path == :top_level

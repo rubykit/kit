@@ -11,14 +11,14 @@ class Kit::JsonApiSpec::Models::Write::Author < Kit::JsonApiSpec::Models::WriteR
     :date_of_death,
   ]
 
-  has_many :books, {
+  has_many(:books,
     class_name:  'Kit::JsonApiSpec::Models::Write::Books',
     foreign_key: 'kit_json_api_spec_author_id',
-  }
+  )
 
-  has_many :photos, {
+  has_many(:photos,
     class_name: 'Kit::JsonApiSpec::Models::Write::Photo',
     as:         :imageable,
-  }
+  )
 
 end

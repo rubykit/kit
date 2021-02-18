@@ -11,7 +11,7 @@ module Kit::Api::Services::Resolvers::Sql
   def self.sql_query(ar_model:, filtering: nil, sorting: [], limit: nil, assemble_sql_query: nil)
     args = { ar_model: ar_model, filtering: filtering, sorting: sorting, limit: limit }
 
-    status, ctx = Kit::Organizer.call({
+    status, ctx = Kit::Organizer.call(
       list: [
         Kit::Api::Services::Resolvers::Sql::Filtering.method(:filtering_to_sql_str),
         Kit::Api::Services::Resolvers::Sql::Sorting.method(:sorting_to_sql_str),
@@ -23,7 +23,7 @@ module Kit::Api::Services::Resolvers::Sql
         table_name:          ar_model.table_name,
         sanitized_limit_sql: limit.to_i.to_s,
       }),
-    })
+    )
 
     [status, ctx.slice(:sql_str, :errors)]
   end

@@ -11,9 +11,9 @@ class Kit::JsonApiSpec::Models::Write::Chapter < Kit::JsonApiSpec::Models::Write
     :index,
   ]
 
-  belongs_to :book, {
+  belongs_to(:book,
     class_name:  'Kit::JsonApiSpec::Models::Write::Book',
     foreign_key: 'kit_json_api_spec_book_id',
-  }
+  )
 
 end

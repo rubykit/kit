@@ -4,9 +4,9 @@ module Kit::Auth::Controllers::Web
     def self.require_current_user!(router_request:)
       return [:ok] if router_request.metadata[:current_user]
 
-      Kit::Router::Controllers::Http.redirect_to({
+      Kit::Router::Controllers::Http.redirect_to(
         location: Kit::Router::Services::Adapters::Http::Mountpoints.path(id: 'web|users|sign_in'),
-      })
+      )
     end
 
     Kit::Organizer::Services::Callable::Alias.register(id: :web_require_current_user!, target: self.method(:require_current_user!))
@@ -14,9 +14,9 @@ module Kit::Auth::Controllers::Web
     def self.redirect_if_current_user!(router_request:)
       return [:ok] if !router_request.metadata[:current_user]
 
-      Kit::Router::Controllers::Http.redirect_to({
+      Kit::Router::Controllers::Http.redirect_to(
         location: Kit::Router::Services::Adapters::Http::Mountpoints.path(id: 'web|users|after_sign_in'),
-      })
+      )
     end
 
     Kit::Organizer::Services::Callable::Alias.register(id: :web_redirect_if_current_user!, target: self.method(:redirect_if_current_user!))
@@ -28,16 +28,16 @@ module Kit::Auth::Controllers::Web
         return [:ok] if model_scopes.includes?(scope)
       end
 
-      Kit::Router::Controllers::Http.redirect_to({
+      Kit::Router::Controllers::Http.redirect_to(
         location: Kit::Router::Services::Adapters::Http::Mountpoints.path(id: 'web|users|sign_in'),
-      })
+      )
     end
 
     Kit::Organizer::Services::Callable::Alias.register(id: :web_redirect_if_missing_scope!, target: self.method(:redirect_if_missing_scope!))
 
     def self.resolve_current_user(router_request:)
       if !router_request.metadata[:current_user_resolved]
-        status, ctx = Kit::Organizer.call({
+        status, ctx = Kit::Organizer.call(
           list: [
             Kit::Auth::Actions::OauthApplications::LoadWeb,
             Kit::Auth::Actions::Users::IdentifyUserForRequest,
@@ -45,7 +45,7 @@ module Kit::Auth::Controllers::Web
           ctx:  {
             router_request: router_request,
           },
-        })
+        )
 
         router_request.metadata[:current_user_resolved] = true
 

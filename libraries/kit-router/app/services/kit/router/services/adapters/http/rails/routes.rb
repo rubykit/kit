@@ -17,7 +17,7 @@ module Kit::Router::Services::Adapters::Http::Rails::Routes
   def self.mount_http_target(id:, path:, verb:, rails_router_context:, rails_endpoint_wrapper:, namespace: nil)
     return [:ok] if ENV['KIT_ROUTER'] == 'false'
 
-    Kit::Organizer.call({
+    Kit::Organizer.call(
       list: [
         self.method(:load_record),
         self.method(:ensure_kit_router_target!),
@@ -34,7 +34,7 @@ module Kit::Router::Services::Adapters::Http::Rails::Routes
         rails_target:         rails_endpoint_wrapper,
         rails_router_context: rails_router_context,
       },
-    })
+    )
   end
 
   def self.mount_rails_targets(rails_router_context:, list:)
@@ -46,7 +46,7 @@ module Kit::Router::Services::Adapters::Http::Rails::Routes
   end
 
   def self.mount_rails_target(id:, path:, verb:, rails_router_context:, namespace: nil)
-    Kit::Organizer.call({
+    Kit::Organizer.call(
       list: [
         self.method(:load_record),
         self.method(:extract_rails_target_from_record),
@@ -62,7 +62,7 @@ module Kit::Router::Services::Adapters::Http::Rails::Routes
         namespace:            namespace,
         rails_router_context: rails_router_context,
       },
-    })
+    )
   end
 
   # --------------------------------------------------------------------------

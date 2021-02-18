@@ -9,11 +9,11 @@ class Kit::JsonApiSpec::Models::Read::Store < Kit::JsonApiSpec::Models::ReadReco
     :name,
   ]
 
-  has_and_belongs_to_many :books, {
+  has_and_belongs_to_many(:books,
     class_name:              'Kit::JsonApiSpec::Models::Read::Book',
     join_table:              'kit_json_api_spec_books_stores',
     foreign_key:             'kit_json_api_spec_store_id',
     association_foreign_key: 'kit_json_api_spec_book_id',
-  }
+  )
 
 end

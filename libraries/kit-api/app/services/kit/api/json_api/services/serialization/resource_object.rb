@@ -9,7 +9,7 @@ module Kit::Api::JsonApi::Services::Serialization::ResourceObject
   after  Ct::Result[document: Ct::Document]
   # Serializes a single `resource_object`. Handles relationship resource linkage.
   def self.serialize_resource_object(document:, record:)
-    _, ctx = Kit::Organizer.call({
+    _, ctx = Kit::Organizer.call(
       list: [
         record[:query_node][:resource][:record_serializer],
         self.method(:add_record_to_cache),
@@ -20,7 +20,7 @@ module Kit::Api::JsonApi::Services::Serialization::ResourceObject
         document: document,
         record:   record,
       },
-    })
+    )
 
     [:ok, ctx.slice(:document, :record)]
   end

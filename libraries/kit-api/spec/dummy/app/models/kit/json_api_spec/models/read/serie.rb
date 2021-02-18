@@ -9,13 +9,13 @@ class Kit::JsonApiSpec::Models::Read::Serie < Kit::JsonApiSpec::Models::ReadReco
     :title,
   ]
 
-  has_many :photos, {
+  has_many(:photos,
     class_name: 'Kit::JsonApiSpec::Models::Read::Photo',
     as:         :imageable,
-  }
+  )
 
-  has_many :books, {
+  has_many(:books,
     class_name: 'Kit::JsonApiSpec::Models::Read::Books',
-  }
+  )
 
 end

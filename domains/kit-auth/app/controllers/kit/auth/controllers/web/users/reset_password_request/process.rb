@@ -4,7 +4,7 @@ module Kit::Auth::Controllers::Web::Users::ResetPasswordRequest
     def self.endpoint(router_request:)
       event_record = Kit::Domain::Models::Read::Event.find(router_request.params[:event_id])
 
-      Kit::Organizer.call({
+      Kit::Organizer.call(
         list:   [
           self.method(:find_user),
           Kit::Auth::Actions::OauthApplications::LoadWeb,
@@ -14,14 +14,14 @@ module Kit::Auth::Controllers::Web::Users::ResetPasswordRequest
         ],
         ctx:    { event_record: event_record },
         expose: { ok: [:user, :oauth_access_token], error: [:errors] },
-      })
+      )
     end
 
-    Kit::Router::Services::Router.register({
+    Kit::Router::Services::Router.register(
       uid:     'kit_auth|web|users|reset_password_request|process',
       aliases: ['web|users|reset_password_request|process'],
       target:  self.method(:endpoint),
-    })
+    )
 
     def self.find_user(event_record:)
       email = event_record.data[:email]
@@ -38,7 +38,7 @@ module Kit::Auth::Controllers::Web::Users::ResetPasswordRequest
     end
 
     def self.create_event(user:, oauth_access_token:)
-      Kit::Events::Actions::CreateEvent.call({
+      Kit::Events::Actions::CreateEvent.call(
         type:    Kit::Auth::Events::ResetPasswordTokenCreated,
         data:    {
           user_id:            user.id,
@@ -47,7 +47,7 @@ module Kit::Auth::Controllers::Web::Users::ResetPasswordRequest
         targets: {
           except: :email_notifications,
         },
-      })
+      )
     end
 
     # NOTE: we only need to do this when there is sensitive data that we do not want to persist in the event

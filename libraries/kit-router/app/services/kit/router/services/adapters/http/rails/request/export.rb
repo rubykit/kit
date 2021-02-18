@@ -5,7 +5,7 @@ module Kit::Router::Services::Adapters::Http::Rails::Request
   module Export
 
     def self.export_request(router_request:, router_response:, rails_cookies:, rails_controller:, rails_response:)
-      Kit::Organizer.call({
+      Kit::Organizer.call(
         list: [
           self.method(:export_rails_cookies),
           self.method(:handle_result),
@@ -17,7 +17,7 @@ module Kit::Router::Services::Adapters::Http::Rails::Request
           rails_controller: rails_controller,
           rails_response:   rails_response,
         },
-      })
+      )
     end
 
     def self.handle_result(router_request:, router_response:, rails_controller:, rails_response:)

@@ -5,14 +5,14 @@ module Kit::Auth::Controllers::Api::V1::AuthorizationTokens
     ROUTE_UID = "kit_auth|#{ ROUTE_ID }"
 
     def self.endpoint(router_request:)
-      Kit::Organizer.call({
+      Kit::Organizer.call(
         list: [
           Kit::Domain::Controllers::JsonApi.method(:ensure_media_type),
           :api_requires_current_user!,
           self.method(:load_and_render),
         ],
         ctx:  { router_request: router_request },
-      })
+      )
     end
 
     Kit::Router::Services::Router.register(

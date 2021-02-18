@@ -10,7 +10,7 @@ module Kit::Api::Services::QueryResolver
   def self.resolve_query_node(query_node:)
     puts "Resolving #{ query_node[:path] }" if ENV['KIT_API_DEBUG']
 
-    Kit::Organizer.call({
+    Kit::Organizer.call(
       list: [
         self.method(:resolve_query_node_condition),
         self.method(:resolve_data),
@@ -18,7 +18,7 @@ module Kit::Api::Services::QueryResolver
         self.method(:resolve_relationships_records),
       ],
       ctx:  { query_node: query_node, resolve: true },
-    })
+    )
   end
 
   before Ct::Hash[query_node: Ct::QueryNode]

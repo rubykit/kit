@@ -12,8 +12,8 @@ class Kit::JsonApiSpec::Models::Write::Photo < Kit::JsonApiSpec::Models::WriteRe
     :uri,
   ]
 
-  belongs_to :imageable, {
+  belongs_to(:imageable,
     polymorphic: true,
-  }
+  )
 
 end

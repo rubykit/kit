@@ -37,10 +37,10 @@ Doorkeeper.configure do
   grant_flows %w[authorization_code client_credentials password]
 
   resource_owner_from_credentials do |_routes|
-    status, ctx = Kit::Auth::Actions::Users::VerifyPassword.call({
+    status, ctx = Kit::Auth::Actions::Users::VerifyPassword.call(
       user:     Kit::Auth::Models::Read::User.find_by(email: params[:username]),
       password: params[:password],
-    })
+    )
 
     if status == :ok
       ctx[:user]

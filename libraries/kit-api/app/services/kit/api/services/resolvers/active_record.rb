@@ -34,9 +34,9 @@ module Kit::Api::Services::Resolvers::ActiveRecord
       records_selector = generate_records_selector(relationship_type: relationship_type, child_field: child_field, parent_field: parent_field)
     end
     if !data_resolver
-      _, ctx = generate_data_resolver({
+      _, ctx = generate_data_resolver(
         model: config[:resources][relationship[:resource]][:extra][:model_read],
-      })
+      )
 
       data_resolver = ctx[:data_resolver]
     end
@@ -184,11 +184,11 @@ module Kit::Api::Services::Resolvers::ActiveRecord
 
   def self.generate_data_resolver(model:, assemble_sql_query: nil)
     data_resolver = ->(query_node:) do
-      Kit::Api::Services::Resolvers::ActiveRecord.data_resolver({
+      Kit::Api::Services::Resolvers::ActiveRecord.data_resolver(
         query_node:         query_node,
         model:              model,
         assemble_sql_query: assemble_sql_query,
-      })
+      )
     end
 
     [:ok, data_resolver: data_resolver]

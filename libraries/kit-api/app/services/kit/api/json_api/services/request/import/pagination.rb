@@ -48,7 +48,7 @@ module Kit::Api::JsonApi::Services::Request::Import::Pagination
   def self.handle_pagination(query_params:, api_request:)
     args = { query_params: query_params, api_request: api_request }
 
-    Kit::Organizer.call({
+    Kit::Organizer.call(
       list: [
         self.method(:parse),
         self.method(:validate),
@@ -56,7 +56,7 @@ module Kit::Api::JsonApi::Services::Request::Import::Pagination
         self.method(:add_to_api_request),
       ],
       ctx:  args,
-    })
+    )
   end
 
   # Extract `page` query params and transform it into a normalized & per-path hash.

@@ -15,7 +15,11 @@ module Kit::Api::JsonApi::Services::Request::Export::Sorting
         .adjusted_path(included_paths: included_paths, current_path: sort_path)[1][:adjusted_path]
       next if !adjusted_path
 
-      ordering.each do |sort_name:, direction:|
+      #ordering.each do |sort_name:, direction:|
+      ordering.each do |el|
+        sort_name = el[:sort_name]
+        direction = el[:direction]
+
         sort_qp_str = "#{ direction == :asc ? '' : '-' }#{ adjusted_path }#{ adjusted_path.size > 0 ? '.' : '' }#{ sort_name }"
         qp << sort_qp_str
       end

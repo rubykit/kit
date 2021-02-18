@@ -22,7 +22,7 @@ describe Kit::Api::JsonApi::Services::Request::Export::Pagination do
   end
 
   subject do
-    Kit::Organizer.call({
+    Kit::Organizer.call(
       list: [
         Kit::Api::JsonApi::Services::Url.method(:parse_query_params),
         Kit::Api::JsonApi::Services::Request::Import::RelatedResources.method(:handle_related_resources),
@@ -33,7 +33,7 @@ describe Kit::Api::JsonApi::Services::Request::Export::Pagination do
         Kit::Api::JsonApi::Services::Request::Export::Pagination.method(:handle_page_size),
       ],
       ctx:  { api_request: api_request, url: url, path: path },
-    })
+    )
   end
 
   let(:status) { subject[0] }

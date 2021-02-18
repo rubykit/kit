@@ -49,10 +49,10 @@ class Kit::JsonApiSpec::Resources::Author < Kit::JsonApiSpec::Resources::Resourc
         resolvers:         {
           inherited_filter: Kit::Api::Services::Resolvers::ActiveRecord.generate_inherited_filters(relationship_type: :to_many, parent_field: { id: :id }, child_field: { id: 'kit_json_api_spec_books.kit_json_api_spec_author_id' }),
           records_selector: Kit::Api::Services::Resolvers::ActiveRecord.generate_records_selector(relationship_type:  :to_many, parent_field: { id: :id }, child_field: { id: :kit_json_api_spec_author_id }),
-          data_resolver:    Kit::Api::Services::Resolvers::ActiveRecord.generate_data_resolver({
+          data_resolver:    Kit::Api::Services::Resolvers::ActiveRecord.generate_data_resolver(
             model:              Kit::JsonApiSpec::Models::Write::Serie,
             assemble_sql_query: self.method(:assemble_series_relationship_sql_query),
-          })[1][:data_resolver],
+          )[1][:data_resolver],
         },
       },
     }

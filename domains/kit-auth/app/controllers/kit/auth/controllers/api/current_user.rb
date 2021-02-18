@@ -40,7 +40,7 @@ module Kit::Auth::Controllers::Api
 
     def self.resolve_current_user(router_request:)
       if !router_request.metadata[METADATA_KEY_CURRENT_USER_ATTEMPTED_RESOLVED]
-        status, ctx = Kit::Organizer.call({
+        status, ctx = Kit::Organizer.call(
           list: [
             Kit::Auth::Actions::OauthApplications::LoadApi,
             ->(router_request:, oauth_application:) do # rubocop:disable Lint/ShadowingOuterLocalVariable
@@ -54,7 +54,7 @@ module Kit::Auth::Controllers::Api
           ctx:  {
             router_request: router_request,
           },
-        })
+        )
 
         router_request.metadata[METADATA_KEY_CURRENT_USER_ATTEMPTED_RESOLVED] = true
 

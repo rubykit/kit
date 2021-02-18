@@ -7,11 +7,11 @@ module Kit::Events::Controllers
       [:ok]
     end
 
-    Kit::Router::Services::Router.register({
+    Kit::Router::Services::Router.register(
       uid:     'kit_events|system|events|process',
       aliases: ['system|events|process'],
       target:  self.method(:endpoint),
-    })
+    )
 
   end
 end
