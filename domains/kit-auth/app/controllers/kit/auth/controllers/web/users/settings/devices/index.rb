@@ -2,20 +2,20 @@ module Kit::Auth::Controllers::Web::Users::Settings::Devices
   module Index
 
     def self.endpoint(router_request:)
-      Kit::Organizer.call({
-        ctx:  { router_request: router_request },
+      Kit::Organizer.call(
         list: [
           [:alias, :web_require_current_user!],
           self.method(:list),
         ],
-      })
+        ctx:  { router_request: router_request },
+      )
     end
 
-    Kit::Router::Services::Router.register({
+    Kit::Router::Services::Router.register(
       uid:     'kit_auth|web|authorization_tokens|index',
       aliases: ['web|authorization_tokens|index'],
       target:  self.method(:endpoint),
-    })
+    )
 
     def self.list(router_request:)
       list = Kit::Auth::Models::Read::OauthAccessToken

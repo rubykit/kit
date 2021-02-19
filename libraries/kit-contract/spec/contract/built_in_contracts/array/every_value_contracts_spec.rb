@@ -13,15 +13,15 @@ describe Kit::Contract::BuiltInContracts::Array do
 
     let(:args_valid) do
       [
-        [[:a]],
-        [[:a, :b]],
+        { args: [[:a]] },
+        { args: [[:a, :b]] },
       ]
     end
 
     let(:args_invalid) do
       {
-        [['a']]     => 'Invalid result type for contract',
-        [[:a, 'b']] => 'Invalid result type for contract',
+        { args: [['a']] }     => 'Invalid result type for contract',
+        { args: [[:a, 'b']] } => 'Invalid result type for contract',
       }
     end
 

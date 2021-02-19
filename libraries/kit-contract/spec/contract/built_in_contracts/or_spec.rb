@@ -4,18 +4,23 @@ require_relative '../../../lib/kit/contract'
 
 describe Kit::Contract::BuiltInContracts::Or do
 
-  let(:contract) { described_class[->(v) { v == 1 }, ->(v) { v == '1' }] }
+  let(:contract) do
+    described_class[
+      ->(v) { v == 1 },
+      ->(v) { v == '1' },
+    ]
+  end
   let(:args_valid) do
     [
-      [1],
-      ['1'],
+      { args: [1] },
+      { args: ['1'] },
     ]
   end
   let(:args_invalid) do
     {
-      [nil]        => 'OR failed',
-      [2]          => 'OR failed',
-      [{ c: :ok }] => 'OR failed',
+      { args: [nil] }        => 'OR failed',
+      { args: [2] }          => 'OR failed',
+      { args: [{ c: :ok }] } => 'OR failed',
     }
   end
 

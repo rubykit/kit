@@ -4,13 +4,13 @@ module Kit::Domain::Controllers
     JSONAPI_MEDIA_TYPE = 'application/vnd.api+json'.freeze
 
     def self.ensure_media_type(router_request:)
-      Kit::Organizer.call({
+      Kit::Organizer.call(
         list: [
           self.method(:ensure_content_type),
           self.method(:ensure_http_accept),
         ],
         ctx:  { router_request: router_request },
-      })
+      )
     end
 
     def self.ensure_content_type(router_request:)

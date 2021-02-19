@@ -214,7 +214,7 @@ module Kit::Doc::Services::Config
       })
 
       if config[:url_mode] != :local
-        # Note: when we have a local source viewer or the view-source uri scheme improve, add `source_url` here too.
+        # NOTE: when we have a local source viewer or the view-source uri scheme improve, add `source_url` here too.
         gemspec_attributes.merge!({
           documentation_url: ->(version:) { gemspec_data.metadata['documentation_uri'].gsub(SEMVER_REGEX, version) },
         })

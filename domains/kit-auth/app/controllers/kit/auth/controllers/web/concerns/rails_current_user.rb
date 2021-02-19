@@ -7,7 +7,7 @@ module Kit::Auth::Controllers::Web::Concerns
     end
 
     def resolve_current_user
-      Kit::Organizer.call({
+      Kit::Organizer.call(
         # TODO: should there be an explicit or impliticit reference ?
         list: [
           Kit::Router::Services::Adapters::Http::Rails::Request::Import.method(:import_request),
@@ -18,7 +18,7 @@ module Kit::Auth::Controllers::Web::Concerns
           rails_cookies:    cookies,
           rails_controller: self,
         },
-      })
+      )
     end
 
     def current_user

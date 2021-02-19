@@ -30,6 +30,8 @@ group :development do
 end
 
 group :development, :test do
+  gem 'puma'
+
   gem 'awesome_print'
   gem 'colorize'
 

@@ -24,7 +24,7 @@ module Kit::Api::Services::Resolvers::Sql::Filtering
       return [:ok, sanitized_filtering_sql: 'true']
     end
 
-    Kit::Organizer.call({
+    Kit::Organizer.call(
       list: [
         self.method(:filter_to_presanitized_sql),
         [:wrap, Kit::Api::Services::Resolvers::Sql::Sanitization.method(:sanitize_sql),
@@ -33,7 +33,7 @@ module Kit::Api::Services::Resolvers::Sql::Filtering
         ],
       ],
       ctx:  args,
-    })
+    )
   end
 
   # Reduce `Ct::Conditions` to a pre-sanitized string and corresponding hash values

@@ -7,17 +7,17 @@ describe Kit::Contract::BuiltInContracts::Symbol do
   let(:contract) { described_class }
   let(:args_valid) do
     [
-      [:a],
-      [:"1"],
+      { args: [:a] },
+      { args: [:"1"] },
     ]
   end
   let(:expected_type) { Symbol }
   let(:args_invalid) do
     {
-      [nil] => nil,
-      ['a'] => nil,
-      [1]   => nil,
-      ['1'] => nil,
+      { args: [nil] } => nil,
+      { args: ['a'] } => nil,
+      { args: [1] }   => nil,
+      { args: ['1'] } => nil,
     }
   end
 

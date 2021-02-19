@@ -8,18 +8,18 @@ describe ::Kit::Contract::BuiltInContracts::And do
     described_class[
       ->(v) { v && v > 3 },
       ->(v) { v && v < 5 }
-  ]
+    ]
   end
   let(:args_valid) do
     [
-      [4],
+      { args: [4] },
     ]
   end
   let(:args_invalid) do
     {
-      [nil] => 'AND failed.',
-      [3]   => 'AND failed.',
-      [5]   => 'AND failed.',
+      { args: [nil] } => 'AND failed.',
+      { args: [3] }   => 'AND failed.',
+      { args: [5] }   => 'AND failed.',
     }
   end
 

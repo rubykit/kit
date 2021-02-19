@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
 
   s.files = Dir['{lib,tasks}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
 
-  s.required_ruby_version = '~> 2.7'
+  s.required_ruby_version = '>= 3.0'
 
   # TODO: All of these should be development dependencies, but that prevent them from being added to projects using the gem.
   s.add_dependency 'git'

@@ -3,17 +3,17 @@ module Kit::Auth::Actions::Users::IdentifyUserForRequest
   # TODO: add contract on router_request / cookies (based on needed access)
   #Contract Hash => [Symbol, KeywordArgs[user: Any]]
   def self.call(router_request:, oauth_application:, allow: [:param, :cookie, :header])
-    _status, ctx = Kit::Organizer.call({
+    _status, ctx = Kit::Organizer.call(
+      list: [
+        self.method(:extract_access_token),
+        self.method(:find_user),
+      ],
       ctx:  {
         router_request:    router_request,
         oauth_application: oauth_application,
         allow:             allow,
       },
-      list: [
-        self.method(:extract_access_token),
-        self.method(:find_user),
-      ],
-    })
+    )
 
     if ctx[:errors]
       [:error, user: nil, errors: ctx[:errors]]

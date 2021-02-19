@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
 
   s.files = ['README.md']
 
-  s.required_ruby_version     = '>= 2.7.0'
+  s.required_ruby_version     = '>= 3.0.0'
   s.required_rubygems_version = '>= 3.1.0'
 
   # TODO: add various RubyKit Gems when we start releasing them.

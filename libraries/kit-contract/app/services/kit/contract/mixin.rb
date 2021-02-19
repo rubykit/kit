@@ -12,6 +12,8 @@ module Kit::Contract::Mixin
   class_methods do
 
     def inherited(child_class) # rubocop:disable Lint/MissingSuper
+      return if !Kit::Contract::Services::Runtime.active?
+
       child_class.reset_tmp_contracts
     end
 
@@ -19,12 +21,16 @@ module Kit::Contract::Mixin
     # contract Or[Callable, Array.of(Callable)]
     def before(arg)
       #Kit::Contract::Runtime.run_contracts
+      return true if !Kit::Contract::Services::Runtime.active?
+
       self.tmp_contracts[:before].concat(arg.is_a?(::Array) ? arg : [arg])
       true
     end
 
     # contract Or[Callable, Array.of(Callable)]
     def after(arg)
+      return true if !Kit::Contract::Services::Runtime.active?
+
       self.tmp_contracts[:after].concat(arg.is_a?(::Array) ? arg : [arg])
       true
     end
@@ -32,6 +38,8 @@ module Kit::Contract::Mixin
     # TODO: delay the exception to the method definition
     # contract Or[Hash.every_key(Callable).every_value(Callable).size(1), Callable]
     def contract(arg)
+      return true if !Kit::Contract::Services::Runtime.active?
+
       if arg.respond_to?(:call)
         before(arg)
       elsif arg.is_a?(::Hash) && arg.size == 1
@@ -46,6 +54,8 @@ module Kit::Contract::Mixin
     end
 
     def contracts(args)
+      return true if !Kit::Contract::Services::Runtime.active?
+
       before(args[:before]) if args[:before]
       after(args[:after])   if args[:after]
       true

@@ -7,20 +7,20 @@ describe Kit::Contract::BuiltInContracts::Float do
   let(:contract) { described_class }
   let(:args_valid) do
     [
-      [0.0],
-      [1.0],
-      [Float::MAX],
-      [Float::MIN],
-      [Float::INFINITY],
-      [Float::EPSILON],
+      { args: [0.0] },
+      { args: [1.0] },
+      { args: [Float::MAX] },
+      { args: [Float::MIN] },
+      { args: [Float::INFINITY] },
+      { args: [Float::EPSILON] },
     ]
   end
   let(:expected_type) { Float }
   let(:args_invalid) do
     {
-      [nil] => nil,
-      [1]   => nil,
-      ['1'] => nil,
+      { args: [nil] } => nil,
+      { args: [1] }   => nil,
+      { args: ['1'] } => nil,
     }
   end
 

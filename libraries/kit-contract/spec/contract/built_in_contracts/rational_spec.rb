@@ -7,16 +7,16 @@ describe Kit::Contract::BuiltInContracts::Rational do
   let(:contract) { described_class }
   let(:args_valid) do
     [
-      [::Kernel::Rational(1)],
+      { args: [::Kernel::Rational(1)] },
     ]
   end
   let(:expected_type) { 'Rational' }
   let(:args_invalid) do
     {
-      [nil]                  => nil,
-      [1]                    => nil,
-      [1.0]                  => nil,
-      [::Kernel::Complex(1)] => nil,
+      { args: [nil] }                  => nil,
+      { args: [1] }                    => nil,
+      { args: [1.0] }                  => nil,
+      { args: [::Kernel::Complex(1)] } => nil,
     }
   end
 

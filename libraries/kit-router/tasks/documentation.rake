@@ -70,11 +70,11 @@ DOC_CONFIG = Kit::Doc::Services::Config.create_config(
 
 )
 
-Kit::Doc::Services::Tasks.create_rake_task_documentation_generate!({
+Kit::Doc::Services::Tasks.create_rake_task_documentation_generate!(
   config:           DOC_CONFIG,
   clean_output_dir: true,
-})
+)
 
-Kit::Doc::Services::Tasks.create_rake_task_documentation_all_versions!({
+Kit::Doc::Services::Tasks.create_rake_task_documentation_all_versions!(
   config: DOC_CONFIG,
-})
+)

@@ -2,19 +2,19 @@ module Kit::Auth::Actions::OauthAccessTokens::Create
 
   #Contract Hash => [Symbol, KeywordArgs[oauth_access_token: Any, errors: Any]]
   def self.call(user:, oauth_application:, oauth_access_token_expires_in:, scopes:)
-    Kit::Organizer.call({
+    Kit::Organizer.call(
+      list: [
+        self.method(:create_doorkeeper_request_object),
+        self.method(:create_doorkeeper_access_token),
+        self.method(:load_oauth_access_token),
+      ],
       ctx:  {
         user:                          user,
         oauth_application:             oauth_application,
         oauth_access_token_expires_in: oauth_access_token_expires_in,
         scopes:                        scopes,
       },
-      list: [
-        self.method(:create_doorkeeper_request_object),
-        self.method(:create_doorkeeper_access_token),
-        self.method(:load_oauth_access_token),
-      ],
-    })
+    )
   end
 
   # TODO: audit if going through Doorkeeper is actually worth doing

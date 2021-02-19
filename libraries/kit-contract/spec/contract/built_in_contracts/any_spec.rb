@@ -7,13 +7,13 @@ describe Kit::Contract::BuiltInContracts::Any do
   let(:contract) { described_class }
   let(:args_valid) do
     [
-      [nil],
-      [4],
-      [[2]],
-      [{ b: 2 }],
-      [1..2],
-      ['test'],
-      [Object.new()],
+      { args: [nil] },
+      { args: [4] },
+      { args: [[2]] },
+      { args: [{ b: 2 }] },
+      { args: [1..2] },
+      { args: ['test'] },
+      { args: [Object.new()] },
     ]
   end
 

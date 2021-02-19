@@ -13,7 +13,7 @@ module Kit::Router::Services::Adapters::Http::Rails::Request
       _, cookies_ctx = import_rails_cookies(rails_cookies: rails_cookies)
       csrf_token     = rails_controller.session[:_csrf_token] ||= SecureRandom.base64(32)
 
-      router_request = Kit::Router::Models::RouterRequest.new({
+      router_request = Kit::Router::Models::RouterRequest.new(
         params: rails_request.params.to_h.symbolize_keys,
         root:   rails_request,
         ip:     rails_request.ip,
@@ -23,7 +23,7 @@ module Kit::Router::Services::Adapters::Http::Rails::Request
           headers:    rails_request.headers,
           user_agent: rails_request.user_agent,
         },
-      })
+      )
 
       # For Rails helpers
       rails_request.instance_variable_set(:@kit_router_request, router_request)

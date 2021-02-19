@@ -1,7 +1,7 @@
 - if flash.size > 0
   - flash.each do |type, message|
-    = render Kit::Auth::Components::Various::Alert.new({ \
+    = render Kit::Auth::Components::Various::Alert.new(\
       type:    flash_type_to_bootstrap_type(type),
       classes: [component_class_name],
-    }) do
+    ) do
       p = message

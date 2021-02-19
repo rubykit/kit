@@ -22,8 +22,8 @@ describe Kit::Api::JsonApi::Services::Request::Import::Filtering do
         query_params: query_params,
         api_request:  api_request,
       }
-      Kit::Api::JsonApi::Services::Request::Import::RelatedResources.handle_related_resources(params)
-      service.handle_filtering(params)
+      Kit::Api::JsonApi::Services::Request::Import::RelatedResources.handle_related_resources(**params)
+      service.handle_filtering(**params)
     end
 
     let(:valid_include)   { 'include=books' }

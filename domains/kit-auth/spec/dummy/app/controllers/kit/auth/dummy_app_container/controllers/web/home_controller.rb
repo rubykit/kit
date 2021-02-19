@@ -1,6 +1,6 @@
 class Kit::Auth::DummyAppContainer::Controllers::Web::HomeController < Kit::Auth::DummyAppContainer::Controllers::WebController
 
-  Kit::Router::Services::Router.register_without_target({
+  Kit::Router::Services::Router.register_without_target(
     uid:     'kit-auth|spec_app|home',
     aliases: {
       'app|home' => [
@@ -14,7 +14,7 @@ class Kit::Auth::DummyAppContainer::Controllers::Web::HomeController < Kit::Auth
         target: [self, :index],
       },
     },
-  })
+  )
 
   def index
     render

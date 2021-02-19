@@ -13,7 +13,7 @@ class Kit::Doc::Yard::FileSerializer < ::YARD::Serializers::FileSystemSerializer
     if object.is_a?(::YARD::CodeObjects::ExtraFileObject)
       fspath = [object.name + (extension.empty? ? '' : ".#{ extension }")]
     else
-      objname = object != ::YARD::Registry.root ? mapped_name(object) : 'top-level-namespace'
+      objname = (object == ::YARD::Registry.root) ? 'top-level-namespace' : mapped_name(object)
       if object.is_a?(::YARD::CodeObjects::MethodObject)
         objname += "_ #{ object.scope.to_s[0, 1] }"
       end

@@ -47,7 +47,7 @@ module Kit::Router::Models
       }
     end
 
-    # Note: hacky way to not polute output with `root`, not proud of it.
+    # NOTE: hacky way to not polute output with `root`, not proud of it.
     def ai(*options)
       root_saved = @root
 

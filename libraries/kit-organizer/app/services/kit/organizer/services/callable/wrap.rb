@@ -18,10 +18,10 @@ module Kit::Organizer::Services::Callable::Wrap
         ctx_in = Kit::Organizer::Services::Callable::Wrap.slice(ctx: ctx_in, transform: opts_in)
       end
 
-      status, ctx_out = Kit::Organizer.call({
+      status, ctx_out = Kit::Organizer.call(
         list: [callable],
         ctx:  ctx_in,
-      })
+      )
 
       if opts_out
         ctx_out = Kit::Organizer::Services::Callable::Wrap.slice(ctx: ctx_out, transform: opts_out)

@@ -23,4 +23,4 @@ RSpec.configure do |config|
 
 end
 
-Dir[File.expand_path('shared/**/*.rb', __dir__)].sort.each { |f| require f }
+Dir[File.expand_path('shared/**/*.rb', __dir__)].each { |f| require f }

@@ -7,14 +7,14 @@ describe Kit::Contract::BuiltInContracts::Eq do
   let(:contract) { described_class[1] }
   let(:args_valid) do
     [
-      [1],
+      { args: [1] },
     ]
   end
   let(:args_invalid) do
     {
-      ['1']        => 'EQ failed: expected `1` got `1`',
-      [2]          => 'EQ failed: expected `1` got `2`',
-      [{ c: :ok }] => 'EQ failed: expected `1` got `{:c=>:ok}`',
+      { args: ['1'] }        => 'EQ failed: expected `1` got `1`',
+      { args: [2] }          => 'EQ failed: expected `1` got `2`',
+      { args: [{ c: :ok }] } => 'EQ failed: expected `1` got `{:c=>:ok}`',
     }
   end
 

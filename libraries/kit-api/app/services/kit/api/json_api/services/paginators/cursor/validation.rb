@@ -6,7 +6,7 @@ module Kit::Api::JsonApi::Services::Paginators::Cursor::Validation
   def self.validate(api_request:, parsed_query_params_page:)
     args = { api_request: api_request, parsed_query_params_page: parsed_query_params_page }
 
-    Kit::Organizer.call({
+    Kit::Organizer.call(
       list: [
         self.method(:validate_keys),
         self.method(:ensure_single_value),
@@ -15,7 +15,7 @@ module Kit::Api::JsonApi::Services::Paginators::Cursor::Validation
         self.method(:decrypt_cursors),
       ],
       ctx:  args,
-    })
+    )
   end
 
   # Only accepts `:size`, `:after`, `:before` keywords

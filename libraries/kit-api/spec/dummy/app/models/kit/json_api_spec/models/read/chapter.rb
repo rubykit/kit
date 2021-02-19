@@ -11,9 +11,9 @@ class Kit::JsonApiSpec::Models::Read::Chapter < Kit::JsonApiSpec::Models::ReadRe
     :index,
   ]
 
-  belongs_to :book, {
+  belongs_to(:book,
     class_name:  'Kit::JsonApiSpec::Models::Read::Book',
     foreign_key: 'kit_json_api_spec_book_id',
-  }
+  )
 
 end

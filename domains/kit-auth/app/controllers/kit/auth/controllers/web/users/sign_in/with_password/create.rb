@@ -2,22 +2,22 @@ module Kit::Auth::Controllers::Web::Users::SignIn::WithPassword
   module Create
 
     def self.endpoint(router_request:)
-      Kit::Organizer.call({
+      Kit::Organizer.call(
         list: [
           [:alias, :web_redirect_if_current_user!],
           self.method(:create_sign_in),
         ],
         ctx:  { router_request: router_request },
-      })
+      )
     end
 
-    Kit::Router::Services::Router.register({
+    Kit::Router::Services::Router.register(
       uid:     'kit_auth|web|authorization_tokens|create',
       aliases: [
         'web|authorization_tokens|create',
       ],
       target:  self.method(:endpoint),
-    })
+    )
 
     def self.create_sign_in(router_request:)
       model   = router_request.params.slice(:email, :password)
@@ -25,14 +25,14 @@ module Kit::Auth::Controllers::Web::Users::SignIn::WithPassword
         router_request: router_request,
       )
 
-      res, ctx = Kit::Organizer.call({
-        ctx:  context,
+      res, ctx = Kit::Organizer.call(
         list: [
           ->(email:) { [:ok, user: Kit::Auth::Models::Read::User.find_by(email: email)] },
           Kit::Auth::Actions::Users::VerifyPassword,
           Kit::Auth::Actions::Users::SignInWeb,
         ],
-      })
+        ctx:  context,
+      )
 
       if res == :ok
         router_request.http.cookies[:access_token] = { value: ctx[:oauth_access_token_plaintext_secret], encrypted: true }

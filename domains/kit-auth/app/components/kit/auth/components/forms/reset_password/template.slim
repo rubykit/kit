@@ -6,26 +6,26 @@
     h1.h3.mb-3.font-weight-normal = t('kit.auth.passwords.reset.title')
     h2.h5.font-weight-normal = t('kit.auth.passwords.reset.prompt')
 
-  = render Kit::Auth::Components::Various::ErrorsAlert.new({ \
+  = render Kit::Auth::Components::Various::ErrorsAlert.new(\
     errors: generic_errors,
   })
 
-  = render Kit::Auth::Components::Inputs::Password.new({ \
+  = render Kit::Auth::Components::Inputs::Password.new(\
     value:    model[:password],
     name:     'password',
     label:    'Password',
     errors:   errors_by_field[:password],
     help:     t('kit.auth.passwords.requirements'),
     required: true,
-  })
+  )
 
-  = render Kit::Auth::Components::Inputs::Password.new({ \
+  = render Kit::Auth::Components::Inputs::Password.new(\
     value:    model[:password_confirmation],
     name:     'password_confirmation',
     label:    'Password confirmation',
     errors:   errors_by_field[:password_confirmation],
     required: true,
-  })
+  )
 
   .actions
     button.btn.btn-lg.btn-primary.btn-block type="submit"

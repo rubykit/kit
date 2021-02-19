@@ -6,7 +6,7 @@ module Kit::Api::JsonApi::Services::Request::Import
   def self.import(query_params:, api_request: nil)
     api_request ||= {}
 
-    Kit::Organizer.call({
+    Kit::Organizer.call(
       list: [
         Kit::Api::JsonApi::Services::Request::Import::RelatedResources.method(:handle_related_resources),
         Kit::Api::JsonApi::Services::Request::Import::SparseFieldsets.method(:handle_sparse_fieldsets),
@@ -15,7 +15,7 @@ module Kit::Api::JsonApi::Services::Request::Import
         Kit::Api::JsonApi::Services::Request::Import::Pagination.method(:handle_pagination),
       ],
       ctx:  { query_params: query_params, api_request: api_request },
-    })
+    )
   end
 
 end

@@ -16,6 +16,7 @@ class Kit::Contract::BuiltInContracts::InstantiableContract
   def initialize(state: nil, args: nil, bypass_setup: false)
     @state = state || { meta: {} }
 
+    return if !Kit::Contract::Services::Runtime.active?
     return if bypass_setup
 
     self.setup(*args)
@@ -29,7 +30,8 @@ class Kit::Contract::BuiltInContracts::InstantiableContract
   # Eq[2]
   # Eq.new(args: [2])
   #```
-  def self.[](*args)
+  def self.[](*args, **kwargs)
+    args << kwargs if kwargs && !kwargs.empty?
     new(args: args)
   end
 
@@ -73,7 +75,7 @@ class Kit::Contract::BuiltInContracts::InstantiableContract
   end
 
   # When enabled, outputs the Contract arguments when called.
-  def debug(args:)
+  def debug(parameters:)
     return if !@state[:meta][:debug]
 
     name = @state[:meta][:name]
@@ -83,12 +85,12 @@ class Kit::Contract::BuiltInContracts::InstantiableContract
       name = "Unnamed `#{ self.class.name }`"
     end
     puts "Debut input args for `#{ name }` contract:"
-    ap args
+    ap parameters
   end
 
   # Handle circular reference when the contract can self-reference.
   # If a circular reference is detected, skip the contract and let the top level one sort it out.
-  def safe_nested_call(list:, args:, contract:)
+  def safe_nested_call(list:, parameters:, contract:)
     # Purely for spec purpose. This allows to check that the safe mechanism actually does something.
     if self.class.disable_safe_nesting == true
       list.each { |local_contract| yield(local_contract.is_a?(Hash) ? local_contract[:contract] : local_contract) }
@@ -113,26 +115,37 @@ class Kit::Contract::BuiltInContracts::InstantiableContract
       if safe
         yield local_contract
       else
-        contract_oid = local_contract.object_id
-        args_oid     = args.map(&:object_id)
-        cache_value  = cache_ref.value
+        contract_oid   = local_contract.object_id
+        parameters_oid = parameters[:args].map(&:object_id)
+
+        if parameters[:kwargs] && !parameters[:kwargs].empty?
+          key = parameters[:kwargs].map { |k, v| "#{ k.object_id }:#{ v.object_id }" }.join('|')
+          parameters_oid << key
+        end
+
+        #parameters_oid = parameters_oid.join(',')
+
+        cache_value = cache_ref.value
         cache_value[contract_oid] ||= {}
-        if !cache_value[contract_oid].include?(args_oid)
-          cache_value[contract_oid][args_oid] = args_oid
+
+        if cache_value[contract_oid].include?(parameters_oid)
+          [:ok]
+        else
+          cache_value[contract_oid][parameters_oid] = parameters_oid
+
           cache_ref.value = cache_value
-          cache_removal << [contract_oid, args_oid]
+
+          cache_removal << [contract_oid, parameters_oid]
 
           yield local_contract
-        else
-          [:ok]
         end
       end
     end
 
     # Remove reference we saved at this level
     cache_value = cache_ref.value
-    cache_removal.each do |contract_oid, args_oid|
-      cache_value[contract_oid].delete(args_oid)
+    cache_removal.each do |contract_oid, parameters_oid|
+      cache_value[contract_oid].delete(parameters_oid)
     end
     cache_ref.value = cache_value
 

@@ -5,20 +5,20 @@ module Kit::Contract::BuiltInContracts
 
     def self.get_index_contract(contract:, index:)
       ->(array) do
-        Kit::Contract::Services::Validation.valid?(contract: contract, args: [array[index]])
+        Kit::Contract::Services::Validation.valid?(contract: contract, parameters: { args: [array[index]] })
       end
     end
 
     def self.get_instance_contract(contract:)
       ->(array) do
-        Kit::Contract::Services::Validation.valid?(contract: contract, args: [array])
+        Kit::Contract::Services::Validation.valid?(contract: contract, parameters: { args: [array] })
       end
     end
 
     def self.get_every_value_contract(contract:)
       ->(array) do
         array.each do |value|
-          result       = Kit::Contract::Services::Validation.valid?(contract: contract, args: [value])
+          result       = Kit::Contract::Services::Validation.valid?(contract: contract, parameters: { args: [value] })
           status, _ctx = result
           return result if status == :error
         end
@@ -54,11 +54,15 @@ module Kit::Contract::BuiltInContracts
     end
 
     def call(*args)
-      debug(args: args)
+      return [:ok] if !Kit::Contract::Services::Runtime.active?
 
-      safe_nested_call(list: @state[:contracts_list], args: args, contract: self) do |local_contract|
+      parameters = { args: args }
+
+      debug(parameters: parameters)
+
+      safe_nested_call(list: @state[:contracts_list], parameters: parameters, contract: self) do |local_contract|
         #status, ctx = result = local_contract.call(*args)
-        status, ctx = result = Kit::Contract::Services::Validation.valid?(contract: local_contract, args: args)
+        status, ctx = result = Kit::Contract::Services::Validation.valid?(contract: local_contract, parameters: parameters)
         if status == :error
           if ctx[:contracts_stack]
             ctx[:contracts_stack] << contract
@@ -71,6 +75,8 @@ module Kit::Contract::BuiltInContracts
     end
 
     def self.call(*args)
+      return [:ok] if !Kit::Contract::Services::Runtime.active?
+
       IsA[::Array].call(*args)
     end
 
@@ -101,11 +107,15 @@ module Kit::Contract::BuiltInContracts
 
     # contract Array.of(Contract).size(1)
     def of(contract, safe: false)
+      return self if !Kit::Contract::Services::Runtime.active?
+
       every(contract, safe: safe)
     end
 
     # contract Hash.of(And[Integer, Gt[0]] => Contract)
     def at(contracts, safe: false)
+      return self if !Kit::Contract::Services::Runtime.active?
+
       contracts.each do |index, contract|
         if !index.is_a?(::Integer) || index < 0
           raise 'Invalid contract usage: Array.at keys must be valid array indices (callable).'
@@ -123,16 +133,22 @@ module Kit::Contract::BuiltInContracts
     # Position matters on this one
     # contract Array.of(Contract)
     def with(contracts, safe: false)
+      return self if !Kit::Contract::Services::Runtime.active?
+
       at(contracts.map.with_index { |val, idx| [idx, val] }.to_h, safe: false)
     end
 
     # contract And[Integer, ->(x) { x > 0 }]
     def size(size, safe: true)
+      return self if !Kit::Contract::Services::Runtime.active?
+
       instance(->(i) { i.size == size }, safe: true)
     end
 
     # contract Array.of(Contract).size(1)
     def every(contract, safe: false)
+      return self if !Kit::Contract::Services::Runtime.active?
+
       if !contract.respond_to?(:call)
         raise 'Invalid contract usage: Array.every only accepts contracts (callable).'
       end
@@ -144,6 +160,8 @@ module Kit::Contract::BuiltInContracts
 
     # contract Or[Contract, Array.of(Contract)]
     def instance(contracts, safe: false)
+      return self if !Kit::Contract::Services::Runtime.active?
+
       [contracts]
         .flatten
         .each do |contract|

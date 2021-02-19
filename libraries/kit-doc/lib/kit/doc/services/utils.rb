@@ -53,7 +53,7 @@ module Kit::Doc::Services::Utils
       @object     = object
       @serializer = options.serializer
 
-      # Note: in YARD, options.object is never an `ExtraFileObject`.
+      # NOTE: in YARD, options.object is never an `ExtraFileObject`.
       #   Reference: https://github.com/lsegal/yard/blob/master/templates/default/fulldoc/html/setup.rb#L64
       if @object.is_a?(::YARD::CodeObjects::ExtraFileObject)
         @file   = @object

@@ -7,16 +7,16 @@ describe Kit::Contract::BuiltInContracts::Integer do
   let(:contract) { described_class }
   let(:args_valid) do
     [
-      [1],
-      [9_000_000_000_000_000_000_000_000_000],
+      { args: [1] },
+      { args: [9_000_000_000_000_000_000_000_000_000] },
     ]
   end
   let(:expected_type) { Integer }
   let(:args_invalid) do
     {
-      [nil]                   => nil,
-      [1.0]                   => nil,
-      [::Kernel::Rational(1)] => nil,
+      { args: [nil] }                   => nil,
+      { args: [1.0] }                   => nil,
+      { args: [::Kernel::Rational(1)] } => nil,
     }
   end
 

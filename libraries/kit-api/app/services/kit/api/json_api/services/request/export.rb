@@ -2,7 +2,7 @@
 module Kit::Api::JsonApi::Services::Request::Export
 
   def self.export(api_request:, path:)
-    status, ctx = Kit::Organizer.call({
+    status, ctx = Kit::Organizer.call(
       list: [
         Kit::Api::JsonApi::Services::Request::Export::RelatedResources.method(:included_paths),
         Kit::Api::JsonApi::Services::Request::Export::RelatedResources.method(:handle_related_resources),
@@ -16,7 +16,7 @@ module Kit::Api::JsonApi::Services::Request::Export
         path:         path,
         query_params: {},
       },
-    })
+    )
 
     [status, ctx.slice(:errors, :query_params)]
   end

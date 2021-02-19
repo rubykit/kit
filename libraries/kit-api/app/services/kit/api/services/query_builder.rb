@@ -103,11 +103,11 @@ module Kit::Api::Services::QueryBuilder
       resolvers = relationship[:resolvers]
       # Add resolver store
       if resolvers.is_a?(Array)
-        _, ctx = Kit::Api::Services::Resolvers::ActiveRecord.generate_resolvers({
+        _, ctx = Kit::Api::Services::Resolvers::ActiveRecord.generate_resolvers(
           config:       api_request[:config],
           relationship: relationship,
           options:      resolvers[1],
-        })
+        )
         resolvers = ctx[:resolvers]
       end
 
@@ -143,7 +143,7 @@ module Kit::Api::Services::QueryBuilder
     if singular == true
       limit = 1
     elsif limit == nil
-      # Note: this is kind of cheating, not sure where it belongs.
+      # NOTE: this is kind of cheating, not sure where it belongs.
       limit = api_request.dig(:pagination, path, :size)
     end
 

@@ -25,10 +25,10 @@ module Kit::Organizer::Services::Callable
       [:ok, callable: target]
     else
       type = target[0]
-      if !store[type]
-        [:error, "Kit::Organizer could not resolve callable type `#{ type }`"]
-      else
+      if store[type]
         store[type].call(args: target)
+      else
+        [:error, "Kit::Organizer could not resolve callable type `#{ type }`"]
       end
     end
   end

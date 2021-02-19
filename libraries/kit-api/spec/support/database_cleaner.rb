@@ -8,7 +8,7 @@ require 'seedbank'
 RSpec.configure do |config|
 
   config.before(:suite) do
-    DatabaseCleaner.clean_with(:truncation, reset_ids: true)
+    DatabaseCleaner.clean_with(:truncation)
 
     Seedbank.seeds_root = File.expand_path('../dummy/db/seeds', __dir__)
     Seedbank.load_tasks if defined?(Seedbank)
@@ -34,7 +34,7 @@ RSpec.configure do |config|
   end
 
   config.after(:suite) do
-    DatabaseCleaner.clean_with(:truncation, reset_ids: true)
+    DatabaseCleaner.clean_with(:truncation)
   end
 
 end

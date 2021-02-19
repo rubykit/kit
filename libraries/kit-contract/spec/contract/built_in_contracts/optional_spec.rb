@@ -8,16 +8,16 @@ describe Kit::Contract::BuiltInContracts::Optional do
 
   let(:args_valid) do
     [
-      [],
-      [nil],
-      [{ a: 1 }],
+      { args: [] },
+      { args: [nil] },
+      { args: [{ a: 1 }] },
     ]
   end
 
   let(:args_invalid) do
     {
-      [2]   => 'Invalid result type for contract',
-      [[2]] => 'Invalid result type for contract',
+      { args: [2] }   => 'Invalid result type for contract',
+      { args: [[2]] } => 'Invalid result type for contract',
     }
   end
 

@@ -9,7 +9,7 @@ class Kit::Contract::BuiltInContracts::Optional < Kit::Contract::BuiltInContract
     if value == nil
       [:ok]
     else
-      Kit::Contract::Services::Validation.valid?(contract: @state[:contract], args: [value])
+      Kit::Contract::Services::Validation.valid?(contract: @state[:contract], parameters: { args: [value] })
     end
   end
 

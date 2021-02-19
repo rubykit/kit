@@ -27,7 +27,7 @@ module Kit::Pagination::Cursor
   # }
   # ```
   def self.cursor_data_for_element(ordering:, element:, included: false, included_field_name: :_inc)
-    # Note: rather unlikely to happen, but better sage than sorry!
+    # NOTE: rather unlikely to happen, but better sage than sorry!
     if ordering.map { |el| el[0] }.include?(included_field_name)
       [:error, errors: [{ detail: 'Field collision: please specify a different `included_field_name` (current used in ordering)' }]]
     end

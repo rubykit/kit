@@ -7,7 +7,7 @@ module Kit::Auth::Controllers::Api::V1::AuthorizationTokens
     def self.endpoint(router_request:)
       params = router_request.params[:authorization_token][:data][:attributes]
 
-      status, ctx = Kit::Organizer.call({
+      status, ctx = Kit::Organizer.call(
         list: [
           Kit::Domain::Controllers::JsonApi.method(:ensure_media_type),
           ->(email:) { [:ok, user: Kit::Auth::Models::Read::User.find_by(email: email)] },
@@ -20,7 +20,7 @@ module Kit::Auth::Controllers::Api::V1::AuthorizationTokens
           email:          params[:uid],
           password:       params[:secret],
         },
-      })
+      )
 
       if status == :ok
         [status, ctx]

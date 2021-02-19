@@ -15,7 +15,12 @@ module Kit::Api::JsonApi::Services::Request::Export::Filtering
         .adjusted_path(included_paths: included_paths, current_path: filters_path)[1][:adjusted_path]
       next if !adjusted_path
 
-      filters.map do |name:, op:, value:|
+      #filters.map do |name:, op:, value:|
+      filters.map do |el|
+        name  = el[:name]
+        op    = el[:op]
+        value = el[:value]
+
         # Add filter name
         filter_path = "#{ adjusted_path }#{ adjusted_path.size > 0 ? '.' : '' }#{ name }"
 

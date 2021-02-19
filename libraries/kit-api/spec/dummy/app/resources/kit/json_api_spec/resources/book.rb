@@ -46,9 +46,9 @@ class Kit::JsonApiSpec::Resources::Book < Kit::JsonApiSpec::Resources::Resource
         resolvers:         {
           inherited_filter: Kit::Api::Services::Resolvers::ActiveRecord.generate_inherited_filters(relationship_type: :to_many, parent_field: { id: :id }, child_field: { id: :kit_json_api_spec_book_id }),
           records_selector: Kit::Api::Services::Resolvers::ActiveRecord.generate_records_selector(relationship_type: :to_many, parent_field: { id: :id }, child_field: { id: :kit_json_api_spec_book_id }),
-          data_resolver:    Kit::Api::Services::Resolvers::ActiveRecord.generate_data_resolver({
+          data_resolver:    Kit::Api::Services::Resolvers::ActiveRecord.generate_data_resolver(
             model: Kit::JsonApiSpec::Models::Write::Chapter,
-          })[1][:data_resolver],
+          )[1][:data_resolver],
         },
       },
       photos:        {

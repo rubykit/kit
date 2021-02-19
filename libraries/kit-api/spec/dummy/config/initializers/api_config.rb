@@ -1,4 +1,4 @@
-KIT_DUMMY_APP_API_CONFIG = Kit::Api::Services::Config.create_config({
+KIT_DUMMY_APP_API_CONFIG = Kit::Api::Services::Config.create_config(
   resources:     {
     author:     Kit::JsonApiSpec::Resources::Author.to_h,
     book:       Kit::JsonApiSpec::Resources::Book.to_h,
@@ -15,7 +15,7 @@ KIT_DUMMY_APP_API_CONFIG = Kit::Api::Services::Config.create_config({
       encrypt_secret: '72b035a267ac10c7b5e3c0893c395ab0',
     },
   },
-})
+)
 
 # AwesomePrint nesting setup: this avoids huge unreadable object dumps
 KIT_DUMMY_APP_API_CONFIG[:resources].each do |_k, v|

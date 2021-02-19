@@ -4,7 +4,7 @@ module Kit::Auth::Controllers::Api::V1::Users
     ROUTE_UID = 'kit_auth|api_v1|users|show'
 
     def self.endpoint(router_request:)
-      Kit::Organizer.call({
+      Kit::Organizer.call(
         list: [
           Kit::Domain::Controllers::JsonApi.method(:ensure_media_type),
           :api_requires_current_user!,
@@ -25,7 +25,7 @@ module Kit::Auth::Controllers::Api::V1::Users
           self.method(:render),
         ],
         ctx:  { router_request: router_request },
-      })
+      )
     end
 
     Kit::Router::Services::Router.register(

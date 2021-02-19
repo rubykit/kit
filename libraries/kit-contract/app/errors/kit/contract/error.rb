@@ -3,7 +3,7 @@ require 'awesome_print'
 # When using contracts on method signatures (through `before`, `after`, `contract`) a `Kit::Contract::Error` exception is raised when a contract failure happens.
 class Kit::Contract::Error < ::StandardError
 
-  def initialize(contract_errors:, errors:, target:, target_class:, method_name:, method_type:, type:, args:)
+  def initialize(contract_errors:, errors:, target:, target_class:, method_name:, method_type:, type:, parameters:)
     @contract_error = contract_errors
     @errors         = errors
     @target         = target
@@ -11,7 +11,7 @@ class Kit::Contract::Error < ::StandardError
     @method_name    = method_name
     @method_type    = method_type
     @type           = type
-    @args           = args
+    @parameters     = parameters
     @backtrace      = caller
 
     @backtrace.shift()
@@ -43,9 +43,9 @@ class Kit::Contract::Error < ::StandardError
         list << "  Hierarchy: #{ contracts.join(' > ') }"
       end
 
-      if @contract_error[:args]
-        arguments = @contract_error[:args].ai
-        list << "  Arguments used: #{ arguments }"
+      if @contract_error[:parameters]
+        parameters = @contract_error[:parameters].ai
+        list << "  Arguments used: #{ parameters }"
       end
       error_callable = @contract_error[:callable]
       if error_callable.respond_to?(:source_location)

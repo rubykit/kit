@@ -22,8 +22,8 @@ describe Kit::Api::JsonApi::Services::Request::Import::Sorting do
         query_params: query_params,
         api_request:  api_request,
       }
-      Kit::Api::JsonApi::Services::Request::Import::RelatedResources.handle_related_resources(params)
-      service.handle_sorting(params)
+      Kit::Api::JsonApi::Services::Request::Import::RelatedResources.handle_related_resources(**params)
+      service.handle_sorting(**params)
     end
 
     context 'with valid include && valid sort criteria' do

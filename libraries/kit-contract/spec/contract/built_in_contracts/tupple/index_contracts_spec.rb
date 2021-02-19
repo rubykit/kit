@@ -14,14 +14,14 @@ describe Kit::Contract::BuiltInContracts::Tupple do
 
     let(:args_valid) do
       [
-        [[:a, 3]],
+        { args: [[:a, 3]] },
       ]
     end
 
     let(:args_invalid) do
       {
-        [[:a, 2]]     => 'Invalid result type for contract',
-        [[:a, 3, :c]] => 'Invalid result type for contract',
+        { args: [[:a, 2]] }     => 'Invalid result type for contract',
+        { args: [[:a, 3, :c]] } => 'Invalid result type for contract',
       }
     end
 

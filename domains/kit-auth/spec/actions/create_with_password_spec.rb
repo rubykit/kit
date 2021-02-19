@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe Kit::Auth::Actions::Users::CreateWithPassword  do
   let(:interactor) { described_class }
-  let(:subject)    { interactor.call ctx_hash }
+  let(:subject)    { interactor.call(**ctx_hash) }
 
   let(:result)  { subject[0] }
   let(:ctx_res) { subject[1] }

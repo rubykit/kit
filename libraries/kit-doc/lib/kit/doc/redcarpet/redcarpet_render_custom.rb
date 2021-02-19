@@ -53,7 +53,7 @@ class Kit::Doc::RedcarpetRenderCustom < ::Redcarpet::Render::HTML
   def link(link, title, content)
     config = Kit::Doc::Services::Config.config
 
-    # Note: maybe we want to remove the link entirely?
+    # NOTE: maybe we want to remove the link entirely?
     link ||= '#'
     target = nil
 
@@ -81,7 +81,7 @@ class Kit::Doc::RedcarpetRenderCustom < ::Redcarpet::Render::HTML
 
   # Attempt to identify & add link to objects references between back ticks.
   #
-  # Note: is it not ideal to perform it here, as we have no context for relative references
+  # NOTE: is it not ideal to perform it here, as we have no context for relative references
   #  like `.class_method` or `#instance_method`. If we want to support this, the replacement
   #  needs to be done in the docstring with some regex to identify backtick.
   def codespan(code)

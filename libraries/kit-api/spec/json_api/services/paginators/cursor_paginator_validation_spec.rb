@@ -20,8 +20,8 @@ describe Kit::Api::JsonApi::Services::Paginators::Cursor::Validation do
       query_params: query_params,
       api_request:  api_request,
     }
-    Kit::Api::JsonApi::Services::Request::Import::RelatedResources.handle_related_resources(params)
-    service.handle_pagination(params)
+    Kit::Api::JsonApi::Services::Request::Import::RelatedResources.handle_related_resources(**params)
+    service.handle_pagination(**params)
   end
 
   let(:status)      { subject[0] }

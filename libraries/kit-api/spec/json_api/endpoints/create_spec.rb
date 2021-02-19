@@ -99,7 +99,7 @@ describe 'Json:Api CREATE requests', type: :request do
   end
 
   resources = KIT_DUMMY_APP_API_CONFIG[:resources]
-    .reject { |k, _v| k == :photo } # Because of the polymorphic RS
+    .except(:photo) # Because of the polymorphic RS
 
   resources.each do |_, resource|
     tmp_resource_name = resource[:name]

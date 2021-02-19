@@ -11,7 +11,7 @@ module Kit::Store::Services::Table::Insertion
     store     = table[:store]
     arguments = { store: store, table: table, record_data: data }
 
-    Kit::Organizer.call({
+    Kit::Organizer.call(
       list:   [
         self.method(:record_data_to_record),
         Kit::Store::Services::Table::Series.method(:apply_to_record),
@@ -21,7 +21,7 @@ module Kit::Store::Services::Table::Insertion
       ],
       ctx:    arguments,
       filter: { ok: [:store], error: [:errors] },
-    })
+    )
   end
 
   # Validate the `record_data` and convert it to a `record`

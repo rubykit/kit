@@ -31,7 +31,7 @@ describe ::Kit::Contract::BuiltInContracts::Array do
 
     let(:args_valid) do
       {
-        [[1, 2]] => [:ok],
+        { args: [[1, 2]] } => [:ok],
       }
     end
 
@@ -39,7 +39,7 @@ describe ::Kit::Contract::BuiltInContracts::Array do
 
     let(:args_invalid) do
       {
-        [1, 2] => [ArgumentError, 'wrong number of arguments (given 2, expected 1)'],
+        { args: [1, 2] } => [ArgumentError, 'wrong number of arguments (given 2, expected 1)'],
       }
     end
 
@@ -51,7 +51,7 @@ describe ::Kit::Contract::BuiltInContracts::Array do
 
     let(:args_valid) do
       {
-        [1, 2] => [:ok],
+        { args: [1, 2] } => [:ok],
       }
     end
 
@@ -59,7 +59,7 @@ describe ::Kit::Contract::BuiltInContracts::Array do
 
     let(:args_invalid) do
       {
-        [[1, 2]] => [ArgumentError, 'wrong number of arguments (given 1, expected 2)'],
+        { args: [[1, 2]] } => [ArgumentError, 'wrong number of arguments (given 1, expected 2)'],
       }
     end
 

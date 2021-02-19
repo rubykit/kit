@@ -22,14 +22,14 @@ module Kit::Api::JsonApi::Services::Request::Import::SparseFieldsets
   def self.handle_sparse_fieldsets(query_params:, api_request:)
     args = { query_params: query_params, api_request: api_request }
 
-    Kit::Organizer.call({
+    Kit::Organizer.call(
       list: [
         self.method(:parse),
         self.method(:validate_params),
         self.method(:add_to_api_request),
       ],
       ctx:  args,
-    })
+    )
   end
 
   # Extract `fields` query params and transform it into a normalized hash.
@@ -74,14 +74,14 @@ module Kit::Api::JsonApi::Services::Request::Import::SparseFieldsets
     parsed_query_params_fields.each do |type_name, fields|
       resource = config[:resources][type_name]
 
-      if !resource
-        errors << { detail: "Sparse fieldsets: `#{ type_name }` is not an available type" }
-      else
+      if resource
         fields.each do |field_name|
           if !resource[:fields].include?(field_name)
             errors << { detail: "Sparse fieldsets: `#{ type_name }`.`#{ field_name }` is not an available field" }
           end
         end
+      else
+        errors << { detail: "Sparse fieldsets: `#{ type_name }` is not an available type" }
       end
     end
 

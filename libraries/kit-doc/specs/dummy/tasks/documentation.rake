@@ -59,16 +59,16 @@ DOC_CONFIG_DUMMY_APP = Kit::Doc::Services::Config.create_config(
   },
 )
 
-Kit::Doc::Services::Tasks.create_rake_task_documentation_generate!({
+Kit::Doc::Services::Tasks.create_rake_task_documentation_generate!(
   task_name:        'specs:dummy-app:documentation:generate',
   config:           DOC_CONFIG_DUMMY_APP,
   clean_output_dir: true,
-})
+)
 
-Kit::Doc::Services::Tasks.create_rake_task_documentation_all_versions!({
+Kit::Doc::Services::Tasks.create_rake_task_documentation_all_versions!(
   task_namespace: 'specs:dummy-app:documentation:all_versions',
   config:         DOC_CONFIG_DUMMY_APP,
-})
+)
 
 YARD::Rake::YardocTask.new do |t|
   output_dir = "specs/dummy/docs/dist/kat-raw/#{ DOC_CONFIG_DUMMY_APP[:version] }"

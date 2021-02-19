@@ -23,7 +23,7 @@ class Kit::Doc::Yard::KitDocContractsHandler < YARD::Handlers::Ruby::Base
     # AstNode#jump returns the first node matching type, otherwise returns self
 
     # Go up the tree to namespace level, then jump to next def statement
-    # Note: this won't document dynamicly defined methods.
+    # NOTE: this won't document dynamicly defined methods.
     parent = statement.parent
     contract_last_line = statement.line_range.last
     # YARD::Parser::Ruby::MethodDefinitionNode

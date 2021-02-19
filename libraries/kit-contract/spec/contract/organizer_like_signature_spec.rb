@@ -25,11 +25,11 @@ describe TestModules::Organizer do
 
   let(:args_valid) do
     {
-      [{ list: [],                            ctx: { user_id: 1 }, result: [:ok] }] => [:ok],
-      [{ list: [(-> {}), :callable_symbol], ctx: { user_id: 1 }, result: [:ok] }]   => [:ok],
+      { kwargs: { list: [],                          ctx: { user_id: 1 }, result: [:ok] } } => [:ok],
+      { kwargs: { list: [(-> {}), :callable_symbol], ctx: { user_id: 1 }, result: [:ok] } } => [:ok],
 
-      [{ list: [], result: [:error] }]                                              => [:error],
-      [{ list: [], result: [:error, { errors: [] }] }]                              => [:error, { errors: [] }],
+      { kwargs: { list: [], result: [:error] } }                                            => [:error],
+      { kwargs: { list: [], result: [:error, { errors: [] }] } }                            => [:error, { errors: [] }],
     }
   end
 
@@ -37,13 +37,13 @@ describe TestModules::Organizer do
 
   let(:args_invalid) do
     {
-      [{ list: [(-> {}), :callable_symbol], ctx: [], result: nil }]   => 'Contract failure before `TestModules::Organizer#organize`: ["IS_A failed:',
-      [{ list: [(-> {}), 'a'], ctx: { user_id: 1 }, result: nil }]    => 'Contract failure before `TestModules::Organizer#organize`: ["OR failed',
-      [{ list: :symbol, ctx: { user_id: 1 },           result: nil }] => 'Contract failure before `TestModules::Organizer#organize`: ["IS_A failed:',
+      { kwargs: { list: [(-> {}), :callable_symbol], ctx: [], result: nil } }   => 'Contract failure before `TestModules::Organizer#organize`: ["IS_A failed:',
+      { kwargs: { list: [(-> {}), 'a'], ctx: { user_id: 1 }, result: nil } }    => 'Contract failure before `TestModules::Organizer#organize`: ["OR failed',
+      { kwargs: { list: :symbol, ctx: { user_id: 1 },           result: nil } } => 'Contract failure before `TestModules::Organizer#organize`: ["IS_A failed:',
 
-      [{ list: [], result: [:errors]    }]                            => 'Contract failure after `TestModules::Organizer#organize`: ["OR failed',
-      [{ list: [], result: [:error, []] }]                            => 'Contract failure after `TestModules::Organizer#organize`: ["OR failed',
-      [{ list: [], result: 2            }]                            => 'Contract failure after `TestModules::Organizer#organize`: ["OR failed',
+      { kwargs: { list: [], result: [:errors]    } }                            => 'Contract failure after `TestModules::Organizer#organize`: ["OR failed',
+      { kwargs: { list: [], result: [:error, []] } }                            => 'Contract failure after `TestModules::Organizer#organize`: ["OR failed',
+      { kwargs: { list: [], result: 2            } }                            => 'Contract failure after `TestModules::Organizer#organize`: ["OR failed',
     }
   end
 

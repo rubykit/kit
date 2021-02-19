@@ -4,14 +4,14 @@ module Kit::Router::Services::Cli::Aliases
   # Get all aliases registered with the router
   # TODO: add routing namespacing
   def self.list(mount_type:)
-    Kit::Organizer.call({
+    Kit::Organizer.call(
       list: [
         self.method(:list_aliases_and_endpoints),
         self.method(:add_parentage_data),
         self.method(:add_mountpoints),
       ],
       ctx:  { mount_type: mount_type },
-    })
+    )
   end
 
   # Get aliases && endpoints from the router store

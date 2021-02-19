@@ -3,7 +3,10 @@ module Kit::JsonApiSpec::Controllers # rubocop:disable Style/Documentation
   # Register endpoints with the router for all Resources.
   def self.register_endpoints(config:, routes:, endpoint:)
     config[:resources].each do |_resource_name, resource_object|
-      routes.each do |route_type:, singular:|
+      routes.each do |route|
+        route_type = route[:route_type]
+        singular   = route[:singular]
+
         route_id  = "specs|api|#{ resource_object[:name] }|#{ route_type }"
         route_uid = "kit_api|#{ route_id }"
         route_fn  = ->(router_request:) do

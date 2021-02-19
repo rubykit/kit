@@ -53,7 +53,7 @@ module Kit::Organizer::Services::Organize
 
   # Run a `list` of `operations` (callable) in order. Each results update the initial `ctx` which is then sent to the next operation.
   # An `operation` needs to be a callable, but it can be resolved from other format (see #to_callable)
-  # Note: Every operation is expected to return a tupple of the format `[:ok]` or `[:error]` with an optional context update (`[:ok, { new_ctx_key: 'value' }]`, `[:errors, { errors: [{ detail: 'Error explaination' }], }]`). If an `:error` tupple is returned, the next operations are canceled and `call` will return.
+  # NOTE: Every operation is expected to return a tupple of the format `[:ok]` or `[:error]` with an optional context update (`[:ok, { new_ctx_key: 'value' }]`, `[:errors, { errors: [{ detail: 'Error explaination' }], }]`). If an `:error` tupple is returned, the next operations are canceled and `call` will return.
   # @param list An array of operations (callables) that will be called in order
   # @param ctx A hash containing values to send to the operations (callables). It will be updated after every operation.
   # @param filter Allows to slice specific keys on the context

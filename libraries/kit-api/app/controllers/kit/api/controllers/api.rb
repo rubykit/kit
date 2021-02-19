@@ -3,7 +3,7 @@ module Kit::Api::Controllers::Api
 
   # Helper to generate a valid `Query` that's already resolved to a single object.
   #
-  # Note: this is useful for edition actions.
+  # NOTE: this is useful for edition actions.
   def self.generate_resolved_query(api_request:, model_instance:)
     resource   = api_request[:top_level_resource]
 

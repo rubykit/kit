@@ -76,16 +76,16 @@ DOC_CONFIG = Kit::Doc::Services::Config.create_config(
   },
 )
 
-Kit::Doc::Services::Tasks.create_rake_task_documentation_generate!({
+Kit::Doc::Services::Tasks.create_rake_task_documentation_generate!(
   config:           DOC_CONFIG,
   # By default, the documentation is generated in `docs/dist`.
   #   It will run `rm -rf docs/dist/*` before each run if this is set to true.
   clean_output_dir: true,
-})
+)
 
-Kit::Doc::Services::Tasks.create_rake_task_documentation_all_versions!({
+Kit::Doc::Services::Tasks.create_rake_task_documentation_all_versions!(
   config: DOC_CONFIG,
-})
+)
 ```
 
 2 - Optional: edit `docs/VERSIONS` to choose the versions that should have documentation.

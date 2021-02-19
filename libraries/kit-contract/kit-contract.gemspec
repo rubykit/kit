@@ -20,11 +20,11 @@ Gem::Specification.new do |s|
 
   s.files = Dir['{app,config,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
 
-  s.required_ruby_version = '~> 2.7'
+  s.required_ruby_version = '>= 3.0'
 
   s.add_dependency 'awesome_print'
   s.add_dependency 'concurrent-ruby'
-  #s.add_dependency 'rails',           '~> 6.0.3.1'
+  s.add_dependency 'rails',           '~> 6.1'
 
   s.add_development_dependency 'rspec-rails'
   s.add_development_dependency 'rubocop'
