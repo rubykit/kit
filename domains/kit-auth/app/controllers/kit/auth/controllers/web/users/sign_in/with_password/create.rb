@@ -42,8 +42,9 @@ module Kit::Auth::Controllers::Web::Users::SignIn::WithPassword
         )
       else
         Kit::Router::Controllers::Http.render(
-          component: Kit::Auth::Components::Pages::Users::SignIn::WithPassword::New,
-          params:    {
+          router_request: router_request,
+          component:      Kit::Auth::Components::Pages::Users::SignIn::WithPassword::NewComponent,
+          params:         {
             model:       model,
             csrf_token:  router_request.http[:csrf_token],
             errors_list: ctx[:errors],

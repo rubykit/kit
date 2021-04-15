@@ -5,9 +5,10 @@ module Kit::Router::Controllers
   # HTTP request adapter.
   module Http
 
-    def self.render(component:, params:, status: 200)
+    def self.render(router_request:, component:, params:, status: 200)
+
       page    = component.new(**params)
-      content = page.local_render
+      content = page.local_render(router_request: router_request)
 
       [:ok, {
         router_response: {

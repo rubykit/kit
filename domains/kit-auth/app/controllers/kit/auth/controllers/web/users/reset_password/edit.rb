@@ -23,8 +23,9 @@ module Kit::Auth::Controllers::Web::Users::ResetPassword
       model = { password: nil, password_confirmation: nil }
 
       Kit::Router::Controllers::Http.render(
-        component: Kit::Auth::Components::Pages::Users::ResetPassword::Edit,
-        params:    {
+        router_request: router_request,
+        component:      Kit::Auth::Components::Pages::Users::ResetPassword::EditComponent,
+        params:         {
           model:      model,
           csrf_token: router_request.http[:csrf_token],
         },
