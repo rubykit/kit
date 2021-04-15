@@ -45,8 +45,9 @@ module Kit::Auth::Controllers::Web::Users::Settings::Devices
       end
 
       Kit::Router::Controllers::Http.render(
-        component: Kit::Auth::Components::Pages::Users::Settings::Devices::Index,
-        params:    {
+        router_request: router_request,
+        component:      Kit::Auth::Components::Pages::Users::Settings::Devices::IndexComponent,
+        params:         {
           list: list,
         },
       )

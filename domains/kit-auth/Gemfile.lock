@@ -46,6 +46,7 @@ PATH
       rails (~> 6.1.0)
       rails_event_store
       slim-rails
+      view_component (~> 2.30.0)
 
 PATH
   remote: ../../libraries/kit-dotenv
@@ -549,6 +550,8 @@ GEM
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     unicode-display_width (1.7.0)
+    view_component (2.30.0)
+      activesupport (>= 5.0.0, < 7.0)
     webdrivers (4.5.0)
       nokogiri (~> 1.6)
       rubyzip (>= 1.3.0)
@@ -606,6 +609,7 @@ DEPENDENCIES
   sidekiq
   simplecov (~> 0.17.1)
   slim-rails
+  view_component
   webdrivers (~> 4.0)
 
 BUNDLED WITH

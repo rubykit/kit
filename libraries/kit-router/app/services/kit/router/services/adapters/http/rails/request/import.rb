@@ -23,6 +23,10 @@ module Kit::Router::Services::Adapters::Http::Rails::Request
           headers:    rails_request.headers,
           user_agent: rails_request.user_agent,
         },
+        rails:  {
+          controller: rails_controller,
+          request:    rails_request,
+        },
       )
 
       # For Rails helpers

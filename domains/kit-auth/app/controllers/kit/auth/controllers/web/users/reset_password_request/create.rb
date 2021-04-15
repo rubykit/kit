@@ -41,8 +41,9 @@ module Kit::Auth::Controllers::Web::Users::ResetPasswordRequest
         )
       else
         Kit::Router::Controllers::Http.render(
-          component: Kit::Auth::Components::Pages::Users::ResetPasswordRequest::New,
-          params:    {
+          router_request: router_request,
+          component:      Kit::Auth::Components::Pages::Users::ResetPasswordRequest::NewComponent,
+          params:         {
             model:       model,
             csrf_token:  router_request.http[:csrf_token],
             errors_list: ctx[:errors],

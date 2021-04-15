@@ -25,6 +25,9 @@ gem 'paranoia',   require: 'paranoia'
 gem 'sidekiq'  # DEV MODE ? doesn't get loaded otherwise
 gem 'slim-rails' # DEV MODE ? doesn't get loaded otherwise
 
+# TMP: because of the require
+gem 'view_component', require: 'view_component/engine'
+
 group :development do
   gem 'annotate', '~> 2.7', '>= 2.7.4'
 end

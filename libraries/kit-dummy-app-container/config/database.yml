@@ -13,7 +13,7 @@ config_default_write: &config_default_write
   <<:  *config_default
   url: <%= ENV['DATABASE_URL_WRITE'] %>
 
-# Operation mode | expected privileges: write_mode + [CREATE, REFERENCES, TRUNCATE, USAGE]
+# Operation mode | expected privileges: write_mode + [CREATE, REFERENCES, TRIGGER, TRUNCATE, USAGE]
 config_default_ops: &config_default_ops
   <<:  *config_default
   url: <%= ENV['DATABASE_URL_OPS'] %>

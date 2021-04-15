@@ -23,8 +23,9 @@ module Kit::Auth::Controllers::Web::Users::SignUp::WithPassword
       model = { email: nil, password: nil }
 
       Kit::Router::Controllers::Http.render(
-        component: Kit::Auth::Components::Pages::Users::SignUp::WithPassword::New,
-        params:    {
+        router_request: router_request,
+        component:      Kit::Auth::Components::Pages::Users::SignUp::WithPassword::NewComponent,
+        params:         {
           model:      model,
           csrf_token: router_request.http[:csrf_token],
         },

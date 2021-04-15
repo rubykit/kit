@@ -8,13 +8,12 @@ module Kit::Auth::Components
       @errors_list = errors_list
     end
 
-    # TODO: assess if there is a collision with `render`, otherwise use that!
-    def local_render(view_context = nil, &block)
-      self.class.compile
-      if block_given?
-        @content = view_context.capture(&block)
-      end
-      call
+    def local_render(router_request: nil, &block)
+      controller     = router_request.rails[:controller]
+      lookup_context = ActionView::LookupContext.new(ActionController::Base.view_paths)
+      view           = ActionView::Base.new(lookup_context, {}, controller)
+
+      self.render_in(view)
     end
 
   end

@@ -10,12 +10,14 @@ module Kit::Router::Models
   #
   class RouterRequest
 
-    attr_reader :params, :root, :http, :metadata, :ip
+    attr_reader :params, :root, :http, :metadata, :ip, :rails
 
-    def initialize(params:, root: nil, http: nil, metadata: nil, ip: nil, **)
+    def initialize(params:, root: nil, http: nil, metadata: nil, ip: nil, rails: nil, **)
       @params = params
       @ip     = ip
       @root   = root
+
+      @rails  = rails || {}
 
       @http = OpenStruct.new(http || {
         csrf_token: nil,

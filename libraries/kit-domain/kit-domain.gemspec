@@ -28,6 +28,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'paranoia',                    '~> 2.4', '>= 2.4.3'
   s.add_dependency 'pg',                          '~> 1.2.3'
 
+  s.add_dependency 'view_component',              '~> 2.30.0'
+
   s.add_dependency 'rails',                       '~> 6.1.0'
   s.add_dependency 'rails_event_store'
   s.add_dependency 'slim-rails'
