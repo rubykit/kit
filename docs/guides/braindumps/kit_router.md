@@ -2,17 +2,23 @@
 
 ## Router entry points
 
-- `inline` (calling the router directly): `cast` or `call`
+- `inline` (calling the router directly): `cast` , `call`, `inline_call`
 - per adapter or protocol `listeners`
 
 ## Making an inline call to the Router
 
-The only differentiator is the expectation **at the call site**: do we expect an answer & want to block?
+The only differentiator is based on the expectation **at the call site**: do we expect an answer or not?
 
-- `call` is sync, it will block until there is a response or a timeout
-- `cast` is async, if "fires & forget"
+- `call` blocks (until there is a response or a timeout). It's a sync primitive from the caller perspective.
+- `cast` is non-blocking. It's an async primitive from the caller perspective ("fires & forget").
+- `inline_call` is the same than calls but it force the use of the `inline` strategy (mostly usefull inside adapters).
 
 (Context: https://hexdocs.pm/elixir/GenServer.html#call/3)
+
+## Messages: two "families"
+
+- "Internal" message: how to call an endpoint + expected parameters!
+- Per "procotol" messages: how to react / routes protocol messages.
 
 ## Router flow
 
@@ -40,7 +46,6 @@ The `Router` is responsible for delivering messages between domains. In order to
 ## Adapters
 
 Need to be as flexible as possible to allow for widely different strategies.
-
 
 ```
 SHOULD ADAPTERS:
