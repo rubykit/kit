@@ -23,6 +23,7 @@ module Kit::Router::Controllers
       },]
     end
 
+=begin
     def self.render_jsonapi_errors(resources:, status:, meta: {}, serializers: nil)
       serializers ||= {
         Hash: JSONAPI::Rails::SerializableErrorHash,
@@ -80,6 +81,7 @@ module Kit::Router::Controllers
         },
       },]
     end
+=end
 
     # LINK: https://en.wikipedia.org/wiki/HTTP_302
     def self.redirect_to(location:, status: 302, domain: nil, notice: nil, alert: nil)

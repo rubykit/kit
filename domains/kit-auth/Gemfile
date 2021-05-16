@@ -6,8 +6,6 @@ gemspec
 gem 'kit-dotenv',              path: '../../libraries/kit-dotenv'
 gem 'kit-dotenv-rails',        path: '../../libraries/kit-dotenv', require: 'kit/dotenv/rails-now'
 
-gem 'jsonapi-rails' # DEV MODE ?
-
 gem 'kit-active-admin', path: '../../libraries/kit-active-admin', require: 'kit/active_admin' # DEV MODE
 gem 'kit-contract',     path: '../../libraries/kit-contract' # DEV MODE
 gem 'kit-doc',          path: '../../libraries/kit-doc' # DEV MODE
