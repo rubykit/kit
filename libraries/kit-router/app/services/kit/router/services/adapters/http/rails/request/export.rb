@@ -31,6 +31,7 @@ module Kit::Router::Services::Adapters::Http::Rails::Request
 
       if content_type
         rails_response.headers['Content-Type'] = content_type
+        content_type = "#{content_type}; charset=#{ content.encoding }"
       end
 
       rails_response.status = status
