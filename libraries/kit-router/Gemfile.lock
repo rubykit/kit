@@ -39,6 +39,11 @@ PATH
       rails (~> 6.1.0)
 
 PATH
+  remote: ../kit-log
+  specs:
+    kit-log (0.1.0)
+
+PATH
   remote: ../kit-organizer
   specs:
     kit-organizer (0.1.0)
@@ -299,6 +304,7 @@ DEPENDENCIES
   kit-doc!
   kit-dummy-app-container!
   kit-engine!
+  kit-log!
   kit-organizer!
   kit-router!
   listen
@@ -308,4 +314,4 @@ DEPENDENCIES
   yard
 
 BUNDLED WITH
-   2.2.3
+   2.2.17

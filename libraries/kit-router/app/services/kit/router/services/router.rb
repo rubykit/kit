@@ -6,15 +6,14 @@ module Kit::Router::Services::Router
   Ct = Kit::Router::Contracts
 
   # Register an endpoint.
-  def self.register(uid:, aliases:, target:, types: { [:any, :any] => nil }, meta: nil, router_store: nil)
-    types ||= { [:any, :any] => nil }
+  def self.register(uid:, aliases:, target:, types: { [:any, :any] => nil }, meta: nil, router_store: nil, after: nil)
+    types        ||= { [:any, :any] => nil }
+    router_store ||= self.router_store
 
     # NOTE: temporary
     return [:ok] if ENV['KIT_ROUTER'] == 'false'
 
-    if ['KIT_ROUTER_DEBUG'] == 'true'
-      puts "Kit::Router - Registering `#{ uid }` (aliases: #{ aliases })".colorize(:green)
-    end
+    Kit::Router::Log.log(msg: "registering `#{ uid }` (aliases: #{ aliases })", flags: [:debug, :routes, :endpoint])
 
     # NOTES: does this make it too complex a function signature?
     meta ||= {}
@@ -23,11 +22,60 @@ module Kit::Router::Services::Router
       types = types.keys
     end
 
-    Kit::Router::Services::Store::Endpoint.add_endpoint(uid: uid, target: target, types: types, meta: meta, router_store: router_store)
+    # Delayed declaration of the route.
+    if after && !router_store[:endpoints][uid]
 
-    handle_aliases(target_id: uid, aliases: aliases, router_store: router_store)
+      Kit::Router::Log.log(msg: "registering delayed for `#{ uid }` (waiting for: #{ after })", flags: [:debug, :routes, :endpoint])
+
+      save_afters(uid: uid, target: target, types: types, meta: meta, aliases: aliases, after: after, router_store: router_store)
+    else
+      Kit::Router::Services::Store::Endpoint.add_endpoint(uid: uid, target: target, types: types, meta: meta, router_store: router_store)
+
+      handle_aliases(target_id: uid, aliases: aliases, router_store: router_store)
+      handle_afters(uid: uid, router_store: router_store)
+    end
 
     [:ok]
+  end
+
+  # Because of engine initializers loading order, we need to delay the declaration of certain routes.
+  def self.save_afters(uid:, target:, types:, meta:, aliases:, after:, router_store: nil)
+    router_store ||= self.router_store
+    after          = after.to_sym
+
+    list = router_store[:afters][after] ||= []
+
+    list << {
+      uid:     uid,
+      target:  target,
+      types:   types,
+      meta:    meta,
+      aliases: aliases,
+    }
+
+    [:ok]
+  end
+
+  # Once a route is registered, check if there were some delayed declartions for that uid.
+  # If so, register them now.
+  def self.handle_afters(uid:, router_store: nil)
+    router_store ||= self.router_store
+    uid            = uid.to_sym
+
+    list = router_store[:afters][uid] || []
+    if list.size > 0
+      list.each do |el|
+        Kit::Router::Services::Store::Endpoint.add_endpoint(uid: el[:uid], target: el[:target], types: el[:types], meta: el[:meta], router_store: router_store)
+
+        handle_aliases(target_id: el[:uid], aliases: el[:aliases], router_store: router_store)
+      end
+    end
+
+    router_store[:afters].delete(uid)
+
+    #binding.pry
+
+    [:ok, router_store: router_store]
   end
 
   # Add aliases.
@@ -46,6 +94,17 @@ module Kit::Router::Services::Router
       end
     else
       Kit::Router::Services::Store::Alias.add_alias(target_id: target_id, alias_id: aliases, router_store: router_store)
+    end
+
+    [:ok]
+  end
+
+  # Last call to mount routes depending on `after` that don't exist.
+  def self.finalize_endpoints(router_store: nil)
+    router_store ||= self.router_store
+
+    router_store[:afters].each do |uid, _|
+      handle_afters(uid: uid, router_store: router_store)
     end
 
     [:ok]
@@ -92,6 +151,10 @@ module Kit::Router::Services::Router
     target = record[:target]
 
     target.call(request: request)
+  end
+
+  def self.router_store
+    Kit::Router::Services::Store.router_store
   end
 
 end

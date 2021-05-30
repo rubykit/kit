@@ -19,6 +19,7 @@ module Kit::Router::Services::Store
       endpoints:   {},
       aliases:     {},
       mountpoints: [],
+      afters:      {},
 =begin
       mountpoints: {
         [:http, :rails] => [],

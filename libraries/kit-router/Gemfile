@@ -7,6 +7,7 @@ gem 'kit-app-container',       path: '../../libraries/kit-app-container' # DEV M
 gem 'kit-contract',            path: '../../libraries/kit-contract'
 gem 'kit-dummy-app-container', path: '../../libraries/kit-dummy-app-container' # DEV MODE
 gem 'kit-engine',              path: '../../libraries/kit-engine' # DEV MODE
+gem 'kit-log',                 path: '../../libraries/kit-log' # DEV MODE
 gem 'kit-organizer',           path: '../../libraries/kit-organizer' # DEV MODE
 
 group :development do
