@@ -1,13 +1,15 @@
-module Kit::Auth::Components::Forms
-  class SigninFormComponent < Kit::Auth::Components::Forms::FormComponent
+class Kit::Auth::Components::Forms::SigninFormComponent < Kit::Auth::Components::Forms::FormComponent
 
-    def initialize(*, **) # rubocop:disable Lint/UselessMethodDefinition
-      super
-    end
+  attr_reader :route_id
 
-    def fields_name
-      [:email, :password]
-    end
+  def initialize(*, route_id: nil, **) # rubocop:disable Lint/UselessMethodDefinition
+    super
 
+    @route_id = route_id || 'web|authorization_tokens|create'
   end
+
+  def fields_name
+    [:email, :password]
+  end
+
 end

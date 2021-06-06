@@ -11,6 +11,8 @@ module Kit::Engine
     context.config.assets.paths     << File.expand_path('../../../../app/components', file)
     context.config.eager_load_paths << File.expand_path('../../../app/controllers',   file)
 
+    #context.config.paths.add 'app/components', eager_load: true
+
 =begin
     initializer_name = "#{ namespace.name.underscore.gsub('/', '_') }_engine"
     context.initializer initializer_name do

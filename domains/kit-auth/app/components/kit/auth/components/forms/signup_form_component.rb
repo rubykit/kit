@@ -1,13 +1,15 @@
-module Kit::Auth::Components::Forms
-  class SignupFormComponent < Kit::Auth::Components::Forms::FormComponent
+class Kit::Auth::Components::Forms::SignupFormComponent < Kit::Auth::Components::Forms::FormComponent
 
-    def initialize(*, **) # rubocop:disable Lint/UselessMethodDefinition
-      super
-    end
+  attr_reader :route_id
 
-    def fields_name
-      [:email, :password, :password_confirmation, :email_confirmation]
-    end
+  def initialize(*, route_id: nil, **) # rubocop:disable Lint/UselessMethodDefinition
+    super
 
+    @route_id = route_id || 'web|users|create'
   end
+
+  def fields_name
+    [:email, :password, :password_confirmation, :email_confirmation]
+  end
+
 end
