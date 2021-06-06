@@ -1,13 +1,18 @@
 # Shared logic for any Domain Component
 class Kit::Domain::Components::Component < ::ViewComponent::Base
 
-  attr_accessor :id, :request, :classes
+  attr_accessor :id, :router_request, :args, :classes
 
-  def initialize(request: nil, classes: [], **)
+  def initialize(router_request: nil, classes: [], **rest)
     super
 
-    @request = request
-    @classes = [classes].flatten
+    @args = {
+      router_request: router_request,
+      classes:        classes,
+    }.merge(rest)
+
+    @router_request = router_request
+    @classes        = [classes].flatten
 
     self.classes << component_class_name
   end
