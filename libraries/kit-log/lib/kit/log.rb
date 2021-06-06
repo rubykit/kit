@@ -7,7 +7,24 @@ module Kit::Log # rubocop:disable Style/Documentation
   def self.log(msg:, flags: [])
     flags = extend_flags(flags: flags)
 
-    Kit::Log::Backends::Shell.log(msg: msg, flags: flags)
+    if ENV['KIT_LOG'] == 'true' || (ENV['KIT_LOG'] != 'false' && ((ENV['KIT_LOG_ONLY'] && ENV['KIT_LOG_ONLY'].size > 0) || (ENV['KIT_LOG_EXCEPT'] && ENV['KIT_LOG_EXCEPT'].size > 0)))
+      list_only   = (ENV['KIT_LOG_ONLY'] || '').split(',').map(&:to_sym)
+      list_except = (ENV['KIT_LOG_ONLY'] || '').split(',').map(&:to_sym)
+
+      display = true
+
+      if list_only.size > 0 && list_only.intersection(flags).size == 0
+        display = false
+      end
+
+      if list_except.size > 0 && list_except.intersection(flags).size > 0
+        display = false
+      end
+
+      if display
+        Kit::Log::Backends::Shell.log(msg: msg, flags: flags)
+      end
+    end
   end
 
   def self.extend_flags(flags:)
