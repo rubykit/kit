@@ -56,17 +56,22 @@ module Kit::Contract::Services::Validation
   end
 
   #contract Hash[contracts: Array.of(Callable), parameters: Hash] => ResultTupple
-  def self.all(contracts:, parameters:)
-    status = :ok
-    ctx    = {}
+  def self.all(contracts:, parameters:, reentrant: nil)
+    reentrant ||= false
+    status      = :ok
+    ctx         = {}
 
     contracts.each do |contract|
-      status, ctx = valid?(contract: contract, parameters: parameters)
+      status, local_ctx = valid?(contract: contract, parameters: parameters)
+
+      if local_ctx && reentrant
+        ctx.merge!(local_ctx)
+      end
 
       break if status == :error
     end
 
-    [status, ctx]
+    [status, (ctx.empty? ? nil : ctx)]
   end
 
 end
