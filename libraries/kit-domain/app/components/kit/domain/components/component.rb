@@ -1,9 +1,9 @@
 # Shared logic for any Domain Component
 class Kit::Domain::Components::Component < ::ViewComponent::Base
 
-  attr_accessor :id, :router_request, :args, :classes
+  attr_accessor :id, :router_request, :args, :classes, :errors_list
 
-  def initialize(router_request: nil, classes: [], **rest)
+  def initialize(router_request: nil, classes: [], errors_list: nil, **rest)
     super
 
     @args = {
@@ -13,6 +13,7 @@ class Kit::Domain::Components::Component < ::ViewComponent::Base
 
     @router_request = router_request
     @classes        = [classes].flatten
+    @errors_list    = ([errors_list].flatten || []) - [nil]
 
     self.classes << component_class_name
   end
