@@ -37,8 +37,9 @@ module Kit::Auth::Components::Forms
       @_errors_by_field
     end
 
+    # Used to determine what fields can display error messages, and which one should go on top.
     def fields_name
-      raise 'IMPLEMENT ME'
+      []
     end
 
   end
