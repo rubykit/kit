@@ -1,3 +1,6 @@
+module Kit::Auth::Admin::OauthApplication
+end
+
 Kit::Auth::Admin.register Kit::Auth::Models::Read::OauthApplication, as: 'OauthApplication', namespace: :kit_auth_admin do
   menu label: 'OAuthApplication', parent: 'OAuth'
 

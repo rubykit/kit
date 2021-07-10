@@ -1,3 +1,6 @@
+module Kit::Auth::Admin::User
+end
+
 ActiveAdmin.register Kit::Auth::Models::Write::User, as: 'User', namespace: :kit_auth_admin do
   menu label: 'Users'
 

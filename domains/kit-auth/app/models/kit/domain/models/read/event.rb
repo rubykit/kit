@@ -1,3 +1,7 @@
+module Kit::Domain::Models::Read::Event
+end
+
+=begin
 module Kit::Domain::Models::Read
   class Event < Kit::Domain::Models::ReadRecord
 
@@ -20,3 +24,4 @@ module Kit::Domain::Models::Read
 
   end
 end
+=end

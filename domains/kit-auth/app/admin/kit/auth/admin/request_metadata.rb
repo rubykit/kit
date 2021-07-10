@@ -1,5 +1,8 @@
 require 'browser'
 
+module Kit::Auth::Admin::RequestMetadata
+end
+
 ActiveAdmin.register Kit::Auth::Models::Write::RequestMetadata, as: 'RequestMetadata', namespace: :kit_auth_admin do
   menu parent: 'Users'
 

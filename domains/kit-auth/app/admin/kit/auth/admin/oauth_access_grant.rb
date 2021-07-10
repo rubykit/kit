@@ -1,3 +1,6 @@
+module Kit::Auth::Admin::OauthAccessGrant
+end
+
 Kit::Auth::Admin.register Kit::Auth::Models::Read::OauthAccessGrant, as: 'OauthAccessGrant', namespace: :kit_auth_admin do
   menu label: 'OAuthAccessGrant', parent: 'OAuth'
 

@@ -1,3 +1,7 @@
+module Kit::Domain::Models::Read::StreamEvent
+end
+
+=begin
 module Kit::Domain::Models::Read
   class StreamEvent < Kit::Domain::Models::ReadRecord
 
@@ -15,3 +19,4 @@ module Kit::Domain::Models::Read
 
   end
 end
+=end
