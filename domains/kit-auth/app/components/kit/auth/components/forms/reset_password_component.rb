@@ -1,14 +1,17 @@
-module Kit::Auth::Components::Forms
-  class ResetPasswordComponent < Kit::Auth::Components::Forms::FormComponent
+class Kit::Auth::Components::Forms::ResetPasswordComponent < Kit::Domain::Components::FormComponent
 
-    def initialize(auth_token_secret:, **)
-      super
-      @auth_token_secret = auth_token_secret
-    end
+  def initialize(auth_token_secret:, form_action: nil, form_method: nil, **)
+    super
 
-    def fields_name
-      [:password, :password_confirmation]
-    end
+    default_route_id = 'web|users|reset_password_request|create'
+    @form_action = form_action || router_path(id: default_route_id)
+    @form_method = form_method || router_verb(id: default_route_id)
 
+    @auth_token_secret = auth_token_secret
   end
+
+  def fields_name
+    [:password, :password_confirmation]
+  end
+
 end

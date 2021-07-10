@@ -1,9 +1,4 @@
-= render Kit::Auth::Components::Forms::SignupFormComponent.new(\
-  model:       model,
-  csrf_token:  csrf_token,
-  route_id:    'web|users|new',
-  errors_list: errors_list,
-)
+= render Kit::Auth::Components::Forms::SignupFormComponent.new(**args)
 
 .text-center.mt-3
   ' Already have an account?

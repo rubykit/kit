@@ -1,6 +1,1 @@
-= render Kit::Auth::Components::Forms::ResetPasswordComponent.new(\
-  model:             @model,
-  csrf_token:        form_authenticity_token,
-  auth_token_secret: @auth_token_secret,
-  errors_list:       @errors_list,
-)
+= render Kit::Auth::Components::Forms::ResetPasswordComponent.new(**args.merge(auth_token_secret: auth_token_secret))

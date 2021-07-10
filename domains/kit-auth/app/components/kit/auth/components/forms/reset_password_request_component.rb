@@ -1,5 +1,5 @@
 module Kit::Auth::Components::Forms
-  class ResetPasswordRequestComponent < Kit::Auth::Components::Forms::FormComponent
+  class ResetPasswordRequestComponent < Kit::Domain::Components::FormComponent
 
     def initialize(*, **) # rubocop:disable Lint/UselessMethodDefinition
       super
