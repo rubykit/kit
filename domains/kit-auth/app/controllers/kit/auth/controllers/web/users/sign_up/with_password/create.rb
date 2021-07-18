@@ -25,7 +25,7 @@ module Kit::Auth::Controllers::Web::Users::SignUp::WithPassword::Create
       router_request: router_request,
     )
 
-    signup_status, signup_ctx = Kit::Organizer.call(
+    status, ctx = Kit::Organizer.call(
       list: [
         Kit::Auth::Actions::Users::CreateWithPassword,
         Kit::Auth::Actions::Users::SignInWeb,
@@ -33,12 +33,12 @@ module Kit::Auth::Controllers::Web::Users::SignUp::WithPassword::Create
       ctx:  context,
     )
 
-    [:ok, signup_status: signup_status, signup_ctx: signup_ctx]
+    [:ok, action_status: status, action_ctx: ctx]
   end
 
-  def self.render_or_redirect(router_request:, signup_status:, signup_ctx:, page_component: nil)
-    if signup_status == :ok
-      router_request.http.cookies[:access_token] = { value: signup_ctx[:oauth_access_token_plaintext_secret], encrypted: true }
+  def self.render_or_redirect(router_request:, action_status:, action_ctx:, page_component: nil)
+    if action_status == :ok
+      router_request.http.cookies[:access_token] = { value: action_ctx[:oauth_access_token_plaintext_secret], encrypted: true }
 
       Kit::Router::Controllers::Http.redirect_to(
         location: Kit::Router::Services::Adapters::Http::Mountpoints.path(id: 'web|users|after_sign_up'),
@@ -54,7 +54,7 @@ module Kit::Auth::Controllers::Web::Users::SignUp::WithPassword::Create
         params:         {
           model:       model,
           csrf_token:  router_request.http[:csrf_token],
-          errors_list: signup_ctx[:errors],
+          errors_list: action_ctx[:errors],
         },
       )
     end

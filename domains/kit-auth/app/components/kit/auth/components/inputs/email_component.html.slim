@@ -5,6 +5,10 @@
   label for=input_id
     = label
 
+  - if args[:info]
+    small.form-text
+      = args[:info]
+
   - if errors.size > 0
     .invalid-feedback
       - errors.each do |error|

@@ -1,25 +1,23 @@
 module Kit::Auth::Actions::Users::CreateWithPassword
 
   #Contract Hash => [Symbol, KeywordArgs[user: Any, errors: Any]]
-  def self.call(email:, password:, password_confirmation:, email_confirmation: nil)
-    _status, ctx = Kit::Organizer.call(
+  def self.call(email:, password:)
+    status, ctx = Kit::Organizer.call(
       list: [
-        Kit::Auth::Services::Contracts::EmailSignup.method(:validate),
-        Kit::Auth::Services::Contracts::Password.method(:validate),
+        #Kit::Auth::Services::Contracts::EmailSignup.method(:validate),
+        #Kit::Auth::Services::Contracts::Password.method(:validate),
         Kit::Auth::Services::Password.method(:generate_hashed_secret),
         self.method(:persist_user),
         self.method(:fire_user_created_event),
       ],
       ctx:  {
-        email:                 email,
-        email_confirmation:    email_confirmation,
-        password:              password,
-        password_confirmation: password_confirmation,
+        email:    email,
+        password: password,
       },
     )
 
-    if ctx[:errors]
-      [:error, user: nil, errors: ctx[:errors]]
+    if status == :error
+      [:error, errors: ctx[:errors]]
     else
       [:ok, user: ctx[:user]]
     end
@@ -32,7 +30,7 @@ module Kit::Auth::Actions::Users::CreateWithPassword
         hashed_secret: hashed_secret,
       )
     rescue ActiveRecord::RecordNotUnique
-      return [:error, user: nil, errors: [{ attribute: :email, detail: '$attribute is alreadky taken.' }]]
+      return [:error, user: nil, errors: [{ attribute: :email, detail: 'This $attribute is already taken.' }]]
     end
 
     if user.persisted?

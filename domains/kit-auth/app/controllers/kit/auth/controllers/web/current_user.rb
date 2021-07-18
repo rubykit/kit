@@ -2,7 +2,7 @@ module Kit::Auth::Controllers::Web
   module CurrentUser
 
     def self.require_current_user!(router_request:)
-      return [:ok] if router_request.metadata[:current_user]
+      return [:ok, current_user: router_request.metadata[:current_user]] if router_request.metadata[:current_user]
 
       Kit::Router::Controllers::Http.redirect_to(
         location: Kit::Router::Services::Adapters::Http::Mountpoints.path(id: 'web|users|sign_in'),

@@ -12,7 +12,7 @@ class Kit::Domain::Components::FormComponent < Kit::Domain::Components::Componen
     @model       = model
 
     @errors_list.each do |el|
-      if el[:detail].include?('$attribute') && el[:attribute]
+      if el[:detail].is_a?(::String) && el[:detail].include?('$attribute') && el[:attribute]
         el[:detail].gsub!('$attribute', el[:attribute].to_s)
       end
     end
