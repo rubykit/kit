@@ -11,6 +11,10 @@ Doorkeeper.configure do
     Kit::Auth::Models::Write::User.first
   end
 
+  access_token_class 'Kit::Auth::Models::Write::DoorkeeperAccessToken'
+  access_grant_class 'Kit::Auth::Models::Write::DoorkeeperAccessGrant'
+  application_class  'Kit::Auth::Models::Write::DoorkeeperApplication'
+
 =begin
   admin_authenticator do |routes|
     #   User.find_by_id(session[:user_id]) || redirect_to(new_user_session_url)

@@ -47,7 +47,7 @@ module Kit::Auth::Actions::OauthAccessTokens::Create
     resource_owner        = doorkeeper_request_object.resource_owner
     refresh_token_enabled = false
 
-    access_token = ::Doorkeeper::AccessToken.find_or_create_for(
+    access_token = Kit::Auth::Models::Write::DoorkeeperAccessToken.find_or_create_for(
       application:       client,
       resource_owner:    resource_owner,
       scopes:            scopes,
