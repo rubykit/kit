@@ -54,7 +54,7 @@ module Kit::Auth::Controllers::Web::Users::SignUp::WithPassword::Create
       },
     )
 
-    if status == :ok
+    if ctx[:action_status] == :ok
       [:ok, action_status: :ok, action_ctx: ctx[:action_ctx], was_sign_in: true]
     else
       [:ok]
