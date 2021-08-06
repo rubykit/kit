@@ -6,7 +6,8 @@ module Kit::Auth::Controllers::Web::Users::SignIn::WithPassword::Create
         [:alias, :web_redirect_if_current_user!],
         Kit::Auth::Controllers::Web::Users::SignIn::WithPassword::Create.method(:get_form_model),
         Kit::Auth::Controllers::Web::Users::SignIn::WithPassword::Create.method(:create_sign_in),
-        Kit::Auth::Controllers::Web::Users::SignIn::WithPassword::Create.method(:render_or_redirect),
+        Kit::Auth::Controllers::Web::Users::SignIn::WithPassword::Create.method(:handle_success),
+        Kit::Auth::Controllers::Web::Users::SignIn::WithPassword::Create.method(:handle_error),
       ],
       ctx:  { router_request: router_request },
     )
@@ -44,26 +45,34 @@ module Kit::Auth::Controllers::Web::Users::SignIn::WithPassword::Create
     [:ok, action_status: status, action_ctx: ctx]
   end
 
-  def self.render_or_redirect(router_request:, action_status:, action_ctx:, page_component: nil)
-    if action_status == :ok
-      router_request.http.cookies[:access_token] = { value: action_ctx[:oauth_access_token_plaintext_secret], encrypted: true }
+  def self.handle_success(router_request:, action_status:, action_ctx:, redirect_url: nil)
+    return [:ok] if action_status != :ok
 
-      Kit::Router::Controllers::Http.redirect_to(
-        location: Kit::Router::Services::Adapters::Http::Mountpoints.path(id: 'web|users|after_sign_in'),
-      )
-    else
-      page_component ||= Kit::Auth::Components::Pages::Users::SignIn::WithPassword::NewComponent
+    router_request.http.cookies[:access_token] = { value: action_ctx[:oauth_access_token_plaintext_secret], encrypted: true }
 
-      Kit::Router::Controllers::Http.render(
-        router_request: router_request,
-        component:      page_component,
-        params:         {
-          model:       model,
-          csrf_token:  router_request.http[:csrf_token],
-          errors_list: action_ctx[:errors],
-        },
-      )
+    if !redirect_url
+      redirect_url = Kit::Router::Services::Adapters::Http::Mountpoints.path(id: 'web|users|after_sign_in')
     end
+
+    Kit::Router::Controllers::Http.redirect_to(location: redirect_url)
+  end
+
+  def self.handle_error(router_request:, action_status:, action_ctx:, page_component: nil)
+    return [:ok] if action_status == :ok
+
+    page_component ||= Kit::Auth::Components::Pages::Users::SignIn::WithPassword::NewComponent
+
+    model = router_request.params.slice(:email, :password)
+
+    Kit::Router::Controllers::Http.render(
+      router_request: router_request,
+      component:      page_component,
+      params:         {
+        model:       model,
+        csrf_token:  router_request.http[:csrf_token],
+        errors_list: action_ctx[:errors],
+      },
+    )
   end
 
 end
