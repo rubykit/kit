@@ -2,8 +2,16 @@ class Kit::DummyAppContainer::Controllers::WebController < ::ActionController::B
 
   protect_from_forgery
 
-  layout 'dummy_application'
+  # Add views directory of the dummy app
+  if (views_path = KIT_APP_PATHS['GEM_SPEC_VIEWS'])
+    prepend_view_path views_path
+  end
 
+  # Use custom layout if provided
+  layout_name = KIT_APP_PATHS['GEM_SPEC_VIEW_LAYOUT'] || 'dummy_application'
+  layout layout_name
+
+  # Default route behaviour for Kit endpoints.
   def route
     controller_ctx = {
       rails_request:    self.request,

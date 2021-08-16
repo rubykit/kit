@@ -24,8 +24,6 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 3.0'
 
   s.add_dependency 'activerecord-nulldb-adapter'
-  s.add_dependency 'rails_event_store'
-  s.add_dependency 'sidekiq'
 
   s.add_development_dependency 'rubocop'
 

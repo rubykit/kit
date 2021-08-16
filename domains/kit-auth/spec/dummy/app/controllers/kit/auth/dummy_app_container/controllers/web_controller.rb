@@ -1,16 +1,6 @@
-class Kit::Auth::DummyAppContainer::Controllers::WebController < ::ActionController::Base
+class Kit::Auth::DummyAppContainer::Controllers::WebController < Kit::DummyAppContainer::Controllers::WebController
 
   include Kit::Auth::Controllers::Web::Concerns::RailsCurrentUser
-
-  protect_from_forgery
-
-  if (layout_name = KIT_APP_PATHS['GEM_SPEC_VIEW_LAYOUT'])
-    layout layout_name
-  end
-
-  if (views_path = KIT_APP_PATHS['GEM_SPEC_VIEWS'])
-    prepend_view_path views_path
-  end
 
   def route
     controller_ctx = {

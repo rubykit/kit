@@ -4,15 +4,18 @@ class Kit::DummyAppContainer::Controllers::Web::HomeController < Kit::DummyAppCo
     layout layout_name
   end
 
-  Kit::Router::Services::Router.register_without_target(
-    uid:     'kit-dummy-container|web|home',
-    aliases: ['app|home'],
-    types:   {
-      [:http, :rails] => {
-        target: [self, :index],
+  # Note: just in case we are using a plain Rails app
+  if defined?(Kit::Router)
+    Kit::Router::Services::Router.register_without_target(
+      uid:     'kit-dummy-container|web|home',
+      aliases: ['app|home'],
+      types:   {
+        [:http, :rails] => {
+          target: [self, :index],
+        },
       },
-    },
-  )
+    )
+  end
 
   def index
     render

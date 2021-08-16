@@ -1,6 +1,26 @@
 require_relative 'boot'
 
-require 'rails/all'
+require 'rails'
+
+rails_dependencies = KIT_APP_PATHS['RAILS_DEPENDENCIES'] || %w[
+  active_record/railtie
+  active_storage/engine
+  action_controller/railtie
+  action_view/railtie
+  action_mailer/railtie
+  active_job/railtie
+  action_cable/engine
+  action_mailbox/engine
+  action_text/engine
+  rails/test_unit/railtie
+  sprockets/railtie
+]
+
+rails_dependencies.each do |railtie|
+  require railtie
+rescue LoadError => e
+  puts "Rails dependencies error: could not load #{ e }"
+end
 
 if KIT_APP_PATHS['GEM_RAILTIE']
   require KIT_APP_PATHS['GEM_RAILTIE']
