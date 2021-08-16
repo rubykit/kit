@@ -30,15 +30,19 @@ Rails.application.configure do
   # Disable request forgery protection in test environment.
   config.action_controller.allow_forgery_protection = false
 
-  # Store uploaded files on the local file system in a temporary directory.
-  config.active_storage.service = :test
+  if defined?(ActiveStorage::Engine)
+    # Store uploaded files on the local file system in a temporary directory.
+    config.active_storage.service = :test
+  end
 
-  config.action_mailer.perform_caching = false
+  if defined?(ActionMailer::Railtie)
+    config.action_mailer.perform_caching = false
 
-  # Tell Action Mailer not to deliver emails to the real world.
-  # The :test delivery method accumulates sent emails in the
-  # ActionMailer::Base.deliveries array.
-  config.action_mailer.delivery_method = :test
+    # Tell Action Mailer not to deliver emails to the real world.
+    # The :test delivery method accumulates sent emails in the
+    # ActionMailer::Base.deliveries array.
+    config.action_mailer.delivery_method = :test
+  end
 
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
