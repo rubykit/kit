@@ -1,5 +1,14 @@
-class ApplicationRecord < ActiveRecord::Base # rubocop:disable Style/Documentation
+if defined?(ActiveRecord::Railtie)
 
-  self.abstract_class = true
+  class ApplicationRecord < ActiveRecord::Base # rubocop:disable Style/Documentation
+
+    self.abstract_class = true
+
+  end
+
+else
+
+  class ApplicationRecord
+  end
 
 end

@@ -1,8 +1,12 @@
 # Default Navbar.
-class Components::Navbar < Kit::Domain::Components::Component
+class Components::Navbar < ::ViewComponent::Base
 
-  def initialize(*) # rubocop:disable Lint/UselessMethodDefinition
+  attr_reader :args
+
+  def initialize(**args) # rubocop:disable Lint/UselessMethodDefinition
     super
+
+    @args = args
   end
 
 end
