@@ -19,10 +19,5 @@ KIT_APP_PATHS['GEM_SPEC_LIB']    = File.expand_path('../spec/dummy/lib', __dir__
 KIT_APP_PATHS['GEM_SPEC_ROUTES'] = File.expand_path('../spec/dummy/config/routes.rb', __dir__)
 KIT_APP_PATHS['GEM_SPEC_VIEWS']  = File.expand_path('../spec/dummy/app/views', __dir__)
 KIT_APP_PATHS['GEM_SPEC_DB']     = File.expand_path('../spec/dummy/db', __dir__)
-KIT_APP_PATHS['GEM_SPEC_INITIALIZERS'] = [
-  File.expand_path('../config/initializers/eager_load_controllers.rb', __dir__),
-  File.expand_path('../spec/dummy/config/initializers/eager_load_controllers.rb', __dir__),
-  File.expand_path('../spec/dummy/config/initializers/assets.rb', __dir__),
-]
 
 KIT_APP_PATHS['GEM_SPEC_VIEW_LAYOUT'] = 'kit_auth_dummy_application'
