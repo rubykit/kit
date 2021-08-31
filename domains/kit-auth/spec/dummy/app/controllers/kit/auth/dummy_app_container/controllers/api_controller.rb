@@ -12,7 +12,7 @@ class Kit::Auth::DummyAppContainer::Controllers::ApiController < ::ActionControl
       list: [
         Kit::Router::Services::Adapters::Http::Rails::Request::Import.method(:import_request),
         [:alias, :api_resolve_current_user],
-        request.params[:kit_router_target],
+        ->(router_request:) { router_request.target[:endpoint].call(router_request: router_request) },
       ],
       ctx:  controller_ctx,
     )

@@ -15,7 +15,7 @@ module Kit::Router::Controllers::Rails
       _status, ctx = Kit::Organizer.call(
         list: [
           Kit::Router::Services::Adapters::Http::Rails::Request::Import.method(:import_request),
-          request.params[:kit_router_target],
+          ->(router_request:) { router_request.target[:endpoint].call(router_request: router_request) },
         ],
         ctx:  controller_ctx,
       )
