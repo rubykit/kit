@@ -23,6 +23,7 @@ module Kit::Router::Services::Adapters::Http::Rails::Request
           headers:    rails_request.headers,
           user_agent: rails_request.user_agent,
         },
+        target: rails_request.params[:kit_router_target],
         rails:  {
           controller: rails_controller,
           request:    rails_request,

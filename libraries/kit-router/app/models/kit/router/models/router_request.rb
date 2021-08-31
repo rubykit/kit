@@ -1,6 +1,7 @@
 require 'ostruct'
 
-module Kit::Router::Models
+# Namespace for Kit::Router models definition.
+module Kit::Router::Models # rubocop:disable Style/ClassAndModuleChildren
 
   # Request object.
   #
@@ -10,14 +11,17 @@ module Kit::Router::Models
   #
   class RouterRequest
 
-    attr_reader :params, :root, :http, :metadata, :ip, :rails
+    ATTRS = [:params, :root, :http, :metadata, :ip, :rails, :target]
 
-    def initialize(params:, root: nil, http: nil, metadata: nil, ip: nil, rails: nil, **)
+    attr_reader(*ATTRS)
+
+    def initialize(params:, root: nil, http: nil, metadata: nil, ip: nil, target: nil, rails: nil, **)
       @params = params
       @ip     = ip
       @root   = root
 
-      @rails  = rails || {}
+      @target = target || {}
+      @rails  = rails  || {}
 
       @http = OpenStruct.new(http || {
         csrf_token: nil,
@@ -31,6 +35,15 @@ module Kit::Router::Models
 
     def [](name)
       send(name.to_sym)
+    end
+
+    def dig(name, *names)
+      name = name.to_sym
+      if name.in?(ATTRS)
+        send(name).dig(*names)
+      else
+        nil
+      end
     end
 
     def to_h
@@ -49,7 +62,7 @@ module Kit::Router::Models
       }
     end
 
-    # NOTE: hacky way to not polute output with `root`, not proud of it.
+    # NOTE: hacky way to not pollute output with `root`, not proud of it.
     def ai(*options)
       root_saved = @root
 
@@ -67,4 +80,5 @@ module Kit::Router::Models
     end
 
   end
+
 end
