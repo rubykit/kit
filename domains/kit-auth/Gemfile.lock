@@ -1,5 +1,7 @@
-PATH
-  remote: ../../../kit_theme_bootstrap
+GIT
+  remote: https://github.com/rubykit/kit_theme_bootstrap
+  revision: f508157d0561fb6b7072c6a7563e0d39c72b8c9c
+  branch: main
   specs:
     kit_theme_bootstrap (0.1.0)
       active_link_to
