@@ -17,6 +17,8 @@ gem 'kit-organizer',    path: '../../libraries/kit-organizer' # DEV MODE
 gem 'kit-pagination',   path: '../../libraries/kit-pagination' # DEV MODE
 gem 'kit-router',       path: '../../libraries/kit-router' # DEV MODE
 
+gem 'kit_theme_bootstrap', path: '../../../kit_theme_bootstrap'
+
 gem 'browser'  # DEV MODE ? doesn't get loaded otherwise
 gem 'doorkeeper', require: 'doorkeeper'
 gem 'paranoia',   require: 'paranoia'

@@ -1,24 +1,33 @@
-nav.navbar.navbar-expand-lg.fixed-top.navbar-dark.bg-dark
-  a.navbar-brand.mr-auto.mr-lg-0 href="#" Dummy container - Kit::Auth
-  button.navbar-toggler.p-0.border-0 data-toggle="offcanvas" type="button"
-    span.navbar-toggler-icon
-  #navbarsExampleDefault.navbar-collapse.offcanvas-collapse
-    ul.navbar-nav.mr-auto
-      li.nav-item
-        = router_link_to(id: 'app|home', html: { class: 'nav-link' }, request: request)
-          | Home
-    ul.navbar-nav
-      - if current_user
-        li.nav-item
-          a.nav-link href="#"
-            = current_user.email
-        li.nav-item
-          = router_link_to(id: 'web|users|sign_out', html: { class: 'nav-link' }, request: request)
-            | Sign out
-      - else
-        li.nav-item
-          = router_link_to(id: 'web|users|sign_in', html: { class: 'nav-link' }, request: request)
-            | Sign in
-        li.nav-item
-          = router_link_to(id: 'web|users|sign_up', html: { class: 'nav-link' }, request: request)
-            | Sign up
+header#header.header
+  nav.navbar.navbar-expand-lg.fixed-top.navbar-dark.bg-dark
+
+    .container.container-max-xl
+
+      a.navbar-brand.h3.m-0 href="#"
+        | Dummy container - Kit::Auth
+
+      button.navbar-toggler.p-0.border-0 data-toggle="offcanvas" type="button"
+        span.navbar-toggler-icon
+
+      .collapse.navbar-collapse
+
+        ul.navbar-nav.me-auto
+          li.nav-item.ms-3
+            = router_link_to(id: 'app|home', html: { class: 'nav-link' }, request: request)
+              | Home
+
+        ul.navbar-nav.d-flex
+          - if current_user
+            li.nav-item
+              a.nav-link href="#"
+                = current_user.email
+            li.nav-item
+              = router_link_to(id: 'web|users|sign_out', html: { class: 'nav-link' }, request: request)
+                | Sign out
+          - else
+            li.nav-item
+              = router_link_to(id: 'web|users|sign_in', html: { class: 'nav-link' }, request: request)
+                | Sign in
+            li.nav-item
+              = router_link_to(id: 'web|users|sign_up', html: { class: 'nav-link' }, request: request)
+                | Sign up

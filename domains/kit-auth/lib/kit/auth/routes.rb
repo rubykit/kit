@@ -2,7 +2,7 @@
 module Kit::Auth::Routes
 
   # NOTE: The indirection is needed somehow for a thread safety thing.
-  #   Otherwise we get a `url_options` issue.
+  # Otherwise we get a `url_options` issue.
   module UrlHelpers
     include Kit::Auth::Engine.routes.url_helpers
   end

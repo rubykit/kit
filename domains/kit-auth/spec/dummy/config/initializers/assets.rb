@@ -16,3 +16,4 @@ if defined?(::ActiveAdmin)
 end
 
 Rails.application.config.assets.precompile += %w[kit_auth_dummy_application.js kit_auth_dummy_application.css]
+Rails.application.config.assets.precompile += %w[kit_auth_dummy_vendor.js      kit_auth_dummy_vendor.css]

@@ -37,7 +37,8 @@ module Kit::Auth::Controllers::Web::Users::SignUp::WithPassword::Create
       ],
       ctx:  {
         router_request: router_request,
-        model:          form_model,
+        email:          form_model[:email],
+        password:       form_model[:password],
       },
     )
 

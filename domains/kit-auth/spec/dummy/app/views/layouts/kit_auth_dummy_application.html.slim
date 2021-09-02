@@ -7,17 +7,15 @@ html
     = csrf_meta_tags
     = csp_meta_tag
 
+    = stylesheet_link_tag    'kit_auth_dummy_vendor',      media: 'all'
     = stylesheet_link_tag    'kit_auth_dummy_application', media: 'all'
 
-    = javascript_include_tag 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js'
+    = javascript_include_tag 'kit_auth_dummy_vendor'
     = javascript_include_tag 'kit_auth_dummy_application'
 
-    link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"
-    link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.css"
-
-  body
+  body class="env-#{ Rails.env } #{ Rails.env.development? ? 'debug' : '' }"
     = render Kit::Auth::DummyApp::Components::NavbarComponent.new(current_user: current_user, request: request)
 
-    main.container style='padding-top: 80px;'
-      = render Kit::Auth::Components::Various::FlashComponent.new(flash: flash.to_h)
+    main.container.container-max-xl.pt-10
+      = render Kit::Domain::Components::FlashComponent.new(router_request: router_request, flash: flash.to_h)
       = yield

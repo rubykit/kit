@@ -9,9 +9,9 @@ describe Kit::Auth::Actions::Users::CreateWithPassword  do
 
   let(:ctx_hash) do
     {
-      email:                 email,
-      password:              password,
-      password_confirmation: password_confirmation,
+      email:    email,
+      password: password,
+      #password_confirmation: password_confirmation,
     }
   end
 
@@ -34,6 +34,9 @@ describe Kit::Auth::Actions::Users::CreateWithPassword  do
     end
   end
 
+=begin
+  # Note: disabled because it's unclear if the default flow should do any validation.
+  #   It's better left to the application that extend the domain, but it prevents the domain from shipping with sane default?
   context 'with an empty email' do
     let(:email)    { email_error }
     let(:password) { password_ok }
@@ -44,5 +47,6 @@ describe Kit::Auth::Actions::Users::CreateWithPassword  do
       expect(first_error[:detail]).to    eq 'This email is not valid.'
     end
   end
+=end
 
 end

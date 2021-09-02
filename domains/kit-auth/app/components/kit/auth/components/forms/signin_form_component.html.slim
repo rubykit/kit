@@ -1,4 +1,4 @@
-= form_tag(form_action, method: form_method, class: "#{ classes_str } needs-validation floating-labels") do |f|
+= form_tag(form_action, method: form_method, class: "#{ classes_str } needs-validation") do |f|
   - if csrf_token
     = hidden_field_tag :authenticity_token, csrf_token
 

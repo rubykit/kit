@@ -1,19 +1,26 @@
 PATH
+  remote: ../../../kit_theme_bootstrap
+  specs:
+    kit_theme_bootstrap (0.1.0)
+      active_link_to
+      bootstrap (~> 5.1)
+      jquery-rails
+      rails (~> 6.1.4)
+      sass-rails (>= 6)
+      slim-rails
+      view_component
+
+PATH
   remote: ../../libraries/kit-active-admin
   specs:
     kit-active-admin (0.1.0)
       activeadmin (~> 2.9.0)
       activeadmin_addons (~> 1.7.1)
-      bootstrap (~> 4.5.3)
-      popper_js (~> 1.16)
 
 PATH
   remote: ../../libraries/kit-app-container
   specs:
     kit-app-container (0.1.0)
-      activerecord-nulldb-adapter
-      rails_event_store
-      sidekiq
 
 PATH
   remote: ../../libraries/kit-contract
@@ -62,6 +69,8 @@ PATH
   specs:
     kit-dummy-app-container (0.1.0)
       rails (~> 6.1)
+      sidekiq
+      view_component
 
 PATH
   remote: ../../libraries/kit-engine
@@ -121,44 +130,47 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    actioncable (6.1.3.2)
-      actionpack (= 6.1.3.2)
-      activesupport (= 6.1.3.2)
+    actioncable (6.1.4.1)
+      actionpack (= 6.1.4.1)
+      activesupport (= 6.1.4.1)
       nio4r (~> 2.0)
       websocket-driver (>= 0.6.1)
-    actionmailbox (6.1.3.2)
-      actionpack (= 6.1.3.2)
-      activejob (= 6.1.3.2)
-      activerecord (= 6.1.3.2)
-      activestorage (= 6.1.3.2)
-      activesupport (= 6.1.3.2)
+    actionmailbox (6.1.4.1)
+      actionpack (= 6.1.4.1)
+      activejob (= 6.1.4.1)
+      activerecord (= 6.1.4.1)
+      activestorage (= 6.1.4.1)
+      activesupport (= 6.1.4.1)
       mail (>= 2.7.1)
-    actionmailer (6.1.3.2)
-      actionpack (= 6.1.3.2)
-      actionview (= 6.1.3.2)
-      activejob (= 6.1.3.2)
-      activesupport (= 6.1.3.2)
+    actionmailer (6.1.4.1)
+      actionpack (= 6.1.4.1)
+      actionview (= 6.1.4.1)
+      activejob (= 6.1.4.1)
+      activesupport (= 6.1.4.1)
       mail (~> 2.5, >= 2.5.4)
       rails-dom-testing (~> 2.0)
-    actionpack (6.1.3.2)
-      actionview (= 6.1.3.2)
-      activesupport (= 6.1.3.2)
+    actionpack (6.1.4.1)
+      actionview (= 6.1.4.1)
+      activesupport (= 6.1.4.1)
       rack (~> 2.0, >= 2.0.9)
       rack-test (>= 0.6.3)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.2.0)
-    actiontext (6.1.3.2)
-      actionpack (= 6.1.3.2)
-      activerecord (= 6.1.3.2)
-      activestorage (= 6.1.3.2)
-      activesupport (= 6.1.3.2)
+    actiontext (6.1.4.1)
+      actionpack (= 6.1.4.1)
+      activerecord (= 6.1.4.1)
+      activestorage (= 6.1.4.1)
+      activesupport (= 6.1.4.1)
       nokogiri (>= 1.8.5)
-    actionview (6.1.3.2)
-      activesupport (= 6.1.3.2)
+    actionview (6.1.4.1)
+      activesupport (= 6.1.4.1)
       builder (~> 3.1)
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.1, >= 1.2.0)
+    active_link_to (1.0.5)
+      actionpack
+      addressable
     active_material (1.4.2)
     activeadmin (2.9.0)
       arbre (~> 1.2, >= 1.2.1)
@@ -176,26 +188,26 @@ GEM
       sass
       select2-rails (~> 4.0)
       xdan-datetimepicker-rails (~> 2.5.1)
-    activejob (6.1.3.2)
-      activesupport (= 6.1.3.2)
+    activejob (6.1.4.1)
+      activesupport (= 6.1.4.1)
       globalid (>= 0.3.6)
-    activemodel (6.1.3.2)
-      activesupport (= 6.1.3.2)
-    activerecord (6.1.3.2)
-      activemodel (= 6.1.3.2)
-      activesupport (= 6.1.3.2)
+    activemodel (6.1.4.1)
+      activesupport (= 6.1.4.1)
+    activerecord (6.1.4.1)
+      activemodel (= 6.1.4.1)
+      activesupport (= 6.1.4.1)
     activerecord-import (1.0.8)
       activerecord (>= 3.2)
     activerecord-nulldb-adapter (0.4.0)
       activerecord (>= 2.0.0)
-    activestorage (6.1.3.2)
-      actionpack (= 6.1.3.2)
-      activejob (= 6.1.3.2)
-      activerecord (= 6.1.3.2)
-      activesupport (= 6.1.3.2)
+    activestorage (6.1.4.1)
+      actionpack (= 6.1.4.1)
+      activejob (= 6.1.4.1)
+      activerecord (= 6.1.4.1)
+      activesupport (= 6.1.4.1)
       marcel (~> 1.0.0)
-      mini_mime (~> 1.0.2)
-    activesupport (6.1.3.2)
+      mini_mime (>= 1.1.0)
+    activesupport (6.1.4.1)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
@@ -215,8 +227,8 @@ GEM
     arkency-command_bus (0.4.0)
       thread_safe
     ast (2.4.2)
-    autoprefixer-rails (10.2.4.0)
-      execjs
+    autoprefixer-rails (10.3.1.0)
+      execjs (~> 2)
     awesome_print (1.9.2)
     bcrypt (3.1.16)
     better_errors (2.9.1)
@@ -225,9 +237,9 @@ GEM
       rack (>= 0.9.0)
     binding_of_caller (1.0.0)
       debug_inspector (>= 0.0.1)
-    bootstrap (4.5.3)
+    bootstrap (5.1.0)
       autoprefixer-rails (>= 9.1.0)
-      popper_js (>= 1.14.3, < 2)
+      popper_js (>= 2.9.3, < 3)
       sassc-rails (>= 2.0.0)
     browser (5.3.1)
     builder (3.2.4)
@@ -243,7 +255,7 @@ GEM
     childprocess (3.0.0)
     coderay (1.1.3)
     colorize (0.8.1)
-    concurrent-ruby (1.1.8)
+    concurrent-ruby (1.1.9)
     connection_pool (2.2.5)
     crass (1.0.6)
     damerau-levenshtein (1.3.3)
@@ -265,7 +277,7 @@ GEM
     email_inquire (0.10.0)
       damerau-levenshtein (~> 1.2)
     erubi (1.10.0)
-    execjs (2.7.0)
+    execjs (2.8.1)
     factory_bot (6.1.0)
       activesupport (>= 5.0.0)
     factory_bot_rails (6.1.0)
@@ -284,8 +296,8 @@ GEM
     formtastic_i18n (0.6.0)
     git (1.8.1)
       rchardet (~> 1.8)
-    globalid (0.4.2)
-      activesupport (>= 4.2.0)
+    globalid (0.5.2)
+      activesupport (>= 5.0)
     has_scope (0.8.0)
       actionpack (>= 5.2)
       activesupport (>= 5.2)
@@ -318,15 +330,15 @@ GEM
     listen (3.5.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
-    loofah (2.9.1)
+    loofah (2.12.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
       mini_mime (>= 0.1.1)
     marcel (1.0.1)
     method_source (1.0.0)
-    mini_mime (1.0.3)
-    mini_portile2 (2.5.1)
+    mini_mime (1.1.1)
+    mini_portile2 (2.6.1)
     minitest (5.14.4)
     multi_json (1.15.0)
     multi_xml (0.6.0)
@@ -337,9 +349,9 @@ GEM
       railties (>= 4.2)
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
-    nio4r (2.5.7)
-    nokogiri (1.11.4)
-      mini_portile2 (~> 2.5.0)
+    nio4r (2.5.8)
+    nokogiri (1.12.4)
+      mini_portile2 (~> 2.6.1)
       racc (~> 1.4)
     oauth2 (1.4.7)
       faraday (>= 0.8, < 2.0)
@@ -360,7 +372,7 @@ GEM
     parser (3.0.1.0)
       ast (~> 2.4.1)
     pg (1.2.3)
-    popper_js (1.16.0)
+    popper_js (2.9.3)
     pry (0.13.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -379,25 +391,25 @@ GEM
       rack
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
-    rails (6.1.3.2)
-      actioncable (= 6.1.3.2)
-      actionmailbox (= 6.1.3.2)
-      actionmailer (= 6.1.3.2)
-      actionpack (= 6.1.3.2)
-      actiontext (= 6.1.3.2)
-      actionview (= 6.1.3.2)
-      activejob (= 6.1.3.2)
-      activemodel (= 6.1.3.2)
-      activerecord (= 6.1.3.2)
-      activestorage (= 6.1.3.2)
-      activesupport (= 6.1.3.2)
+    rails (6.1.4.1)
+      actioncable (= 6.1.4.1)
+      actionmailbox (= 6.1.4.1)
+      actionmailer (= 6.1.4.1)
+      actionpack (= 6.1.4.1)
+      actiontext (= 6.1.4.1)
+      actionview (= 6.1.4.1)
+      activejob (= 6.1.4.1)
+      activemodel (= 6.1.4.1)
+      activerecord (= 6.1.4.1)
+      activestorage (= 6.1.4.1)
+      activesupport (= 6.1.4.1)
       bundler (>= 1.15.0)
-      railties (= 6.1.3.2)
+      railties (= 6.1.4.1)
       sprockets-rails (>= 2.0.0)
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
-    rails-html-sanitizer (1.3.0)
+    rails-html-sanitizer (1.4.2)
       loofah (~> 2.3)
     rails_event_store (2.2.0)
       activejob (>= 3.0)
@@ -412,11 +424,11 @@ GEM
       activerecord (>= 5.0)
       activerecord-import (>= 1.0.2)
       ruby_event_store (= 2.2.0)
-    railties (6.1.3.2)
-      actionpack (= 6.1.3.2)
-      activesupport (= 6.1.3.2)
+    railties (6.1.4.1)
+      actionpack (= 6.1.4.1)
+      activesupport (= 6.1.4.1)
       method_source
-      rake (>= 0.8.7)
+      rake (>= 0.13)
       thor (~> 1.0)
     rainbow (3.0.0)
     rake (12.3.3)
@@ -543,7 +555,7 @@ GEM
       nokogiri (~> 1.6)
       rubyzip (>= 1.3.0)
       selenium-webdriver (>= 3.0, < 4.0)
-    websocket-driver (0.7.3)
+    websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
     xdan-datetimepicker-rails (2.5.4)
@@ -584,6 +596,7 @@ DEPENDENCIES
   kit-pagination!
   kit-router!
   kit-rspec-formatter!
+  kit_theme_bootstrap!
   listen
   paranoia
   pry
@@ -599,4 +612,4 @@ DEPENDENCIES
   webdrivers (~> 4.0)
 
 BUNDLED WITH
-   2.2.15
+   2.2.21

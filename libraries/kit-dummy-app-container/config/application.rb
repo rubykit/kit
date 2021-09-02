@@ -112,6 +112,10 @@ class Kit::DummyAppContainer::Application < ::Rails::Application # rubocop:disab
     Rails.logger = logger
   end
 
+  if KIT_APP_PATHS['GEM_TMP_PATH']
+    config.paths.add('tmp', with: KIT_APP_PATHS['GEM_TMP_PATH'])
+  end
+
   # Profiling
 
   if ENV['PROFILE'] == 'true'
