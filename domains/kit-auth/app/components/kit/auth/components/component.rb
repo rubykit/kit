@@ -1,5 +1,5 @@
 module Kit::Auth::Components
-  class Component < Kit::UiComponents::Components::BaseComponent
+  class Component < Kit::ViewComponents::Components::BaseComponent
 
     attr_reader :errors_list
 

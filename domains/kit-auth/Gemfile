@@ -16,7 +16,7 @@ gem 'kit-log',             path: '../../libraries/kit-log' # DEV MODE
 gem 'kit-organizer',       path: '../../libraries/kit-organizer' # DEV MODE
 gem 'kit-pagination',      path: '../../libraries/kit-pagination' # DEV MODE
 gem 'kit-router',          path: '../../libraries/kit-router' # DEV MODE
-gem 'kit-ui_components',   path: '../../libraries/kit-ui_components' # DEV MODE
+gem 'kit-view_components',   path: '../../libraries/kit-view_components' # DEV MODE
 
 gem 'kit_theme_bootstrap', git: 'https://github.com/rubykit/kit_theme_bootstrap', branch: 'main'
 

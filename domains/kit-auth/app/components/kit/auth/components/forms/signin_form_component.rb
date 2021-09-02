@@ -1,4 +1,4 @@
-class Kit::Auth::Components::Forms::SigninFormComponent < Kit::UiComponents::Components::FormComponent
+class Kit::Auth::Components::Forms::SigninFormComponent < Kit::ViewComponents::Components::FormComponent
 
   def initialize(form_action: nil, form_method: nil, **) # rubocop:disable Lint/UselessMethodDefinition
     super
