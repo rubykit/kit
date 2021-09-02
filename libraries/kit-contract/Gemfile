@@ -9,6 +9,7 @@ gem 'concurrent-ruby',         require: 'concurrent'
 gem 'kit-app-container',       path: '../../libraries/kit-app-container'
 gem 'kit-dummy-app-container', path: '../../libraries/kit-dummy-app-container'
 gem 'kit-error',               path: '../../libraries/kit-error'
+gem 'kit-log',                 path: '../../libraries/kit-log'
 gem 'kit-organizer',           path: '../../libraries/kit-organizer'
 
 # TODO: move this to `kit-dummy-app-container` gemspec when released

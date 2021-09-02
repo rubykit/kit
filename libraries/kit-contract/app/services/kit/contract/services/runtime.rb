@@ -43,6 +43,7 @@ module Kit::Contract::Services::Runtime
     status, ctx_out = Kit::Contract::Services::Validation.all(
       contracts:  contracts,
       parameters: parameters,
+      reentrant:  true,
     )
 
     return if status == :ok
