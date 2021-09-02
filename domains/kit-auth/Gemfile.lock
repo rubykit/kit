@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/rubykit/kit_theme_bootstrap
-  revision: f508157d0561fb6b7072c6a7563e0d39c72b8c9c
+  revision: b27dbf165cc0cc2443df5b92414431ea8a47b9a4
   branch: main
   specs:
     kit_theme_bootstrap (0.1.0)
@@ -215,7 +215,7 @@ GEM
       minitest (>= 5.1)
       tzinfo (~> 2.0)
       zeitwerk (~> 2.3)
-    addressable (2.7.0)
+    addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
     aggregate_root (2.2.0)
       ruby2_keywords
@@ -292,7 +292,7 @@ GEM
       multipart-post (>= 1.2, < 3)
       ruby2_keywords
     faraday-net_http (1.0.1)
-    ffi (1.15.0)
+    ffi (1.15.4)
     formtastic (4.0.0)
       actionpack (>= 5.2.0)
     formtastic_i18n (0.6.0)
@@ -528,7 +528,7 @@ GEM
     slim (4.1.0)
       temple (>= 0.7.6, < 0.9)
       tilt (>= 2.0.6, < 2.1)
-    slim-rails (3.2.0)
+    slim-rails (3.3.0)
       actionpack (>= 3.1)
       railties (>= 3.1)
       slim (>= 3.0, < 5.0)
