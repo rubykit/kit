@@ -36,3 +36,9 @@ module Kit::Organizer::Contracts
   ].named('TmpResultTupple')
 
 end
+
+# NOTE: forces loading of all modules of the namespace.
+dir = File.expand_path('./contracts', __dir__)
+Dir.entries(dir).select { |file| file.end_with?('.rb') }.each do |file|
+  load File.expand_path("./contracts/#{ file }", __dir__)
+end

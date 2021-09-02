@@ -10,6 +10,8 @@ gem 'kit-organizer',  path: '../../libraries/kit-organizer' # GEMSPEC
 gem 'kit-pagination', path: '../../libraries/kit-pagination' # GEMSPEC
 
 group :test, :development do
+  gem 'puma'
+
   gem 'listen'
 
   gem 'json_schemer'
@@ -42,7 +44,7 @@ group :development, :test do
   gem 'derailed_benchmarks'
   gem 'flamegraph'
   gem 'memory_profiler'
-  gem 'rack-mini-profiler'
+  gem 'rack-mini-profiler', require: false
   gem 'ruby-prof'
   gem 'stackprof'
 

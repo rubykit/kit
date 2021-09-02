@@ -10,9 +10,6 @@ PATH
   remote: ../kit-app-container
   specs:
     kit-app-container (0.1.0)
-      activerecord-nulldb-adapter
-      rails_event_store
-      sidekiq
 
 PATH
   remote: ../kit-contract
@@ -61,6 +58,8 @@ PATH
   specs:
     kit-dummy-app-container (0.1.0)
       rails (~> 6.1)
+      sidekiq
+      view_component
 
 PATH
   remote: ../kit-engine
@@ -323,6 +322,8 @@ GEM
     pry-stack_explorer (0.6.1)
       binding_of_caller (~> 1.0)
       pry (~> 0.13)
+    puma (5.4.0)
+      nio4r (~> 2.0)
     racc (1.5.2)
     rack (2.2.3)
     rack-mini-profiler (2.3.1)
@@ -512,6 +513,7 @@ DEPENDENCIES
   pg
   pry
   pry-stack_explorer
+  puma
   rack-mini-profiler
   rspec-rails
   rubocop
@@ -523,4 +525,4 @@ DEPENDENCIES
   yard
 
 BUNDLED WITH
-   2.2.3
+   2.2.21
