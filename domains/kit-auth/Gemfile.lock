@@ -115,6 +115,13 @@ PATH
     kit-rspec-formatter (0.1.0)
 
 PATH
+  remote: ../../libraries/kit-ui_components
+  specs:
+    kit-ui_components (0.1.0)
+      slim-rails
+      view_component (~> 2.30.0)
+
+PATH
   remote: .
   specs:
     kit-auth (0.1.0)
@@ -598,6 +605,7 @@ DEPENDENCIES
   kit-pagination!
   kit-router!
   kit-rspec-formatter!
+  kit-ui_components!
   kit_theme_bootstrap!
   listen
   paranoia

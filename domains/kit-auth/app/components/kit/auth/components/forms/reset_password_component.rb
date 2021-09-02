@@ -1,4 +1,4 @@
-class Kit::Auth::Components::Forms::ResetPasswordComponent < Kit::Domain::Components::FormComponent
+class Kit::Auth::Components::Forms::ResetPasswordComponent < Kit::UiComponents::Components::FormComponent
 
   def initialize(auth_token_secret:, form_action: nil, form_method: nil, **)
     super

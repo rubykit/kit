@@ -1,4 +1,4 @@
-class Kit::Auth::DummyApp::Components::NavbarComponent < Kit::Domain::Components::Component
+class Kit::Auth::DummyApp::Components::NavbarComponent < Kit::UiComponents::Components::BaseComponent
 
   attr_reader :current_user
 

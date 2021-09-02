@@ -1,4 +1,4 @@
-class Components::Navbar < Kit::Domain::Components::Component
+class Components::Navbar < Kit::UiComponents::Components::BaseComponent
 
   def initialize(*args)
     super
