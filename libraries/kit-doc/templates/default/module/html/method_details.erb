@@ -8,10 +8,10 @@
   files     = item.files.first || []
   src_href  = config[:source_url].call(path: files[0], line: files[1])
 
-  data_attr_list = Kit::Doc::Services::Properties.object_html_data_properties({
+  data_attr_list = Kit::Doc::Services::Properties.object_html_data_properties(
     item:            item,
     verifier_runner: ->(el) { run_verifier(el) },
-  })
+  )
 
   aliases   = item.aliases
 %>

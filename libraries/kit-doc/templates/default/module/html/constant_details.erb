@@ -8,10 +8,10 @@
   file      = item.files.first || []
   src_href  = config[:source_url].call(path: file[0], line: file[1])
 
-  data_attr_list = Kit::Doc::Services::Properties.object_html_data_properties({
+  data_attr_list = Kit::Doc::Services::Properties.object_html_data_properties(
     item:            item,
     verifier_runner: ->(el) { run_verifier(el) },
-  })
+  )
 %>
 
 <section class="detail" id="<%= anchor %>">

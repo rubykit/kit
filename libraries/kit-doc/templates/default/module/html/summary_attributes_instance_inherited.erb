@@ -1,9 +1,9 @@
 <%
-  toplist = Kit::Doc::Services::Modules.get_object_inherited_attributes({
+  toplist = Kit::Doc::Services::Modules.get_object_inherited_attributes(
     object:          object,
     options:         options,
     verifier_runner: ->(el) { run_verifier(el) },
-  })
+  )
 %>
 <% toplist.each do |_superclass_name, data| %>
   <%

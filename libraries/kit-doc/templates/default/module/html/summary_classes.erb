@@ -1,9 +1,9 @@
 <%
-  list = Kit::Doc::Services::Modules.get_object_classes({
+  list = Kit::Doc::Services::Modules.get_object_classes(
     object:          object,
     options:         options,
     verifier_runner: ->(el) { run_verifier(el) },
-  })
+  )
 %>
 <% if list.size > 0 %>
 

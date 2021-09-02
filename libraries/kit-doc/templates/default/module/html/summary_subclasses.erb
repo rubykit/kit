@@ -1,10 +1,10 @@
 <%
-  list = Kit::Doc::Services::Modules.get_object_subclasses({
+  list = Kit::Doc::Services::Modules.get_object_subclasses(
     object:          object,
     options:         options,
     verifier_runner: ->(el) { run_verifier(el) },
     globals:         globals,
-  })
+  )
 %>
 <% if list.size > 0 %>
 

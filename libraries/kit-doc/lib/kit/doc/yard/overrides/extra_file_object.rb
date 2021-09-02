@@ -39,12 +39,12 @@ class ::YARD::CodeObjects::ExtraFileObject
   # NOTE: this is an addition, not present in the original class.
   #
   def contents_rendered
-    @contents_rendered ||= Kit::Doc::Services::Utils.htmlify({
+    @contents_rendered ||= Kit::Doc::Services::Utils.htmlify(
       content:            self.contents,
       markdown_variables: Kit::Doc::Services::Config.config[:markdown_variables],
       markup:             self.attributes[:markup],
       yard_code_object:   self,
-    })
+    )
   rescue Encoding::CompatibilityError => e
     puts "Kit::Doc - Error rendering `#{ filename }`."
     raise e

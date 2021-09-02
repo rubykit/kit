@@ -1,10 +1,10 @@
 <%
-  toplist = Kit::Doc::Services::Modules.get_object_inherited_methods({
+  toplist = Kit::Doc::Services::Modules.get_object_inherited_methods(
     object:                object,
     options:               options,
     include_class_methods: false,
     verifier_runner:       ->(el) { run_verifier(el) },
-  })
+  )
 %>
 <% toplist.each do |_superclass_name, data| %>
   <%

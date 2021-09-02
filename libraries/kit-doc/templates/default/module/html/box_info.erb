@@ -49,7 +49,7 @@
       },
     ]
   %>
-  <% groups.each do |tag:, list:, data_tag:| %>
+  <% groups.each_as_kwargs do |tag:, list:, data_tag:| %>
     <% if list.size > 0 %>
       <div class='doc-tag' data-ruby-<%= tag %>='<%= list.join(' ') %>'>
         <% if list.size == 1 %>

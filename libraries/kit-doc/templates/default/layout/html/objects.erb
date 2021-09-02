@@ -1,8 +1,8 @@
 <%
-  list = Kit::Doc::Services::Modules.get_all_namespaces_as_list({
+  list = Kit::Doc::Services::Modules.get_all_namespaces_as_list(
     options:         options,
     verifier_runner: ->(el) { run_verifier(el) },
-  })
+  )
 
   list = list.sort_by do |el|
     "#{ (el.namespace.type != :root) ? "#{ el.namespace }::" : '' }#{ el.name }"

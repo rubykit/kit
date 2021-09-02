@@ -21,7 +21,7 @@ module Kit::Doc::Services::Sidebar::Extras
       }
 
       el_groups = Kit::Doc::Services::Sidebar.find_element_groups(groups: config[:groups_for_extras] || {}, element_name: el.filename)
-      el_groups.each do |group_name:, display_title:, css_classes:, display:|
+      el_groups.each_as_kwargs do |group_name:, display_title:, css_classes:, display:|
         next if !display
 
         data_for_group = data.merge({

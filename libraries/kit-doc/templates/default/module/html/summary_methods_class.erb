@@ -1,11 +1,11 @@
 <%
-  list = Kit::Doc::Services::Modules.get_object_methods({
+  list = Kit::Doc::Services::Modules.get_object_methods(
     object:                   object,
     options:                  options,
     include_instance_methods: false,
     include_aliases:          true,
     verifier_runner:          ->(el) { run_verifier(el) },
-  })
+  )
 %>
 <% if list.size > 0 %>
 

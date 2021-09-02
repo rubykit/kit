@@ -19,10 +19,10 @@ describe Kit::Doc::Services::MarkdownPreprocessor do
     end
 
     let(:subject) do
-      service.preproc_variables({
+      service.preproc_variables(
         text:      input_text,
         variables: variables,
-      })
+      )
     end
 
     it 'generate the correct string' do
@@ -90,12 +90,12 @@ describe Kit::Doc::Services::MarkdownPreprocessor do
       }
     end
 
-    spec_values.each do |before:, after:|
+    spec_values.each_as_kwargs do |before:, after:|
       it 'preprocesses the text correctly' do
-        _status, ctx = service.preproc_conditionals({
+        _status, ctx = service.preproc_conditionals(
           text:      before,
           variables: variables,
-        })
+        )
 
         expect(ctx[:processed_text]).to eq(after)
       end

@@ -17,11 +17,11 @@ class ::YARD::CodeObjects::Base # rubocop:disable Style/Documentation
     end
 
     @docstrings_rendered ||= {}
-    @docstrings_rendered[locale_name] ||= Kit::Doc::Services::Utils.htmlify({
+    @docstrings_rendered[locale_name] ||= Kit::Doc::Services::Utils.htmlify(
       content:            docstring,
       markdown_variables: Kit::Doc::Services::Config.config[:markdown_variables],
       yard_code_object:   self,
-    })
+    )
   end
 
 end

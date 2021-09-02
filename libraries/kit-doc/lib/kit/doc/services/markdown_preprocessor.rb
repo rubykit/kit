@@ -22,10 +22,10 @@ module Kit::Doc::Services::MarkdownPreprocessor
   #
   # ### Examples
   # ```irb
-  # irb> preproc_variables({
+  # irb> preproc_variables(
   #   content:   'Current version is $version!',
   #   variables: { version: 'v0.1.0' }
-  # })
+  # )
   # [:ok, processed_content: 'Current version is v0.1.0!']
   # ```
   def self.preproc_variables(content:, variables: {}, variables_regex: VARIABLES_REGEX)
@@ -63,23 +63,23 @@ module Kit::Doc::Services::MarkdownPreprocessor
   #
   # ### Examples
   # ```irb
-  # irb> preproc_conditionals({
+  # irb> preproc_conditionals(
   #   content:   <<~TEXT,
   #     <!--\pp -->
   #     [Doc - GitHub Link](https://docs.rubykit.org/kit/edge)
   #     <!-- { [Doc - Kit Link](https://docs.rubykit.org/kit/$VERSION) } pp-->
   #   TEXT
   #   variables: { VERSION: 'v0.1.0' }
-  # })
+  # )
   # [:ok, processed_content: '[Doc - Kit Link](https://docs.rubykit.org/kit/v0.1.0)']
   # ```
   #
   def self.preproc_conditionals(content:, variables:, preproc_regex: PREPROC_REGEX)
     processed_content = content.gsub(preproc_regex) do |_matched_text|
-      content = preproc_variables({
+      content = preproc_variables(
         content:   $LAST_MATCH_INFO[:prepoc_content],
         variables: variables,
-      })[1][:processed_content]
+      )[1][:processed_content]
 
       content = content[1..] if content[0] == "\n"
       content = content[2..] if content[0..1] == "\r\n"

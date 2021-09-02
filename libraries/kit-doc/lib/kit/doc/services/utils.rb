@@ -85,17 +85,17 @@ module Kit::Doc::Services::Utils
   def self.htmlify(content:, markdown_variables: {}, markup: nil, yard_code_object: nil)
     markup ||= Kit::Doc::Services::Config.config[:yard_options]&.markup
 
-    content = Kit::Doc::Services::MarkdownPreprocessor.preproc_conditionals({
+    content = Kit::Doc::Services::MarkdownPreprocessor.preproc_conditionals(
       content:   content,
       variables: markdown_variables,
-    })[1][:processed_content]
+    )[1][:processed_content]
 
     template_helper = TemplateHelper.new(object: yard_code_object)
-    template_helper.to_html({
+    template_helper.to_html(
       content:          content,
       markup:           markup,
       yard_code_object: yard_code_object,
-    })
+    )
 
   end
 

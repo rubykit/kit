@@ -120,7 +120,7 @@ module Kit::Doc::Services::Tasks
     # Save current current git reference
     initial_git_ref = Git.open(config[:git_project_path]).current_branch
 
-    config[:all_versions].each do |version:, source_ref:|
+    config[:all_versions].each_as_kwargs do |version:, source_ref:|
       before_version.call(version: version, source_ref: source_ref) if before_version.respond_to?(:call)
 
       result = %x(

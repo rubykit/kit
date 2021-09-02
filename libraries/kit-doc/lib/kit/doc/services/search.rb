@@ -8,10 +8,10 @@ module Kit::Doc::Services::Search
     args = { options: options, url_generator: url_generator, anchor_generator: anchor_generator, verifier_runner: verifier_runner }
     list = []
 
-    list += handle_modules(args)
-    list += handle_methods(args)
-    list += handle_constants(args)
-    list += handle_extras(args)
+    list += handle_modules(**args)
+    list += handle_methods(**args)
+    list += handle_constants(**args)
+    list += handle_extras(**args)
 
     list
   end
@@ -37,10 +37,10 @@ module Kit::Doc::Services::Search
 
   # Generate search_items output for Modules / Classes
   def self.handle_modules(options:, url_generator:, anchor_generator:, verifier_runner:)
-    list = Kit::Doc::Services::Modules.get_all_namespaces_as_list({
+    list = Kit::Doc::Services::Modules.get_all_namespaces_as_list(
       options:         options,
       verifier_runner: verifier_runner,
-    })
+    )
 
     list.map do |el|
       anchor  = anchor_generator.call(el)
@@ -58,10 +58,10 @@ module Kit::Doc::Services::Search
 
   # Generate search_items output for Methods
   def self.handle_methods(options:, url_generator:, anchor_generator:, verifier_runner:)
-    list = Kit::Doc::Services::Modules.get_all_methods_as_list({
+    list = Kit::Doc::Services::Modules.get_all_methods_as_list(
       options:         options,
       verifier_runner: verifier_runner,
-    })
+    )
 
     list.map do |el|
       anchor  = anchor_generator.call(el)
@@ -79,10 +79,10 @@ module Kit::Doc::Services::Search
 
   # Generate search_items output for Constants
   def self.handle_constants(options:, url_generator:, anchor_generator:, verifier_runner:)
-    list = Kit::Doc::Services::Modules.get_all_constants_as_list({
+    list = Kit::Doc::Services::Modules.get_all_constants_as_list(
       options:         options,
       verifier_runner: verifier_runner,
-    })
+    )
 
     list.map do |el|
       anchor  = anchor_generator.call(el)

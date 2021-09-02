@@ -64,10 +64,10 @@ def handle_static_assets
     assets_list << el
   end
 
-  Kit::Doc::Services::Utils.copy_assets({
+  Kit::Doc::Services::Utils.copy_assets(
     basepath: options.serializer.basepath,
     list:     assets_list,
-  })
+  )
 end
 
 # Generate the file containing the list of all known doc versions and their URL.

@@ -17,11 +17,11 @@ def diskfile
     #super
     @file.attributes[:markup] ||= markup_for_file('', @file.filename)
 
-    data = Kit::Doc::Services::Utils.htmlify({
+    data = Kit::Doc::Services::Utils.htmlify(
       content:            @file.contents,
       markdown_variables: Kit::Doc::Services::Config.config[:markdown_variables],
       markup:             @file.attributes[:markup],
-    })
+    )
   end
 
   erb(:extra) { data }

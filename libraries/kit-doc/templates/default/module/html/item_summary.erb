@@ -26,10 +26,10 @@
     link_href   = url_for(link_target_object, anchor)
   end
 
-  data_attr_list = Kit::Doc::Services::Properties.object_html_data_properties({
+  data_attr_list = Kit::Doc::Services::Properties.object_html_data_properties(
     item:            item,
     verifier_runner: ->(el) { run_verifier(el) },
-  })
+  )
 %>
 
 <div class="summary-row" data-doc-type="<%= item.type %>" <%= data_attr_list.map { |k, v| "#{k}=\"#{v}\"" }.join(' ') %>>

@@ -1,10 +1,10 @@
 <%
   item = @attributes_item
 
-  data_attr_list = Kit::Doc::Services::Properties.object_html_data_properties({
+  data_attr_list = Kit::Doc::Services::Properties.object_html_data_properties(
     item:            item,
     verifier_runner: ->(el) { run_verifier(el) },
-  })
+  )
 
   whitelist = [
     'data-tag-deprecated',
@@ -39,7 +39,7 @@
 %>
 
 <span class='docstring-tags'>
-  <% list.each do |data:, display:| %>
+  <% list.each_as_kwargs do |data:, display:| %>
     <span class="docstring-tag" <%= data[0] %>="<%= data[1] %>"><span class='docstring-tag-type'><%= display[0].to_s.upcase %></span><span class='docstring-tag-value'><%= display[1].to_s.capitalize %></span></span>
   <% end %>
 </span>

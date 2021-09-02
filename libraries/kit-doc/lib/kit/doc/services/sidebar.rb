@@ -31,7 +31,7 @@ module Kit::Doc::Services::Sidebar
     groups.each do |group_name, group_data|
       matchers = transform_matchers(group_data: group_data, group_name: group_name)
 
-      matchers.each do |inclusion_fn:, display_title:, css_classes:, display:|
+      matchers.each_as_kwargs do |inclusion_fn:, display_title:, css_classes:, display:|
         next if !inclusion_fn.call(element_name)
 
         display_title = display_title.call(element_name) if display_title.respond_to?(:call)
