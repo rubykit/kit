@@ -53,7 +53,7 @@ commands:
     steps:
       - run:
           command: |
-            sudo gem install bundler:2.1.4
+            sudo gem install bundler:2.2.21
 
   install-gems:
     description: Install gems with Bundler.
