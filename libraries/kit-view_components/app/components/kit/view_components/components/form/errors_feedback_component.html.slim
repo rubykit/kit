@@ -1,0 +1,4 @@
+- if errors_list.size > 0
+  .invalid-feedback
+    - errors_list.each do |error|
+      p = error[:detail]

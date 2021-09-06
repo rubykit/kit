@@ -1,0 +1,14 @@
+.row.form-group
+  label.col-sm-3.col-form-label for=input_id
+    = label
+    - if required
+      span.text-danger.font-weight-bold.ml-1 *
+  .col-sm-9
+    textarea.form-control name=name class=input_classes id=input_id placeholder=placeholder required=required aria-label=placeholder rows=rows maxlength=maxlength
+      = value
+
+    - if info
+      small.form-text
+        = info
+
+    = render Kit::ViewComponents::Components::Form::ErrorsFeedbackComponent.new(errors_list: errors_list)

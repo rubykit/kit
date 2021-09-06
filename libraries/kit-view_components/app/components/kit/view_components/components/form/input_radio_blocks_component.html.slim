@@ -1,0 +1,21 @@
+.row.form-group
+  .col-sm-3.col-form-label
+    label for=input_id
+      = label
+      - if required
+        span.text-danger.fw-bold.ms-1 *
+    - if info
+      small.form-text
+        = info
+
+  .col-sm-9
+    .row class=((errors_list.size > 0) ? 'is-invalid' : nil)
+      - list_values.each do |el|
+        .col-sm-6.px-2
+          .form-control.mb-2
+            .form-check
+              input.form-check-input id=el[:input_id] name=name type="radio" value=el[:value] checked=el[:selected]
+              label.form-check-label for=el[:input_id]
+                = el[:label]
+
+    = render Kit::ViewComponents::Components::Form::ErrorsFeedbackComponent.new(errors_list: errors_list)
