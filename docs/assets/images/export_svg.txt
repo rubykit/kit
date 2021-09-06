@@ -1,0 +1,1 @@
+inkscape -z -w 512 -h 512 --export-background-opacity=0  --export-type=png rubykit-framework-logo.svg
