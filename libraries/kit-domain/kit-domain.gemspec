@@ -31,7 +31,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'view_component',              '~> 2.30.0'
 
   s.add_dependency 'rails',                       '~> 6.1.0'
-  s.add_dependency 'rails_event_store'
   s.add_dependency 'slim-rails'
 
   s.add_dependency 'activeadmin', '~> 2.9.0'
