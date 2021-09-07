@@ -1,4 +1,4 @@
-module Kit::Router::Services::Adapters::Http::Rails
+module Kit::Router::Adapters::HttpRails
 
   # Request helpers.
   module Request

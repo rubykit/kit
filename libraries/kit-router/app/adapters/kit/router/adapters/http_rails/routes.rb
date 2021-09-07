@@ -1,5 +1,5 @@
 # Routes setup for Rails.
-module Kit::Router::Services::Adapters::Http::Rails::Routes
+module Kit::Router::Adapters::HttpRails::Routes
 
   MOUNT_TYPE = [:http, :rails]
 
@@ -85,7 +85,7 @@ module Kit::Router::Services::Adapters::Http::Rails::Routes
     end
 
     verb = verb.to_s.downcase.to_sym
-    if !Kit::Router::Services::Adapters::Http::VERBS.include?(verb)
+    if !Kit::Router::Adapters::Http::VERBS.include?(verb)
       raise "Kit::Router | unsupported http verb for `#{ id }` (`#{ verb }`)"
     end
 

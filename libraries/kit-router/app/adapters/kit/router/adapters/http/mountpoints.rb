@@ -1,12 +1,15 @@
 require 'uri'
 
-module Kit::Router::Services::Adapters::Http
+module Kit::Router::Adapters::Http
 
   # Mountpoint related logic.
   module Mountpoints
 
-    def self.path(id:, params: {})
-      _, res = Kit::Router::Services::Store::Mountpoint.find_mountpoint(id: id, mountpoint_type: [:http, :rails])
+    def self.path(id:, params: nil, mountpoint_type: nil)
+      params          ||= {}
+      mountpoint_type ||= [:http, :rails]
+
+      _, res = Kit::Router::Services::Store::Mountpoint.find_mountpoint(id: id, mountpoint_type: mountpoint_type)
       path   = res.dig(:mountpoint_data, :data, 1)
 
       if path.blank?
@@ -36,7 +39,10 @@ module Kit::Router::Services::Adapters::Http
       uri.to_s.gsub(%r{\?$}, '')
     end
 
-    def self.url(id:, params: {})
+    def self.url(id:, params: nil, mountpoint_type: nil)
+      params          ||= {}
+      mountpoint_type ||= [:http, :rails]
+
       host   = ENV['URI_HOST']
       scheme = ENV['URI_SCHEME']
 
@@ -50,7 +56,7 @@ module Kit::Router::Services::Adapters::Http
         host = 'localhost'
       end
 
-      current_path = path(id: id, params: params)
+      current_path = path(id: id, params: params, mountpoint_type: mountpoint_type)
 
       uri          = URI(current_path)
       uri.host     = host
@@ -60,8 +66,10 @@ module Kit::Router::Services::Adapters::Http
       uri.to_s
     end
 
-    def self.verb(id:)
-      _, res = Kit::Router::Services::Store::Mountpoint.find_mountpoint(id: id, mountpoint_type: [:http, :rails])
+    def self.verb(id:, mountpoint_type: nil)
+      mountpoint_type ||= [:http, :rails]
+
+      _, res = Kit::Router::Services::Store::Mountpoint.find_mountpoint(id: id, mountpoint_type: mountpoint_type)
       verb   = res.dig(:mountpoint_data, :data, 0)
 
       if verb.blank?
@@ -71,11 +79,14 @@ module Kit::Router::Services::Adapters::Http
       verb
     end
 
-    def self.request_route?(request:, id:, params: {})
+    def self.request_route?(request:, id:, params: nil, mountpoint_type: nil)
+      params          ||= {}
+      mountpoint_type ||= [:http, :rails]
+
       request_url = request&.url
       return false if request_url.blank?
 
-      id_path = path(id: id, params: params)
+      id_path = path(id: id, params: params, mountpoint_type: mountpoint_type)
 
       URI(request_url).path == URI(id_path).path
     end

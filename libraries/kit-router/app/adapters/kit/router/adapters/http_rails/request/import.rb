@@ -1,4 +1,4 @@
-module Kit::Router::Services::Adapters::Http::Rails::Request
+module Kit::Router::Adapters::HttpRails::Request
 
   # Import Rails request to KitRequest.
   module Import
@@ -43,16 +43,16 @@ module Kit::Router::Services::Adapters::Http::Rails::Request
       rails_cookies.each do |k, v|
         k = k.to_s
 
-        if k.start_with?(Kit::Router::Services::Adapters::Http::Rails::Request.cookies_encrypted_prefix)
-          name = k.gsub(%r{^#{ Kit::Router::Services::Adapters::Http::Rails::Request.cookies_encrypted_prefix.gsub('|', '\|') }}, '')
+        if k.start_with?(Kit::Router::Adapters::HttpRails::Request.cookies_encrypted_prefix)
+          name = k.gsub(%r{^#{ Kit::Router::Adapters::HttpRails::Request.cookies_encrypted_prefix.gsub('|', '\|') }}, '')
           result[name.to_sym] = {
             name:      name,
             raw_name:  k,
             value:     rails_cookies.encrypted[k],
             raw_value: rails_cookies[k],
           }
-        elsif k.start_with?(Kit::Router::Services::Adapters::Http::Rails::Request.cookies_signed_prefix)
-          name = k.gsub(%r{^#{ Kit::Router::Services::Adapters::Http::Rails::Request.cookies_signed_prefix.gsub('|', '\|') }}, '')
+        elsif k.start_with?(Kit::Router::Adapters::HttpRails::Request.cookies_signed_prefix)
+          name = k.gsub(%r{^#{ Kit::Router::Adapters::HttpRails::Request.cookies_signed_prefix.gsub('|', '\|') }}, '')
           result[name.to_sym] = {
             name:      name,
             raw_name:  k,

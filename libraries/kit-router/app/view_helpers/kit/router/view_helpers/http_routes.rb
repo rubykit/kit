@@ -2,11 +2,11 @@
 module Kit::Router::ViewHelpers::HttpRoutes
 
   def router_path(id:, params: {})
-    Kit::Router::Services::Adapters::Http::Mountpoints.path(id: id, params: params)
+    Kit::Router::Adapters::Http::Mountpoints.path(id: id, params: params)
   end
 
   def router_verb(id:)
-    Kit::Router::Services::Adapters::Http::Mountpoints.verb(id: id).downcase
+    Kit::Router::Adapters::Http::Mountpoints.verb(id: id).downcase
   end
 
   def router_link_to(id:, params: {}, html: {}, request: nil, active: nil, &block)
@@ -21,7 +21,7 @@ module Kit::Router::ViewHelpers::HttpRoutes
       html['data-method'] = verb
     end
 
-    if active && Kit::Router::Services::Adapters::Http::Mountpoints.request_route?(request: request, id: id)
+    if active && Kit::Router::Adapters::Http::Mountpoints.request_route?(request: request, id: id)
       html[:class] ||= ''
       html[:class] << ' active'
     end

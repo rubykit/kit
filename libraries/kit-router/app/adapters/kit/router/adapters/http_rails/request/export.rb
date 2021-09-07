@@ -1,4 +1,4 @@
-module Kit::Router::Services::Adapters::Http::Rails::Request
+module Kit::Router::Adapters::HttpRails::Request
 
   # Export a KitRequest to a Rails response.
   # NOTE: very much a WIP!
@@ -76,10 +76,10 @@ module Kit::Router::Services::Adapters::Http::Rails::Request
       data.each do |name, cookie|
         payload = cookie.slice(:value, :expires)
         if cookie[:encrypted] == true
-          cookie_name = "#{ Kit::Router::Services::Adapters::Http::Rails::Request.cookies_encrypted_prefix }#{ name }"
+          cookie_name = "#{ Kit::Router::Adapters::HttpRails::Request.cookies_encrypted_prefix }#{ name }"
           rails_cookies.encrypted[cookie_name] = payload
         elsif cookie[:signed] == true
-          cookie_name = "#{ Kit::Router::Services::Adapters::Http::Rails::Request.cookies_signed_prefix }#{ name }"
+          cookie_name = "#{ Kit::Router::Adapters::HttpRails::Request.cookies_signed_prefix }#{ name }"
           rails_cookies.signed[cookie_name] = payload
         else
           cookie_name = name
