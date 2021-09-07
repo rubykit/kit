@@ -3,7 +3,7 @@ class Kit::JsonApiSpec::Services::Linker < Kit::Api::JsonApi::Services::Linkers:
   # @doc false
   Ct = Kit::Api::JsonApi::Contracts
 
-  UrlService = Kit::Router::Services::Adapters::Http::Mountpoints
+  UrlService = Kit::Router::Adapters::Http::Mountpoints
 
   # TODO: replace paths by router helpers
   def self.links_single(resource_object:)

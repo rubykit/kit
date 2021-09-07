@@ -34,7 +34,7 @@ Rails.application.routes.draw do
       })
     end
 
-    Kit::Router::Services::Adapters::Http::Rails::Routes.mount_http_targets(
+    Kit::Router::Adapters::HttpRails::Routes.mount_http_targets(
       rails_router_context: self,
       list:                 mountpoints,
     )

@@ -3,7 +3,7 @@ require_relative '../../rails_helper'
 describe 'Json:Api requests Headers', type: :request do
   include_context 'json:api'
 
-  let(:path)    { Kit::Router::Services::Adapters::Http::Mountpoints.path(id: 'specs|api|author|index') }
+  let(:path)    { Kit::Router::Adapters::Http::Mountpoints.path(id: 'specs|api|author|index') }
   let(:subject) { get path, headers: headers }
 
   let(:other_accept)       { 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' }

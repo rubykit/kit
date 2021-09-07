@@ -13,7 +13,7 @@ class ::ApiController < ::ActionController::API # rubocop:disable Style/Document
 
     _, ctx = Kit::Organizer.call(
       list: [
-        Kit::Router::Services::Adapters::Http::Rails::Request::Import.method(:import_request),
+        Kit::Router::Adapters::HttpRails::Request::Import.method(:import_request),
         ->(router_request:) { router_request.target[:endpoint].call(router_request: router_request) },
       ],
       ctx:  controller_ctx,
@@ -21,7 +21,7 @@ class ::ApiController < ::ActionController::API # rubocop:disable Style/Document
 
     Kit::Organizer.call(
       list: [
-        Kit::Router::Services::Adapters::Http::Rails::Request::Export.method(:export_request),
+        Kit::Router::Adapters::HttpRails::Request::Export.method(:export_request),
       ],
       ctx:  controller_ctx.merge(ctx.slice(:router_request, :router_response)),
     )
