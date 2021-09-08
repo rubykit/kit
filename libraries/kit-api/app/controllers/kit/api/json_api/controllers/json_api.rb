@@ -42,7 +42,7 @@ module Kit::Api::JsonApi::Controllers::JsonApi
   # ### References
   # - https://jsonapi.org/format/1.1/#content-negotiation-servers
   def self.ensure_content_type(router_request:)
-    content_type = router_request.http.headers['CONTENT_TYPE']
+    content_type = router_request.adapters[:http_rails][:headers]['CONTENT_TYPE']
 
     if Rack::MediaType.type(content_type) == JSONAPI_MEDIA_TYPE && Rack::MediaType.params(content_type) == {}
       return [:ok]
@@ -56,7 +56,7 @@ module Kit::Api::JsonApi::Controllers::JsonApi
   # ### References
   # - https://jsonapi.org/format/1.1/#content-negotiation-servers
   def self.ensure_http_accept(router_request:)
-    http_accept = router_request.http.headers['ACCEPT']
+    http_accept = router_request.adapters[:http_rails][:headers]['ACCEPT']
 
     if http_accept.blank?
       return [:ok]

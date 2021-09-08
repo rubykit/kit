@@ -14,7 +14,7 @@ class ::ApiController < ::ActionController::API # rubocop:disable Style/Document
     _, ctx = Kit::Organizer.call(
       list: [
         Kit::Router::Adapters::HttpRails::Request::Import.method(:import_request),
-        ->(router_request:) { router_request.target[:endpoint].call(router_request: router_request) },
+        ->(router_request:) { router_request.endpoint[:callable].call(router_request: router_request) },
       ],
       ctx:  controller_ctx,
     )

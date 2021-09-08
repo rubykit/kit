@@ -4,11 +4,11 @@ Rails.application.routes.draw do
 
   endpoints = ->(resource_singular:, resource_plural:) do
     [
-      { id: "specs|api|#{ resource_singular }|index",  path: "/dummy_app/json_api/#{ resource_plural }",              verb: :get    },
-      { id: "specs|api|#{ resource_singular }|show",   path: "/dummy_app/json_api/#{ resource_plural }/:resource_id", verb: :get    },
-      { id: "specs|api|#{ resource_singular }|create", path: "/dummy_app/json_api/#{ resource_plural }",              verb: :post   },
-      { id: "specs|api|#{ resource_singular }|update", path: "/dummy_app/json_api/#{ resource_plural }/:resource_id", verb: :patch  },
-      { id: "specs|api|#{ resource_singular }|delete", path: "/dummy_app/json_api/#{ resource_plural }/:resource_id", verb: :delete },
+      { route_id: "specs|api|#{ resource_singular }|index",  path: "/dummy_app/json_api/#{ resource_plural }",              verb: :get    },
+      { route_id: "specs|api|#{ resource_singular }|show",   path: "/dummy_app/json_api/#{ resource_plural }/:resource_id", verb: :get    },
+      { route_id: "specs|api|#{ resource_singular }|create", path: "/dummy_app/json_api/#{ resource_plural }",              verb: :post   },
+      { route_id: "specs|api|#{ resource_singular }|update", path: "/dummy_app/json_api/#{ resource_plural }/:resource_id", verb: :patch  },
+      { route_id: "specs|api|#{ resource_singular }|delete", path: "/dummy_app/json_api/#{ resource_plural }/:resource_id", verb: :delete },
     ]
   end
 

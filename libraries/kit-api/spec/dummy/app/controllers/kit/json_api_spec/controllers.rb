@@ -41,7 +41,7 @@ module Kit::JsonApiSpec::Controllers # rubocop:disable Style/Documentation
       ],
       ctx:  {
         router_request: router_request,
-        query_params:   router_request[:params],
+        query_params:   router_request[:params].to_h,
         api_request:    api_request,
       },
     )
