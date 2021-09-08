@@ -1,4 +1,4 @@
-module Kit::Router::Adapters::Http
+module Kit::Router::Adapters::HttpRails
 
   VERBS = [:connect, :delete, :get, :options, :patch, :post, :put, :trace]
 

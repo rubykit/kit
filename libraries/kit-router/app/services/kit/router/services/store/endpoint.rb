@@ -45,11 +45,22 @@ module Kit::Router::Services::Store::Endpoint
       target_id = router_store[:aliases][target_id]&.dig(:target_id)
     end
 
-    if !endpoint_record
-      raise "Kit::Router | unknown endpoint_record for alias `#{ id }`"
+    if endpoint_record
+      [:ok, endpoint_record: endpoint_record]
+    else
+      [:error, "Kit::Router | unknown endpoint_record for alias `#{ id }`"]
     end
+  end
 
-    endpoint_record
+  contract Ct::Hash[id: Ct::EndpointId]
+  def self.get_endpoint!(id:, router_store: nil)
+    status, ctx = get_endpoint(id: id, router_store: router_store)
+
+    if status == :ok
+      return [status, ctx]
+    else
+      raise ctx[:error]
+    end
   end
 
   # Given an `alias_record`, find the `endpoint` it should resolve to.

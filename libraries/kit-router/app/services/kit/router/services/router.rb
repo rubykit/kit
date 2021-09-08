@@ -141,24 +141,6 @@ module Kit::Router::Services::Router
     false
   end
 
-  def self.call(id:, request: nil, params: {}, router_store: nil)
-    record = Kit::Router::Services::Store::Endpoint.get_endpoint(id: id, router_store: router_store)
-
-    if !request
-      request = Kit::Router::Models::RouterRequest.new(params: OpenStruct.new(params))
-    end
-
-    target = record[:target]
-
-    target.call(request: request)
-  end
-
-  def self.cast(id:, request: nil, params: {}, router_store: nil)
-    call(id: id, request: request, params: params, router_store: router_store)
-
-    [:ok]
-  end
-
   def self.router_store
     Kit::Router::Services::Store.router_store
   end

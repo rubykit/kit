@@ -62,7 +62,8 @@ describe 'Aliases' do
         alias_record = router_store[:aliases][:a]
         expect(alias_record[:target_id]).to eq :b
 
-        endpoint_record = service::Endpoint.get_endpoint(id: :a, router_store: router_store)
+        _status, ctx    = service::Endpoint.get_endpoint(id: :a, router_store: router_store)
+        endpoint_record = ctx[:endpoint_record]
         expect(endpoint_record[:id]).to eq :e
       end
     end

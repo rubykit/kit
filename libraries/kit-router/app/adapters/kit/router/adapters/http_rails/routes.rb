@@ -69,7 +69,7 @@ module Kit::Router::Adapters::HttpRails::Routes
 
   def self.load_record(id:)
     alias_record    = Kit::Router::Services::Store::Alias.get_alias(id: id)
-    endpoint_record = Kit::Router::Services::Store::Endpoint.get_endpoint(id: id)
+    endpoint_record = Kit::Router::Services::Store::Endpoint.get_endpoint!(id: id)[1][:endpoint_record]
 
     endpoint_types = endpoint_record[:types].keys
     if !Kit::Router::Services::Router.can_mount?(endpoint_types: endpoint_types, mounter_type: MOUNT_TYPE)
@@ -85,7 +85,7 @@ module Kit::Router::Adapters::HttpRails::Routes
     end
 
     verb = verb.to_s.downcase.to_sym
-    if !Kit::Router::Adapters::Http::VERBS.include?(verb)
+    if !Kit::Router::Adapters::HttpRails::VERBS.include?(verb)
       raise "Kit::Router | unsupported http verb for `#{ id }` (`#{ verb }`)"
     end
 

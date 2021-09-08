@@ -11,17 +11,19 @@ module Kit::Router::Models # rubocop:disable Style/ClassAndModuleChildren
   #
   class RouterRequest
 
-    ATTRS = [:params, :root, :http, :metadata, :ip, :rails, :target]
+    ATTRS = [:params, :root, :http, :metadata, :ip, :rails, :target, :adapters]
 
     attr_reader(*ATTRS)
 
-    def initialize(params:, root: nil, http: nil, metadata: nil, ip: nil, target: nil, rails: nil, **)
-      @params = params
+    def initialize(params:, root: nil, http: nil, metadata: nil, ip: nil, target: nil, rails: nil, adapters: nil, **)
+      @params = params.is_a?(OpenStruct) ? params : OpenStruct.new(params)
       @ip     = ip
       @root   = root
 
       @target = target || {}
       @rails  = rails  || {}
+
+      @adapters = adapters || {}
 
       @http = OpenStruct.new(http || {
         csrf_token: nil,

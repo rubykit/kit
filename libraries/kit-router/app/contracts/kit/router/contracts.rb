@@ -15,7 +15,7 @@ module Kit::Router::Contracts
   MountPointData  = Hash.named('MountPointData')
   MountTypeHash   = Hash.of(MountType => Array.of(MountPointData)).named('MountTypeHash')
 
-  HttpVerb        = In[*Kit::Router::Adapters::Http::VERBS].named('HttpVerb')
+  HttpVerb        = In[*Kit::Router::Adapters::HttpRails::VERBS].named('HttpVerb')
   MountPointHttp  = Hash[verb: HttpVerb, path: String].named('MountPointHttp')
   #MountPointAsync = Hash[id: String]
   MountPoint      = Or[
