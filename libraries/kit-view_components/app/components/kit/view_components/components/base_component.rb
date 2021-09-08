@@ -37,7 +37,7 @@ class Kit::ViewComponents::Components::BaseComponent < ::ViewComponent::Base
   end
 
   def local_render(router_request: nil, &block)
-    controller     = router_request.rails[:controller]
+    controller     = router_request.adapters.dig(:http_rails, :rails_controller)
     lookup_context = ActionView::LookupContext.new(ActionController::Base.view_paths)
     view           = ActionView::Base.new(lookup_context, {}, controller)
 
