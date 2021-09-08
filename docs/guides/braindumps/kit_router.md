@@ -1,47 +1,69 @@
-# Kit::Router
+ Kit::Router
 
-## Router entry points
 
-- `inline` (calling the router directly): `cast` , `call`, `inline_call`
-- per adapter or protocol `listeners`
+## Router architecture
 
-## Making an inline call to the Router
-
-The only differentiator is based on the expectation **at the call site**: do we expect an answer or not?
-
-- `call` blocks (until there is a response or a timeout). It's a sync primitive from the caller perspective.
-- `cast` is non-blocking. It's an async primitive from the caller perspective ("fires & forget").
-- `inline_call` is the same than calls but it force the use of the `inline` strategy (mostly usefull inside adapters).
-
-(Context: https://hexdocs.pm/elixir/GenServer.html#call/3)
-
-## Messages: two "families"
-
-- "Internal" message: how to call an endpoint + expected parameters!
-- Per "procotol" messages: how to react / routes protocol messages.
-
-## Router flow
-
-**INBOUND MESSAGE**
-  |-> **inline** (expects a valid `RouterRequest`)
-  |-> through an **external listener**, translates the call to a `RouterRequest`
-
-**BROKERS**
-  |-> Call subscribed `endpoints` to process the `RouterRequest`
-
-Note: the brokers can be re-entrant depending on the strategies.
-
-### Message format
-
-```
-[protocol, { specifics? }]
-```
-
-## Router behaviour
+### Router configuration
 
 The `Router` configuration is **per application container**.
 
-The `Router` is responsible for delivering messages between domains. In order to do this, it needs to know the production topology. (Is the app a monolith & can message delivery be a simple function call? Is a given domain deployed as it's own app?)
+The `Router` is responsible for mapping protocols to `endpoints` and delivering messages between domains.
+
+In order to do this, it needs to be aware of the production topology.
+
+- Is the app a monolith & can message delivery be a simple function call?
+- Is a given domain deployed as it's own app?
+
+### Router flow
+
+Note: any `endpoint` is called through an `adapter`.
+
+**INBOUND MESSAGE**
+  |-> through a call to the Router (cast, call, inline_call)
+  |-> through an **external listener**, translates the call to a `RouterRequest`
+
+**BROKER**
+  |-> Call subscribed `endpoints` to process the `RouterRequest`
+
+Note: the adapters can be re-entrant depending on the strategies.
+
+### Router entry points
+
+- `externals`: calling an endpoint through an adapter own listeners. Ex:
+  - http
+  - websocket
+  - sidekiq
+
+- `internals`: calling the router directly in the code, through `cast` , `call`, `inline_call`
+
+---
+
+
+
+## Internal: using the Router to call `endoints` manually
+
+The differences are based on the expectation **at the call site**.
+
+- `call` is used when a return value is expected. It's a sync primitive: the method will block until a response is received (or a timeout occurs).
+- `cast` is used when no return value is expected. It's an async primitive: the method is non-blocking and will return immediatel ("fire-and-forget").
+
+`call` & `cast` use the router's broker to determine what adapter should be used to call the endpoint
+
+!!! HOW DOES THIW WORK IF AN ENDPOINT IS MOUNTED THROUGH HTTP ADAPTER AND `call` is used ??? WHAT ADAPTER IS USED?
+
+- `inline_call` has the same behaviour than `call`, but it force the use of the `inline` strategy. This strategy ensures that all code gets executed in the same execution context. This is mostly usefull inside `adapters`.
+
+### Questions
+
+- Should `inline_call` work on the same `router_request` while when using `call` & `cast` the router creates a new one?
+- Does `router_request` represent the **connection itself** or an **abstraction of the message** that will be sent on the connection? The later, way simpler.
+
+### References
+
+- [Elixir GenServer#call](https://hexdocs.pm/elixir/GenServer.html#call/3)
+- [Elixir GenServer#cast](https://hexdocs.pm/elixir/GenServer.html#cast/3)
+
+
 
 ## Adapters
 
@@ -91,3 +113,25 @@ When emitted: either received sync or async depending on the strategy.
 
 Received by a generic EventBroker endpoint that can multiplex it if needed, sync or async!
 
+
+
+
+
+
+
+
+
+------
+
+# IS THIS USEFUL AT ALL?!
+
+## Messages: two "families"
+
+- "Internal" message: how to call an endpoint + expected parameters!
+- Per "procotol" messages: how to react / routes protocol messages.
+
+### Message format
+
+```
+[protocol, { specifics? }]
+```
