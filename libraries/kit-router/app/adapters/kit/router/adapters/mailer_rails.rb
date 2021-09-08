@@ -1,28 +1,21 @@
 module Kit::Router::Adapters::MailerRails
 
-  def self.call(endpoint:, params:)
+  def self.call(router_request:)
     Kit::Organizer.call(
       list: [
-        self.method(:create_router_request),
-        endpoint,
+        router_request[:endpoint][:callable],
         self.method(:send_to_mailer),
       ],
       ctx:  {
-        params: params,
+        router_request: router_request,
       },
     )
   end
 
-  def self.cast(endpoint:, params:)
-    call(endpoint: endpoint, params: params)
+  def self.cast(router_request:)
+    call(router_request: router_request)
 
     [:ok]
-  end
-
-  def self.create_router_request(params:)
-    router_request = Kit::Router::Models::RouterRequest.new(params: params)
-
-    [:ok, router_request: router_request]
   end
 
   # Ref: https://github.com/rails/rails/blob/main/actionmailer/lib/action_mailer/base.rb#L736

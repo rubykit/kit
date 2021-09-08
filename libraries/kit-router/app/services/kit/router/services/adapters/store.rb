@@ -20,12 +20,12 @@ module Kit::Router::Services::Adapters::Store
     [:ok, adapter: adapter]
   end
 
-  def self.get_adapter_target_method(adapter:, adapter_target_method_name:)
-    if !adapter.respond_to?(adapter_target_method_name)
-      [:error, "Adapter `#{ adapter_name }` does not support `#{ adapter_target_method_name }`"]
+  def self.get_adapter_callable(adapter:, adapter_method_name:)
+    if !adapter.respond_to?(adapter_method_name)
+      [:error, "Adapter `#{ adapter_name }` does not support `#{ adapter_method_name }`"]
     end
 
-    [:ok, adapter_target_method: adapter.method(adapter_target_method_name)]
+    [:ok, adapter_callable: adapter.method(adapter_method_name)]
   end
 
   def self.adapter_store
@@ -37,7 +37,7 @@ module Kit::Router::Services::Adapters::Store
       inline: Kit::Router::Adapters::InlineBase,
       http:   Kit::Router::Adapters::HttpRails,
       mailer: Kit::Router::Adapters::MailerRails,
-      async:  Kit::Router::Adapters::AsyncSidekiq,
+      async:  Kit::Router::Adapters::AsyncRails,
     }
   end
 

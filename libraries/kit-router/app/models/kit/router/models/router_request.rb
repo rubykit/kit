@@ -11,28 +11,29 @@ module Kit::Router::Models # rubocop:disable Style/ClassAndModuleChildren
   #
   class RouterRequest
 
-    ATTRS = [:params, :root, :http, :metadata, :ip, :rails, :target, :adapters]
+    # TODO: Depreacte `rails`, `http`, `target`
+    ATTRS = [:adapters, :endpoint, :ip, :metadata, :params, :root, :route_id] + [:http, :rails, :target]
 
     attr_reader(*ATTRS)
 
-    def initialize(params:, root: nil, http: nil, metadata: nil, ip: nil, target: nil, rails: nil, adapters: nil, **)
-      @params = params.is_a?(OpenStruct) ? params : OpenStruct.new(params)
-      @ip     = ip
-      @root   = root
+    def initialize(params:, route_id: nil, root: nil, http: nil, metadata: nil, ip: nil, target: nil, rails: nil, endpoint: nil, adapters: nil, **)
+      @adapters = adapters || {}
+      @endpoint = endpoint || {}
+      @ip       = ip
+      @metadata = OpenStruct.new(metadata || {})
+      @params   = params.is_a?(OpenStruct) ? params : OpenStruct.new(params)
+      @root     = root
+      @route_id = route_id
 
+      # TODO: deprecate
       @target = target || {}
       @rails  = rails  || {}
-
-      @adapters = adapters || {}
-
       @http = OpenStruct.new(http || {
         csrf_token: nil,
         cookies:    {},
         headers:    {},
         user_agent: nil,
       })
-
-      @metadata = OpenStruct.new(metadata || {})
     end
 
     def [](name)
