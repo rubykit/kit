@@ -12,7 +12,7 @@ class Kit::DummyAppContainer::Controllers::ApiController < ::ActionController::A
       list: [
         Kit::Router::Adapters::HttpRails::Request::Import.method(:import_request),
         :api_resolve_current_user,
-        ->(router_request:) { router_request.target[:endpoint].call(router_request: router_request) },
+        ->(router_request:) { router_request.endpoint[:callable].call(router_request: router_request) },
       ],
       ctx:  controller_ctx,
     )
