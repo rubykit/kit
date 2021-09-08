@@ -67,3 +67,8 @@ Rails.application.configure do
   end
 
 end
+
+dummy_app_env_file = "#{ KIT_APP_PATHS['GEM_SPEC_ROOT'] }/config/environments/production.rb"
+if File.exist?(dummy_app_env_file)
+  require dummy_app_env_file
+end

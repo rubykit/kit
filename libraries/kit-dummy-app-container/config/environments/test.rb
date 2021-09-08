@@ -50,3 +50,8 @@ Rails.application.configure do
   # Raises error for missing translations.
   # config.action_view.raise_on_missing_translations = true
 end
+
+dummy_app_env_file = "#{ KIT_APP_PATHS['GEM_SPEC_ROOT'] }/config/environments/test.rb"
+if File.exist?(dummy_app_env_file)
+  require dummy_app_env_file
+end
