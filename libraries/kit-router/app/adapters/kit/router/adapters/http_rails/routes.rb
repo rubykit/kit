@@ -14,7 +14,7 @@ module Kit::Router::Adapters::HttpRails::Routes
     [:ok]
   end
 
-  def self.mount_http_target(id:, path:, verb:, rails_router_context:, rails_endpoint_wrapper:, namespace: nil)
+  def self.mount_http_target(route_id:, path:, verb:, rails_router_context:, rails_endpoint_wrapper:, namespace: nil)
     return [:ok] if ENV['KIT_ROUTER'] == 'false'
 
     Kit::Organizer.call(
@@ -27,7 +27,7 @@ module Kit::Router::Adapters::HttpRails::Routes
         self.method(:add_mountpoint_to_record),
       ],
       ctx:  {
-        id:                   id,
+        route_id:             route_id,
         path:                 path,
         verb:                 verb,
         namespace:            namespace,
@@ -45,7 +45,7 @@ module Kit::Router::Adapters::HttpRails::Routes
     [:ok]
   end
 
-  def self.mount_rails_target(id:, path:, verb:, rails_router_context:, namespace: nil)
+  def self.mount_rails_target(route_id:, path:, verb:, rails_router_context:, namespace: nil)
     Kit::Organizer.call(
       list: [
         self.method(:load_record),
@@ -56,7 +56,7 @@ module Kit::Router::Adapters::HttpRails::Routes
         self.method(:add_mountpoint_to_record),
       ],
       ctx:  {
-        id:                   id,
+        route_id:             route_id,
         path:                 path,
         verb:                 verb,
         namespace:            namespace,
@@ -67,41 +67,43 @@ module Kit::Router::Adapters::HttpRails::Routes
 
   # --------------------------------------------------------------------------
 
-  def self.load_record(id:)
-    alias_record    = Kit::Router::Services::Store::Alias.get_alias(id: id)
-    endpoint_record = Kit::Router::Services::Store::Endpoint.get_endpoint!(id: id)[1][:endpoint_record]
+  def self.load_record(route_id:)
+    alias_record    = Kit::Router::Services::Store::Alias.get_alias(id: route_id)
+    endpoint_record = Kit::Router::Services::Store::Endpoint.get_endpoint!(id: route_id)[1][:endpoint_record]
 
     endpoint_types = endpoint_record[:types].keys
     if !Kit::Router::Services::Router.can_mount?(endpoint_types: endpoint_types, mounter_type: MOUNT_TYPE)
-      raise "Kit::Router | Can't mount `#{ endpoint_record[:id] }` (through: `#{ id }`) | Endpoint mount type: `#{ endpoint_record[:types] }` | Current mount type: `#{ MOUNT_TYPE }`"
+      raise "Kit::Router | Can't mount `#{ endpoint_record[:id] }` (through: `#{ route_id }`) | Endpoint mount type: `#{ endpoint_record[:types] }` | Current mount type: `#{ MOUNT_TYPE }`"
     end
 
     [:ok, endpoint_record: endpoint_record, alias_record: alias_record]
   end
 
-  def self.ensure_valid_mountpoint!(id:, path:, verb:)
+  def self.ensure_valid_mountpoint!(route_id:, path:, verb:)
     if path.blank?
-      raise "Kit::Router | empty path for `#{ id }`"
+      raise "Kit::Router | empty path for `#{ route_id }`"
     end
 
     verb = verb.to_s.downcase.to_sym
     if !Kit::Router::Adapters::HttpRails::VERBS.include?(verb)
-      raise "Kit::Router | unsupported http verb for `#{ id }` (`#{ verb }`)"
+      raise "Kit::Router | unsupported http verb for `#{ route_id }` (`#{ verb }`)"
     end
 
     [:ok, rails_mountpoint: { data: [verb, path], meta: {} }]
   end
 
-  def self.ensure_kit_router_target!(endpoint_record:, id:)
-    kit_router_target = endpoint_record[:target]
-    if kit_router_target&.respond_to?(:call) != true
-      raise "Kit::Router | invalid target for #{ endpoint_record[:id] }"
+  def self.ensure_kit_router_target!(endpoint_record:, route_id:)
+    endpoint_id       = endpoint_record[:id]
+    endpoint_callable = endpoint_record[:target]
+
+    if endpoint_callable&.respond_to?(:call) != true
+      raise "Kit::Router | invalid target for #{ endpoint_id }"
     end
 
     target = {
-      route_id:     id,
-      endpoint_uid: endpoint_record[:id],
-      endpoint:     kit_router_target,
+      route_id:          route_id,
+      endpoint_id:       endpoint_id,
+      endpoint_callable: endpoint_callable,
     }
 
     [:ok, kit_router_target: target]
@@ -123,8 +125,9 @@ module Kit::Router::Adapters::HttpRails::Routes
 
   # Declare endpoint in Rails router with a Rails wrapper.
   # NOTE: please only call this directly if you understand what you are doing!
-  def self.mount_in_rails(rails_router_context:, rails_target:, rails_mountpoint:, endpoint_record:, id:, kit_router_target: nil)
+  def self.mount_in_rails(rails_router_context:, rails_target:, rails_mountpoint:, kit_router_target: nil)
     http_verb, http_path = rails_mountpoint[:data]
+
     #puts "DEBUG: mount in rails: #{ http_verb } #{ http_path }"
     rails_router_context.send(:match, http_path, {
       controller: rails_target[0],

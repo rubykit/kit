@@ -15,7 +15,7 @@ class Kit::Router::Controllers::HttpRails::DefaultBaseRouterController < ::Actio
     _status, ctx = Kit::Organizer.call(
       list: [
         Kit::Router::Adapters::HttpRails::Request::Import.method(:import_request),
-        ->(router_request:) { router_request.target[:endpoint].call(router_request: router_request) },
+        ->(router_request:) { router_request.endpoint[:callable].call(router_request: router_request) },
       ],
       ctx:  controller_ctx,
     )

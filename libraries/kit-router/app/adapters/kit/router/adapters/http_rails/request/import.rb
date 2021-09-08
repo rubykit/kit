@@ -1,9 +1,12 @@
 module Kit::Router::Adapters::HttpRails::Request
 
   # Import Rails request to KitRequest.
+  #
+  # ### References
+  # - https://github.com/rails/rails/blob/master/actionpack/lib/action_dispatch/http/headers.rb
+  # - https://github.com/rails/rails/blob/master/actionpack/lib/action_dispatch/http/request.rb
+  #
   module Import
-
-    # NOTE: very much a WIP!
 
     def self.import_request(rails_request:, rails_cookies:, rails_controller:)
       if (router_request = rails_request.instance_variable_get(:@kit_router_request))
@@ -13,20 +16,28 @@ module Kit::Router::Adapters::HttpRails::Request
       _, cookies_ctx = import_rails_cookies(rails_cookies: rails_cookies)
       csrf_token     = rails_controller.session[:_csrf_token] ||= SecureRandom.base64(32)
 
+      kit_router_target = rails_request.params[:kit_router_target] || {}
+
       router_request = Kit::Router::Models::RouterRequest.new(
-        params: rails_request.params.to_h.symbolize_keys,
-        root:   rails_request,
-        ip:     rails_request.ip,
-        http:   {
-          csrf_token: csrf_token,
-          cookies:    cookies_ctx[:cookies],
-          headers:    rails_request.headers,
-          user_agent: rails_request.user_agent,
+        params:   rails_request.params.to_h.symbolize_keys,
+
+        route_id: kit_router_target[:route_id],
+        endpoint: {
+          id:       kit_router_target[:endpoint_id],
+          callable: kit_router_target[:endpoint_callable],
         },
-        target: rails_request.params[:kit_router_target],
-        rails:  {
-          controller: rails_controller,
-          request:    rails_request,
+
+        ip:       rails_request.ip,
+
+        adapters: {
+          http_rails: {
+            rails_controller: rails_controller,
+            rails_request:    rails_request,
+            csrf_token:       csrf_token,
+            cookies:          cookies_ctx[:cookies],
+            headers:          rails_request.headers,
+            user_agent:       rails_request.user_agent,
+          },
         },
       )
 

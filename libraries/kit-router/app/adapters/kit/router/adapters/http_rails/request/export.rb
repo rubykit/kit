@@ -20,7 +20,7 @@ module Kit::Router::Adapters::HttpRails::Request
       )
     end
 
-    def self.handle_result(router_request:, router_response:, rails_controller:, rails_response:)
+    def self.handle_result(router_response:, rails_controller:, rails_response:)
       metadata      = router_response[:metadata] || {}
       mime          = router_response[:mime]
       content       = router_response[:content]
@@ -70,7 +70,7 @@ module Kit::Router::Adapters::HttpRails::Request
 
     # REF: https://api.rubyonrails.org/v5.1.7/classes/ActionDispatch/Cookies.html
     def self.export_rails_cookies(router_request:, rails_cookies:)
-      data = router_request.http.cookies
+      data = router_request[:adapters][:http_rails][:cookies]
       return [:ok] if data.blank?
 
       data.each do |name, cookie|
