@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 3.0'
 
   s.add_dependency 'slim-rails'
-  s.add_dependency 'view_component', '~> 2.30.0'
+  s.add_dependency 'view_component', '>= 2.40.0'
 
   s.add_development_dependency 'rubocop'
 
