@@ -28,10 +28,10 @@ Gem::Specification.new do |s|
   s.add_dependency 'paranoia',                    '~> 2.4', '>= 2.4.3'
   s.add_dependency 'pg',                          '~> 1.2.3'
 
-  s.add_dependency 'view_component',              '~> 2.30.0'
-
   s.add_dependency 'rails',                       '~> 6.1.0'
   s.add_dependency 'slim-rails'
+
+  s.add_dependency 'i18n-interpolate_nested'
 
   s.add_dependency 'activeadmin', '~> 2.9.0'
 
