@@ -11,6 +11,7 @@ module Kit::Organizer::Services::Callable
       alias:  Kit::Organizer::Services::Callable::Alias.method(:resolve),
       wrap:   Kit::Organizer::Services::Callable::Wrap.method(:resolve),
       method: Kit::Organizer::Services::Callable::Method.method(:resolve),
+      if:     Kit::Organizer::Services::Callable::If.method(:resolve),
     }
   end
 
