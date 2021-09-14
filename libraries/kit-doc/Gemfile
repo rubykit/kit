@@ -3,6 +3,8 @@ git_source(:github) { |repo| "https://github.com/#{ repo }.git" }
 
 gemspec
 
+gem 'kit-support', path: '../../libraries/kit-support'
+
 group :development do
   gem 'pry'
 end

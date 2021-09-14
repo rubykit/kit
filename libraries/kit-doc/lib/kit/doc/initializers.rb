@@ -1,1 +1,0 @@
-require_relative 'initializers/array_extensions'

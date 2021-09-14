@@ -11,7 +11,6 @@ module Kit::Doc # rubocop:disable Style/Documentation
 end
 
 #require 'kit/doc/config'
-require 'kit/doc/initializers'
 require 'kit/doc/redcarpet'
 require 'kit/doc/yard'
 require 'kit/doc/services'
