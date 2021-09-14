@@ -77,6 +77,11 @@ class Kit::DummyAppContainer::Application < ::Rails::Application # rubocop:disab
     val = config.paths.add path, load_path: true
 
     ::ActiveRecord::Tasks::DatabaseTasks.db_dir = val.first
+
+    migration_dir = "#{ path }/migrate"
+    if File.exist?(migration_dir)
+      config.paths['db/migrate'] << migration_dir
+    end
   end
 
   if (path = KIT_APP_PATHS['GEM_ASSETS'])
