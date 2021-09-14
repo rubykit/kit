@@ -1,0 +1,6 @@
+source 'https://rubygems.org'
+
+gemspec
+
+gem 'kit-contract',  path: '../../libraries/kit-contract'
+gem 'kit-organizer', path: '../../libraries/kit-organizer'
