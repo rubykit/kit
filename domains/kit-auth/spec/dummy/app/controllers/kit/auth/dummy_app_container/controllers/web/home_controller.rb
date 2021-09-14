@@ -4,9 +4,10 @@ class Kit::Auth::DummyAppContainer::Controllers::Web::HomeController < Kit::Auth
     uid:     'kit-auth|spec_app|home',
     aliases: {
       'app|home' => [
-        'web|users|after_sign_in',
-        'web|users|after_sign_up',
-        'web|users|after_sign_out',
+        'web|users|sign_in|after',
+        'web|users|sign_up|after',
+        'web|users|sign_out|after',
+        'web|users|password_reset|after',
       ],
     },
     types:   {

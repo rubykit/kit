@@ -1,0 +1,14 @@
+en:
+  kit:
+    auth:
+      pages:
+        users:
+          sign_up:
+
+            with_password:
+              title: "Sign up to get started!"
+              submit: "Sign up with email"
+
+              sign_in:
+                pre_link_text: "Already have an account?"
+                link_text: "Sign in!"

@@ -16,7 +16,8 @@ gem 'kit-log',             path: '../../libraries/kit-log' # DEV MODE
 gem 'kit-organizer',       path: '../../libraries/kit-organizer' # DEV MODE
 gem 'kit-pagination',      path: '../../libraries/kit-pagination' # DEV MODE
 gem 'kit-router',          path: '../../libraries/kit-router' # DEV MODE
-gem 'kit-view_components',   path: '../../libraries/kit-view_components' # DEV MODE
+gem 'kit-support',         path: '../../libraries/kit-support' # DEV MODE
+gem 'kit-view_components', path: '../../libraries/kit-view_components' # DEV MODE
 
 gem 'kit_theme_bootstrap', git: 'https://github.com/rubykit/kit_theme_bootstrap', branch: 'main'
 
@@ -29,6 +30,14 @@ gem 'slim-rails' # DEV MODE ? doesn't get loaded otherwise
 # TMP: because of the require
 gem 'view_component', require: 'view_component/engine'
 
+gem 'bootstrap-email', '>= 1.0.0.alpha'
+gem 'kit_liquid_rails'
+#gem 'letter_opener', git: 'https://github.com/Kulgar/letter_opener.git', group: :development
+gem 'letter_opener', group: :development
+gem 'liquid', '~> 5.0', '>= 5.0.1'
+
+gem 'i18n-interpolate_nested'
+
 group :development do
   gem 'annotate', '~> 2.7', '>= 2.7.4'
 end
@@ -36,7 +45,7 @@ end
 group :development, :test do
   gem 'puma'
 
-  gem 'awesome_print'
+  gem 'awesome_print', github: 'rubykit/awesome_print', branch: 'feature/custom-nesting'
   gem 'colorize'
 
   gem 'better_errors'

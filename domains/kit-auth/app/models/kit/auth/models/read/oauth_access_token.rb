@@ -15,7 +15,7 @@ module Kit::Auth::Models::Read
       :expires_in,
       :revoked_at,
       :refresh_token,
-      :last_request_metadata_id,
+      #:last_request_metadata_id,
     ]
 
     belongs_to :oauth_application,

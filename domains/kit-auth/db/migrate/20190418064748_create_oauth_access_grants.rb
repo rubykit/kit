@@ -3,6 +3,7 @@ class CreateOauthAccessGrants < ActiveRecord::Migration[5.2] # rubocop:disable S
   def change
     create_table :oauth_access_grants do |t|
       t.timestamps null: false
+      t.datetime   :revoked_at
       t.datetime   :deleted_at,         default: nil, index: true
 
       t.references :resource_owner,                   index: true, null: false, foreign_key: { to_table: :users }
@@ -12,7 +13,6 @@ class CreateOauthAccessGrants < ActiveRecord::Migration[5.2] # rubocop:disable S
       t.string     :scopes
       t.integer    :expires_in,                                    null: false
 
-      t.datetime   :revoked_at
 
       t.text       :redirect_uri,                                  null: false
     end

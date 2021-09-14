@@ -1,0 +1,5 @@
+- services.each_as_kwargs do |name:, icon:, link:|
+  a.btn.btn-outline-secondary.text-center.mx-3.d-inline-flex.align-items-center href=link target="_blank" rel="noopener noreferrer"
+    i.fab-extra.me-2 class=icon
+    span.fw-bold
+      | Open #{ name }

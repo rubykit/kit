@@ -4,7 +4,12 @@ header#header.header
     .container.container-max-xl
 
       a.navbar-brand.h3.m-0 href="#"
-        | Dummy container - Kit::Auth
+        img.d-inline-block height="30" src='https://raw.githubusercontent.com/rubykit/kit/master/docs/assets/images/rubykit-framework-logo.svg' title="Kit::Auth"
+        span.ms-2.fw-bold.position-relative style='letter-spacing: 1px; top: 2px;'
+          | Kit
+          span.text-muted.fw-normal.px-1
+            | ::
+          | Auth
 
       button.navbar-toggler.p-0.border-0 data-toggle="offcanvas" type="button"
         span.navbar-toggler-icon
@@ -23,11 +28,11 @@ header#header.header
                 = current_user.email
             li.nav-item
               = router_link_to(id: 'web|users|sign_out', html: { class: 'nav-link' }, request: request)
-                | Sign out
+                = I18n.t('kit.auth.pages.header.sign_out.action')
           - else
             li.nav-item
               = router_link_to(id: 'web|users|sign_in', html: { class: 'nav-link' }, request: request)
-                | Sign in
+                = I18n.t('kit.auth.pages.header.sign_in.action')
             li.nav-item
               = router_link_to(id: 'web|users|sign_up', html: { class: 'nav-link' }, request: request)
-                | Sign up
+                = I18n.t('kit.auth.pages.header.sign_up.action')

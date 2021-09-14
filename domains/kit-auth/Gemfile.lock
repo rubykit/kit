@@ -1,6 +1,14 @@
 GIT
+  remote: https://github.com/rubykit/awesome_print.git
+  revision: d5b47c15cdca52a5cfd624bc15c86a7efea8b4c2
+  branch: feature/custom-nesting
+  specs:
+    awesome_print (1.9.1)
+      paint (~> 2.2)
+
+GIT
   remote: https://github.com/rubykit/kit_theme_bootstrap
-  revision: b27dbf165cc0cc2443df5b92414431ea8a47b9a4
+  revision: e9df71966a5e2b54702a5d3863de9a4f3adc16c1
   branch: main
   specs:
     kit_theme_bootstrap (0.1.0)
@@ -49,13 +57,12 @@ PATH
     kit-domain (0.1.0)
       activeadmin (~> 2.9.0)
       activerecord-nulldb-adapter (~> 0.4.0)
+      i18n-interpolate_nested
       multiverse (~> 0.2.1)
       paranoia (~> 2.4, >= 2.4.3)
       pg (~> 1.2.3)
       rails (~> 6.1.0)
-      rails_event_store
       slim-rails
-      view_component (~> 2.30.0)
 
 PATH
   remote: ../../libraries/kit-dotenv
@@ -115,11 +122,16 @@ PATH
     kit-rspec-formatter (0.1.0)
 
 PATH
+  remote: ../../libraries/kit-support
+  specs:
+    kit-support (0.1.0)
+
+PATH
   remote: ../../libraries/kit-view_components
   specs:
     kit-view_components (0.1.0)
       slim-rails
-      view_component (~> 2.30.0)
+      view_component (>= 2.40.0)
 
 PATH
   remote: .
@@ -180,7 +192,7 @@ GEM
     active_link_to (1.0.5)
       actionpack
       addressable
-    active_material (1.4.2)
+    active_material (1.5.2)
     activeadmin (2.9.0)
       arbre (~> 1.2, >= 1.2.1)
       formtastic (>= 3.1, < 5.0)
@@ -205,8 +217,6 @@ GEM
     activerecord (6.1.4.1)
       activemodel (= 6.1.4.1)
       activesupport (= 6.1.4.1)
-    activerecord-import (1.0.8)
-      activerecord (>= 3.2)
     activerecord-nulldb-adapter (0.4.0)
       activerecord (>= 2.0.0)
     activestorage (6.1.4.1)
@@ -224,21 +234,15 @@ GEM
       zeitwerk (~> 2.3)
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
-    aggregate_root (2.2.0)
-      ruby2_keywords
-      ruby_event_store (= 2.2.0)
     annotate (2.7.5)
       activerecord (>= 3.2, < 7.0)
       rake (>= 10.4, < 13.0)
     arbre (1.4.0)
       activesupport (>= 3.0.0, < 6.2)
       ruby2_keywords (>= 0.0.2, < 1.0)
-    arkency-command_bus (0.4.0)
-      thread_safe
     ast (2.4.2)
-    autoprefixer-rails (10.3.1.0)
+    autoprefixer-rails (10.3.3.0)
       execjs (~> 2)
-    awesome_print (1.9.2)
     bcrypt (3.1.16)
     better_errors (2.9.1)
       coderay (>= 1.0.0)
@@ -250,6 +254,10 @@ GEM
       autoprefixer-rails (>= 9.1.0)
       popper_js (>= 2.9.3, < 3)
       sassc-rails (>= 2.0.0)
+    bootstrap-email (1.0.0.alpha4)
+      nokogiri (~> 1.6)
+      premailer (~> 1.7)
+      sassc (~> 2.0)
     browser (5.3.1)
     builder (3.2.4)
     byebug (11.1.3)
@@ -267,16 +275,18 @@ GEM
     concurrent-ruby (1.1.9)
     connection_pool (2.2.5)
     crass (1.0.6)
+    css_parser (1.10.0)
+      addressable
     damerau-levenshtein (1.3.3)
     database_cleaner (2.0.1)
       database_cleaner-active_record (~> 2.0.0)
-    database_cleaner-active_record (2.0.0)
+    database_cleaner-active_record (2.0.1)
       activerecord (>= 5.a)
       database_cleaner-core (~> 2.0.0)
     database_cleaner-core (2.0.1)
     debug_inspector (1.1.0)
     diff-lcs (1.4.4)
-    docile (1.3.5)
+    docile (1.4.0)
     doorkeeper (5.4.0)
       railties (>= 5)
     dotenv (2.7.6)
@@ -287,23 +297,37 @@ GEM
       damerau-levenshtein (~> 1.2)
     erubi (1.10.0)
     execjs (2.8.1)
-    factory_bot (6.1.0)
+    factory_bot (6.2.0)
       activesupport (>= 5.0.0)
-    factory_bot_rails (6.1.0)
-      factory_bot (~> 6.1.0)
+    factory_bot_rails (6.2.0)
+      factory_bot (~> 6.2.0)
       railties (>= 5.0.0)
-    faker (2.17.0)
+    faker (2.19.0)
       i18n (>= 1.6, < 2)
-    faraday (1.3.0)
+    faraday (1.7.1)
+      faraday-em_http (~> 1.0)
+      faraday-em_synchrony (~> 1.0)
+      faraday-excon (~> 1.1)
+      faraday-httpclient (~> 1.0.1)
       faraday-net_http (~> 1.0)
+      faraday-net_http_persistent (~> 1.1)
+      faraday-patron (~> 1.0)
+      faraday-rack (~> 1.0)
       multipart-post (>= 1.2, < 3)
-      ruby2_keywords
+      ruby2_keywords (>= 0.0.4)
+    faraday-em_http (1.0.0)
+    faraday-em_synchrony (1.0.0)
+    faraday-excon (1.1.0)
+    faraday-httpclient (1.0.1)
     faraday-net_http (1.0.1)
+    faraday-net_http_persistent (1.2.0)
+    faraday-patron (1.0.0)
+    faraday-rack (1.0.0)
     ffi (1.15.4)
     formtastic (4.0.0)
       actionpack (>= 5.2.0)
-    formtastic_i18n (0.6.0)
-    git (1.8.1)
+    formtastic_i18n (0.7.0)
+    git (1.9.1)
       rchardet (~> 1.8)
     globalid (0.5.2)
       activesupport (>= 5.0)
@@ -311,9 +335,12 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
     hashie (4.1.0)
+    htmlentities (4.3.4)
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
-    inherited_resources (1.12.0)
+    i18n-interpolate_nested (1.0.1)
+      i18n (~> 1.2)
+    inherited_resources (1.13.0)
       actionpack (>= 5.2, < 6.2)
       has_scope (~> 0.6)
       railties (>= 5.2, < 6.2)
@@ -323,7 +350,7 @@ GEM
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
     json (2.5.1)
-    jwt (2.2.2)
+    jwt (2.2.3)
     kaminari (1.2.1)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.2.1)
@@ -336,7 +363,16 @@ GEM
       activerecord
       kaminari-core (= 1.2.1)
     kaminari-core (1.2.1)
-    listen (3.5.1)
+    kit_liquid_rails (0.1.0)
+      liquid (~> 5.0)
+      railties (~> 6.0)
+      view_component (~> 2.40)
+    launchy (2.5.0)
+      addressable (~> 2.7)
+    letter_opener (1.7.0)
+      launchy (~> 2.2)
+    liquid (5.0.1)
+    listen (3.7.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     loofah (2.12.0)
@@ -356,8 +392,6 @@ GEM
       activerecord (>= 4.2)
       activesupport (>= 4.2)
       railties (>= 4.2)
-    mustermann (1.1.1)
-      ruby2_keywords (~> 0.0.1)
     nio4r (2.5.8)
     nokogiri (1.12.4)
       mini_portile2 (~> 2.6.1)
@@ -368,20 +402,25 @@ GEM
       multi_json (~> 1.3)
       multi_xml (~> 0.5)
       rack (>= 1.2, < 3)
-    oj (3.11.4)
+    oj (3.13.6)
     omniauth (1.9.1)
       hashie (>= 3.4.6)
       rack (>= 1.6.2, < 3)
     omniauth-rails_csrf_protection (0.1.2)
       actionpack (>= 4.2)
       omniauth (>= 1.3.1)
+    paint (2.2.1)
     parallel (1.20.1)
     paranoia (2.4.3)
       activerecord (>= 4.0, < 6.2)
-    parser (3.0.1.0)
+    parser (3.0.2.0)
       ast (~> 2.4.1)
     pg (1.2.3)
     popper_js (2.9.3)
+    premailer (1.15.0)
+      addressable
+      css_parser (>= 1.6.0)
+      htmlentities (>= 4.0.0)
     pry (0.13.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -392,12 +431,10 @@ GEM
       binding_of_caller (~> 1.0)
       pry (~> 0.13)
     public_suffix (4.0.6)
-    puma (5.2.2)
+    puma (5.4.0)
       nio4r (~> 2.0)
     racc (1.5.2)
     rack (2.2.3)
-    rack-protection (2.1.0)
-      rack
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rails (6.1.4.1)
@@ -420,19 +457,6 @@ GEM
       nokogiri (>= 1.6)
     rails-html-sanitizer (1.4.2)
       loofah (~> 2.3)
-    rails_event_store (2.2.0)
-      activejob (>= 3.0)
-      activemodel (>= 3.0)
-      activesupport (>= 3.0)
-      aggregate_root (= 2.2.0)
-      arkency-command_bus (>= 0.4)
-      rails_event_store_active_record (= 2.2.0)
-      ruby_event_store (= 2.2.0)
-      ruby_event_store-browser (= 2.2.0)
-    rails_event_store_active_record (2.2.0)
-      activerecord (>= 5.0)
-      activerecord-import (>= 1.0.2)
-      ruby_event_store (= 2.2.0)
     railties (6.1.4.1)
       actionpack (= 6.1.4.1)
       activesupport (= 6.1.4.1)
@@ -445,12 +469,12 @@ GEM
       activerecord (>= 5.2.4)
       activesupport (>= 5.2.4)
       i18n
-    rb-fsevent (0.10.4)
+    rb-fsevent (0.11.0)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     rchardet (1.8.0)
     redcarpet (3.5.1)
-    redis (4.2.5)
+    redis (4.4.0)
     regexp_parser (2.1.1)
     require_all (1.5.0)
     responders (3.0.1)
@@ -469,7 +493,7 @@ GEM
     rspec-mocks (3.10.2)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.10.0)
-    rspec-rails (5.0.1)
+    rspec-rails (5.0.2)
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       railties (>= 5.2)
@@ -478,25 +502,20 @@ GEM
       rspec-mocks (~> 3.10)
       rspec-support (~> 3.10)
     rspec-support (3.10.2)
-    rubocop (1.12.1)
+    rubocop (1.20.0)
       parallel (~> 1.10)
       parser (>= 3.0.0.0)
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 1.8, < 3.0)
       rexml
-      rubocop-ast (>= 1.2.0, < 2.0)
+      rubocop-ast (>= 1.9.1, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 3.0)
-    rubocop-ast (1.4.1)
-      parser (>= 2.7.1.5)
+    rubocop-ast (1.11.0)
+      parser (>= 3.0.1.1)
     ruby-progressbar (1.11.0)
-    ruby2_keywords (0.0.4)
-    ruby_event_store (2.2.0)
-      concurrent-ruby (~> 1.0, >= 1.1.6)
-    ruby_event_store-browser (2.2.0)
-      ruby_event_store (= 2.2.0)
-      sinatra
-    rubyzip (2.3.0)
+    ruby2_keywords (0.0.5)
+    rubyzip (2.3.2)
     sass (3.7.4)
       sass-listen (~> 4.0.0)
     sass-listen (4.0.0)
@@ -518,7 +537,7 @@ GEM
     selenium-webdriver (3.142.7)
       childprocess (>= 0.5, < 4.0)
       rubyzip (>= 1.2.2)
-    sidekiq (6.2.1)
+    sidekiq (6.2.2)
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
       redis (>= 4.2.0)
@@ -527,11 +546,6 @@ GEM
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.2)
-    sinatra (2.1.0)
-      mustermann (~> 1.0)
-      rack (~> 2.2)
-      rack-protection (= 2.1.0)
-      tilt (~> 2.0)
     slim (4.1.0)
       temple (>= 0.7.6, < 0.9)
       tilt (>= 2.0.6, < 2.1)
@@ -546,21 +560,21 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
-    strong_password (0.0.9)
-    tabulo (2.6.2)
+    strong_password (0.0.10)
+    tabulo (2.7.0)
       tty-screen (= 0.8.1)
-      unicode-display_width (= 1.7.0)
+      unicode-display_width (= 2.0.0)
     temple (0.8.2)
     thor (1.1.0)
-    thread_safe (0.3.6)
     tilt (2.0.10)
     tty-screen (0.8.1)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
-    unicode-display_width (1.7.0)
-    view_component (2.30.0)
-      activesupport (>= 5.0.0, < 7.0)
-    webdrivers (4.6.0)
+    unicode-display_width (2.0.0)
+    view_component (2.40.0)
+      activesupport (>= 5.0.0, < 8.0)
+      method_source (~> 1.0)
+    webdrivers (4.6.1)
       nokogiri (~> 1.6)
       rubyzip (>= 1.3.0)
       selenium-webdriver (>= 3.0, < 4.0)
@@ -580,8 +594,9 @@ PLATFORMS
 
 DEPENDENCIES
   annotate (~> 2.7, >= 2.7.4)
-  awesome_print
+  awesome_print!
   better_errors
+  bootstrap-email (>= 1.0.0.alpha)
   browser
   capybara
   colorize
@@ -589,6 +604,7 @@ DEPENDENCIES
   doorkeeper
   factory_bot_rails
   faker
+  i18n-interpolate_nested
   kit-active-admin!
   kit-app-container!
   kit-auth!
@@ -605,8 +621,12 @@ DEPENDENCIES
   kit-pagination!
   kit-router!
   kit-rspec-formatter!
+  kit-support!
   kit-view_components!
+  kit_liquid_rails
   kit_theme_bootstrap!
+  letter_opener
+  liquid (~> 5.0, >= 5.0.1)
   listen
   paranoia
   pry

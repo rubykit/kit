@@ -12,16 +12,16 @@ class Kit::Auth::DummyAppContainer::Controllers::WebController < Kit::DummyAppCo
 
     _, ctx = Kit::Organizer.call(
       list: [
-        Kit::Router::Services::Adapters::Http::Rails::Request::Import.method(:import_request),
+        Kit::Router::Adapters::HttpRails::Request::Import.method(:import_request),
         [:alias, :web_resolve_current_user],
-        ->(router_request:) { router_request.target[:endpoint].call(router_request: router_request) },
+        ->(router_request:) { router_request.endpoint[:callable].call(router_request: router_request) },
       ],
       ctx:  controller_ctx,
     )
 
     Kit::Organizer.call(
       list: [
-        Kit::Router::Services::Adapters::Http::Rails::Request::Export.method(:export_request),
+        Kit::Router::Adapters::HttpRails::Request::Export.method(:export_request),
       ],
       ctx:  controller_ctx.merge(ctx.slice(:router_request, :router_response)),
     )

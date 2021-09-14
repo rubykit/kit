@@ -1,0 +1,9 @@
+en:
+  kit:
+    auth:
+
+      emails:
+
+        email_confirmation:
+
+          subject: "Please confirm your email."

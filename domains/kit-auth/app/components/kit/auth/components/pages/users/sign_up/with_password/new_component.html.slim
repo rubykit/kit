@@ -1,6 +1,24 @@
-= render Kit::Auth::Components::Forms::SignupFormComponent.new(**args)
+.text-center.mt-4
+  h1.mb-2.fw-bold
+    == t('kit.auth.pages.users.sign_up.with_password.title')
+- if I18n.exists?('kit.auth.pages.users.sign_up.with_password.lead')
+  .text-center.mt-1
+    == t('kit.auth.pages.users.sign_up.with_password.lead')
 
-.text-center.mt-3
-  ' Already have an account?
-  = router_link_to(id: 'web|users|sign_in')
-    b Sign in!
+.row
+  .offset-lg-4.col-lg-4
+
+    .text-center.mt-1
+      ' #{ t('kit.auth.pages.users.sign_up.with_password.sign_in.pre_link_text') }
+      = router_link_to(id: 'web|users|sign_in')
+        b
+          == t('kit.auth.pages.users.sign_up.with_password.sign_in.link_text')
+
+    .mt-4
+      = render Kit::Auth::Components::Shared::SocialButtonsComponent.new(**args)
+
+    .hr.mt-4.mb-5
+      | Or
+
+    .my-4
+      = render Kit::Auth::Components::Forms::SignupFormComponent.new(**args)

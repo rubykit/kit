@@ -1,0 +1,8 @@
+.row.g-1
+  - social_services.each_as_kwargs do |name:, icon:|
+    .col-3.text-center
+      .btn.btn-ghost-soft-secondary.text-center.col-12
+        .h3.mb-0
+          i.fab class=icon
+        .small
+          = name

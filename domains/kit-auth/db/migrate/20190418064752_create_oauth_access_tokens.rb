@@ -3,20 +3,22 @@ class CreateOauthAccessTokens < ActiveRecord::Migration[5.2] # rubocop:disable S
   def change
     create_table :oauth_access_tokens do |t|
       t.timestamps null: false
-      t.datetime   :deleted_at,         default: nil, index: true
+      t.datetime   :revoked_at
+      t.datetime   :deleted_at,            index: true, default: nil
 
-      t.references :resource_owner,                   index: true, null: false, foreign_key: { to_table: :users }
-      t.references :application,                      index: true, null: false, foreign_key: { to_table: :oauth_applications }
+      t.references :resource_owner,        index: true, null: false, foreign_key: { to_table: :users }
+      t.references :application,           index: true, null: false, foreign_key: { to_table: :oauth_applications }
 
-      t.string     :token,                            index: true, null: false, unique: true
+      t.string     :token,                 index: true, null: false, unique: true
+      t.string     :hash_strategy
+
       t.string     :scopes
       t.integer    :expires_in
 
-      t.datetime   :revoked_at
+      t.text       :refresh_token,         index: true,              unique: true
 
-      t.text       :refresh_token,                    index: true,              unique: true
+      #t.references :last_request_metadata,                                     foreign_key: { to_table: :request_metadata }
 
-      t.references :last_request_metadata,                                      foreign_key: { to_table: :request_metadata }
 
       # If there is a previous_refresh_token column,
       # refresh tokens will be revoked after a related access token is used.

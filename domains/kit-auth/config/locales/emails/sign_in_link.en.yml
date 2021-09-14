@@ -1,0 +1,9 @@
+en:
+  kit:
+    auth:
+
+      emails:
+
+        sign_in_link:
+
+          subject: "Your magic-link"

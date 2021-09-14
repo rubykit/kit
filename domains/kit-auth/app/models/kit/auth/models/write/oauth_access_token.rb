@@ -17,7 +17,7 @@ module Kit::Auth::Models::Write
       :expires_in,
       :revoked_at,
       :refresh_token,
-      :last_request_metadata_id,
+      #:last_request_metadata_id,
     ]
 
     belongs_to :oauth_application,
@@ -29,7 +29,8 @@ module Kit::Auth::Models::Write
       foreign_key: 'resource_owner_id'
 
     belongs_to :last_request_metadata,
-      class_name: 'Kit::Auth::Models::Write::RequestMetadata'
+      class_name: 'Kit::Auth::Models::Write::RequestMetadata',
+      optional:   true
 
   end
 end

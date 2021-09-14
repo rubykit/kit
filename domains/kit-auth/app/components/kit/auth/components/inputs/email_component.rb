@@ -1,10 +1,8 @@
-module Kit::Auth::Components::Inputs
-  class EmailComponent < Kit::Auth::Components::Inputs::InputComponent
+class Kit::Auth::Components::Inputs::EmailComponent < Kit::Auth::Components::Inputs::InputComponent
 
-    def initialize(*, **)
-      super
-      @input_type = 'email'
-    end
-
+  def initialize(*, **)
+    super
+    @input_type = 'email'
   end
+
 end

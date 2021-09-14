@@ -1,0 +1,11 @@
+.text-center.mt-4
+  h1.mb-2.fw-bold
+    == t('kit.auth.pages.users.password_reset.title')
+- if I18n.exists?('kit.auth.pages.users.password_reset.lead')
+  .text-center.mt-1
+    == t('kit.auth.pages.users.password_reset.lead')
+
+.row
+  .offset-lg-4.col-lg-4
+    .mt-6
+      = render Kit::Auth::Components::Forms::PasswordResetComponent.new(**args)

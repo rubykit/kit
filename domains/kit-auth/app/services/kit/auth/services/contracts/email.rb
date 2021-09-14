@@ -15,7 +15,7 @@ module Kit::Auth::Services::Contracts::Email
     )
   end
 
-  def self.check_format(email:, email_confirmation: nil)
+  def self.check_format(email:)
     response = EmailInquire.validate(email)
 
     if response.status == :invalid

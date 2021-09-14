@@ -1,0 +1,45 @@
+en:
+  kit:
+    auth:
+      pages:
+        users:
+          sign_in:
+
+            with_password:
+
+              title: "Welcome back!"
+              lead: "Sign in to access your account."
+              submit: "Sign in with email"
+
+              sign_up:
+                pre_link_text: "Not registered?"
+                link_text: "Create an account!"
+
+              password_reset:
+                pre_link_text: 'Forgot your password?'
+                link_text: 'Get a reset link.'
+
+              magic_link:
+                pre_link_text: 'Forgot your password?'
+                link_text: 'Get help signing in.'
+
+            with_magic_link:
+
+              title: "Sign in without your password"
+              lead: "We'll email you a link to sign in to your account, password-free!"
+              submit: "Continue"
+
+              password_reset:
+                link_text: "Reset your password"
+
+              sign_in:
+                link_text: "Back to Sign in"
+
+              after:
+                title: "Check your email!"
+                lead: "To login password-free, tap the button in the email we sent to <b>%{email}</b>"
+
+                magic_link:
+                  pre_link_text: "Wrong email address? Please "
+                  link_text: "re-enter email address"
+                  post_link_text: "."

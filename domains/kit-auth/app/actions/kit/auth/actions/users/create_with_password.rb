@@ -7,8 +7,8 @@ module Kit::Auth::Actions::Users::CreateWithPassword
         #Kit::Auth::Services::Contracts::EmailSignup.method(:validate),
         #Kit::Auth::Services::Contracts::Password.method(:validate),
         Kit::Auth::Services::Password.method(:generate_hashed_secret),
-        self.method(:persist_user),
-        self.method(:fire_user_created_event),
+        Kit::Auth::Actions::Users::CreateWithPassword.method(:persist_user),
+        Kit::Auth::Actions::Users::CreateWithPassword.method(:send_event),
       ],
       ctx:  {
         email:    email,
@@ -40,8 +40,15 @@ module Kit::Auth::Actions::Users::CreateWithPassword
     end
   end
 
-  def self.fire_user_created_event(user:)
-    # TODO: fire event!
+  def self.send_event(user:)
+    Kit::Router::Services::Adapters.cast(
+      route_id:     'event|user|auth|sign_up',
+      adapter_name: :async,
+      params:       {
+        user: user,
+        type: 'email',
+      },
+    )
 
     [:ok]
   end

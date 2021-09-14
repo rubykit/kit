@@ -5,7 +5,9 @@ module Kit::Auth::Controllers::Web
       return [:ok, current_user: router_request.metadata[:current_user]] if router_request.metadata[:current_user]
 
       Kit::Router::Controllers::Http.redirect_to(
-        location: Kit::Router::Services::Adapters::Http::Mountpoints.path(id: 'web|users|sign_in'),
+        location: Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|sign_in'),
+        alert:    'This page requires you to be signed-in.',
+
       )
     end
 
@@ -15,7 +17,8 @@ module Kit::Auth::Controllers::Web
       return [:ok] if !router_request.metadata[:current_user]
 
       Kit::Router::Controllers::Http.redirect_to(
-        location: Kit::Router::Services::Adapters::Http::Mountpoints.path(id: 'web|users|after_sign_in'),
+        location: Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|sign_in|after'),
+        alert:    'This page requires you to be signed-out.',
       )
     end
 
@@ -24,12 +27,13 @@ module Kit::Auth::Controllers::Web
     def self.redirect_if_missing_scope!(router_request:, scope:)
       model = router_request.metadata[:current_user_oauth_access_token]
       if model
-        model_scopes = OAuth::Scopes.from_string(model.scopes)
-        return [:ok] if model_scopes.includes?(scope)
+        model_scopes = Doorkeeper::OAuth::Scopes.from_string(model.scopes)
+        return [:ok] if model_scopes.include?(scope.to_s)
       end
 
       Kit::Router::Controllers::Http.redirect_to(
-        location: Kit::Router::Services::Adapters::Http::Mountpoints.path(id: 'web|users|sign_in'),
+        location: Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|sign_in'),
+        alert:    "Missing scope: #{ scope }",
       )
     end
 

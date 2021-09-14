@@ -6,7 +6,9 @@ module Kit::Auth::Actions::Users::IdentifyUserForRequest
     _status, ctx = Kit::Organizer.call(
       list: [
         self.method(:extract_access_token),
-        self.method(:find_user),
+        self.method(:find_oauth_access_token),
+        self.method(:ensure_valid_token),
+        self.method(:export_user_to_router_request),
       ],
       ctx:  {
         router_request:    router_request,
@@ -24,13 +26,13 @@ module Kit::Auth::Actions::Users::IdentifyUserForRequest
 
   def self.extract_access_token(router_request:, allow:)
     access_tokens = {
-      param:  router_request.params[:access_token],
-      cookie: router_request.http&.cookies&.dig(:access_token, :value),
       header: nil,
+      param:  router_request.params[:access_token],
+      cookie: router_request.dig(:adapters, :http_rails, :cookies, :access_token, :value),
     }
 
     # REF: https://www.iana.org/assignments/http-authschemes/http-authschemes.xhtml
-    if !(auth_header = router_request.http.headers['Authorization']).blank?
+    if !(auth_header = router_request.adapters[:http_rails][:headers]['Authorization']).blank?
       token = auth_header.split('Bearer ')[1]
       if !token.blank?
         access_tokens[:header] = token
@@ -43,15 +45,15 @@ module Kit::Auth::Actions::Users::IdentifyUserForRequest
 
     values = access_tokens.values.compact.uniq
     if values.size == 0
-      return [:error, { attribute: :access_token, desc: 'is missing' }]
-    elsif values.size > 1
-      return [:error, { attribute: :access_token, desc: 'Conflicting access tokens provided.' }]
+      [:error, { attribute: :access_token, desc: 'is missing' }]
+    #elsif values.size > 1
+    #  [:error, { attribute: :access_token, desc: 'conflicting access tokens provided.' }]
+    else
+      [:ok, access_token: values.first]
     end
-
-    [:ok, access_token: values.first]
   end
 
-  def self.find_user(access_token:, oauth_application:)
+  def self.find_oauth_access_token(router_request:, access_token:, oauth_application:)
     secret_strategy = ::Doorkeeper.configuration.token_secret_strategy
     hashed_secret   = secret_strategy.transform_secret(access_token.to_s)
 
@@ -59,7 +61,33 @@ module Kit::Auth::Actions::Users::IdentifyUserForRequest
       token:          hashed_secret,
       application_id: oauth_application.id,
     })
-    user               = oauth_access_token&.user
+
+    [:ok, oauth_access_token: oauth_access_token]
+  end
+
+  def self.ensure_valid_token(router_request:, oauth_access_token:)
+    valid = true
+
+    if !oauth_access_token
+      valid = false
+    elsif oauth_access_token.revoked_at
+      valid = false
+    elsif (oauth_access_token.created_at + oauth_access_token.expires_in) < DateTime.now
+      valid = false
+    end
+
+    if valid
+      [:ok]
+    else
+      # CLeanup cookies in case that's where we got the token from.
+      router_request.adapters[:http_rails][:cookies][:access_token] = { value: nil, encrypted: true }
+
+      [:error]
+    end
+  end
+
+  def self.export_user_to_router_request(router_request:, oauth_access_token:)
+    user  = oauth_access_token&.user
 
     if user
       [:ok, user: user, oauth_access_token: oauth_access_token]

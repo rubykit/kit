@@ -13,13 +13,13 @@ module Helpers::WebAuthentication
 
     click_button 'Sign in'
 
-    assert_current_path route_uid_to_path('web|users|after_sign_in')
+    assert_current_path route_uid_to_path('web|users|sign_in|after')
   end
 
   def web_sign_out
     click_link 'Sign out'
 
-    assert_current_path route_uid_to_path('web|users|after_sign_out')
+    assert_current_path route_uid_to_path('web|users|sign_out|after')
   end
 
 end

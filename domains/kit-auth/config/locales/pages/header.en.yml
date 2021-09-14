@@ -1,0 +1,14 @@
+en:
+  kit:
+    auth:
+      pages:
+        header:
+
+          sign_up:
+            action: 'Sign up'
+
+          sign_in:
+            action: 'Sign in'
+
+          sign_out:
+            action: 'Sign out'

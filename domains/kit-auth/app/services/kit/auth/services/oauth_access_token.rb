@@ -8,11 +8,16 @@ module Kit::Auth::Services::OauthAccessToken
   end
 
   def self.revoke(oauth_access_token:)
-    oauth_access_token
+    status = oauth_access_token
       .to_write_record
       .update(revoked_at: DateTime.now)
 
-    [:ok]
+    if status
+      oauth_access_token.reload
+      [:ok, oauth_access_token: oauth_access_token]
+    else
+      [:error, "Could not revoke access token ##{ oauth_access_token.id }."]
+    end
   end
 
 end

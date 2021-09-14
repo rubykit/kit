@@ -1,0 +1,16 @@
+.text-center.mt-4
+  h1.mb-2.fw-bold
+    == t('kit.auth.pages.users.password.reset_request.title')
+- if I18n.exists?('kit.auth.pages.users.password.reset_request.lead')
+  .text-center.mt-1
+    == t('kit.auth.pages.users.password.reset_request.lead')
+
+.row
+  .offset-lg-4.col-lg-4
+
+    .mt-4
+      = render Kit::Auth::Components::Forms::PasswordResetRequestComponent.new(**args)
+
+.text-center.mt-3
+  = router_link_to(id: 'web|users|sign_in')
+    == t('kit.auth.pages.users.password.reset_request.sign_in.action')

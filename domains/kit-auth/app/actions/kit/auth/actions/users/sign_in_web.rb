@@ -7,12 +7,26 @@ module Kit::Auth::Actions::Users::SignInWeb
         Kit::Auth::Actions::RequestMetadata::Create,
         Kit::Auth::Actions::OauthAccessTokens::CreateForSignIn,
         Kit::Auth::Actions::OauthAccessTokens::UpdateRequestMetadata,
+        Kit::Auth::Actions::Users::SignInWeb.method(:send_event),
       ],
       ctx:  {
         user:           user,
         router_request: router_request,
       },
     )
+  end
+
+  def self.send_event(user:)
+    Kit::Router::Services::Adapters.cast(
+      route_id:     'event|user|auth|sign_in',
+      adapter_name: :async,
+      params:       {
+        user: user,
+        type: 'email',
+      },
+    )
+
+    [:ok]
   end
 
 end

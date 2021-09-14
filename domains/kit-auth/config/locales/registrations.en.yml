@@ -3,7 +3,6 @@
 en:
   kit:
     auth:
-
       registrations:
         destroyed: "Bye! Your account has been successfully cancelled. We hope to see you again soon."
         signed_up: "Welcome! You have signed up successfully."
@@ -13,7 +12,3 @@ en:
         update_needs_confirmation: "You updated your account successfully, but we need to verify your new email address. Please check your email and follow the confirm link to confirm your new email address."
         updated: "Your account has been updated successfully."
         updated_but_not_signed_in: "Your account has been updated successfully, but since your password was changed, you need to sign in again"
-
-        sign_up:
-          title: "Sign Up"
-          submit: "Sign Up"

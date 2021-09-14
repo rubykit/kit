@@ -1,0 +1,16 @@
+.text-center.mt-4
+  h1.mb-2.fw-bold
+    == t('kit.auth.pages.users.sign_in.with_magic_link.after.title')
+- if I18n.exists?('kit.auth.pages.users.sign_in.with_magic_link.after.lead')
+  .text-center.mt-1
+    == t('kit.auth.pages.users.sign_in.with_magic_link.after.lead', email: email)
+
+.text-center.mt-4
+  = render Kit::Auth::Components::Shared::EmailServicesComponent.new(**args)
+
+.text-center.mt-5
+  == t('kit.auth.pages.users.sign_in.with_magic_link.after.magic_link.pre_link_text')
+  = router_link_to(id: 'web|authorization_tokens|email|new')
+    b
+      == t('kit.auth.pages.users.sign_in.with_magic_link.after.magic_link.link_text')
+  == t('kit.auth.pages.users.sign_in.with_magic_link.after.magic_link..post_link_text')

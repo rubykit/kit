@@ -1,0 +1,22 @@
+/*
+
+= require kit_theme_bootstrap/vendor
+
+*/
+
+@import 'bootstrap/functions';
+
+$font-family-sans-serif: 'Nunito Sans', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
+$font-family-monospace:  'Source Code Pro', SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !default;
+
+// Note: user variables would go here
+@import 'kit_theme_bootstrap/theme/variables/bootstrap';
+@import 'bootstrap/variables';
+@import 'kit_theme_bootstrap/theme/variables/kit';
+
+@import 'bootstrap';
+
+@import 'kit_theme_bootstrap/theme/mixins';
+@import 'kit_theme_bootstrap/theme/components';
+@import 'kit_theme_bootstrap/theme/utilities';
+@import 'kit_theme_bootstrap/theme/vendor';
