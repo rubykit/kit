@@ -25,7 +25,7 @@ module Kit::Router::Adapters::MailerRails
     mailer_class    = router_request.dig(:adapters, :mailer_rails, :mailer_class)  || default_mailer_adapter&.dig(:mailer_class)
     mailer_method   = router_request.dig(:adapters, :mailer_rails, :mailer_method) || default_mailer_adapter&.dig(:mailer_method)
 
-    params = router_request.params.to_h.slice(*MAIL_PARAMETERS)
+    params = router_response.to_h.slice(*MAIL_PARAMETERS)
 
     mailer_instance = ActionMailer::Parameterized::Mailer.new(mailer_class, **{
       params: params,

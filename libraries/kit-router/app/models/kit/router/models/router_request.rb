@@ -12,7 +12,8 @@ module Kit::Router::Models # rubocop:disable Style/ClassAndModuleChildren
     attr_reader(*ATTRS)
 
     def initialize(params:, adapters: nil, endpoint: nil, ip: nil, metadata: nil, route_id: nil, **)
-      @params   = params.is_a?(OpenStruct) ? params : OpenStruct.new(params)
+      #@params   = params.is_a?(OpenStruct) ? params : OpenStruct.new(params)
+      @params   = params   || {}
 
       @adapters = adapters || {}
       @endpoint = endpoint || {}
@@ -35,36 +36,41 @@ module Kit::Router::Models # rubocop:disable Style/ClassAndModuleChildren
     end
 
     def to_h
-      http_dup = http.dup
-      http_dup.headers = http_dup.headers
-        .env
-        .to_h
-        .select { |k, _v| !k.starts_with?('action_') }
-
       {
-        params:   params,
-        ip:       ip,
-        root:     root,
-        http:     http_dup,
-        metadata: metadata,
+        route_id: route_id.dup,
+        params:   params.deep_dup,
+        ip:       ip.dup,
+
+        adapters: adapters.deep_dup,
+        endpoint: endpoint.deep_dup,
+        metadata: metadata.to_h,
       }
     end
 
-    # NOTE: hacky way to not pollute output with `root`, not proud of it.
     def ai(*options)
-      root_saved = @root
+      hash = self.to_h
 
-      tmp_hash = {}
-      tmp_hash.__ap_nest__ = true
-      tmp_hash.__ap_log_name__ = ->(*) { 'ActionDispatch::Request' }
+      # NOTE: too big to display, with little value
+      if hash.dig(:adapters, :http_rails, :rails_request)
+        tmp_hash = {}
+        tmp_hash.__ap_nest__ = true
+        tmp_hash.__ap_log_name__ = ->(*) { 'ActionDispatch::Request' }
 
-      @root = tmp_hash
+        hash[:adapters][:http_rails][:rails_request] = tmp_hash
+      end
 
-      result = self.to_h.ai(*options)
+      if (headers = hash.dig(:adapters, :http_rails, :headers))
+        headers = headers.env.to_h
 
-      @root = root_saved
+        hash[:adapters][:http_rails][:headers] = headers
+          .select { |k, _v| !k.starts_with?('action_') && !k.starts_with?('puma') }
 
-      result
+        hash[:adapters][:http_rails][:headers][:AWESOME_PRINT_SUPPRESSED_KEYS] = headers
+          .keys
+          .select { |k| k.starts_with?('action_') || k.starts_with?('puma') }
+      end
+
+      hash.ai(*options)
     end
 
   end

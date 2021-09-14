@@ -40,30 +40,10 @@ module Kit::Router::Adapters::Http
     end
 
     def self.url(id:, params: nil, mountpoint_type: nil)
-      params          ||= {}
-      mountpoint_type ||= [:http, :rails]
+      path   = path(id: id, params: params, mountpoint_type: mountpoint_type)
+      scheme = (ENV['RAILS_FORCE_SSL'] == 'true') ? 'https' : 'http'
 
-      host   = ENV['URI_HOST']
-      scheme = ENV['URI_SCHEME']
-
-      if scheme.blank?
-        scheme = 'http'
-      end
-
-      # TODO: fix this
-      if host.blank?
-        port = 3000
-        host = 'localhost'
-      end
-
-      current_path = path(id: id, params: params, mountpoint_type: mountpoint_type)
-
-      uri          = URI(current_path)
-      uri.host     = host
-      uri.port     = port
-      uri.scheme   = scheme
-
-      uri.to_s
+      "#{ scheme }://#{ ENV['HTTP_HOST_URL'] }#{ path }"
     end
 
     def self.verb(id:, mountpoint_type: nil)

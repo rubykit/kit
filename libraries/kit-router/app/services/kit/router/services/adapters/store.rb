@@ -28,8 +28,8 @@ module Kit::Router::Services::Adapters::Store
     [:ok, adapter_callable: adapter.method(adapter_method_name)]
   end
 
-  def self.adapter_store
-    @adapter_store ||= create_store
+  def self.default_adapter_store
+    @default_adapter_store ||= create_store
   end
 
   def self.create_store

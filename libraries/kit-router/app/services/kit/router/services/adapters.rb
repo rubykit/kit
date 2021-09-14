@@ -14,6 +14,15 @@ module Kit::Router::Services::Adapters
 
   # Resolve the adapter aliased to `adapter_name` and forward the call.
   def self.cast(route_id:, adapter_name:, params: nil, router_store: nil, adapter_store: nil)
+    status, ctx = Kit::Organizer.call(
+      list: [
+        Kit::Router::Services::Store::Endpoint.method(:get_endpoint),
+      ],
+      ctx:  { id: route_id },
+    )
+
+    return [status, ctx] if status == :error
+
     adapter_call(
       route_id:            route_id,
       adapter_name:        adapter_name,
@@ -42,7 +51,7 @@ module Kit::Router::Services::Adapters
   def self.adapter_call(route_id:, adapter_name:, adapter_method_name:, params: nil, router_store: nil, adapter_store: nil)
     params        ||= {}
     router_store  ||= Kit::Router::Services::Router.router_store
-    adapter_store ||= Kit::Router::Services::Adapters::Store.adapter_store
+    adapter_store ||= Kit::Router::Services::Adapters.default_adapter_store
 
     status, ctx = Kit::Organizer.call(
       list: [
@@ -64,6 +73,10 @@ module Kit::Router::Services::Adapters
     return [status, ctx] if status == :error
 
     ctx[:adapter_callable].call(router_request: ctx[:router_request])
+  end
+
+  def self.default_adapter_store
+    Kit::Router::Services::Adapters::Store.default_adapter_store
   end
 
 end
