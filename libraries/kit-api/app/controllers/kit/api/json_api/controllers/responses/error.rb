@@ -7,7 +7,7 @@ module Kit::Api::JsonApi::Controllers::Responses::Error
   #
   # ### References
   # - https://jsonapi.org/examples/#error-objects
-  def self.generate_response(errors:, status_code: nil)
+  def self.generate_response(router_conn:, errors:, status_code: nil)
     content = {
       errors: errors.map do |error|
         res = {
@@ -34,17 +34,15 @@ module Kit::Api::JsonApi::Controllers::Responses::Error
 
     content_json = content ? ::Oj.dump(content, mode: :json) : nil
 
-    [:ok, {
-      router_response: {
-        mime:     :json_api,
-        content:  content_json,
-        metadata: {
-          http: {
-            status: status_code,
-          },
-        },
+    router_conn[:response].deep_merge!({
+      content: content_json,
+      http:    {
+        status: status_code,
+        mime:   :json_api,
       },
-    },]
+    })
+
+    [:ok, router_conn: router_conn]
   end
 
   # Return status code if unique, or the "most generally applicable" one otherwise.

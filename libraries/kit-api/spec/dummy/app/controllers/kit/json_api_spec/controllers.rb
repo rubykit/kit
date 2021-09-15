@@ -9,12 +9,12 @@ module Kit::JsonApiSpec::Controllers # rubocop:disable Style/Documentation
 
         route_id  = "specs|api|#{ resource_object[:name] }|#{ route_type }"
         route_uid = "kit_api|#{ route_id }"
-        route_fn  = ->(router_request:) do
+        route_fn  = ->(router_conn:) do
           self.api_endpoint_wrapper(
-            endpoint:       endpoint,
-            router_request: router_request,
-            resource:       resource_object,
-            singular:       singular,
+            endpoint:    endpoint,
+            router_conn: router_conn,
+            resource:    resource_object,
+            singular:    singular,
           )
         end
 
@@ -27,7 +27,7 @@ module Kit::JsonApiSpec::Controllers # rubocop:disable Style/Documentation
     end
   end
 
-  def self.api_endpoint_wrapper(router_request:, resource:, singular:, endpoint:)
+  def self.api_endpoint_wrapper(router_conn:, resource:, singular:, endpoint:)
     api_request = {
       config:             KIT_DUMMY_APP_API_CONFIG,
       top_level_resource: resource,
@@ -40,9 +40,9 @@ module Kit::JsonApiSpec::Controllers # rubocop:disable Style/Documentation
         endpoint,
       ],
       ctx:  {
-        router_request: router_request,
-        query_params:   router_request[:params].to_h,
-        api_request:    api_request,
+        router_conn:  router_conn,
+        query_params: router_conn.request[:params].to_h,
+        api_request:  api_request,
       },
     )
 

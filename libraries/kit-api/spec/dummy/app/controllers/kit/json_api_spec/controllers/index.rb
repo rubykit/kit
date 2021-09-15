@@ -2,7 +2,7 @@ require_relative '../../../../../config/initializers/api_config'
 
 module Kit::JsonApiSpec::Controllers::Index # rubocop:disable Style/Documentation
 
-  def self.endpoint(router_request:, query_params:, api_request:)
+  def self.endpoint(router_conn:, query_params:, api_request:)
     Kit::Organizer.call(
       list: [
         Kit::Api::JsonApi::Services::Request::Import.method(:import),
@@ -11,9 +11,9 @@ module Kit::JsonApiSpec::Controllers::Index # rubocop:disable Style/Documentatio
         Kit::Api::JsonApi::Services::Serialization::Query.method(:serialize_query),
       ],
       ctx:  {
-        router_request: router_request,
-        query_params:   query_params,
-        api_request:    api_request,
+        router_conn:  router_conn,
+        query_params: query_params,
+        api_request:  api_request,
       },
     )
   end
