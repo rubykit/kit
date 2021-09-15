@@ -53,11 +53,6 @@ The differences are based on the expectation **at the call site**.
 
 - `inline_call` has the same behaviour than `call`, but it force the use of the `inline` strategy. This strategy ensures that all code gets executed in the same execution context. This is mostly usefull inside `adapters`.
 
-### Questions
-
-- Should `inline_call` work on the same `router_request` while when using `call` & `cast` the router creates a new one?
-- Does `router_request` represent the **connection itself** or an **abstraction of the message** that will be sent on the connection? The later, way simpler.
-
 ### References
 
 - [Elixir GenServer#call](https://hexdocs.pm/elixir/GenServer.html#call/3)
