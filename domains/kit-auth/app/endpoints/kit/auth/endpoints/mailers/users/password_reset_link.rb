@@ -1,11 +1,11 @@
 module Kit::Auth::Endpoints::Mailers::Users::PasswordResetLink
 
-  def self.endpoint(router_request:)
+  def self.endpoint(router_conn:)
     Kit::Organizer.call(
       list: [
         Kit::Auth::Endpoints::Mailers::Users::PasswordResetLink.method(:process),
       ],
-      ctx:  { router_request: router_request },
+      ctx:  { router_conn: router_conn },
     )
   end
 
@@ -15,26 +15,30 @@ module Kit::Auth::Endpoints::Mailers::Users::PasswordResetLink
     aliases: ['mailers|users|password_reset_link'],
   )
 
-  def self.process(router_request:, component: nil)
+  def self.process(router_conn:, component: nil)
     component ||= Kit::Auth::Components::Emails::Users::PasswordResetLinkComponent
 
-    user   = router_request.params[:user]
+    user   = router_conn.request[:params][:user]
     params = {
       user:         user,
-      access_token: router_request.params[:access_token],
+      access_token: router_conn.request[:params][:access_token],
     }
 
     component_instance = component.new(**params)
-    content            = component_instance.local_render(router_request: router_request)
+    content            = component_instance.local_render(router_conn: router_conn)
 
-    [:ok, {
-      router_response: {
-        mime:    :html,
-        to:      user.email,
-        subject: I18n.t('kit.auth.emails.password_reset_link.subject', user: user),
-        content: content,
+    router_conn[:response].deep_merge!({
+      content: content,
+      mailer:  {
+        headers: {
+          to:      user.email,
+          from:    (I18n.t!('kit.auth.emails.password_reset_link.from') rescue I18n.t('kit.auth.emails.from')), # rubocop:disable Style/RescueModifier
+          subject: I18n.t('kit.auth.emails.password_reset_link.subject', user: user),
+        },
       },
-    },]
+    })
+
+    [:ok, router_conn: router_conn]
   end
 
 end

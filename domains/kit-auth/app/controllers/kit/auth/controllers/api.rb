@@ -1,10 +1,10 @@
 module Kit::Auth::Controllers::Api
 
-  def self.load_resource!(router_request:, model:, param: :resource_id, column: :id)
+  def self.load_resource!(router_conn:, model:, param: :resource_id, column: :id)
     param    = param.to_sym
     column ||= param
     column   = column.to_sym
-    value    = router_request.params[param]
+    value    = router_conn.request[:params][param]
 
     if column && !value.blank?
       resource = model.find_by({ column => value })

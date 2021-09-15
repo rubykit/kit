@@ -1,6 +1,6 @@
 module Kit::Auth::Actions::Users::SignInApi
 
-  def self.call(user:, router_request:)
+  def self.call(user:, router_conn:)
     Kit::Organizer.call(
       list: [
         Kit::Auth::Actions::OauthApplications::LoadApi,
@@ -9,8 +9,8 @@ module Kit::Auth::Actions::Users::SignInApi
         Kit::Auth::Actions::OauthAccessTokens::UpdateRequestMetadata,
       ],
       ctx:  {
-        user:           user,
-        router_request: router_request,
+        user:        user,
+        router_conn: router_conn,
       },
     )
   end

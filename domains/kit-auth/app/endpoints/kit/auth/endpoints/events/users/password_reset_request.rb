@@ -1,6 +1,6 @@
 module Kit::Auth::Endpoints::Events::Users::PasswordResetRequest
 
-  def self.endpoint(router_request:)
+  def self.endpoint(router_conn:)
     Kit::Organizer.call(
       list: [
         [:if, Kit::Auth::Services::User.method(:find_by_email), {
@@ -16,8 +16,8 @@ module Kit::Auth::Endpoints::Events::Users::PasswordResetRequest
         },],
       ],
       ctx:  {
-        email:            router_request.params[:email],
-        request_metadata: router_request.params[:request_metadata],
+        email:            router_conn.request[:params][:email],
+        request_metadata: router_conn.request[:params][:request_metadata],
       },
     )
   end

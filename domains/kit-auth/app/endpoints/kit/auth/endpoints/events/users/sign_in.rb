@@ -1,12 +1,12 @@
 module Kit::Auth::Endpoints::Events::Users::SignIn
 
-  def self.endpoint(router_request:)
+  def self.endpoint(router_conn:)
     Kit::Organizer.call(
       list: [
-        ->(router_request:) { [:ok, user: router_request.params[:user]] },
+        ->(router_conn:) { [:ok, user: router_conn.request[:params][:user]] },
         Kit::Auth::Endpoints::Events::Users::SignIn.method(:persist_event),
       ],
-      ctx:  { router_request: router_request },
+      ctx:  { router_conn: router_conn },
     )
   end
 

@@ -1,17 +1,17 @@
-module Kit::Auth::Actions::Users::IdentifyUserForRequest
+module Kit::Auth::Actions::Users::IdentifyUserForConn
 
-  # TODO: add contract on router_request / cookies (based on needed access)
+  # TODO: add contract on router_conn / cookies (based on needed access)
   #Contract Hash => [Symbol, KeywordArgs[user: Any]]
-  def self.call(router_request:, oauth_application:, allow: [:param, :cookie, :header])
+  def self.call(router_conn:, oauth_application:, allow: [:param, :cookie, :header])
     _status, ctx = Kit::Organizer.call(
       list: [
         self.method(:extract_access_token),
         self.method(:find_oauth_access_token),
         self.method(:ensure_valid_token),
-        self.method(:export_user_to_router_request),
+        self.method(:export_user_to_router_conn),
       ],
       ctx:  {
-        router_request:    router_request,
+        router_conn:       router_conn,
         oauth_application: oauth_application,
         allow:             allow,
       },
@@ -24,15 +24,15 @@ module Kit::Auth::Actions::Users::IdentifyUserForRequest
     end
   end
 
-  def self.extract_access_token(router_request:, allow:)
+  def self.extract_access_token(router_conn:, allow:)
     access_tokens = {
       header: nil,
-      param:  router_request.params[:access_token],
-      cookie: router_request.dig(:adapters, :http_rails, :cookies, :access_token, :value),
+      param:  router_conn.dig(:request, :params, :access_token),
+      cookie: router_conn.dig(:request, :http, :cookies, :access_token, :value),
     }
 
     # REF: https://www.iana.org/assignments/http-authschemes/http-authschemes.xhtml
-    if !(auth_header = router_request.adapters[:http_rails][:headers]['Authorization']).blank?
+    if !(auth_header = router_conn.dig(:request, :http, :headers, 'Authorization')).blank?
       token = auth_header.split('Bearer ')[1]
       if !token.blank?
         access_tokens[:header] = token
@@ -53,7 +53,7 @@ module Kit::Auth::Actions::Users::IdentifyUserForRequest
     end
   end
 
-  def self.find_oauth_access_token(router_request:, access_token:, oauth_application:)
+  def self.find_oauth_access_token(access_token:, oauth_application:)
     secret_strategy = ::Doorkeeper.configuration.token_secret_strategy
     hashed_secret   = secret_strategy.transform_secret(access_token.to_s)
 
@@ -65,7 +65,7 @@ module Kit::Auth::Actions::Users::IdentifyUserForRequest
     [:ok, oauth_access_token: oauth_access_token]
   end
 
-  def self.ensure_valid_token(router_request:, oauth_access_token:)
+  def self.ensure_valid_token(router_conn:, oauth_access_token:)
     valid = true
 
     if !oauth_access_token
@@ -80,13 +80,13 @@ module Kit::Auth::Actions::Users::IdentifyUserForRequest
       [:ok]
     else
       # CLeanup cookies in case that's where we got the token from.
-      router_request.adapters[:http_rails][:cookies][:access_token] = { value: nil, encrypted: true }
+      router_conn.response[:http][:cookies][:access_token] = { value: nil, encrypted: true }
 
       [:error]
     end
   end
 
-  def self.export_user_to_router_request(router_request:, oauth_access_token:)
+  def self.export_user_to_router_conn(router_conn:, oauth_access_token:)
     user  = oauth_access_token&.user
 
     if user

@@ -1,6 +1,6 @@
 module Kit::Auth::Actions::Users::SignInWeb
 
-  def self.call(user:, router_request:)
+  def self.call(user:, router_conn:)
     Kit::Organizer.call(
       list: [
         Kit::Auth::Actions::OauthApplications::LoadWeb,
@@ -10,8 +10,8 @@ module Kit::Auth::Actions::Users::SignInWeb
         Kit::Auth::Actions::Users::SignInWeb.method(:send_event),
       ],
       ctx:  {
-        user:           user,
-        router_request: router_request,
+        user:        user,
+        router_conn: router_conn,
       },
     )
   end

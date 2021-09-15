@@ -1,6 +1,6 @@
 module Kit::Auth::Actions::Users::RequestPasswordReset
 
-  def self.call(router_request:, email:)
+  def self.call(router_conn:, email:)
     Kit::Organizer.call(
       list: [
         #Kit::Auth::Services::Contracts::Email.method(:validate),
@@ -8,9 +8,9 @@ module Kit::Auth::Actions::Users::RequestPasswordReset
         self.method(:send_event),
       ],
       ctx:  {
-        router_request: router_request,
-        email:          email,
-        user:           nil,
+        router_conn: router_conn,
+        email:       email,
+        user:        nil,
       },
     )
   end

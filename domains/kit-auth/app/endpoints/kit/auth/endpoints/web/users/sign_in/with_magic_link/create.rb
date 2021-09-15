@@ -1,11 +1,11 @@
 module Kit::Auth::Endpoints::Web::Users::SignIn::WithMagicLink::Create
 
-  def self.endpoint(router_request:)
+  def self.endpoint(router_conn:)
     Kit::Organizer.call(
       list: [
         Kit::Auth::Endpoints::Web::Users::SignIn::WithMagicLink::Create.method(:render),
       ],
-      ctx:  { router_request: router_request },
+      ctx:  { router_conn: router_conn },
     )
   end
 
@@ -17,13 +17,13 @@ module Kit::Auth::Endpoints::Web::Users::SignIn::WithMagicLink::Create
     target:  self.method(:endpoint),
   )
 
-  def self.render(router_request:, page_component: nil)
-    model = router_request.params.slice(:email)
+  def self.render(router_conn:, page_component: nil)
+    model = router_conn.request[:params].slice(:email)
 
     page_component ||= Kit::Auth::Components::Pages::Users::SignIn::WithMagicLink::AfterComponent
 
     Kit::Router::Controllers::Http.render(
-      router_request: router_request,
+      router_conn: router_conn,
       component:      page_component,
       params:         {
         email: model[:email],
