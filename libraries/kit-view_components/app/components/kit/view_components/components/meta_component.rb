@@ -1,16 +1,16 @@
 # Meta elements + title
 class Kit::ViewComponents::Components::MetaComponent < Kit::ViewComponents::Components::BaseComponent
 
-  attr_reader :router_request
+  attr_reader router_conn:
 
-  def initialize(*, router_request:, **)
+  def initialize(*, router_conn:, **)
     super
 
-    @router_request = router_request
+    @router_conn = router_conn
   end
 
   def meta
-    router_request[:metadata][:meta] || {}
+    router_conn[:metadata][:meta] || {}
   end
 
 end

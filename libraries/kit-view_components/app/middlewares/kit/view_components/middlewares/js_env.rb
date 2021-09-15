@@ -1,15 +1,15 @@
-# Set :js_env on RouterRequest :metadata.
+# Set :js_env on RouterConn :metadata.
 #
 # For http: this can be dumped as a js hash in html page by Kit::ViewComponents::Components::JsEnvComponent
 module Kit::ViewComponents::Middlewares::JsEnv
 
-  def self.call(router_request:)
-    router_request[:metadata][:js_env] = {
+  def self.call(router_conn:)
+    router_conn[:metadata][:js_env] = {
       current_env: Rails.env.to_s,
 
       kit:         {
-        route_id:     router_request.dig(:target, :route_id),
-        endpoint_uid: router_request.dig(:target, :endpoint_uid),
+        route_id:    router_conn.route_id,
+        endpoint_id: router_conn.endpoint[:id],
       },
 
       analytics:   {
@@ -18,7 +18,7 @@ module Kit::ViewComponents::Middlewares::JsEnv
       },
     }
 
-    [:ok, router_request: router_request]
+    [:ok, router_conn: router_conn]
   end
 
 end

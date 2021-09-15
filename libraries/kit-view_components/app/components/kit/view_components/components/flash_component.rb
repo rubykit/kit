@@ -1,16 +1,16 @@
 # Display Rails flash as toasts
 class Kit::ViewComponents::Components::FlashComponent < Kit::ViewComponents::Components::BaseComponent
 
-  attr_reader :router_request, :flash, :delay, :position
+  attr_reader :router_conn, :flash, :delay, :position
 
-  def initialize(*, router_request:, flash:, position: nil, delay: nil, **)
+  def initialize(*, router_conn:, flash:, position: nil, delay: nil, **)
     super
 
-    @router_request = router_request
-    @flash          = flash
+    @router_conn = router_conn
+    @flash       = flash
 
-    @delay          = delay || 10000
-    @position       = position
+    @delay       = delay || 10000
+    @position    = position
   end
 
   def flash_class(type)

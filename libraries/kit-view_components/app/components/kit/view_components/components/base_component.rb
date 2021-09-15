@@ -1,19 +1,19 @@
 # Shared logic for any Domain Component
 class Kit::ViewComponents::Components::BaseComponent < ::ViewComponent::Base
 
-  attr_accessor :id, :router_request, :args, :classes, :errors_list
+  attr_accessor :id, :router_conn, :args, :classes, :errors_list
 
-  def initialize(router_request: nil, classes: [], errors_list: nil, **rest)
+  def initialize(router_conn: nil, classes: [], errors_list: nil, **rest)
     super
 
     @args = {
-      router_request: router_request,
-      classes:        classes,
+      router_conn: router_conn,
+      classes:     classes,
     }.merge(rest)
 
-    @router_request = router_request
-    @classes        = [classes].flatten
-    @errors_list    = ([errors_list].flatten || []) - [nil]
+    @router_conn = router_conn
+    @classes     = [classes].flatten
+    @errors_list = ([errors_list].flatten || []) - [nil]
 
     self.classes << component_class_name
   end
@@ -36,8 +36,8 @@ class Kit::ViewComponents::Components::BaseComponent < ::ViewComponent::Base
     "component_#{ name }"
   end
 
-  def local_render(router_request: nil, &block)
-    controller     = router_request.adapters.dig(:http_rails, :rails_controller)
+  def local_render(router_conn: nil, &block)
+    controller     = router_conn.metadata.dig(:adapters, :http_rails, :rails_controller)
     lookup_context = ActionView::LookupContext.new(ActionController::Base.view_paths)
     view           = ActionView::Base.new(lookup_context, {}, controller)
 

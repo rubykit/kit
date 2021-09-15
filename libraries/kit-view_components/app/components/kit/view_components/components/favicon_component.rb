@@ -23,13 +23,13 @@
 #
 class Kit::ViewComponents::Components::FaviconComponent < Kit::ViewComponents::Components::BaseComponent
 
-  attr_reader :router_request, :i18n_prefix
+  attr_reader :router_conn, :i18n_prefix
 
-  def initialize(*, router_request:, i18n_prefix:, **)
+  def initialize(*, router_conn:, i18n_prefix:, **)
     super
 
-    @router_request = router_request
-    @i18n_prefix    = i18n_prefix
+    @router_conn = router_conn
+    @i18n_prefix = i18n_prefix
   end
 
   def favicon_svg_url

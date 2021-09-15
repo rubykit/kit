@@ -3,16 +3,16 @@ require 'oj'
 # Add some global JS env in the page.
 class Kit::ViewComponents::Components::JsEnvComponent < Kit::ViewComponents::Components::BaseComponent
 
-  attr_reader :router_request
+  attr_reader :router_conn
 
-  def initialize(*, router_request:, **)
+  def initialize(*, router_conn:, **)
     super
 
-    @router_request = router_request
+    @router_conn = router_conn
   end
 
   def js_env
-    router_request.dig(:metadata, :js_env) || {}
+    router_conn.dig(:metadata, :js_env) || {}
   end
 
   def js_payload

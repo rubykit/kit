@@ -1,15 +1,15 @@
 module Kit::ViewComponents::Middlewares::Meta
 
   # rubocop:disable Style/HashSyntax, Style/LambdaCall
-  def self.call(router_request:, i18n_prefix:)
-    rails_controller = router_request[:rails][:controller]
-    rails_request    = router_request[:rails][:request]
+  def self.call(router_conn:, i18n_prefix:)
+    rails_controller = router_conn.metadata.dig(:adapters, :http_rails, :rails_controller)
+    rails_request    = router_conn.metadata.dig(:adapters, :http_rails, :rails_request)
     current_url      = rails_request.url
 
     t = ->(key) { I18n.t("#{ i18n_prefix }.#{ key }") }
     l = ->(key) { rails_controller&.helpers&.asset_url(t.(key)) rescue '' } # rubocop:disable Style/RescueModifier
 
-    router_request[:metadata][:meta] = {
+    router_conn[:metadata][:meta] = {
       :title                 => t.('app.title'),
       :keywords              => t.('meta.keywords'),
       :description           => t.('meta.description'),
@@ -27,7 +27,7 @@ module Kit::ViewComponents::Middlewares::Meta
       :'twitter:title'       => t.('meta.twitter.title'),
     }
 
-    [:ok, router_request: router_request]
+    [:ok, router_conn: router_conn]
   end
   # rubocop:enable Style/HashSyntax, Style/LambdaCall
 
