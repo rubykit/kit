@@ -16,12 +16,24 @@ module Kit::Router::Adapters::HttpRails::Conn::Import
 
     kit_router_target = rails_request.params[:kit_router_target] || {}
 
-    headers = rails_request
+    env = rails_request
       .headers
       .to_h
+
+    headers = env
+      .select { |k, _v| k.starts_with?('HTTP') }
+      .map { |k, v| [k.gsub('HTTP_', ''), v] }
+      .to_h
+
+    if (content_type = env['CONTENT_TYPE'])
+      headers['CONTENT_TYPE'] = content_type
+    end
+
+    cgi = env
+      .select { |k, _v| !k.starts_with?('HTTP') }
       .select { |k, _v| !k.starts_with?('action_') && !k.starts_with?('puma') && !k.starts_with?('rack') }
 
-    headers = ActiveSupport::HashWithIndifferentAccess.new(headers)
+    cgi[:KIT_SILENCED_KEYS] = env.select { |k, _v| k.starts_with?('action_') || k.starts_with?('puma') || k.starts_with?('rack') }.keys
 
     router_conn = Kit::Router::Models::Conn.new(
       adapter:   :http_rails,
@@ -42,8 +54,8 @@ module Kit::Router::Adapters::HttpRails::Conn::Import
           headers:    headers,
           user_agent: rails_request.user_agent,
           csrf_token: csrf_token,
+          cgi:        cgi,
         },
-
       },
 
       response:  {

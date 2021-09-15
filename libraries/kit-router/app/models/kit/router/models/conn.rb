@@ -96,6 +96,7 @@ class Kit::Router::Models::Conn
       http:         {
         cookies: {},
         headers: {},
+        cgi:     {},
         status:  nil,
       },
 
