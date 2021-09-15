@@ -92,14 +92,14 @@ module Kit::Organizer::Services::Organize
         _log(-> { "#   Errors |#{ ctx[:errors] }|" }, :red) if ctx[:errors]
         _log("\n\n")
 
-        break if [:error, :ok_stop].include?(status)
+        break if [:error, :halt].include?(status)
       end
     #rescue StandardException => e
     # status = :error
     # # TODO: use event bus to notify error handlers ?
 
     # TODO: audit usefulness
-    status = :ok if status == :ok_stop
+    status = :ok if status == :halt
 
     # TODO: audit usefulness
     if filter&.dig(status)
