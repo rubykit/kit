@@ -11,7 +11,7 @@ class Kit::Router::Engine < ::Rails::Engine
 
   initializer 'kit-router.view_helpers' do
     ActionView::Base.include Kit::Router::ViewHelpers::HttpRoutes
-    ActionView::Base.include Kit::Router::ViewHelpers::RouterRequest
+    ActionView::Base.include Kit::Router::ViewHelpers::RouterConn
   end
 
 end

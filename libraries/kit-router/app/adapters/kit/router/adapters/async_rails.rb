@@ -1,37 +1,34 @@
 module Kit::Router::Adapters::AsyncRails
 
-  def self.call(router_request:)
+  def self.call(router_conn:)
     Kit::Organizer.call(
       list: [
         self.method(:enqueue_job),
       ],
       ctx:  {
-        router_request: router_request,
+        router_conn: router_conn,
       },
     )
   end
 
-  def self.cast(router_request:)
-    call(router_request: router_request)
+  def self.cast(router_conn:)
+    call(router_conn: router_conn)
 
     [:ok]
   end
 
-  def self.enqueue_job(router_request:)
+  def self.enqueue_job(router_conn:)
     job = default_job_adapter.perform_later(
-      route_id:     router_request[:route_id],
-      endpoint_uid: router_request[:endpoint][:uid],
-      params:       router_request[:params].to_h,
+      route_id:     router_conn[:route_id],
+      endpoint_uid: router_conn[:endpoint][:uid],
+      params:       router_conn[:request][:params].to_h,
     )
 
-    [:ok, {
-      router_response: {
-        mime:    :ruby,
-        content: {
-          job_id: job.provider_job_id,
-        },
-      },
-    },]
+    router_conn[:response][:content] = {
+      job_id: job.provider_job_id,
+    }
+
+    [:ok, router_conn: router_conn]
   end
 
   class << self

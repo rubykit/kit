@@ -35,8 +35,9 @@ module Kit::Router::Services::Adapters
     [:ok]
   end
 
-  def self.create_router_request(endpoint_record:, params:, route_id:)
-    router_request = Kit::Router::Models::RouterRequest.new(
+  def self.create_router_conn(adapter_name:, endpoint_record:, params:, route_id:)
+    router_conn = Kit::Router::Models::Conn.new(
+      adapter:  adapter_name,
       params:   params,
       route_id: route_id,
       endpoint: {
@@ -45,7 +46,7 @@ module Kit::Router::Services::Adapters
       },
     )
 
-    [:ok, router_request: router_request]
+    [:ok, router_conn: router_conn]
   end
 
   def self.adapter_call(route_id:, adapter_name:, adapter_method_name:, params: nil, router_store: nil, adapter_store: nil)
@@ -58,7 +59,7 @@ module Kit::Router::Services::Adapters
         ->(route_id:) { Kit::Router::Services::Store::Endpoint.get_endpoint(id: route_id) },
         Kit::Router::Services::Adapters::Store.method(:get_adapter),
         Kit::Router::Services::Adapters::Store.method(:get_adapter_callable),
-        self.method(:create_router_request),
+        self.method(:create_router_conn),
       ],
       ctx:  {
         route_id:            route_id,
@@ -72,7 +73,7 @@ module Kit::Router::Services::Adapters
 
     return [status, ctx] if status == :error
 
-    ctx[:adapter_callable].call(router_request: ctx[:router_request])
+    ctx[:adapter_callable].call(router_conn: ctx[:router_conn])
   end
 
   def self.default_adapter_store

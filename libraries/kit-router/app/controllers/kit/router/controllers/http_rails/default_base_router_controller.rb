@@ -14,8 +14,8 @@ class Kit::Router::Controllers::HttpRails::DefaultBaseRouterController < ::Actio
 
     _status, ctx = Kit::Organizer.call(
       list: [
-        Kit::Router::Adapters::HttpRails::Request::Import.method(:import_request),
-        ->(router_request:) { router_request.endpoint[:callable].call(router_request: router_request) },
+        Kit::Router::Adapters::HttpRails::Conn::Import.method(:import_request),
+        ->(router_conn:) { router_conn.endpoint[:callable].call(router_conn: router_conn) },
       ],
       ctx:  controller_ctx,
     )
@@ -23,9 +23,9 @@ class Kit::Router::Controllers::HttpRails::DefaultBaseRouterController < ::Actio
     # NOTE: we need to run this regardless of the previous status
     Kit::Organizer.call(
       list: [
-        Kit::Router::Adapters::HttpRails::Request::Export.method(:export_request),
+        Kit::Router::Adapters::HttpRails::Conn::Export.method(:export_response),
       ],
-      ctx:  controller_ctx.merge(ctx.slice(:router_request, :router_response)),
+      ctx:  controller_ctx.merge(ctx.slice(:router_conn)),
     )
 
     return
