@@ -101,6 +101,11 @@ PATH
     kit-rspec_formatter (0.1.0)
 
 PATH
+  remote: ../kit-support
+  specs:
+    kit-support (0.1.0)
+
+PATH
   remote: .
   specs:
     kit-api (0.1.0)
@@ -474,6 +479,7 @@ DEPENDENCIES
   kit-pagination!
   kit-router!
   kit-rspec_formatter!
+  kit-support!
   listen
   memory_profiler
   pg

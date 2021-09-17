@@ -8,6 +8,7 @@ gem 'kit-error',      path: '../../libraries/kit-error' # GEMSPEC
 gem 'kit-log',        path: '../../libraries/kit-log' # GEMSPEC
 gem 'kit-organizer',  path: '../../libraries/kit-organizer' # GEMSPEC
 gem 'kit-pagination', path: '../../libraries/kit-pagination' # GEMSPEC
+gem 'kit-support',    path: '../../libraries/kit-support' # GEMSPEC
 
 group :test, :development do
   gem 'puma'
