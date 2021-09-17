@@ -1,7 +1,7 @@
 PATH
-  remote: ../kit-app-container
+  remote: ../kit-app_container
   specs:
-    kit-app-container (0.1.0)
+    kit-app_container (0.1.0)
 
 PATH
   remote: ../kit-contract
@@ -256,7 +256,7 @@ DEPENDENCIES
   database_cleaner
   factory_bot_rails
   faker
-  kit-app-container!
+  kit-app_container!
   kit-contract!
   kit-dummy_app_container!
   kit-organizer!

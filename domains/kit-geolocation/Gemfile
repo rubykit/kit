@@ -30,7 +30,7 @@ group :development, :test do
 end
 
 group :development, :test do
-  gem 'kit-app-container', path: '../../libraries/kit-app-container'
+  gem 'kit-app_container', path: '../../libraries/kit-app_container'
 
   gem 'factory_bot_rails'
   gem 'faker'

@@ -19,7 +19,7 @@ This file contains the setup needed by `kit-app-dummy-container` to load correct
 
 The goal is to be able to have very simple dummy app without all the usual boilerplate.
 
-**⚠️ Warning**: it is NOT currently used by the regular `kit-app-container`.
+**⚠️ Warning**: it is NOT currently used by the regular `kit-app_container`.
 
 
 

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    kit-app-container (0.1.0)
+    kit-app_container (0.1.0)
       activerecord-nulldb-adapter
       rails_event_store
       sidekiq
@@ -103,7 +103,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  kit-app-container!
+  kit-app_container!
   rubocop
 
 BUNDLED WITH

@@ -28,9 +28,9 @@ PATH
       activeadmin_addons (~> 1.7.1)
 
 PATH
-  remote: ../../libraries/kit-app-container
+  remote: ../../libraries/kit-app_container
   specs:
-    kit-app-container (0.1.0)
+    kit-app_container (0.1.0)
 
 PATH
   remote: ../../libraries/kit-contract
@@ -606,7 +606,7 @@ DEPENDENCIES
   faker
   i18n-interpolate_nested
   kit-active-admin!
-  kit-app-container!
+  kit-app_container!
   kit-auth!
   kit-contract!
   kit-doc!

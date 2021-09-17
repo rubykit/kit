@@ -34,7 +34,7 @@ end
 module Kit::DummyAppContainer # rubocop:disable Style/Documentation
 end
 
-require 'kit-app-container'
+require 'kit-app_container'
 
 class Kit::DummyAppContainer::Application < ::Rails::Application # rubocop:disable Style/Documentation
 

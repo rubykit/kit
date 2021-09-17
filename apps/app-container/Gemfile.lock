@@ -23,9 +23,9 @@ PATH
       popper_js (~> 1.16)
 
 PATH
-  remote: ../../libraries/kit-app-container
+  remote: ../../libraries/kit-app_container
   specs:
-    kit-app-container (0.1.0)
+    kit-app_container (0.1.0)
       activerecord-nulldb-adapter
       rails_event_store
       sidekiq
@@ -508,7 +508,7 @@ DEPENDENCIES
   faker
   fuubar
   kit-active-admin!
-  kit-app-container!
+  kit-app_container!
   kit-auth!
   kit-contract!
   kit-doc!

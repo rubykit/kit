@@ -13,7 +13,7 @@ They allow a client to access & act on ressources of a remote system, while hidd
 
 ## What truly matters
 
-[Kit] helps you design your apps in a domain driven way. The "growth-ready" way is to build your domain in a mono-repo. At first, they will likely be exposed through the same app-container in production, as it is simpler & cheaper.
+[Kit] helps you design your apps in a domain driven way. The "growth-ready" way is to build your domain in a mono-repo. At first, they will likely be exposed through the same app_container in production, as it is simpler & cheaper.
 
 External clients will be able to connect to 1 API.
 

@@ -7,9 +7,9 @@ GIT
       paint (~> 2.2)
 
 PATH
-  remote: ../kit-app-container
+  remote: ../kit-app_container
   specs:
-    kit-app-container (0.1.0)
+    kit-app_container (0.1.0)
 
 PATH
   remote: ../kit-contract
@@ -460,7 +460,7 @@ DEPENDENCIES
   flamegraph
   json_schemer
   kit-api!
-  kit-app-container!
+  kit-app_container!
   kit-contract!
   kit-doc!
   kit-domain!

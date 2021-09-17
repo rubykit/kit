@@ -24,7 +24,7 @@ group :test, :development do
   gem 'kit-dotenv',              path: '../../libraries/kit-dotenv'
   gem 'kit-dotenv-rails',        path: '../../libraries/kit-dotenv', require: 'kit/dotenv/rails-now'
 
-  gem 'kit-app-container',       path: '../../libraries/kit-app-container' # DEV MODE
+  gem 'kit-app_container',       path: '../../libraries/kit-app_container' # DEV MODE
   gem 'kit-domain',              path: '../../libraries/kit-domain' # DEV MODE
   gem 'kit-dummy_app_container', path: '../../libraries/kit-dummy_app_container' # DEV MODE
   gem 'kit-engine',              path: '../../libraries/kit-engine' # DEV MODE
