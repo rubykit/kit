@@ -24,6 +24,5 @@ end
 # TODO: clean this up
 group :test, :development do
   gem 'activesupport'
-  gem 'colorize'
   gem 'pry'
 end

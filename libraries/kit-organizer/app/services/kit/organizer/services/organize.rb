@@ -79,7 +79,7 @@ module Kit::Organizer::Services::Organize
       .each do |callable|
         local_ctx = Kit::Organizer::Services::Context.generate_callable_ctx(callable: callable, ctx: ctx)
 
-        _log(-> { "# Calling `#{ callable }` with keys |#{ local_ctx&.keys }|" }, :yellow)
+        Kit::Organizer::Log.log(msg: -> { "# Calling `#{ callable }` with keys |#{ local_ctx&.keys }|" }, flags: [:debug, :warning])
 
         if local_ctx
           result = callable.call(**local_ctx)
@@ -91,13 +91,13 @@ module Kit::Organizer::Services::Organize
 
         status, local_ctx = result
 
-        _log(-> { "#   Result |#{ status }|#{ local_ctx }|" }, :blue)
+        Kit::Organizer::Log.log(msg: -> { "#   Result |#{ status }|#{ local_ctx }|" }, flags: [:debug, :info])
 
         ctx = Kit::Organizer::Services::Context.update_context(ctx: ctx, local_ctx: local_ctx)
 
-        _log(-> { "#   Ctx keys post |#{ ctx.keys }|" }, :yellow)
-        _log(-> { "#   Errors |#{ ctx[:errors] }|" }, :red) if ctx[:errors]
-        _log("\n\n")
+        Kit::Organizer::Log.log(msg: -> { "#   Ctx keys post |#{ ctx.keys }|" }, flags: [:debug, :warning])
+        Kit::Organizer::Log.log(msg: -> { "#   Errors |#{ ctx[:errors] }|" }, flags: [:debug, :danger]) if ctx[:errors]
+        Kit::Organizer::Log.log(msg: "\n\n")
 
         break if [:error, :halt].include?(status)
       end
@@ -147,25 +147,6 @@ module Kit::Organizer::Services::Organize
     end
 
     [status, ctx]
-  end
-
-  # Display debug information when `ENV['LOG_ORGANIZER']` is set
-  # @api private
-  def self._log(txt, color = nil)
-    env_value = ENV['LOG_ORGANIZER']
-    return if !env_value || env_value == ''
-
-    if txt.respond_to?(:call)
-      txt = txt.call()
-    end
-
-    if color
-      txt = txt.colorize(color)
-    end
-
-    puts txt
-
-    nil
   end
 
 end
