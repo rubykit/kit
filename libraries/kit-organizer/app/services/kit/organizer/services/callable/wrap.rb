@@ -24,7 +24,7 @@ module Kit::Organizer::Services::Callable::Wrap
   # Receive element from `:list` and resolve it to a callable if the contract matches.
   #
   # The expected format for `:args` is `[:wrap, callable, { in: { from: :to }, out: { to: :from } }]`
-  before Ct::Hash[args: Ct::Array[Ct::Eq[:wrap], Ct::Callable, Ct::Hash[in: Ct::Optional[Ct::Hash], out: Ct::Optional[Ct::Hash]]]]
+  before Ct::Hash[args: Ct::Array[Ct::Eq[:wrap], Ct::Any, Ct::Hash[in: Ct::Optional[Ct::Hash], out: Ct::Optional[Ct::Hash]]]]
   def self.resolve(args:)
     _, callable, opts = args
 

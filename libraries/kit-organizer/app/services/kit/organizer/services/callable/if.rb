@@ -24,7 +24,7 @@ module Kit::Organizer::Services::Callable::If
   Ct = Kit::Organizer::Contracts
 
   # The expected format for `:args` is `[:if, predicate_callable, { ok: [callable_list1], error: [callable_list2] }]`
-  before Ct::Hash[args: Ct::Array[Ct::Eq[:if], Ct::Callable, Ct::Hash[ok: Ct::Optional[Ct::Array], error: Ct::Optional[Ct::Array]]]]
+  before Ct::Hash[args: Ct::Array[Ct::Eq[:if], Ct::Any, Ct::Hash[ok: Ct::Optional[Ct::Array], error: Ct::Optional[Ct::Array]]]]
   def self.resolve(args:)
     _, callable, branches = args
 

@@ -8,10 +8,11 @@ module Kit::Organizer::Services::Callable
   # Local store to add custom behaviours.
   def self.store
     @store ||= {
-      alias:  Kit::Organizer::Services::Callable::Alias.method(:resolve),
-      wrap:   Kit::Organizer::Services::Callable::Wrap.method(:resolve),
-      method: Kit::Organizer::Services::Callable::Method.method(:resolve),
-      if:     Kit::Organizer::Services::Callable::If.method(:resolve),
+      alias:     Kit::Organizer::Services::Callable::Alias.method(:resolve),
+      if:        Kit::Organizer::Services::Callable::If.method(:resolve),
+      local_ctx: Kit::Organizer::Services::Callable::LocalCtx.method(:resolve),
+      method:    Kit::Organizer::Services::Callable::Method.method(:resolve),
+      wrap:      Kit::Organizer::Services::Callable::Wrap.method(:resolve),
     }
   end
 

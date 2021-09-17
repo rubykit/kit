@@ -23,7 +23,7 @@ module Kit::Organizer::Services::Callable::LocalCtx
   # Receive element from `:list` and resolve it to a callable if the contract matches.
   #
   # The expected format for `:args` is `[:local_ctx, callable, local_context]`
-  before Ct::Hash[args: Ct::Array[Ct::Eq[:local_ctx], Ct::Callable, Ct::Hash]]
+  before Ct::Hash[args: Ct::Array[Ct::Eq[:local_ctx], Ct::Any, Ct::Hash]]
   def self.resolve(args:)
     _, callable, local_ctx = args
 
