@@ -1,5 +1,5 @@
 <!--pp {} -->
-<img align="left" width="50" height="90" src="https://raw.githubusercontent.com/rubykit/kit/master/docs/assets/images/rubykit-framework-logo.svg">
+<img align="left" width="50" height="90" src="https://raw.githubusercontent.com/rubykit/kit/master/libraries/kit-doc/docs/assets/images/kit-doc.logo.svg">
 <!-- pp-->
 
 [Kit::Doc]: https://github.com/rubykit/kit/tree/master/libraries/kit-doc

@@ -9,7 +9,7 @@ DOC_CONFIG = Kit::Doc::Services::Config.create_config(
   all_versions:            File.expand_path('../docs/VERSIONS', __dir__),
 
   main_redirect_url:       'README.html',
-  logo:                    'https://raw.githubusercontent.com/rubykit/kit/master/docs/assets/images/rubykit-framework-logo.svg',
+  logo:                    'https://raw.githubusercontent.com/rubykit/kit/master/libraries/kit-doc/docs/assets/images/kit-doc.logo.svg',
 
   files_modules:           {
     './' => {

@@ -13,7 +13,7 @@ DOC_CONFIG_DUMMY_APP = Kit::Doc::Services::Config.create_config(
   authors:                 ['John Doe'],
 
   main_redirect_url:       'ab_colla_deus.html',
-  logo:                    'https://raw.githubusercontent.com/rubykit/kit/master/docs/assets/images/rubykit-framework-logo.svg',
+  logo:                    'https://raw.githubusercontent.com/rubykit/kit/master/libraries/kit-doc/docs/assets/images/kit-doc.logo.svg',
 
   files_modules:           {
     'specs/dummy/' => {
