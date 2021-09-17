@@ -10,6 +10,8 @@ module Kit::Doc # rubocop:disable Style/Documentation
 
 end
 
+require 'kit/support/core'
+
 #require 'kit/doc/config'
 require 'kit/doc/redcarpet'
 require 'kit/doc/yard'
