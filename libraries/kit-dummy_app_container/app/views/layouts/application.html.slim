@@ -16,7 +16,7 @@ html
     link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.css"
 
   body
-    = render Components::Navbar.new(request: request)
+    = render Kit::DummyAppContainer::Components::Navbar.new(request: request)
 
     main.container style='padding-top: 80px;'
       = yield

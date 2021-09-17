@@ -10,7 +10,7 @@ KIT_APP_PATHS['GEMFILE']  = File.expand_path('../Gemfile', __dir__)
 ENV['BUNDLE_GEMFILE'] ||= KIT_APP_PATHS['GEMFILE']
 require 'bundler/setup' if File.exist?(ENV['BUNDLE_GEMFILE'])
 
-require 'kit/dummy-app-container/rails_rspec'
+require 'kit/dummy_app_container/rails_rspec'
 
 require 'spec_helper'
 

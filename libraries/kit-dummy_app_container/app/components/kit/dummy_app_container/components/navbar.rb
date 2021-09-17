@@ -1,5 +1,5 @@
 # Default Navbar.
-class Components::Navbar < ::ViewComponent::Base
+class Kit::DummyAppContainer::Components::Navbar < ::ViewComponent::Base
 
   attr_reader :args
 

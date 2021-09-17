@@ -20,7 +20,7 @@ PATH
 PATH
   remote: .
   specs:
-    kit-dummy-app-container (0.1.0)
+    kit-dummy_app_container (0.1.0)
       rails (~> 6.1)
       sidekiq
       view_component
@@ -258,7 +258,7 @@ DEPENDENCIES
   faker
   kit-app-container!
   kit-contract!
-  kit-dummy-app-container!
+  kit-dummy_app_container!
   kit-organizer!
   listen
   pry

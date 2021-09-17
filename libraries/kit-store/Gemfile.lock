@@ -15,9 +15,9 @@ PATH
       rails (~> 6.1)
 
 PATH
-  remote: ../kit-dummy-app-container
+  remote: ../kit-dummy_app_container
   specs:
-    kit-dummy-app-container (0.1.0)
+    kit-dummy_app_container (0.1.0)
       rails (~> 6.1)
 
 PATH
@@ -256,7 +256,7 @@ PLATFORMS
 DEPENDENCIES
   kit-app-container!
   kit-contract!
-  kit-dummy-app-container!
+  kit-dummy_app_container!
   kit-organizer!
   kit-store!
   pry

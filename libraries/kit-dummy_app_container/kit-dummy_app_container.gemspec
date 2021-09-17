@@ -1,21 +1,21 @@
 $LOAD_PATH.push File.expand_path('lib', __dir__)
-require 'kit/dummy-app-container/version'
+require 'kit/dummy_app_container/version'
 
 version = Kit::DummyAppContainer::VERSION
 
 Gem::Specification.new do |s|
-  s.name        = 'kit-dummy-app-container'
+  s.name        = 'kit-dummy_app_container'
   s.version     = version
   s.summary     = 'Dummy Rails app for specs.'
   s.description = ''
   s.license     = 'MIT'
   s.author      = 'Nathan Appere'
   s.email       = 'nathan@rubykit.org'
-  s.homepage    = 'https://github.com/rubykit/kit/tree/master/libraries/kit-dummy-app-container'
+  s.homepage    = 'https://github.com/rubykit/kit/tree/master/libraries/kit-dummy_app_container'
 
   s.metadata = {
     'source_code_base_uri' => 'https://github.com/rubykit/kit',
-    'source_code_uri'      => "https://github.com/rubykit/kit/tree/v#{ version }/libraries/kit-dummy-app-container",
+    'source_code_uri'      => "https://github.com/rubykit/kit/tree/v#{ version }/libraries/kit-dummy_app_container",
     'documentation_uri'    => "https://docs.rubykit.org/v#{ version }",
   }
 

@@ -1,7 +1,7 @@
 ENV['RAILS_ENV'] ||= 'test'
 
 ENV['DATABASE_ADAPTER'] = 'nulldb'
-# NOTE: somehow having a DATABASE_URL in the config env of `dummy-app-container` bypasses the `nulldb` adapter.
+# NOTE: somehow having a DATABASE_URL in the config env of `dummy_app_container` bypasses the `nulldb` adapter.
 #  `primary` gets registered as `nulldb` a first time, then a second as `postgres`
 ENV['DATABASE_URL']     = nil
 ENV['EVENT_STORE']      = 'false'
@@ -22,7 +22,7 @@ end
 ENV['BUNDLE_GEMFILE'] ||= KIT_APP_PATHS['GEMFILE']
 require 'bundler/setup' if File.exist?(ENV['BUNDLE_GEMFILE'])
 
-require 'kit/dummy-app-container/rails_rspec'
+require 'kit/dummy_app_container/rails_rspec'
 
 require_relative 'spec_helper'
 

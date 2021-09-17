@@ -74,9 +74,9 @@ PATH
       kit-dotenv (= 0.1.0)
 
 PATH
-  remote: ../../libraries/kit-dummy-app-container
+  remote: ../../libraries/kit-dummy_app_container
   specs:
-    kit-dummy-app-container (0.1.0)
+    kit-dummy_app_container (0.1.0)
       rails (~> 6.1)
       sidekiq
       view_component
@@ -613,7 +613,7 @@ DEPENDENCIES
   kit-domain!
   kit-dotenv!
   kit-dotenv-rails!
-  kit-dummy-app-container!
+  kit-dummy_app_container!
   kit-engine!
   kit-error!
   kit-log!

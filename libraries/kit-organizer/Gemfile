@@ -6,12 +6,12 @@ gemspec
 # TODO: move to gemspec when released
 gem 'kit-app-container',       path: '../../libraries/kit-app-container'
 gem 'kit-contract',            path: '../../libraries/kit-contract'
-gem 'kit-dummy-app-container', path: '../../libraries/kit-dummy-app-container'
+gem 'kit-dummy_app_container', path: '../../libraries/kit-dummy_app_container'
 gem 'kit-error',               path: '../../libraries/kit-error'
 gem 'kit-log',                 path: '../../libraries/kit-log'
 gem 'kit-support',             path: '../../libraries/kit-support'
 
-# TODO: move this to `kit-dummy-app-container` gemspec when released
+# TODO: move this to `kit-dummy_app_container` gemspec when released
 gem 'kit-router',              path: '../../libraries/kit-router'
 
 # TODO: move this to `kit-router` gemspec when released

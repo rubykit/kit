@@ -62,7 +62,7 @@ end
 
 group :development, :test do
   gem 'kit-app-container',       path: '../../libraries/kit-app-container' # DEV MODE
-  gem 'kit-dummy-app-container', path: '../../libraries/kit-dummy-app-container' # DEV MODE
+  gem 'kit-dummy_app_container', path: '../../libraries/kit-dummy_app_container' # DEV MODE
   gem 'kit-rspec_formatter',     path: '../../libraries/kit-rspec_formatter' # DEV MODE
 
   gem 'factory_bot_rails'
