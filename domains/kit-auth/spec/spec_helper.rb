@@ -2,7 +2,7 @@
 require 'rspec'
 require 'capybara/rspec'
 
-require 'kit-rspec-formatter'
+require 'kit-rspec_formatter'
 
 RSpec.configure do |config|
 

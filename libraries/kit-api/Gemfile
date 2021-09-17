@@ -30,7 +30,7 @@ group :test, :development do
   gem 'kit-engine',              path: '../../libraries/kit-engine' # DEV MODE
   gem 'kit-router',              path: '../../libraries/kit-router' # DEV MODE
 
-  gem 'kit-rspec-formatter',     path: '../../libraries/kit-rspec-formatter' # DEV MODE
+  gem 'kit-rspec_formatter',     path: '../../libraries/kit-rspec_formatter' # DEV MODE
 
   gem 'seedbank'
 end

@@ -3,7 +3,7 @@ require 'rspec'
 
 require 'oj'
 
-require 'kit-rspec-formatter'
+require 'kit-rspec_formatter'
 
 RSpec.configure do |config|
 

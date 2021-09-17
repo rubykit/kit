@@ -2,7 +2,7 @@
 <img align="left" width="50" height="90" src="https://raw.githubusercontent.com/rubykit/kit/master/docs/assets/images/rubykit-framework-logo.svg">
 <!-- pp-->
 
-[Kit::RspecFormatter]: https://github.com/rubykit/kit/tree/master/libraries/kit-rspec-formatter
+[Kit::RspecFormatter]: https://github.com/rubykit/kit/tree/master/libraries/kit-rspec_formatter
 
 # Kit::RspecFormatter
 
@@ -10,10 +10,10 @@
 
 ## Usage
 
-1) Add `kit-rspec-formatter` to your Gemfile
+1) Add `kit-rspec_formatter` to your Gemfile
 2) Add the following to your `spec_helper.rb`:
 ```
-require 'kit-rspec-formatter'
+require 'kit-rspec_formatter'
 
 RSpec.configure do |config|
   config.formatter = Kit::RspecFormatter::Formatter

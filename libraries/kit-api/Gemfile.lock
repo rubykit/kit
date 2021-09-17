@@ -96,9 +96,9 @@ PATH
       tabulo (~> 2.6)
 
 PATH
-  remote: ../kit-rspec-formatter
+  remote: ../kit-rspec_formatter
   specs:
-    kit-rspec-formatter (0.1.0)
+    kit-rspec_formatter (0.1.0)
 
 PATH
   remote: .
@@ -473,7 +473,7 @@ DEPENDENCIES
   kit-organizer!
   kit-pagination!
   kit-router!
-  kit-rspec-formatter!
+  kit-rspec_formatter!
   listen
   memory_profiler
   pg

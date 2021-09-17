@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    kit-rspec-formatter (0.1.0)
+    kit-rspec_formatter (0.1.0)
 
 GEM
   remote: https://rubygems.org/
@@ -45,7 +45,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  kit-rspec-formatter!
+  kit-rspec_formatter!
   rspec
   rubocop
 
