@@ -22,7 +22,7 @@ class Kit::Auth::Engine < ::Rails::Engine
 
 =begin
   initializer "web_app.assets.precompile" do |app|
-    app.config.assets.precompile += %w( kit-active-admin.js kit-active-admin.css )
+    app.config.assets.precompile += %w( kit-active_admin.js kit-active_admin.css )
   end
 =end
 

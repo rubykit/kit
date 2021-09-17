@@ -12,7 +12,7 @@ AllCops:
     - 'domains/kit-payment/**/*'
     - 'libraries/kit-doc/specs/dummy/**/*.rb'
     - 'libraries/kit-doc/node_modules/**/*'
-    - 'libraries/kit-active-admin/**/*'
+    - 'libraries/kit-active_admin/**/*'
     - 'libraries/kit-dotenv/**/*'
 
 # ------------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 PATH
-  remote: ../kit-active-admin
+  remote: ../kit-active_admin
   specs:
-    kit-active-admin (0.1.0)
+    kit-active_admin (0.1.0)
       activeadmin (~> 2.9.0)
       activeadmin_addons (~> 1.7.1)
       bootstrap (~> 4.5.3)
@@ -336,7 +336,7 @@ PLATFORMS
 
 DEPENDENCIES
   annotate
-  kit-active-admin!
+  kit-active_admin!
   kit-contract!
   kit-domain!
   kit-organizer!

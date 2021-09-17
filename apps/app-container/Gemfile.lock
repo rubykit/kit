@@ -14,9 +14,9 @@ PATH
       strong_password (~> 0.0.8)
 
 PATH
-  remote: ../../libraries/kit-active-admin
+  remote: ../../libraries/kit-active_admin
   specs:
-    kit-active-admin (0.1.0)
+    kit-active_admin (0.1.0)
       activeadmin (~> 2.9.0)
       activeadmin_addons (~> 1.7.1)
       bootstrap (~> 4.5.3)
@@ -507,7 +507,7 @@ DEPENDENCIES
   factory_bot_rails
   faker
   fuubar
-  kit-active-admin!
+  kit-active_admin!
   kit-app_container!
   kit-auth!
   kit-contract!

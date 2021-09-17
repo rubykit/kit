@@ -8,7 +8,7 @@ How to use my plugin.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'kit-active-admin'
+gem 'kit-active_admin'
 ```
 
 And then execute:
@@ -18,7 +18,7 @@ $ bundle
 
 Or install it yourself as:
 ```bash
-$ gem install kit-active-admin
+$ gem install kit-active_admin
 ```
 
 ## Contributing
