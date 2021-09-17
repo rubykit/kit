@@ -24,6 +24,6 @@ It is fully functional and provides the following features:
 
 ## Copyright & License
 
-Copyright (c) 2020, Nathan Appere.
+Copyright (c) 2021, Nathan Appere.
 
 [Kit::Auth] is licensed under [MIT License](MIT_LICENSE.md).

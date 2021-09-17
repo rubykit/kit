@@ -28,6 +28,6 @@
 
 ## Copyright & License
 
-Copyright (c) 2020, Nathan Appere.
+Copyright (c) 2021, Nathan Appere.
 
 [Kit::Contract] is licensed under [MIT License](MIT_LICENSE.md).
