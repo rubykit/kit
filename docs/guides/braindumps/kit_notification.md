@@ -1,5 +1,6 @@
-
 # Kit::Notifier
+
+NOT SURE ABOUT THIS
 
 Technically a `Notification` is an endpoint called by `Kit::Router`, living in a given domain :)
 
