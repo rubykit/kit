@@ -1,6 +1,8 @@
 # Organizer passes the result of a callable to another callable (as long as the result is successfull).
-# It is mostly useful when you need to execute a series of operations resembling a pipeline.
-# You might alredy be familiar with some solutions that deal with this (Promises, Railway Programming, Pipe operators).
+#
+# It is mostly useful when you need to execute a series of operations ressembling a pipeline.
+#
+# You might alredy be familiar with some solutions that deal with this (Promises, Railway Programming, Pipe operators):
 # `Kit::Organizer` is a flavor of functional interactor.
 #
 # ### Introduction
@@ -43,7 +45,7 @@
 # #### Callable
 # A callable is expected to return a result tupple of the following format:
 # ```ruby
-# [:ok] || [:ok, context_update] || [:error] || [:error, context_update]
+# [:ok] || [:ok, context_update] || [:halt] || [:error] || [:error, context_update]
 # ```
 module Kit::Organizer::Services::Organize
 
@@ -51,14 +53,19 @@ module Kit::Organizer::Services::Organize
   # @doc false
   Ct = Kit::Organizer::Contracts
 
-  # Run a `list` of `operations` (callable) in order. Each results update the initial `ctx` which is then sent to the next operation.
-  # An `operation` needs to be a callable, but it can be resolved from other format (see #to_callable)
+  # Run a `list` of `operations` (callable) in order.
+  #
+  # Each results update the initial `ctx` which is then sent to the next operation.
+  #
+  # An `operation` needs to be a callable, but it can be resolved from other format (see `#to_callable`)
+  #
   # NOTE: Every operation is expected to return a tupple of the format `[:ok]` or `[:error]` with an optional context update (`[:ok, { new_ctx_key: 'value' }]`, `[:errors, { errors: [{ detail: 'Error explaination' }], }]`). If an `:error` tupple is returned, the next operations are canceled and `call` will return.
+  #
   # @param list An array of operations (callables) that will be called in order
   # @param ctx A hash containing values to send to the operations (callables). It will be updated after every operation.
   # @param filter Allows to slice specific keys on the context
   # @return The updated context.
-  #contract Ct::Hash[list: Ct::Operations, ctx: Ct::Optional[Ct::Hash], filter: Ct::Optional[Ct::Or[Ct::Hash[ok: Ct::Array], Ct::Hash[error: Ct::Array]]]] => Ct::ResultTupple
+  # contract Ct::Hash[list: Ct::Operations, ctx: Ct::Optional[Ct::Hash], filter: Ct::Optional[Ct::Or[Ct::Hash[ok: Ct::Array], Ct::Hash[error: Ct::Array]]]] => Ct::ResultTupple
   def self.call(list:, ctx: {}, filter: nil)
     ctx    = ctx.dup
     status = :ok

@@ -55,6 +55,11 @@ PATH
       tabulo (~> 2.6)
 
 PATH
+  remote: ../kit-support
+  specs:
+    kit-support (0.1.0)
+
+PATH
   remote: .
   specs:
     kit-organizer (0.1.0)
@@ -281,6 +286,7 @@ DEPENDENCIES
   kit-log!
   kit-organizer!
   kit-router!
+  kit-support!
   pry
   rspec-rails
   rubocop
