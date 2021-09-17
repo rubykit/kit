@@ -8,4 +8,4 @@ end
 require 'kit/support/railtie'
 require 'kit/support/version'
 
-require 'kit/support/core/array'
+require 'kit/support/core'
