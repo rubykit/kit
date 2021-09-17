@@ -1,4 +1,4 @@
-Copyright 2019 Nathan Appere
+Copyright 2021 Nathan Appere
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

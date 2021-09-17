@@ -3,6 +3,8 @@ module Kit::Router::Adapters::HttpRails::Routes
 
   MOUNT_TYPE = [:http, :rails]
 
+  HTTP_VERBS = [:connect, :delete, :get, :options, :patch, :post, :put, :trace]
+
   def self.mount_http_targets(rails_router_context:, list:, namespace: nil)
     list.each do |attrs|
       # NOTE: this seems like a bad API
@@ -85,7 +87,7 @@ module Kit::Router::Adapters::HttpRails::Routes
     end
 
     verb = verb.to_s.downcase.to_sym
-    if !Kit::Router::Adapters::HttpRails::VERBS.include?(verb)
+    if !HTTP_VERBS.include?(verb)
       raise "Kit::Router | unsupported http verb for `#{ route_id }` (`#{ verb }`)"
     end
 

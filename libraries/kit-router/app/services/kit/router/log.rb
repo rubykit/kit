@@ -1,4 +1,4 @@
-# Library specific wrapper for Kit::Auth.
+# Library specific wrapper for Kit::Router.
 module Kit::Router::Log
 
   def self.log(msg:, flags: [])

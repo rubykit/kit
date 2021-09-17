@@ -1,3 +1,6 @@
+# Adapter to call endpoints through a Mailer.
+#
+# This adapter is a wrapper around Actionailer.
 module Kit::Router::Adapters::MailerRails
 
   def self.call(router_conn:)

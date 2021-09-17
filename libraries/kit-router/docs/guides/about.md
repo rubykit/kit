@@ -20,17 +20,35 @@ An `alias` is an indirection on an `endpoint`. This helps domains provides overr
 
 For instace, `Kit::Auth` contains a default sign in web page, aliased through `web|users|sign_in`. If your domain has its own sign in page, you can alias `web|users|sign_in` to point to your own endpoint, without breaking any of the underlying logic of `Kit::Auth`.
 
-## Protocols
+## Adapters
 
-A `protocol` is an adapter to the external world. Currently the following are supported:
-- `HTTP`
-- `Async` (through `redis` & a relational store)
+An `andapter` defines how an endpoint will be exposed to the outside world, or called internally.
 
-Future candidates include `WebSockets`, `Emails`, `Sms`, `RabbitMQ`, `Kafka`, `Spark`.
+Currently the following are implemented:
+* HTTP:
+  *  `Kit::Router::Adapters::HttpRails`
+* INLINE:
+  * `Kit::Router::Adapters::InlineBase`
+* ASYNC:
+  * `Kit::Router::Adapters::AsyncRails` 
+* NOTIFICATIONS:
+    * MAILER:
+      * `Kit::Router::Adapters::MailerRails`
+
+Future candidates include:
+  - WEBSOCKETS
+  - NOTIFICATIONS:
+    - `Sms`
+    - `Mailboxes` (inbound emails)
+  - ASYNC:
+    - `AsyncAPI`: make any call to an API endpoint async
+    - `RabbitMQ`
+    - `Kafka`
+    - `Spark`
 
 ## Mountpoints
 
-A `mountpoint` exposes an `endpoint` (or one of its `aliases`) to the outside world on a given protocol.
+A `mountpoint` exposes an `endpoint` (or one of its `aliases`) to the outside world through a given adapter.
 
-Note: while the same endpoint can be exposed through several mountpoints (with smimilar or different protocols) an alias can only be attached to one mountpoint.
+Note: while the same endpoint can be exposed through several mountpoints (with smimilar or different adapters) an alias can only be attached to one mountpoint.
 This prevents ambiguity when accessing an alias external ID through a mountpoint. (ex: if one alias has 2 http mountpoints, how do I know which one should be used when asking for the URL of that alias?)

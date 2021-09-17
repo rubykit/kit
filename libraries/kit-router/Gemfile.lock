@@ -49,6 +49,11 @@ PATH
       awesome_print
 
 PATH
+  remote: ../kit-support
+  specs:
+    kit-support (0.1.0)
+
+PATH
   remote: .
   specs:
     kit-router (0.1.0)
@@ -272,6 +277,7 @@ DEPENDENCIES
   kit-log!
   kit-organizer!
   kit-router!
+  kit-support!
   listen
   pry
   rspec-rails

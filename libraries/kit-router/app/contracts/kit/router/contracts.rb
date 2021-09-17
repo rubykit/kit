@@ -7,15 +7,15 @@ module Kit::Router::Contracts
   AliasId         = Or[Symbol, String].named('AliasId')
   EndpointId      = Or[EndpointUid, AliasId].named('EndpointUid')
 
-  Protocol        = In[:any, :http, :async].named('Protocol')
+  Adapter         = In[:any, :http, :async].named('Adapter')
   MountSubTypes   = In[:any, :rails, :sidekiq].named('MountSubTypes')
-  MountType       = Tupple[Protocol, MountSubTypes].named('MountType')
+  MountType       = Tupple[Adapter, MountSubTypes].named('MountType')
   MountTypes      = Array.of(MountType).named('MountTypes')
 
   MountPointData  = Hash.named('MountPointData')
   MountTypeHash   = Hash.of(MountType => Array.of(MountPointData)).named('MountTypeHash')
 
-  HttpVerb        = In[*Kit::Router::Adapters::HttpRails::VERBS].named('HttpVerb')
+  HttpVerb        = In[*Kit::Router::Adapters::HttpRails::Routes::HTTP_VERBS].named('HttpVerb')
   MountPointHttp  = Hash[verb: HttpVerb, path: String].named('MountPointHttp')
   #MountPointAsync = Hash[id: String]
   MountPoint      = Or[

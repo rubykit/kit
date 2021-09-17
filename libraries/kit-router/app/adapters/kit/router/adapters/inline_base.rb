@@ -1,3 +1,4 @@
+# Adapter to call endpoints inline (sync).
 module Kit::Router::Adapters::InlineBase
 
   def self.call(router_conn:)

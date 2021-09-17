@@ -1,3 +1,6 @@
+# Adapter to call endpoints asyncronously.
+#
+# This adapter is a wrapper around ActiveJobs.
 module Kit::Router::Adapters::AsyncRails
 
   def self.call(router_conn:)
