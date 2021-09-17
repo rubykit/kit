@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.email       = ['nathan@rubykit.org']
   s.homepage    = 'https://github.com/rubykit/kit/tree/master/libraries/kit-log'
   s.summary     = 'Rspec formatter'
-  s.description = 'Kit::Log is the RSPEC formatter used in tghe Kit project.'
+  s.description = 'Kit::Log is a simple logging library for the rubykit framework.'
   s.license     = 'MIT'
 
   s.metadata = {

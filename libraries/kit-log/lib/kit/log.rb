@@ -22,6 +22,7 @@ module Kit::Log # rubocop:disable Style/Documentation
       end
 
       if display
+        msg = msg.call if msg.respond_to?(:call)
         Kit::Log::Backends::Shell.log(msg: msg, flags: flags)
       end
     end
