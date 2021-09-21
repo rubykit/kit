@@ -45,7 +45,7 @@
 # #### Callable
 # A callable is expected to return a result tupple of the following format:
 # ```ruby
-# [:ok] || [:ok, context_update] || [:halt] || [:error] || [:error, context_update]
+# [:ok] || [:ok, context_update] || [:halt] || [:halt, context_update] || [:error] || [:error, context_update]
 # ```
 module Kit::Organizer::Services::Organize
 
@@ -66,7 +66,7 @@ module Kit::Organizer::Services::Organize
   # @param filter Allows to slice specific keys on the context
   # @return The updated context.
   # contract Ct::Hash[list: Ct::Operations, ctx: Ct::Optional[Ct::Hash], filter: Ct::Optional[Ct::Or[Ct::Hash[ok: Ct::Array], Ct::Hash[error: Ct::Array]]]] => Ct::ResultTupple
-  def self.call(list:, ctx: {}, filter: nil)
+  def self.call(list:, ctx: {})
     ctx    = ctx.dup
     status = :ok
 
@@ -105,26 +105,23 @@ module Kit::Organizer::Services::Organize
     # status = :error
     # # TODO: use event bus to notify error handlers ?
 
-    # TODO: audit usefulness
     status = :ok if status == :halt
-
-    # TODO: audit usefulness
-    if filter&.dig(status)
-      ctx = ctx.slice(*filter[status])
-    end
 
     [status, ctx]
   end
 
   # Sanitizes returned errors, if any.
+  #
   # @api private
   # @note Enable simpler error return format from an organized callable.
+  #
   # @example Returning an error as a string
   #    sanitize_result([:error, 'Error details']) => [:error, { errors: [{ detail: 'Error details' }] }]
   # @example Returning an error as hash with detail
   #    sanitize_result([:error, { detail: 'Error details' }]) => [:error, { errors: [{ detail: 'Error details' }] }]
   # @example Returning an array of errors in the two former formats
   #    sanitize_result([:error, ['Error1 detail', { detail: 'Error2 details' }]) => [:error, { errors: [{ detail: 'Error1 details' }, { detail: 'Error2 details' }] }]
+  #
   #contract Ct::Hash[result: Ct::ResultTupple] => Ct::ResultTupple
   def self.sanitize_errors(result:)
     status, ctx = result

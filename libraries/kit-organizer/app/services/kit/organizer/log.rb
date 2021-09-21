@@ -1,4 +1,4 @@
-# Library specific wrapper for Kit::Organizer.
+# Log wrapper for Kit::Organizer.
 module Kit::Organizer::Log
 
   def self.log(msg:, flags: [])
