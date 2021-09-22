@@ -16,7 +16,12 @@ module Kit::Organizer::Services::Context
     ctx = ctx.merge(local_ctx)
 
     if ctx_errors
-      ctx[:errors] = ctx_errors + (local_ctx[:errors] || [])
+      # NOTE: reallyyyyyy not ideal...
+      if local_ctx&.dig(:overwrite_errors)
+        ctx[:errors] = local_ctx[:errors]
+      else
+        ctx[:errors] = ctx_errors + (local_ctx[:errors] || [])
+      end
     end
 
     ctx

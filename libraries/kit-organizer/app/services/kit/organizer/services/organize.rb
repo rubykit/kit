@@ -66,14 +66,32 @@ module Kit::Organizer::Services::Organize
   # @param filter Allows to slice specific keys on the context
   # @return The updated context.
   # contract Ct::Hash[list: Ct::Operations, ctx: Ct::Optional[Ct::Hash], filter: Ct::Optional[Ct::Or[Ct::Hash[ok: Ct::Array], Ct::Hash[error: Ct::Array]]]] => Ct::ResultTupple
-  def self.call(list:, ctx: {})
-    ctx    = ctx.dup
+  def self.call(list: nil, ctx: nil, ok: nil, error: nil)
     status = :ok
+    ctx    = (ctx || {}).dup
 
+    list_error = (error || [])
+    list_ok    = (list  || ok)
+
+    status, ctx = call_list(list: list_ok, status: status, ctx: ctx)
+
+    # If there is an error on the :ok track, switch to :error one.
+    if status == :error
+      status, ctx = call_list(list: list_error, status: status, ctx: ctx)
+    end
+
+    if status == :halt
+      status = :ok
+    end
+
+    [status, ctx]
+  end
+
+  def self.call_list(list:, status:, ctx:)
     list
       .map do |el|
-        _local_callable_status, local_callable_ctx = Kit::Organizer::Services::Callable.resolve(target: el)
-        # TODO: handle :error status
+        _, local_callable_ctx = Kit::Organizer::Services::Callable.resolve(target: el)
+        # TODO: check status?
         local_callable_ctx[:callable]
       end
       .each do |callable|
@@ -81,14 +99,8 @@ module Kit::Organizer::Services::Organize
 
         Kit::Organizer::Log.log(msg: -> { "# Calling `#{ callable }` with keys |#{ local_ctx&.keys }|" }, flags: [:debug, :warning])
 
-        if local_ctx
-          result = callable.call(**local_ctx)
-        else
-          result = callable.call()
-        end
-
+        result = local_ctx ? callable.call(**local_ctx) : callable.call()
         result = sanitize_errors(result: result)
-
         status, local_ctx = result
 
         Kit::Organizer::Log.log(msg: -> { "#   Result |#{ status }|#{ local_ctx }|" }, flags: [:debug, :info])
@@ -101,11 +113,6 @@ module Kit::Organizer::Services::Organize
 
         break if [:error, :halt].include?(status)
       end
-    #rescue StandardException => e
-    # status = :error
-    # # TODO: use event bus to notify error handlers ?
-
-    status = :ok if status == :halt
 
     [status, ctx]
   end
