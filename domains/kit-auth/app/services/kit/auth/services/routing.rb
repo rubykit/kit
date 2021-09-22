@@ -4,8 +4,10 @@ module Kit::Auth::Services::Routing
     list_web = [
       { route_id: 'web|authorization_tokens|new',            path: '/web/sign-in',                           verb: :get,    namespace: [:authorization] },
       { route_id: 'web|authorization_tokens|create',         path: '/web/sign-in',                           verb: :post,   namespace: [:authorization] },
-      { route_id: 'web|authorization_tokens|email|new',      path: '/web/sign-in/magic-link',                verb: :get,    namespace: [:authorization] },
-      { route_id: 'web|authorization_tokens|email|create',   path: '/web/sign-in/magic-link',                verb: :post,   namespace: [:authorization] },
+
+      { route_id: 'web|users|sign_in_link_request|new',      path: '/web/sign-in/magic-link',                verb: :get,    namespace: [:authorization] },
+      { route_id: 'web|users|sign_in_link_request|create',   path: '/web/sign-in/magic-link',                verb: :post,   namespace: [:authorization] },
+      { route_id: 'web|authorization_tokens|email|create',   path: '/web/sign-in/use-magic-link',            verb: :get,    namespace: [:authorization] },
 
       { route_id: 'web|users|new',                           path: '/web/sign-up',                           verb: :get,    namespace: [:users] },
       { route_id: 'web|users|create',                        path: '/web/sign-up',                           verb: :post,   namespace: [:users] },

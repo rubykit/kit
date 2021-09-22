@@ -1,12 +1,7 @@
+# Various function to handle `access_token`s.
 module Kit::Auth::Services::OauthAccessToken
 
-  def self.active?(oauth_access_token:)
-    expired = DateTime.now > (oauth_access_token.created_at + oauth_access_token.expires_in)
-    revoked = !!oauth_access_token.revoked_at
-
-    !expired && !revoked
-  end
-
+  # Attempts to revoke an `oauth_access_token`.
   def self.revoke(oauth_access_token:)
     status = oauth_access_token
       .to_write_record
@@ -18,6 +13,60 @@ module Kit::Auth::Services::OauthAccessToken
     else
       [:error, "Could not revoke access token ##{ oauth_access_token.id }."]
     end
+  end
+
+  # Attempt to find an `access_token` in a `RouterConn`.
+  #
+  # The following fields are checked in this order:
+  #   - `Authorization` header
+  #   - `access_token` query_params
+  #   - `access_token` cookie
+  #
+  # The first value found is returned.
+  #
+  # ### References
+  # - https://www.iana.org/assignments/http-authschemes/http-authschemes.xhtml
+  def self.extract_access_token(router_conn:, token_types: nil)
+    token_types ||= [:param, :cookie, :header]
+
+    access_tokens = {
+      header: nil,
+      param:  router_conn.dig(:request, :params, :access_token),
+      cookie: router_conn.dig(:request, :http, :cookies, :access_token, :value),
+    }
+
+    if !(auth_header = router_conn.dig(:request, :http, :headers, 'Authorization')).blank?
+      token = auth_header.split('Bearer ')[1]
+      if !token.blank?
+        access_tokens[:header] = token
+      end
+    end
+
+    access_tokens = access_tokens
+      .reject { |k, v| !token_types.include?(k) || v.blank? }
+      .to_h
+
+    values = access_tokens.values.compact.uniq
+    if values.size == 0
+      [:error, { attribute: :access_token, type: :missing, desc: 'is missing' }]
+    else
+      [:ok, access_token: values.first]
+    end
+  end
+
+  # Attempt to find the `access_token` in the database.
+  #
+  # In order to do this, the hashing method that was used to generate the hashed token that is in the DB needs to be known.
+  def self.find_oauth_access_token(access_token:, oauth_application:)
+    secret_strategy = ::Doorkeeper.configuration.token_secret_strategy
+    hashed_secret   = secret_strategy.transform_secret(access_token.to_s)
+
+    oauth_access_token = Kit::Auth::Models::Read::OauthAccessToken.find_by({
+      token:          hashed_secret,
+      application_id: oauth_application.id,
+    })
+
+    [:ok, oauth_access_token: oauth_access_token]
   end
 
 end

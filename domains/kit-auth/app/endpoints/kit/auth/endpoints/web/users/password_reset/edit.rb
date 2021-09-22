@@ -2,14 +2,22 @@ module Kit::Auth::Endpoints::Web::Users::PasswordReset::Edit
 
   def self.endpoint(router_conn:)
     Kit::Organizer.call(
-      list: [
-        [:alias, :web_require_current_user!],
-        [:alias, :web_redirect_if_missing_scope!],
-        self.method(:render_view),
+      ok:    [
+        Kit::Auth::Actions::OauthApplications::LoadWeb,
+        Kit::Auth::Actions::Users::IdentifyUser,
+        Kit::Auth::Actions::Users::EnsureActiveToken,
+        [:local_ctx, [:alias, :web_redirect_if_missing_scope!], { scope: :user_update_password }],
+        self.method(:set_form_model),
+        self.method(:set_page_component),
+        self.method(:render_form_page),
       ],
-      ctx:  {
+      error: [
+        self.method(:handle_error_token_revoked),
+        self.method(:handle_error_token_expired),
+        Kit::Router::Controllers::Http.method(:attempt_redirect_with_errors),
+      ],
+      ctx:   {
         router_conn: router_conn,
-        scope:       :user_update_password,
       },
     )
   end
@@ -20,18 +28,62 @@ module Kit::Auth::Endpoints::Web::Users::PasswordReset::Edit
     target:  self.method(:endpoint),
   )
 
-  def self.render_view(router_conn:)
-    model = { password: nil, password_confirmation: nil }
+  def self.set_form_model
+    form_model = { password: nil, password_confirmation: nil }
 
+    [:ok, form_model: form_model]
+  end
+
+  def self.set_page_component
+    [:ok, component: Kit::Auth::Components::Pages::Users::PasswordReset::EditComponent]
+  end
+
+  def self.render_form_page(router_conn:, form_model:, component:, errors: nil)
     Kit::Router::Controllers::Http.render(
       router_conn: router_conn,
-      component:   Kit::Auth::Components::Pages::Users::PasswordReset::EditComponent,
+      component:   component,
       params:      {
-        model:        model,
         access_token: router_conn.request[:params][:access_token],
         csrf_token:   router_conn.request[:http][:csrf_token],
+        errors_list:  errors,
+        model:        form_model,
       },
     )
+  end
+
+  # Error flow -----------------------------------------------------------------
+
+  def self.handle_error_token_revoked(router_conn:, errors:)
+    error_code = :oauth_token_revoked
+
+    if Kit::Organizer.has_error_code?(code: error_code, errors: errors)
+      error_text   = 'This reset password link has already been used. Please request a new one.'
+      redirect_url = Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|password_reset_request|new')
+
+      [:ok, {
+        errors:           [{ detail: error_text, code: error_code }],
+        overwrite_errors: true,
+        redirect_url:     redirect_url,
+      },]
+    else
+      [:ok]
+    end
+  end
+
+  def self.handle_error_token_expired(router_conn:, errors:)
+    error_code = :oauth_token_expired
+
+    if Kit::Organizer.has_error_code?(code: error_code, errors: errors)
+      error_text  = 'This reset password link has expired. Please request a new one.'
+
+      [:ok, {
+        errors:           [{ detail: error_text, code: error_code }],
+        overwrite_errors: true,
+        redirect_url:     redirect_url,
+      },]
+    else
+      [:ok]
+    end
   end
 
 end

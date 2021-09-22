@@ -2,10 +2,20 @@ module Kit::Auth::Endpoints::Web::Users::SignIn::WithMagicLink::Create
 
   def self.endpoint(router_conn:)
     Kit::Organizer.call(
-      list: [
-        Kit::Auth::Endpoints::Web::Users::SignIn::WithMagicLink::Create.method(:render),
+      ok:    [
+        Kit::Auth::Actions::OauthApplications::LoadWeb,
+        Kit::Auth::Actions::Users::IdentifyUser,
+        Kit::Auth::Actions::Users::EnsureActiveToken,
+        [:local_ctx, [:alias, :web_redirect_if_missing_scope!], { scope: :one_time_sign_in }],
+        self.method(:create_sign_in),
+        Kit::Auth::Endpoints::Web::Users::SignIn::WithPassword::Create.method(:redirect),
       ],
-      ctx:  { router_conn: router_conn },
+      error: [
+        self.method(:handle_error_token_revoked),
+        self.method(:handle_error_token_expired),
+        self.method(:handle_error),
+      ],
+      ctx:   { router_conn: router_conn },
     )
   end
 
@@ -17,17 +27,61 @@ module Kit::Auth::Endpoints::Web::Users::SignIn::WithMagicLink::Create
     target:  self.method(:endpoint),
   )
 
-  def self.render(router_conn:, page_component: nil)
-    model = router_conn.request[:params].slice(:email)
+  def self.create_sign_in(router_conn:, oauth_access_token:)
+    status, ctx = Kit::Organizer.call(
+      list: [
+        Kit::Auth::Services::OauthAccessToken.method(:revoke),
+        Kit::Auth::Actions::Users::SignInWeb,
+      ],
+      ctx:  {
+        router_conn:        router_conn,
+        oauth_access_token: oauth_access_token,
+        user:               oauth_access_token.user,
+      },
+    )
 
-    page_component ||= Kit::Auth::Components::Pages::Users::SignIn::WithMagicLink::AfterComponent
+    [status, (status == :error) ? { errors: ctx[:errors] } : {}]
+  end
 
-    Kit::Router::Controllers::Http.render(
+  # Error flow -----------------------------------------------------------------
+
+  def self.handle_error_token_revoked(router_conn:, errors:)
+    error_code = :oauth_token_revoked
+
+    if Kit::Organizer.has_error_code?(code: error_code, errors: errors)
+      error_text   = 'This sign-in link has already been used. Please request a new one.'
+      redirect_url = Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|sign_in_link_request|new')
+
+      [:ok, errors: [{ detail: error_text, code: error_code }], overwrite_errors: true, redirect_url: redirect_url]
+    else
+      [:ok]
+    end
+  end
+
+  def self.handle_error_token_expired(router_conn:, errors:)
+    error_code = :oauth_token_expired
+
+    if Kit::Organizer.has_error_code?(code: error_code, errors: errors)
+      error_text   = 'This sign-in link has expired. Please request a new one'
+      redirect_url = Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|sign_in_link_request|new')
+
+      [:ok, errors: [{ detail: error_text, code: error_code }], overwrite_errors: true, redirect_url: redirect_url]
+    else
+      [:ok]
+    end
+  end
+
+  def self.handle_error(router_conn:, redirect_url:, errors: nil)
+    if !redirect_url
+      redirect_url = Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|sign_in')
+    end
+
+    Kit::Router::Controllers::Http.redirect_to(
       router_conn: router_conn,
-      component:      page_component,
-      params:         {
-        email: model[:email],
-      }
+      location:    redirect_url,
+      flash:       {
+        error: errors.map { |el| el[:detail] }.join('<br>'),
+      },
     )
   end
 

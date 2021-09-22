@@ -4,9 +4,13 @@ module Kit::Auth::Endpoints::Web::Users::SignOut::Destroy
     Kit::Organizer.call(
       list: [
         [:alias, :web_require_current_user!],
-        self.method(:sign_out),
+        self.method(:set_oauth_access_token),
+        self.method(:clear_cookies),
+        self.method(:redirect),
       ],
-      ctx:  { router_conn: router_conn },
+      ctx:  {
+        router_conn: router_conn,
+      },
     )
   end
 
@@ -18,17 +22,25 @@ module Kit::Auth::Endpoints::Web::Users::SignOut::Destroy
     target:  self.method(:endpoint),
   )
 
-  def self.sign_out(router_conn:)
-    access_token = router_conn.metadata[:current_user_oauth_access_token]
-    if access_token
-      Kit::Auth::Services::OauthAccessToken.revoke(oauth_access_token: access_token)
+  def self.set_oauth_access_token(router_conn:)
+    [:ok, oauth_access_token: router_conn.metadata[:current_user_oauth_access_token]]
+  end
 
-      router_conn.response[:http][:cookies][:access_token] = { value: nil, encrypted: true }
-    end
+  def self.clear_cookies(router_conn:)
+    router_conn.response[:http][:cookies][:access_token] = { value: nil, encrypted: true }
+
+    [:ok, router_conn: router_conn]
+  end
+
+  def self.redirect(router_conn:, redirect_url: nil)
+    redirect_url ||= Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|sign_out|after')
 
     Kit::Router::Controllers::Http.redirect_to(
       router_conn: router_conn,
-      location:    Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|sign_out|after'),
+      location:    redirect_url,
+      flash:       {
+        success: I18n.t('kit.auth.notifications.sign_out.success'),
+      },
     )
   end
 

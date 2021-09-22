@@ -4,6 +4,7 @@ class Kit::Auth::Components::Pages::Users::PasswordResetRequest::NewComponent < 
 
   def initialize(model:, **)
     super
+
     @model = model
   end
 

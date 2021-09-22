@@ -9,7 +9,7 @@ class Kit::Auth::Admin::Tables::OauthAccessToken < Kit::Auth::Admin::Tables::Bas
       user:              :model_verbose,
       oauth_application: :model_verbose,
       token:             :code,
-      active:            [nil, ->(el) { Kit::Auth::Services::OauthAccessToken.active?(oauth_access_token: el) }],
+      active:            [nil, ->(el) { el.active? }],
       refresh_token:     :code,
       expires_in:        :code,
       scopes:            :code,

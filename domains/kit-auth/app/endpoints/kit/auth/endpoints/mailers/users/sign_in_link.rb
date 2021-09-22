@@ -20,7 +20,8 @@ module Kit::Auth::Endpoints::Mailers::Users::SignInLink
 
     user   = router_conn.request[:params][:user]
     params = {
-      user: user,
+      user:         user,
+      access_token: router_conn.request[:params][:access_token],
     }
 
     component_instance = component.new(**params)

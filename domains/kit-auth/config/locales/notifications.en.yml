@@ -7,10 +7,10 @@ en:
       notifications:
 
         sign_in:
-          success: "You are now signed-in!"
+          success: "You are now signed-in, welcome back!"
 
         sign_out:
-          success: "You are now signed-out: see you soon!"
+          success: "You've been signed-out, see you soon!"
           already: "${kit.auth.notifications.sign_out.success}"
 
         email_confirmation:

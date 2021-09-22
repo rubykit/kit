@@ -2,18 +2,23 @@ module Kit::Auth::Endpoints::Web::Users::PasswordReset::Update
 
   def self.endpoint(router_conn:)
     Kit::Organizer.call(
-      list: [
-        [:alias, :web_require_current_user!],
-        [:alias, :web_redirect_if_missing_scope!],
-        [:if, self.method(:update_password), {
-          ok:    [self.method(:handle_success)],
-          error: [self.method(:handle_error)],
-        },],
+      ok:    [
+        Kit::Auth::Actions::OauthApplications::LoadWeb,
+        Kit::Auth::Actions::Users::IdentifyUser,
+        Kit::Auth::Actions::Users::EnsureActiveToken,
+        [:local_ctx, [:alias, :web_redirect_if_missing_scope!], { scope: :user_update_password }],
+        self.method(:set_form_model),
+        self.method(:update_password),
+        self.method(:redirect),
       ],
-      ctx:  {
-        router_conn: router_conn,
-        scope:       :user_update_password,
-      },
+      error: [
+        Kit::Auth::Endpoints::Web::Users::PasswordReset::Edit.method(:handle_error_token_revoked),
+        Kit::Auth::Endpoints::Web::Users::PasswordReset::Edit.method(:handle_error_token_expired),
+        Kit::Router::Controllers::Http.method(:attempt_redirect_with_errors),
+        Kit::Auth::Endpoints::Web::Users::PasswordReset::Edit.method(:set_page_component),
+        Kit::Auth::Endpoints::Web::Users::PasswordReset::Edit.method(:render_form_page),
+      ],
+      ctx:   { router_conn: router_conn },
     )
   end
 
@@ -23,51 +28,33 @@ module Kit::Auth::Endpoints::Web::Users::PasswordReset::Update
     target:  self.method(:endpoint),
   )
 
-  def self.update_password(router_conn:)
-    model = router_conn.request[:params].slice(:password, :password_confirmation)
+  def self.set_form_model(router_conn:)
+    form_model = router_conn.request[:params].slice(:password, :password_confirmation)
 
+    [:ok, form_model: form_model]
+  end
+
+  def self.update_password(router_conn:, form_model:, oauth_access_token:)
     Kit::Organizer.call(
       list: [
         Kit::Auth::Actions::Users::UpdatePassword,
+        Kit::Auth::Services::OauthAccessToken.method(:revoke),
         Kit::Auth::Actions::Users::SignInWeb,
       ],
       ctx:  {
-        router_conn: router_conn,
-        user:        router_conn.metadata[:current_user],
-      }.merge(model),
+        router_conn:        router_conn,
+        user:               router_conn.metadata[:current_user],
+        oauth_access_token: oauth_access_token,
+      }.merge(form_model),
     )
   end
 
-  def self.handle_success(router_conn:, oauth_access_token_plaintext_secret:)
-    # Revoke the password reset access_token
-    current_user_oauth_access_token = router_conn.metadata[:current_user_oauth_access_token]
-    Kit::Auth::Services::OauthAccessToken.revoke(oauth_access_token: current_user_oauth_access_token)
-
-    #binding.pry
-
-    # Add the new one to the cookies
-    router_conn.response[:http][:cookies][:access_token] = {
-      value:     oauth_access_token_plaintext_secret,
-      encrypted: true,
-    }
-
+  def self.redirect(router_conn:)
     Kit::Router::Controllers::Http.redirect_to(
       router_conn: router_conn,
       location:    Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|password_reset|after'),
-      notice:      I18n.t('kit.auth.notifications.password_reset.success'),
-    )
-  end
-
-  def self.handle_error(router_conn:, errors:)
-    model = router_conn.request[:params].slice(:password, :password_confirmation)
-
-    Kit::Router::Controllers::Http.render(
-      router_conn: router_conn,
-      component:   Kit::Auth::Components::Pages::Users::PasswordReset::EditComponent,
-      params:      {
-        model:       model,
-        csrf_token:  router_conn.request[:http][:csrf_token],
-        errors_list: errors,
+      flash:       {
+        success: I18n.t('kit.auth.notifications.password_reset.success'),
       },
     )
   end

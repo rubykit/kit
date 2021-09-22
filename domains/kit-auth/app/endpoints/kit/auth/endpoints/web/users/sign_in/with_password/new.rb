@@ -4,7 +4,9 @@ module Kit::Auth::Endpoints::Web::Users::SignIn::WithPassword::New
     Kit::Organizer.call(
       list: [
         [:alias, :web_redirect_if_current_user!],
-        Kit::Auth::Endpoints::Web::Users::SignIn::WithPassword::New.method(:new_sign_in),
+        self.method(:set_form_model),
+        self.method(:set_page_component),
+        Kit::Router::Controllers::Http.method(:render_form_page),
       ],
       ctx:  { router_conn: router_conn },
     )
@@ -25,19 +27,14 @@ module Kit::Auth::Endpoints::Web::Users::SignIn::WithPassword::New
     },
   )
 
-  def self.new_sign_in(router_conn:, page_component: nil)
-    model = { email: nil, password: nil }
+  def self.set_form_model
+    form_model = { email: nil, password: nil }
 
-    page_component ||= Kit::Auth::Components::Pages::Users::SignIn::WithPassword::NewComponent
+    [:ok, form_model: form_model]
+  end
 
-    Kit::Router::Controllers::Http.render(
-      router_conn: router_conn,
-      component:      page_component,
-      params:         {
-        model:      model,
-        csrf_token: router_conn.request[:http][:csrf_token],
-      },
-    )
+  def self.set_page_component
+    [:ok, component: Kit::Auth::Components::Pages::Users::SignIn::WithPassword::NewComponent]
   end
 
 end
