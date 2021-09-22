@@ -11,7 +11,7 @@ module Kit::Router::Services::Store::Endpoint
     uid            = uid.to_sym
 
     # NOTE: because of live reloading it is easier to allow this
-    if router_store[:endpoints][uid] && ENV['KIT_ROUTER_ALLOW_ROUTE_RELOADING'] != true
+    if router_store[:endpoints][uid] && ENV['KIT_ROUTER_ALLOW_ROUTE_RELOADING'] != 'true'
       raise "Kit::Router | already defined uid `#{ uid }`"
     end
 

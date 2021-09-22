@@ -60,6 +60,8 @@ module Kit::Router::Adapters::HttpRails::Conn::Export
 
     rails_controller.redirect_to(redirect_data[:location], options)
 
+    (redirect_data[:flash] || {}).each { |k, v| rails_controller.flash[k] = v }
+
     [:ok]
   end
 
