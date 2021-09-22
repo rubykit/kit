@@ -35,7 +35,7 @@ describe 'Table Insertion' do
         service.insert(store: store, table_name: table_name, data: data)
       end
 
-      Kit::Organizer.merge(results: results)
+      Kit::Organizer::Services::Results.merge(results: results)
     end
 
     it 'inserts data in the table' do
