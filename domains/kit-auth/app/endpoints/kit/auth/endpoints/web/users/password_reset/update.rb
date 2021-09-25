@@ -6,7 +6,7 @@ module Kit::Auth::Endpoints::Web::Users::PasswordReset::Update
         Kit::Auth::Actions::OauthApplications::LoadWeb,
         Kit::Auth::Actions::Users::IdentifyUser,
         Kit::Auth::Actions::Users::EnsureActiveToken,
-        [:local_ctx, [:alias, :web_redirect_if_missing_scope!], { scope: :user_update_password }],
+        [:local_ctx, [:alias, :web_redirect_if_missing_scope!], { scope: Kit::Auth::Services::Scopes::USER_PASSWORD_UPDATE }],
         self.method(:set_form_model),
         self.method(:update_password),
         self.method(:redirect),

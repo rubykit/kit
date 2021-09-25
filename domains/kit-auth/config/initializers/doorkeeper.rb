@@ -33,10 +33,7 @@ Doorkeeper.configure do
 
   default_scopes  :public
 
-  optional_scopes :admin,
-    :user_update_password,
-    :one_time_sign_in,
-    :user_confirmation
+  optional_scopes *Kit::Auth::Services::Scopes::ALL
 
   grant_flows %w[authorization_code client_credentials password]
 

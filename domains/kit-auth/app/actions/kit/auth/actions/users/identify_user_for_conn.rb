@@ -22,11 +22,17 @@ module Kit::Auth::Actions::Users::IdentifyUserForConn
     end
   end
 
-  def self.export_user_to_router_conn(router_conn:, oauth_access_token:)
-    user  = oauth_access_token&.user
+  def self.export_user_to_router_conn(router_conn:, oauth_access_token:, access_token_type:)
+    router_conn.metadata[:current_user_resolved] = true
+
+    user = oauth_access_token&.user
 
     if user
-      [:ok, user: user, oauth_access_token: oauth_access_token]
+      router_conn.metadata[:current_user]                    = user
+      router_conn.metadata[:current_user_oauth_access_token] = oauth_access_token
+      router_conn.metadata[:current_user_id_type]            = access_token_type
+
+      [:ok, router_conn: router_conn]
     else
       [:error, { attribute: :access_token, desc: 'is invalid' }]
     end

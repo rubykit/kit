@@ -19,6 +19,9 @@ module Kit::Auth::Actions::OauthAccessTokens::Create
 
   # TODO: audit if going through Doorkeeper is actually worth doing
   def self.create_doorkeeper_request_object(user:, oauth_application:, scopes: nil)
+    scopes = [scopes] if !scopes.is_a?(Array)
+    scopes = scopes.map(&:to_s).join(' ')
+
     request_object = ::Doorkeeper::OAuth::PasswordAccessTokenRequest.new(
       ::Doorkeeper.configuration,
       ::Doorkeeper::OAuth::Client.new(::Doorkeeper::Application.find(oauth_application.id)),
@@ -29,6 +32,7 @@ module Kit::Auth::Actions::OauthAccessTokens::Create
     )
 
     request_object.validate
+
     if request_object.valid?
       [:ok, doorkeeper_request_object: request_object]
     else

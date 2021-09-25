@@ -4,7 +4,7 @@ module Kit::Auth::Actions::OauthAccessTokens::CreateForSignIn
     Kit::Auth::Actions::OauthAccessTokens::Create.call(
       user:                          user,
       oauth_application:             oauth_application,
-      scopes:                        'public',
+      scopes:                        Kit::Auth::Services::Scopes::USER_DEFAULT,
       oauth_access_token_expires_in: 30.day,
     )
   end

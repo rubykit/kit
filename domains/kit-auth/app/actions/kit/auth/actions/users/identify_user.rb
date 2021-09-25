@@ -18,7 +18,7 @@ module Kit::Auth::Actions::Users::IdentifyUser
     if status == :error
       [:error, ctx.slice(:errors)]
     else
-      [:ok,    ctx.slice(:user, :oauth_access_token)]
+      [:ok,    ctx.slice(:user, :oauth_access_token, :access_token_type)]
     end
   end
 

@@ -54,27 +54,25 @@ module Kit::Auth::Controllers::Web::CurrentUser
 
   def self.resolve_current_user(router_conn:)
     if !router_conn.metadata[:current_user_resolved]
-      status, ctx = Kit::Organizer.call(
-        list: [
+      _, ctx = Kit::Organizer.call(
+        ok:  [
           Kit::Auth::Actions::OauthApplications::LoadWeb,
           Kit::Auth::Actions::Users::IdentifyUserForConn,
         ],
-        ctx:  {
+        ctx: {
           router_conn: router_conn,
         },
       )
 
-      router_conn.metadata[:current_user_resolved] = true
-
-      if status == :ok
-        router_conn.metadata[:current_user]                    = ctx[:user]
-        router_conn.metadata[:current_user_oauth_access_token] = ctx[:oauth_access_token]
-      end
+      router_conn = ctx[:router_conn]
     end
 
     [:ok,
+      router_conn:                     router_conn,
+
       current_user:                    router_conn.metadata[:current_user],
       current_user_oauth_access_token: router_conn.metadata[:current_user_oauth_access_token],
+      current_user_id_type:            router_conn.metadata[:current_user_id_type],
     ]
   end
 

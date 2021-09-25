@@ -4,7 +4,7 @@ module Kit::Auth::Actions::OauthAccessTokens::CreateForPasswordReset
     Kit::Auth::Actions::OauthAccessTokens::Create.call(
       user:                          user,
       oauth_application:             oauth_application,
-      scopes:                        'user_update_password',
+      scopes:                        Kit::Auth::Services::Scopes::USER_PASSWORD_UPDATE,
       oauth_access_token_expires_in: 1.day,
     )
   end

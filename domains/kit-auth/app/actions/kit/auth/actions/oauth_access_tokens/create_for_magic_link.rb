@@ -4,7 +4,7 @@ module Kit::Auth::Actions::OauthAccessTokens::CreateForMagicLink
     Kit::Auth::Actions::OauthAccessTokens::Create.call(
       user:                          user,
       oauth_application:             oauth_application,
-      scopes:                        'one_time_sign_in',
+      scopes:                        Kit::Auth::Services::Scopes::USER_SIGN_IN,
       oauth_access_token_expires_in: 1.day,
     )
   end

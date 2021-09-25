@@ -2,9 +2,12 @@ class Kit::Auth::DummyApp::Components::NavbarComponent < Kit::ViewComponents::Co
 
   attr_reader :current_user
 
-  def initialize(current_user:, **)
+  def initialize(current_user:, current_user_id_type:, **)
     super
-    @current_user = current_user
+
+    if current_user_id_type == :cookie
+      @current_user = current_user
+    end
   end
 
 end

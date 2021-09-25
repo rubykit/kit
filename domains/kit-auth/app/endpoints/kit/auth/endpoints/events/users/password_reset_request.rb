@@ -7,11 +7,11 @@ module Kit::Auth::Endpoints::Events::Users::PasswordResetRequest
           ok:    [
             Kit::Auth::Actions::OauthApplications::LoadWeb,
             Kit::Auth::Actions::OauthAccessTokens::CreateForPasswordReset,
-            Kit::Auth::Endpoints::Events::Users::PasswordResetRequest.method(:notify_user),
-            Kit::Auth::Endpoints::Events::Users::PasswordResetRequest.method(:persist_event_success),
+            self.method(:notify_user),
+            self.method(:persist_event_success),
           ],
           error: [
-            Kit::Auth::Endpoints::Events::Users::PasswordResetRequest.method(:persist_event_failure),
+            self.method(:persist_event_failure),
           ],
         },],
       ],

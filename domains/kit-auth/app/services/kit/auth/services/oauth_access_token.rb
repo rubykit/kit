@@ -46,11 +46,11 @@ module Kit::Auth::Services::OauthAccessToken
       .reject { |k, v| !token_types.include?(k) || v.blank? }
       .to_h
 
-    values = access_tokens.values.compact.uniq
-    if values.size == 0
+    if access_tokens.size == 0
       [:error, { attribute: :access_token, type: :missing, desc: 'is missing' }]
     else
-      [:ok, access_token: values.first]
+      access_token = access_tokens.first
+      [:ok, access_token: access_token[1], access_token_type: access_token[0]]
     end
   end
 
