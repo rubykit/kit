@@ -6,11 +6,12 @@ module Kit::Auth::Endpoints::Web::Users::PasswordResetRequest::Create
         [:alias, :web_redirect_if_current_user!],
         self.method(:set_form_model),
         self.method(:create_password_reset_request),
+        self.method(:set_i18n_params),
         self.method(:redirect),
       ],
       error: [
         Kit::Auth::Endpoints::Web::Users::PasswordResetRequest::New.method(:set_page_component),
-        Kit::Router::Controllers::Http.method(:render_form_page),
+        Kit::Domain::Endpoints::Http.method(:render_form_page),
       ],
       ctx:   { router_conn: router_conn },
     )
@@ -40,14 +41,20 @@ module Kit::Auth::Endpoints::Web::Users::PasswordResetRequest::Create
     )
   end
 
-  def self.redirect(router_conn:, form_model:, redirect_url: nil)
+  def self.set_i18n_params(router_conn:, form_model:)
+    [:ok, i18n_params: {
+      email: form_model[:email],
+    },]
+  end
+
+  def self.redirect(router_conn:, form_model:, redirect_url: nil, i18n_params: nil)
     redirect_url ||= Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|password_reset_request|after')
 
-    Kit::Router::Controllers::Http.redirect_to(
+    Kit::Domain::Endpoints::Http.redirect_to(
       router_conn: router_conn,
       location:    redirect_url,
       flash:       {
-        notice: I18n.t('kit.auth.notifications.password_reset_request.success', email: form_model[:email]),
+        notice: I18n.t('kit.auth.notifications.password_reset_request.success', **(i18n_params || {})),
       },
     )
   end

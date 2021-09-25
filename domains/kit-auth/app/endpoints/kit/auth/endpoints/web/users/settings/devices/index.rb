@@ -43,7 +43,7 @@ module Kit::Auth::Endpoints::Web::Users::Settings::Devices::Index
       }
     end
 
-    Kit::Router::Controllers::Http.render(
+    Kit::Domain::Endpoints::Http.render(
       router_conn: router_conn,
       component:      Kit::Auth::Components::Pages::Users::Settings::Devices::IndexComponent,
       params:         {

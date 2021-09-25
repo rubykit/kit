@@ -35,7 +35,7 @@ module Kit::Auth::Endpoints::Web::Users::SignOut::Destroy
   def self.redirect(router_conn:, redirect_url: nil)
     redirect_url ||= Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|sign_out|after')
 
-    Kit::Router::Controllers::Http.redirect_to(
+    Kit::Domain::Endpoints::Http.redirect_to(
       router_conn: router_conn,
       location:    redirect_url,
       flash:       {

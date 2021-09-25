@@ -6,7 +6,7 @@ module Kit::Auth::Endpoints::Web::Users::SignUp::WithPassword::New
         [:alias, :web_redirect_if_current_user!],
         self.method(:set_form_model),
         self.method(:set_page_component),
-        Kit::Router::Controllers::Http.method(:render_form_page),
+        Kit::Domain::Endpoints::Http.method(:render_form_page),
       ],
       ctx:  { router_conn: router_conn },
     )

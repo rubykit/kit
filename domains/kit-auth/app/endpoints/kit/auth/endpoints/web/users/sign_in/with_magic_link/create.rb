@@ -49,7 +49,7 @@ module Kit::Auth::Endpoints::Web::Users::SignIn::WithMagicLink::Create
     error_code = :oauth_token_revoked
 
     if Kit::Organizer.has_error_code?(code: error_code, errors: errors)
-      error_text   = 'This sign-in link has already been used. Please request a new one.'
+      error_text   = I18n.t('kit.auth.notifications.sign_in.link.revoked')
       redirect_url = Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|sign_in_link_request|new')
 
       [:ok, errors: [{ detail: error_text, code: error_code }], overwrite_errors: true, redirect_url: redirect_url]
@@ -62,7 +62,7 @@ module Kit::Auth::Endpoints::Web::Users::SignIn::WithMagicLink::Create
     error_code = :oauth_token_expired
 
     if Kit::Organizer.has_error_code?(code: error_code, errors: errors)
-      error_text   = 'This sign-in link has expired. Please request a new one'
+      error_text   = I18n.t('kit.auth.notifications.sign_in.link.expired')
       redirect_url = Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|sign_in_link_request|new')
 
       [:ok, errors: [{ detail: error_text, code: error_code }], overwrite_errors: true, redirect_url: redirect_url]
@@ -76,7 +76,7 @@ module Kit::Auth::Endpoints::Web::Users::SignIn::WithMagicLink::Create
       redirect_url = Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|sign_in')
     end
 
-    Kit::Router::Controllers::Http.redirect_to(
+    Kit::Domain::Endpoints::Http.redirect_to(
       router_conn: router_conn,
       location:    redirect_url,
       flash:       {

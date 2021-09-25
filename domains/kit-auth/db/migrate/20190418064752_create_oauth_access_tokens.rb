@@ -3,8 +3,9 @@ class CreateOauthAccessTokens < ActiveRecord::Migration[5.2] # rubocop:disable S
   def change
     create_table :oauth_access_tokens do |t|
       t.timestamps null: false
-      t.datetime   :revoked_at
       t.datetime   :deleted_at,            index: true, default: nil
+
+      t.datetime   :revoked_at
 
       t.references :resource_owner,        index: true, null: false, foreign_key: { to_table: :users }
       t.references :application,           index: true, null: false, foreign_key: { to_table: :oauth_applications }

@@ -14,7 +14,7 @@ module Kit::Auth::Endpoints::Web::Users::PasswordReset::Edit
       error: [
         self.method(:handle_error_token_revoked),
         self.method(:handle_error_token_expired),
-        Kit::Router::Controllers::Http.method(:attempt_redirect_with_errors),
+        Kit::Domain::Endpoints::Http.method(:attempt_redirect_with_errors),
       ],
       ctx:   {
         router_conn: router_conn,
@@ -39,7 +39,7 @@ module Kit::Auth::Endpoints::Web::Users::PasswordReset::Edit
   end
 
   def self.render_form_page(router_conn:, form_model:, component:, errors: nil)
-    Kit::Router::Controllers::Http.render(
+    Kit::Domain::Endpoints::Http.render(
       router_conn: router_conn,
       component:   component,
       params:      {
@@ -57,7 +57,7 @@ module Kit::Auth::Endpoints::Web::Users::PasswordReset::Edit
     error_code = :oauth_token_revoked
 
     if Kit::Organizer.has_error_code?(code: error_code, errors: errors)
-      error_text   = 'This reset password link has already been used. Please request a new one.'
+      error_text   = I18n.t('kit.auth.notifications.password_reset.link.revoked')
       redirect_url = Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|password_reset_request|new')
 
       [:ok, {
@@ -74,7 +74,8 @@ module Kit::Auth::Endpoints::Web::Users::PasswordReset::Edit
     error_code = :oauth_token_expired
 
     if Kit::Organizer.has_error_code?(code: error_code, errors: errors)
-      error_text  = 'This reset password link has expired. Please request a new one.'
+      error_text   = I18n.t('kit.auth.notifications.password_reset.link.expired')
+      redirect_url = Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|password_reset_request|new')
 
       [:ok, {
         errors:           [{ detail: error_text, code: error_code }],

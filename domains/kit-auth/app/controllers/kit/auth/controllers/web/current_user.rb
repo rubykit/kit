@@ -1,40 +1,52 @@
 module Kit::Auth::Controllers::Web::CurrentUser
 
-  def self.require_current_user!(router_conn:)
+  def self.require_current_user!(router_conn:, i18n_params: nil)
     return [:ok, current_user: router_conn.metadata[:current_user]] if router_conn.metadata[:current_user]
 
-    Kit::Router::Controllers::Http.redirect_to(
+    i18n_params ||= {}
+
+    Kit::Domain::Endpoints::Http.redirect_to(
       router_conn: router_conn,
       location:    Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|sign_in'),
-      alert:       'This page requires you to be signed-in.',
+      flash:       {
+        alert: I18n.t('kit.auth.notifications.sign_in.required', **i18n_params),
+      },
     )
   end
 
   Kit::Organizer::Services::Callable::Alias.register(id: :web_require_current_user!, target: self.method(:require_current_user!))
 
-  def self.redirect_if_current_user!(router_conn:)
+  def self.redirect_if_current_user!(router_conn:, i18n_params: nil)
     return [:ok] if !router_conn.metadata[:current_user]
 
-    Kit::Router::Controllers::Http.redirect_to(
+    i18n_params ||= {}
+
+    Kit::Domain::Endpoints::Http.redirect_to(
       router_conn: router_conn,
       location:    Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|sign_in|after'),
-      alert:       'This page requires you to be signed-out.',
+      flash:       {
+        alert: I18n.t('kit.auth.notifications.sign_out.required', **i18n_params),
+      },
     )
   end
 
   Kit::Organizer::Services::Callable::Alias.register(id: :web_redirect_if_current_user!, target: self.method(:redirect_if_current_user!))
 
-  def self.redirect_if_missing_scope!(router_conn:, scope:)
+  def self.redirect_if_missing_scope!(router_conn:, scope:, i18n_params: nil)
     model = router_conn.metadata[:current_user_oauth_access_token]
     if model
       model_scopes = Doorkeeper::OAuth::Scopes.from_string(model.scopes)
       return [:ok] if model_scopes.include?(scope.to_s)
     end
 
-    Kit::Router::Controllers::Http.redirect_to(
+    i18n_params ||= {}
+
+    Kit::Domain::Endpoints::Http.redirect_to(
       router_conn: router_conn,
       location:    Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|sign_in'),
-      alert:       "Missing scope: #{ scope }",
+      flash:       {
+        alert: I18n.t('kit.auth.notifications.scopes.missing', **i18n_params.merge(scopes: [scope])),
+      },
     )
   end
 

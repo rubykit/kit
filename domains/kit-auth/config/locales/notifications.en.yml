@@ -8,10 +8,16 @@ en:
 
         sign_in:
           success: "You are now signed-in, welcome back!"
+          required: "This page requires you to be signed-in."
+
+          link:
+            expired: 'This sign-in link has expired. Please request a new one'
+            revoked: 'This sign-in link has already been used. Please request a new one.'
 
         sign_out:
           success: "You've been signed-out, see you soon!"
           already: "${kit.auth.notifications.sign_out.success}"
+          required: "This page requires you to be signed-out."
 
         email_confirmation:
           success: "Your email address has been successfully confirmed."
@@ -24,5 +30,16 @@ en:
 
         password_reset:
           success: "Your password has been changed successfully.<br>You are now signed in."
+
+          link:
+            expired: "This reset password link has expired. Please request a new one."
+            revoked: "This reset password link has already been used. Please request a new one."
+
+        scopes:
+          missing: "Missing scopes: %{scopes}"
+
+
+      errors:
+
 
 

@@ -14,7 +14,7 @@ module Kit::Auth::Endpoints::Web::Users::PasswordReset::Update
       error: [
         Kit::Auth::Endpoints::Web::Users::PasswordReset::Edit.method(:handle_error_token_revoked),
         Kit::Auth::Endpoints::Web::Users::PasswordReset::Edit.method(:handle_error_token_expired),
-        Kit::Router::Controllers::Http.method(:attempt_redirect_with_errors),
+        Kit::Domain::Endpoints::Http.method(:attempt_redirect_with_errors),
         Kit::Auth::Endpoints::Web::Users::PasswordReset::Edit.method(:set_page_component),
         Kit::Auth::Endpoints::Web::Users::PasswordReset::Edit.method(:render_form_page),
       ],
@@ -49,12 +49,12 @@ module Kit::Auth::Endpoints::Web::Users::PasswordReset::Update
     )
   end
 
-  def self.redirect(router_conn:)
-    Kit::Router::Controllers::Http.redirect_to(
+  def self.redirect(router_conn:, i18n_params: nil)
+    Kit::Domain::Endpoints::Http.redirect_to(
       router_conn: router_conn,
       location:    Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|password_reset|after'),
       flash:       {
-        success: I18n.t('kit.auth.notifications.password_reset.success'),
+        success: I18n.t('kit.auth.notifications.password_reset.success', **(i18n_params || {})),
       },
     )
   end

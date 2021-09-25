@@ -10,7 +10,7 @@ module Kit::Auth::Endpoints::Web::Users::SignIn::LinkRequest::Create
       ],
       error: [
         Kit::Auth::Endpoints::Web::Users::SignIn::LinkRequest::New.method(:set_page_component),
-        Kit::Router::Controllers::Http.method(:render_form_page),
+        Kit::Domain::Endpoints::Http.method(:render_form_page),
       ],
       ctx:   { router_conn: router_conn },
     )
@@ -45,7 +45,7 @@ module Kit::Auth::Endpoints::Web::Users::SignIn::LinkRequest::Create
   def self.render_page(router_conn:, form_model:, page_component: nil)
     page_component ||= Kit::Auth::Components::Pages::Users::SignIn::WithMagicLink::AfterComponent
 
-    Kit::Router::Controllers::Http.render(
+    Kit::Domain::Endpoints::Http.render(
       router_conn: router_conn,
       component:   page_component,
       params:      {

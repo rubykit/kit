@@ -45,7 +45,7 @@ module Kit::Auth::Controllers::Api
   def self.render_unauthorized
     status_code = 401
 
-    Kit::Router::Controllers::Http.render_jsonapi_errors(
+    Kit::Domain::Endpoints::Http.render_jsonapi_errors(
       status:    status_code,
       resources: [
         {
@@ -61,7 +61,7 @@ module Kit::Auth::Controllers::Api
   def self.render_forbidden
     status_code = 403
 
-    Kit::Router::Controllers::Http.render_jsonapi_errors(
+    Kit::Domain::Endpoints::Http.render_jsonapi_errors(
       status:    status_code,
       resources: [
         {
@@ -78,7 +78,7 @@ module Kit::Auth::Controllers::Api
     status_code = 404
     model_name  = model.name.demodulize
 
-    Kit::Router::Controllers::Http.render_jsonapi_errors(
+    Kit::Domain::Endpoints::Http.render_jsonapi_errors(
       status:    status_code,
       resources: [
         {
