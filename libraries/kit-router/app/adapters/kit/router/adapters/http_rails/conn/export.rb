@@ -54,8 +54,6 @@ module Kit::Router::Adapters::HttpRails::Conn::Export
 
     options = {
       status: router_conn.response[:http][:status],
-      notice: redirect_data[:notice],
-      alert:  redirect_data[:alert],
     }
 
     rails_controller.redirect_to(redirect_data[:location], options)

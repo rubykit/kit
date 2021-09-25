@@ -156,6 +156,11 @@ class Kit::Router::Models::Conn
     response
   end
 
+  # Convenience request to access config.
+  def config
+    request.metadata[:config] || {}
+  end
+
   # Ensure we return a deep copy to avoid side effects.
   def to_h
     {
