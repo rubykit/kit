@@ -33,7 +33,7 @@ module Kit::Auth::Controllers::Web::CurrentUser
   Kit::Organizer::Services::Callable::Alias.register(id: :web_redirect_if_current_user!, target: self.method(:redirect_if_current_user!))
 
   def self.redirect_if_missing_scope!(router_conn:, scope:, i18n_params: nil)
-    model = router_conn.metadata[:current_user_oauth_access_token]
+    model = router_conn.metadata[:current_user_access_token]
     if model
       model_scopes = Doorkeeper::OAuth::Scopes.from_string(model.scopes)
       return [:ok] if model_scopes.include?(scope.to_s)
@@ -56,7 +56,7 @@ module Kit::Auth::Controllers::Web::CurrentUser
     if !router_conn.metadata[:current_user_resolved]
       _, ctx = Kit::Organizer.call(
         ok:  [
-          Kit::Auth::Actions::OauthApplications::LoadWeb,
+          Kit::Auth::Actions::Applications::LoadWeb,
           Kit::Auth::Actions::Users::IdentifyUserForConn,
         ],
         ctx: {
@@ -68,11 +68,11 @@ module Kit::Auth::Controllers::Web::CurrentUser
     end
 
     [:ok,
-      router_conn:                     router_conn,
+      router_conn:               router_conn,
 
-      current_user:                    router_conn.metadata[:current_user],
-      current_user_oauth_access_token: router_conn.metadata[:current_user_oauth_access_token],
-      current_user_id_type:            router_conn.metadata[:current_user_id_type],
+      current_user:              router_conn.metadata[:current_user],
+      current_user_access_token: router_conn.metadata[:current_user_access_token],
+      current_user_id_type:      router_conn.metadata[:current_user_id_type],
     ]
   end
 

@@ -10,7 +10,7 @@ RSpec.configure do |config|
       cleaner.strategy = :truncation
     end
 
-    load File.expand_path('../../db/seeds/oauth_applications.seeds.rb', __dir__)
+    load File.expand_path('../../db/seeds/applications.seeds.rb', __dir__)
   end
 
 end

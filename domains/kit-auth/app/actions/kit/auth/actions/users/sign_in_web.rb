@@ -3,10 +3,10 @@ module Kit::Auth::Actions::Users::SignInWeb
   def self.call(user:, router_conn:)
     Kit::Organizer.call(
       list: [
-        Kit::Auth::Actions::OauthApplications::LoadWeb,
+        Kit::Auth::Actions::Applications::LoadWeb,
         Kit::Auth::Actions::RequestMetadata::Create,
-        Kit::Auth::Actions::OauthAccessTokens::CreateForSignIn,
-        Kit::Auth::Actions::OauthAccessTokens::UpdateRequestMetadata,
+        Kit::Auth::Actions::AccessTokens::CreateForSignIn,
+        Kit::Auth::Actions::AccessTokens::UpdateRequestMetadata,
         self.method(:save_access_token_in_cookies),
         self.method(:send_event),
 
@@ -18,8 +18,8 @@ module Kit::Auth::Actions::Users::SignInWeb
     )
   end
 
-  def self.save_access_token_in_cookies(router_conn:, oauth_access_token_plaintext_secret:)
-    router_conn.response[:http][:cookies][:access_token] = { value: oauth_access_token_plaintext_secret, encrypted: true }
+  def self.save_access_token_in_cookies(router_conn:, access_token_plaintext_secret:)
+    router_conn.response[:http][:cookies][:access_token] = { value: access_token_plaintext_secret, encrypted: true }
 
     [:ok, router_conn: router_conn]
   end

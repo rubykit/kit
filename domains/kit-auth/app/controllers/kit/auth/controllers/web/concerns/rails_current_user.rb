@@ -28,11 +28,11 @@ module Kit::Auth::Controllers::Web::Concerns
       kit_router_conn.metadata[:current_user]
     end
 
-    def current_user_oauth_access_token
+    def current_user_access_token
       kit_router_conn = request.instance_variable_get(:@kit_router_conn)
       return nil if !kit_router_conn
 
-      kit_router_conn.metadata[:current_user_oauth_access_token]
+      kit_router_conn.metadata[:current_user_access_token]
     end
 
   end

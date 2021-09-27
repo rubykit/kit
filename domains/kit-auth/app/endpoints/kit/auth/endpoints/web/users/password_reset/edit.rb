@@ -3,7 +3,7 @@ module Kit::Auth::Endpoints::Web::Users::PasswordReset::Edit
   def self.endpoint(router_conn:)
     Kit::Organizer.call(
       ok:    [
-        Kit::Auth::Actions::OauthApplications::LoadWeb,
+        Kit::Auth::Actions::Applications::LoadWeb,
         Kit::Auth::Actions::Users::IdentifyUser,
         Kit::Auth::Actions::Users::EnsureActiveToken,
         [:local_ctx, [:alias, :web_redirect_if_missing_scope!], { scope: Kit::Auth::Services::Scopes::USER_PASSWORD_UPDATE }],

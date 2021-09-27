@@ -1,4 +1,4 @@
-Kit::Auth::Log.log(msg: 'seeding defaults `oauth_applications`', flags: [:debug, :db, :seed])
+Kit::Auth::Log.log(msg: 'seeding defaults `applications`', flags: [:debug, :db, :seed])
 
 list = [
   {
@@ -16,8 +16,8 @@ list = [
 ]
 
 list.each do |el|
-  #Kit::Auth::Models::Write::OauthApplication
-  ::Doorkeeper::Application
+  #Kit::Auth::Models::Write::Application
+  ::Doorkeeper.config.application_model
     .create_with({
       name:         el[:name],
       scopes:       el[:scopes],

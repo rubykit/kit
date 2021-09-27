@@ -5,8 +5,8 @@ module Kit::Auth::Endpoints::Events::Users::SignInLinkRequest
       list: [
         [:if, Kit::Auth::Services::User.method(:find_by_email), {
           ok:    [
-            Kit::Auth::Actions::OauthApplications::LoadWeb,
-            Kit::Auth::Actions::OauthAccessTokens::CreateForMagicLink,
+            Kit::Auth::Actions::Applications::LoadWeb,
+            Kit::Auth::Actions::AccessTokens::CreateForMagicLink,
             Kit::Auth::Endpoints::Events::Users::SignInLinkRequest.method(:notify_user),
             Kit::Auth::Endpoints::Events::Users::SignInLinkRequest.method(:persist_event_success),
           ],
@@ -28,25 +28,25 @@ module Kit::Auth::Endpoints::Events::Users::SignInLinkRequest
     target:  self.method(:endpoint),
   )
 
-  def self.notify_user(user:, oauth_access_token_plaintext_secret:)
+  def self.notify_user(user:, access_token_plaintext_secret:)
     Kit::Router::Services::Adapters.call(
       route_id:     'mailers|users|sign_in_link',
       adapter_name: :mailer,
       params:       {
         user:         user,
-        access_token: oauth_access_token_plaintext_secret,
+        access_token: access_token_plaintext_secret,
       },
     )
 
     [:ok]
   end
 
-  def self.persist_event_success(user:, oauth_access_token:)
+  def self.persist_event_success(user:, access_token:)
     Kit::Events::Services::Event.create_event(
       name: 'users|sign_in_link_request|success',
       data: {
         user_id:               user.id,
-        oauth_access_token_id: oauth_access_token.id,
+        access_token_id: access_token.id,
       },
     )
   end

@@ -3,7 +3,7 @@ module Kit::Auth::Endpoints::Web::Users::PasswordReset::Update
   def self.endpoint(router_conn:)
     Kit::Organizer.call(
       ok:    [
-        Kit::Auth::Actions::OauthApplications::LoadWeb,
+        Kit::Auth::Actions::Applications::LoadWeb,
         Kit::Auth::Actions::Users::IdentifyUser,
         Kit::Auth::Actions::Users::EnsureActiveToken,
         [:local_ctx, [:alias, :web_redirect_if_missing_scope!], { scope: Kit::Auth::Services::Scopes::USER_PASSWORD_UPDATE }],
@@ -34,17 +34,17 @@ module Kit::Auth::Endpoints::Web::Users::PasswordReset::Update
     [:ok, form_model: form_model]
   end
 
-  def self.update_password(router_conn:, form_model:, oauth_access_token:)
+  def self.update_password(router_conn:, form_model:, access_token:)
     Kit::Organizer.call(
       list: [
         Kit::Auth::Actions::Users::UpdatePassword,
-        Kit::Auth::Services::OauthAccessToken.method(:revoke),
+        Kit::Auth::Services::AccessToken.method(:revoke),
         Kit::Auth::Actions::Users::SignInWeb,
       ],
       ctx:  {
         router_conn:        router_conn,
         user:               router_conn.metadata[:current_user],
-        oauth_access_token: oauth_access_token,
+        access_token: access_token,
       }.merge(form_model),
     )
   end

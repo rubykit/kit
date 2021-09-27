@@ -20,7 +20,7 @@ module Kit::Auth::Endpoints::Web::Users::Settings::Devices::Index
     list = Kit::Auth::Models::Read::OauthAccessToken
       .where('revoked_at IS NULL')
       .where("(created_at + expires_in * INTERVAL '1 second') > ?", DateTime.now)
-      .where(resource_owner_id: router_conn.metadata[:current_user].id)
+      .where(user_id: router_conn.metadata[:current_user].id)
       .preload(:last_request_metadata)
       .load
 
@@ -37,7 +37,7 @@ module Kit::Auth::Endpoints::Web::Users::Settings::Devices::Index
       end
 
       {
-        oauth_access_token: model.attributes&.symbolize_keys,
+        access_token: model.attributes&.symbolize_keys,
         request_metadata:   request_metadata&.attributes&.symbolize_keys,
         country:            country&.attributes&.symbolize_keys,
       }

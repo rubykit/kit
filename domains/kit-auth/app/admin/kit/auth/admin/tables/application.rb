@@ -1,6 +1,6 @@
 require_relative 'base_table'
 
-class Kit::Auth::Admin::Tables::OauthApplication < Kit::Auth::Admin::Tables::BaseTable
+class Kit::Auth::Admin::Tables::Application < Kit::Auth::Admin::Tables::BaseTable
 
   def attributes_for_all
     base_attributes.merge(

@@ -13,7 +13,7 @@ module Kit::Auth::Components::Users
     end
 
     def token
-      model[:oauth_access_token]
+      model[:access_token]
     end
 
     def app

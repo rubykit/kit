@@ -38,12 +38,12 @@ Note: `schema.rb` is generated in the dummy app, as it does not belong to the en
 ```sh
 RAILS_ENV=development bundle exec rails db:create:primary_ops
 RAILS_ENV=development bundle exec rails db:migrate:primary_ops
-RAILS_ENV=development bundle exec rails db:seed:oauth_applications
+RAILS_ENV=development bundle exec rails db:seed:applications
 ```
 
 ### Testing
 ```sh
 RAILS_ENV=test bundle exec rails db:create:primary_ops
 RAILS_ENV=test bundle exec rails db:migrate:primary_ops
-RAILS_ENV=test bundle exec rails db:seed:oauth_applications
+RAILS_ENV=test bundle exec rails db:seed:applications
 ```

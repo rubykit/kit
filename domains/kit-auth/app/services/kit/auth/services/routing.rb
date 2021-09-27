@@ -13,7 +13,10 @@ module Kit::Auth::Services::Routing
       { route_id: 'web|users|create',                        path: '/web/sign-up',                           verb: :post,   namespace: [:users] },
 
       { route_id: 'web|authorization_tokens|destroy',        path: '/web/sign-out',                          verb: :delete, namespace: [:authorization] },
+
       { route_id: 'web|authorization_tokens|index',          path: '/web/settings/devices',                  verb: :get,    namespace: [:authorization] },
+
+      { route_id: 'web|users|email|confirm',                 path: '/web/settings/email/confirm',            verb: :get,    namespace: [:authorization] },
 
       { route_id: 'web|users|password_reset_request|new',    path: '/web/reset-password',                    verb: :get,    namespace: [:password] },
       { route_id: 'web|users|password_reset_request|create', path: '/web/reset-password',                    verb: :post,   namespace: [:password] },

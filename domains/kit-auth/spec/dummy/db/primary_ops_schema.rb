@@ -10,11 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_10_140620) do
+ActiveRecord::Schema.define(version: 2021_09_20_064850) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+
+  create_table "applications", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.string "uid", null: false
+    t.string "name", null: false
+    t.string "scopes", default: "", null: false
+    t.jsonb "data", default: {}, null: false
+    t.index ["deleted_at"], name: "index_applications_on_deleted_at"
+    t.index ["uid"], name: "index_applications_on_uid"
+  end
 
   create_table "events", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -30,75 +42,6 @@ ActiveRecord::Schema.define(version: 2021_09_10_140620) do
     t.index ["name", "deleted_at"], name: "index_events_on_name_and_deleted_at"
   end
 
-  create_table "oauth_access_grants", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.datetime "revoked_at"
-    t.datetime "deleted_at"
-    t.bigint "resource_owner_id", null: false
-    t.bigint "application_id", null: false
-    t.string "token", null: false
-    t.string "scopes"
-    t.integer "expires_in", null: false
-    t.text "redirect_uri", null: false
-    t.index ["application_id"], name: "index_oauth_access_grants_on_application_id"
-    t.index ["deleted_at"], name: "index_oauth_access_grants_on_deleted_at"
-    t.index ["resource_owner_id"], name: "index_oauth_access_grants_on_resource_owner_id"
-    t.index ["token"], name: "index_oauth_access_grants_on_token"
-  end
-
-  create_table "oauth_access_tokens", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.datetime "revoked_at"
-    t.datetime "deleted_at"
-    t.bigint "resource_owner_id", null: false
-    t.bigint "application_id", null: false
-    t.string "token", null: false
-    t.string "hash_strategy"
-    t.string "scopes"
-    t.integer "expires_in"
-    t.text "refresh_token"
-    t.index ["application_id"], name: "index_oauth_access_tokens_on_application_id"
-    t.index ["deleted_at"], name: "index_oauth_access_tokens_on_deleted_at"
-    t.index ["refresh_token"], name: "index_oauth_access_tokens_on_refresh_token"
-    t.index ["resource_owner_id"], name: "index_oauth_access_tokens_on_resource_owner_id"
-    t.index ["token"], name: "index_oauth_access_tokens_on_token"
-  end
-
-  create_table "oauth_applications", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.datetime "deleted_at"
-    t.string "name", null: false
-    t.string "uid", null: false
-    t.string "secret", null: false
-    t.text "redirect_uri", null: false
-    t.string "scopes", default: "", null: false
-    t.boolean "confidential", default: true, null: false
-    t.index ["deleted_at"], name: "index_oauth_applications_on_deleted_at"
-    t.index ["uid"], name: "index_oauth_applications_on_uid"
-  end
-
-  create_table "oauth_identities", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.datetime "deleted_at"
-    t.bigint "user_id", null: false
-    t.string "provider", null: false
-    t.string "uid", null: false
-    t.text "token", null: false
-    t.integer "expires_at"
-    t.jsonb "info"
-    t.jsonb "extra"
-    t.index ["deleted_at"], name: "index_oauth_identities_on_deleted_at"
-    t.index ["provider", "uid", "deleted_at"], name: "index_oauth_identities_on_provider_and_uid_and_deleted_at"
-    t.index ["provider", "uid"], name: "index_oauth_identities_on_provider_and_uid", unique: true, where: "(deleted_at IS NULL)"
-    t.index ["provider"], name: "index_oauth_identities_on_provider"
-    t.index ["uid"], name: "index_oauth_identities_on_uid"
-    t.index ["user_id"], name: "index_oauth_identities_on_user_id"
-  end
-
   create_table "request_metadata", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "deleted_at"
@@ -111,23 +54,64 @@ ActiveRecord::Schema.define(version: 2021_09_10_140620) do
     t.index ["user_id"], name: "index_request_metadata_on_user_id"
   end
 
+  create_table "user_oauth_identities", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.bigint "user_id", null: false
+    t.string "provider", null: false
+    t.string "uid", null: false
+    t.text "token", null: false
+    t.integer "expires_at"
+    t.jsonb "data"
+    t.index ["deleted_at"], name: "index_user_oauth_identities_on_deleted_at"
+    t.index ["provider", "uid", "deleted_at"], name: "index_user_oauth_identities_on_provider_and_uid_and_deleted_at"
+    t.index ["provider", "uid"], name: "index_user_oauth_identities_on_provider_and_uid", unique: true, where: "(deleted_at IS NULL)"
+    t.index ["provider"], name: "index_user_oauth_identities_on_provider"
+    t.index ["uid"], name: "index_user_oauth_identities_on_uid"
+    t.index ["user_id"], name: "index_user_oauth_identities_on_user_id"
+  end
+
+  create_table "user_secrets", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "deleted_at"
+    t.bigint "application_id", null: false
+    t.bigint "user_id", null: false
+    t.string "category", null: false
+    t.string "scopes", null: false
+    t.string "secret", null: false
+    t.string "secret_strategy", null: false
+    t.integer "expires_in"
+    t.datetime "revoked_at"
+    t.jsonb "data", default: {}, null: false
+    t.index ["application_id"], name: "index_user_secrets_on_application_id"
+    t.index ["category"], name: "index_user_secrets_on_category"
+    t.index ["deleted_at", "secret", "secret_strategy"], name: "index_user_secrets_on_deleted_at_and_secret_and_secret_strategy"
+    t.index ["deleted_at", "user_id"], name: "index_user_secrets_on_deleted_at_and_user_id"
+    t.index ["deleted_at"], name: "index_user_secrets_on_deleted_at"
+    t.index ["scopes"], name: "index_user_secrets_on_scopes"
+    t.index ["secret", "secret_strategy"], name: "index_user_secrets_unique_secret", unique: true, where: "(deleted_at IS NULL)"
+    t.index ["secret"], name: "index_user_secrets_on_secret"
+    t.index ["secret_strategy"], name: "index_user_secrets_on_secret_strategy"
+    t.index ["user_id"], name: "index_user_secrets_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
     t.string "email", null: false
+    t.datetime "email_confirmed_at"
     t.string "hashed_secret"
-    t.datetime "confirmed_at"
-    t.index ["confirmed_at"], name: "index_users_on_confirmed_at"
     t.index ["deleted_at"], name: "index_users_on_deleted_at"
     t.index ["email", "deleted_at"], name: "index_users_on_email_and_deleted_at"
     t.index ["email"], name: "index_users_on_email"
     t.index ["email"], name: "index_users_on_email_unique", unique: true, where: "(deleted_at IS NULL)"
+    t.index ["email_confirmed_at"], name: "index_users_on_email_confirmed_at"
   end
 
-  add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
-  add_foreign_key "oauth_access_grants", "users", column: "resource_owner_id"
-  add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
-  add_foreign_key "oauth_access_tokens", "users", column: "resource_owner_id"
-  add_foreign_key "oauth_identities", "users"
+  add_foreign_key "user_oauth_identities", "users"
+  add_foreign_key "user_secrets", "applications"
+  add_foreign_key "user_secrets", "users"
 end

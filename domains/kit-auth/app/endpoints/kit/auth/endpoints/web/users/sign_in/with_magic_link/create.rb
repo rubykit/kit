@@ -3,7 +3,7 @@ module Kit::Auth::Endpoints::Web::Users::SignIn::WithMagicLink::Create
   def self.endpoint(router_conn:)
     Kit::Organizer.call(
       ok:    [
-        Kit::Auth::Actions::OauthApplications::LoadWeb,
+        Kit::Auth::Actions::Applications::LoadWeb,
         Kit::Auth::Actions::Users::IdentifyUser,
         Kit::Auth::Actions::Users::EnsureActiveToken,
         [:local_ctx, [:alias, :web_redirect_if_missing_scope!], { scope: Kit::Auth::Services::Scopes::USER_SIGN_IN }],
@@ -27,16 +27,16 @@ module Kit::Auth::Endpoints::Web::Users::SignIn::WithMagicLink::Create
     target:  self.method(:endpoint),
   )
 
-  def self.create_sign_in(router_conn:, oauth_access_token:)
+  def self.create_sign_in(router_conn:, access_token:)
     status, ctx = Kit::Organizer.call(
       list: [
-        Kit::Auth::Services::OauthAccessToken.method(:revoke),
+        Kit::Auth::Services::AccessToken.method(:revoke),
         Kit::Auth::Actions::Users::SignInWeb,
       ],
       ctx:  {
         router_conn:        router_conn,
-        oauth_access_token: oauth_access_token,
-        user:               oauth_access_token.user,
+        access_token: access_token,
+        user:               access_token.user,
       },
     )
 
