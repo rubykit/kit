@@ -66,18 +66,19 @@ module Kit::Organizer::Services::Organize
   # @param filter Allows to slice specific keys on the context
   # @return The updated context.
   # contract Ct::Hash[list: Ct::Operations, ctx: Ct::Optional[Ct::Hash], filter: Ct::Optional[Ct::Or[Ct::Hash[ok: Ct::Array], Ct::Hash[error: Ct::Array]]]] => Ct::ResultTupple
-  def self.call(list: nil, ctx: nil, ok: nil, error: nil)
+  def self.call(list: nil, ctx: nil, ok: nil, error: nil, safe: nil)
     status = :ok
     ctx    = (ctx || {}).dup
 
     list_error = (error || [])
     list_ok    = (list  || ok)
+    safe     ||= false
 
-    status, ctx = call_list(list: list_ok, status: status, ctx: ctx)
+    status, ctx = call_list(list: list_ok, status: status, ctx: ctx, safe: safe)
 
     # If there is an error on the :ok track, switch to :error one.
     if status == :error
-      status, ctx = call_list(list: list_error, status: status, ctx: ctx)
+      status, ctx = call_list(list: list_error, status: status, ctx: ctx, safe: safe)
     end
 
     if status == :halt
@@ -87,31 +88,38 @@ module Kit::Organizer::Services::Organize
     [status, ctx]
   end
 
-  def self.call_list(list:, status:, ctx:)
+  def self.call_list(list:, status:, ctx:, safe:)
     list
-      .map do |el|
+      .each do |el|
+        # Resolve the element in the list as it might be an extension
         _, local_callable_ctx = Kit::Organizer::Services::Callable.resolve(target: el)
-        # TODO: check status?
-        local_callable_ctx[:callable]
-      end
-      .each do |callable|
+        callable = local_callable_ctx[:callable]
+
+        # Generate arguments compatible with what the callable expects
         local_ctx = Kit::Organizer::Services::Context.generate_callable_ctx(callable: callable, ctx: ctx)
 
         Kit::Organizer::Log.log(msg: -> { "# Calling `#{ callable }` with keys |#{ local_ctx&.keys }|" }, flags: [:debug, :warning])
 
-        result = local_ctx ? callable.call(**local_ctx) : callable.call()
+        result = callable.call(**local_ctx)
+        # If `errors` is a hash or a string, transform it to an array.
         result = sanitize_errors(result: result)
         status, local_ctx = result
 
         Kit::Organizer::Log.log(msg: -> { "#   Result |#{ status }|#{ local_ctx }|" }, flags: [:debug, :info])
 
+        # Update the general ctx with the results from the callable
         ctx = Kit::Organizer::Services::Context.update_context(ctx: ctx, local_ctx: local_ctx)
 
         Kit::Organizer::Log.log(msg: -> { "#   Ctx keys post |#{ ctx.keys }|" }, flags: [:debug, :warning])
         Kit::Organizer::Log.log(msg: -> { "#   Errors |#{ ctx[:errors] }|" }, flags: [:debug, :danger]) if ctx[:errors]
         Kit::Organizer::Log.log(msg: "\n\n")
 
+        # Stop execution status is not `:ok`
         break if [:error, :halt].include?(status)
+      rescue StandardError => e
+        raise e if !safe
+
+        Kit::Errors::Exception.report(exception: e)
       end
 
     [status, ctx]

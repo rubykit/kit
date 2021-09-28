@@ -16,6 +16,7 @@ module Kit::Organizer
     Kit::Organizer::Services::Organize.call_for_contract(**arguments)
   end
 
+  # Check if one `error` in `errors` has the expected `code`.
   def self.has_error_code?(code:, errors:)
     errors.each do |error|
       if error.try(:dig, :code) == code
