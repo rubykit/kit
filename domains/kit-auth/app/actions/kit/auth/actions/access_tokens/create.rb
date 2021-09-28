@@ -1,7 +1,9 @@
 module Kit::Auth::Actions::AccessTokens::Create
 
   #Contract Hash => [Symbol, KeywordArgs[access_token: Any, errors: Any]]
-  def self.call(user:, application:, access_token_expires_in:, scopes:)
+  def self.call(user:, application:, access_token_expires_in:, scopes:, extra: nil)
+    extra ||= {}
+
     Kit::Organizer.call(
       list: [
         Kit::Auth::Services::AccessToken.method(:check_scopes),
@@ -14,14 +16,17 @@ module Kit::Auth::Actions::AccessTokens::Create
         application:             application,
         access_token_expires_in: access_token_expires_in,
         scopes:                  scopes,
+        access_token_extra_data: extra,
       },
     )
   end
 
-  def self.create_access_token(user:, application:, scopes:, access_token_hashed_secret:, secret_strategy:, access_token_expires_in: nil)
+  def self.create_access_token(user:, application:, scopes:, access_token_hashed_secret:, secret_strategy:, access_token_expires_in: nil, access_token_extra_data: nil)
     if !access_token_expires_in || access_token_expires_in < 0
       access_token_expires_in = 30.days
     end
+
+    access_token_extra_data ||= {}
 
     access_token = Kit::Auth::Models::Write::UserSecret.create(
       application_id:  application.id,
@@ -31,6 +36,7 @@ module Kit::Auth::Actions::AccessTokens::Create
       secret:          access_token_hashed_secret,
       secret_strategy: secret_strategy,
       expires_in:      access_token_expires_in,
+      data:            access_token_extra_data,
     )
 
     [:ok, access_token: access_token]

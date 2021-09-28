@@ -15,4 +15,8 @@ class Kit::Auth::Models::Read::User < Kit::Auth::Models::ReadRecord
     class_name:  'Kit::Auth::Models::Write::DoorkeeperAccessToken',
     foreign_key: :user_id
 
+  def primary_user_email
+    Kit::Auth::Models::Read::UserEmail.find(self.id)
+  end
+
 end

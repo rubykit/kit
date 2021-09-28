@@ -39,7 +39,7 @@ module Kit::Auth::Endpoints::Web::Users::SignOut::Destroy
       router_conn: router_conn,
       location:    redirect_url,
       flash:       {
-        success: I18n.t('kit.auth.notifications.sign_out.success'),
+        info: I18n.t('kit.auth.notifications.sign_out.success'),
       },
     )
   end

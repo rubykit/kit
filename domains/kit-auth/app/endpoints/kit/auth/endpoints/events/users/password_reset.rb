@@ -3,7 +3,7 @@ module Kit::Auth::Endpoints::Events::Users::PasswordReset
   def self.endpoint(router_conn:)
     Kit::Organizer.call(
       list: [
-        ->(router_conn:) { [:ok, user: router_conn.request[:params][:user]] },
+        ->(router_conn:) { [:ok, user_id: router_conn.request[:params][:user_id]] },
         Kit::Auth::Endpoints::Events::Users::PasswordReset.method(:persist_event),
       ],
       ctx:  {
@@ -18,11 +18,11 @@ module Kit::Auth::Endpoints::Events::Users::PasswordReset
     aliases: ['event|users|password_reset'],
   )
 
-  def self.persist_event(user:)
+  def self.persist_event(user_id:)
     Kit::Events::Services::Event.create_event(
       name: 'users|password_reset',
       data: {
-        user_id: user.id,
+        user_id: user_id,
       },
     )
   end

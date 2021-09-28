@@ -10,8 +10,6 @@ module Kit::Auth::Models::Base::UserEmail
     read_columns = [
       :id,
       :created_at,
-
-      :email,
     ]
 
     write_columns = [
@@ -22,6 +20,10 @@ module Kit::Auth::Models::Base::UserEmail
     ]
 
     self.whitelisted_columns = write_columns + read_columns
+  end
+
+  def user_id
+    self.id
   end
 
   def confirmed?

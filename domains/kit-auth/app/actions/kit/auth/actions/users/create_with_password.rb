@@ -45,8 +45,8 @@ module Kit::Auth::Actions::Users::CreateWithPassword
       route_id:     'event|user|auth|sign_up',
       adapter_name: :async,
       params:       {
-        user: user,
-        type: 'email',
+        user_id: user.id,
+        type:    'email',
       },
     )
 

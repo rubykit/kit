@@ -1,9 +1,9 @@
 class Kit::Auth::DummyAppContainer::Controllers::Web::HomeController < Kit::Auth::DummyAppContainer::Controllers::WebController
 
   Kit::Router::Services::Router.register_without_target(
-    uid:     'kit-auth|spec_app|home',
+    uid:     'kit-auth|spec_app|web|home',
     aliases: {
-      'app|home' => [
+      'web|home' => [
         'web|users|sign_in|after',
         'web|users|sign_up|after',
         'web|users|sign_out|after',

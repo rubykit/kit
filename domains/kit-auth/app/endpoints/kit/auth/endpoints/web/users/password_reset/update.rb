@@ -42,8 +42,8 @@ module Kit::Auth::Endpoints::Web::Users::PasswordReset::Update
         Kit::Auth::Actions::Users::SignInWeb,
       ],
       ctx:  {
-        router_conn:        router_conn,
-        user:               router_conn.metadata[:current_user],
+        router_conn:  router_conn,
+        user:         router_conn.metadata[:current_user],
         access_token: access_token,
       }.merge(form_model),
     )

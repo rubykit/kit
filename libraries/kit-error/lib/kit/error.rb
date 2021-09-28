@@ -39,5 +39,7 @@ module Kit::Error
 end
 
 require_relative 'error/version'
-require_relative 'error/exceptions'
+require_relative 'error/log'
+
+require_relative 'error/exception'
 require_relative 'error/format'

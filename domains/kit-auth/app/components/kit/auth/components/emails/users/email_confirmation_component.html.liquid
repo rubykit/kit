@@ -3,9 +3,9 @@
     <img class="ax-center my-8 w-12" src="https://raw.githubusercontent.com/rubykit/kit/master/domains/kit-auth/docs/assets/images/kit-auth.logo.svg" />
     <div class="card">
       <div class="card-body text-center">
-        <h1 class="ax-center text-center text-2xl">Welcome <b>{{user.email}}</b>!</h1>
-        <p class="ax-center text-center my-4">You can confirm your account email through the link below:</p>
-        <a class="ax-center btn btn-primary" href="#">Verify my email address</a>
+        <h1 class="ax-center text-center text-2xl">Welcome <b>{{user_email.email}}</b>!</h1>
+        <p class="ax-center text-center my-4">You can confirm this email address by clicking on the link below:</p>
+        <a class="ax-center btn btn-primary fw-600" href="{{confirmation_link}}" target="_blank">VERIFY MY EMAIL ADDRESS</a>
       </div>
     </div>
   </div>

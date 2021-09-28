@@ -45,6 +45,16 @@ module Kit::Domain::Endpoints::Http
     )
   end
 
+  def self.redirect_with_errors(router_conn:, redirect_url: nil, errors: nil)
+    Kit::Domain::Endpoints::Http.redirect_to(
+      router_conn: router_conn,
+      location:    redirect_url,
+      flash:       {
+        error: errors.map { |el| el[:detail] }.join('<br>'),
+      },
+    )
+  end
+
   def self.attempt_redirect_with_errors(router_conn:, redirect_url: nil, errors: nil)
     return [:ok] if !redirect_url
 

@@ -100,7 +100,7 @@ module Kit::Organizer::Services::Organize
 
         Kit::Organizer::Log.log(msg: -> { "# Calling `#{ callable }` with keys |#{ local_ctx&.keys }|" }, flags: [:debug, :warning])
 
-        result = callable.call(**local_ctx)
+        result = callable.call(**(local_ctx || {}))
         # If `errors` is a hash or a string, transform it to an array.
         result = sanitize_errors(result: result)
         status, local_ctx = result
@@ -119,7 +119,7 @@ module Kit::Organizer::Services::Organize
       rescue StandardError => e
         raise e if !safe
 
-        Kit::Errors::Exception.report(exception: e)
+        Kit::Error::Exception.report(exception: e)
       end
 
     [status, ctx]

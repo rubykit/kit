@@ -8,4 +8,8 @@ class Kit::Auth::Models::Write::User < Kit::Auth::Models::WriteRecord
 
   validates :email, presence: true
 
+  def primary_user_email
+    Kit::Auth::Models::Write::UserEmail.find(self.id)
+  end
+
 end

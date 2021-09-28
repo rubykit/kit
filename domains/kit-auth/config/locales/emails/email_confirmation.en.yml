@@ -4,6 +4,6 @@ en:
 
       emails:
 
-        email_confirmation:
+        email_confirmation_link:
 
           subject: "Please confirm your email."

@@ -1,9 +1,11 @@
 # Exception related logic
-module Kit::Errors::Exception
+module Kit::Error::Exception
 
   # Report an `exception` to the `reporter`
   def self.report(exception:, reporter: nil)
     reporter ||= default_exception_reporter
+
+    #binding.pry
 
     reporter.call(exception: exception)
 
