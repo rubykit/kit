@@ -14,16 +14,16 @@ describe Kit::Contract::BuiltInContracts::Hash do
 
     let(:args_valid) do
       [
-        { kwargs: { a: :symbol } },
-        { kwargs: { 'str' => :b } },
-        { kwargs: { 2 => :c } },
+        { args: [{ a: :symbol }] },
+        { args: [{ 'str' => :b }] },
+        { args: [{ 2 => :c }] },
       ]
     end
 
     let(:args_invalid) do
       {
-        { kwargs: { c: 2.0, f: -> {} } }  => 'Invalid result type for contract',
-        { kwargs: { :a => 2, 'b' => 2 } } => 'Invalid result type for contract',
+        { args: [{ c: 2.0, f: -> {} }] }  => 'Invalid result type for contract',
+        { args: [{ :a => 2, 'b' => 2 }] } => 'Invalid result type for contract',
       }
     end
 

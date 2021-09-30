@@ -4,27 +4,33 @@ module Kit::Contract::BuiltInContracts
   module HashHelper
 
     def self.get_keyword_arg_contract(key:, contract:)
+      # NOTE: if we wanted to support only `Hash`es and not `kwargs`, we could just receive `->(instance)`
+      #   Because `kwargs` are forwared "as is", and ARE NOT `Hash`es, we need to convert them to a hash if they are present. Otherwise it's just the intended usecase.
       ->(*args, **kwargs) do
-        kwargs = args[0] if !kwargs || kwargs.empty? && args[0].is_a?(::Hash)
+        instance = kwargs.empty? ? args[0] : kwargs
 
         # TODO: add key in errors?
-        Kit::Contract::Services::Validation.valid?(contract: contract, parameters: { args: [kwargs[key]] })
+        Kit::Contract::Services::Validation.valid?(contract: contract, parameters: { args: [instance[key]] })
       end
     end
 
     def self.get_instance_contract(contract:)
+      # NOTE: if we wanted to support only `Hash`es and not `kwargs`, we could just receive `->(instance)`
+      #   Because `kwargs` are forwared "as is", and ARE NOT `Hash`es, we need to convert them to a hash if they are present. Otherwise it's just the intended usecase.
       ->(*args, **kwargs) do
-        kwargs = args[0] if !kwargs || kwargs.empty? && args[0].is_a?(::Hash)
+        instance = kwargs.empty? ? args[0] : kwargs
 
-        Kit::Contract::Services::Validation.valid?(contract: contract, parameters: { args: [kwargs] })
+        Kit::Contract::Services::Validation.valid?(contract: contract, parameters: { args: [instance] })
       end
     end
 
     def self.get_every_key_value_contract(contract:)
+      # NOTE: if we wanted to support only `Hash`es and not `kwargs`, we could just receive `->(instance)`
+      #   Because `kwargs` are forwared "as is", and ARE NOT `Hash`es, we need to convert them to a hash if they are present. Otherwise it's just the intended usecase.
       ->(*args, **kwargs) do
-        kwargs.each do |key, value|
-          kwargs = args[0] if !kwargs || kwargs.empty? && args[0].is_a?(::Hash)
+        instance = kwargs.empty? ? args[0] : kwargs
 
+        instance.each do |key, value|
           result       = Kit::Contract::Services::Validation.valid?(contract: contract, parameters: { args: [key, value] })
           status, _ctx = result
           return result if status == :error
@@ -34,10 +40,12 @@ module Kit::Contract::BuiltInContracts
     end
 
     def self.get_every_key_contract(contract:)
+      # NOTE: if we wanted to support only `Hash`es and not `kwargs`, we could just receive `->(instance)`
+      #   Because `kwargs` are forwared "as is", and ARE NOT `Hash`es, we need to convert them to a hash if they are present. Otherwise it's just the intended usecase.
       ->(*args, **kwargs) do
-        kwargs.each_key do |key|
-          kwargs = args[0] if !kwargs || kwargs.empty? && args[0].is_a?(::Hash)
+        instance = kwargs.empty? ? args[0] : kwargs
 
+        instance.each_key do |key|
           result       = Kit::Contract::Services::Validation.valid?(contract: contract, parameters: { args: [key] })
           status, _ctx = result
           return result if status == :error
@@ -47,10 +55,12 @@ module Kit::Contract::BuiltInContracts
     end
 
     def self.get_every_value_contract(contract:)
+      # NOTE: if we wanted to support only `Hash`es and not `kwargs`, we could just receive `->(instance)`
+      #   Because `kwargs` are forwared "as is", and ARE NOT `Hash`es, we need to convert them to a hash if they are present. Otherwise it's just the intended usecase.
       ->(*args, **kwargs) do
-        kwargs.each_value do |value|
-          kwargs = args[0] if !kwargs || kwargs.empty? && args[0].is_a?(::Hash)
+        instance = kwargs.empty? ? args[0] : kwargs
 
+        instance.each_value do |value|
           result       = Kit::Contract::Services::Validation.valid?(contract: contract, parameters: { args: [value] })
           status, _ctx = result
           return result if status == :error

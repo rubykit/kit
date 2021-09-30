@@ -4,5 +4,6 @@ module Kit::Contract::BuiltInContracts
 
   Nil    = Eq[nil].named('Nil')
   NonNil = NotEq[nil].named('NonNil')
+  NotNil = NotEq[nil].named('NotNil')
 
 end

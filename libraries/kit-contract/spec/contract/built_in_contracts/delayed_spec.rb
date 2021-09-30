@@ -17,13 +17,13 @@ describe Kit::Contract::BuiltInContracts::Delayed do
 
   let(:args_valid) do
     [
-      { kwargs: { v: 1, obj2: { v: 2 } } },
+      { args: [{ v: 1, obj2: { v: 2 } }] },
     ]
   end
   let(:args_invalid) do
     {
-      { kwargs: { v: 2, obj2: { v: 2 } } } => 'EQ failed: expected `1` got `2`',
-      { kwargs: { v: 1, obj2: { v: 3 } } } => 'EQ failed: expected `2` got `3`',
+      { args: [{ v: 2, obj2: { v: 2 } }] } => 'EQ failed: expected `1` got `2`',
+      { args: [{ v: 1, obj2: { v: 3 } }] } => 'EQ failed: expected `2` got `3`',
     }
   end
 
