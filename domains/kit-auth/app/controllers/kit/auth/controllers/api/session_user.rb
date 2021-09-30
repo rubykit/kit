@@ -1,33 +1,33 @@
-module Kit::Auth::Controllers::Api::CurrentUser
+module Kit::Auth::Controllers::Api::SessionUser
 
-  METADATA_KEY_CURRENT_USER                    = :api_current_user
-  METADATA_KEY_CURRENT_USER_OAUTH_ACCESS_TOKEN = :api_current_user_access_token
-  METADATA_KEY_CURRENT_USER_ATTEMPTED_RESOLVED = :api_current_user_attempted_resolved
+  METADATA_KEY_CURRENT_USER                    = :api_session_user
+  METADATA_KEY_CURRENT_USER_OAUTH_ACCESS_TOKEN = :api_session_user_access_token
+  METADATA_KEY_CURRENT_USER_ATTEMPTED_RESOLVED = :api_session_user_attempted_resolved
 
-  def self.current_user(router_conn:)
+  def self.session_user(router_conn:)
     router_conn.metadata[METADATA_KEY_CURRENT_USER]
   end
 
-  def self.current_user_access_token(router_conn:)
+  def self.session_user_access_token(router_conn:)
     router_conn.metadata[METADATA_KEY_CURRENT_USER_OAUTH_ACCESS_TOKEN]
   end
 
-  def self.requires_current_user!(router_conn:)
+  def self.requires_session_user!(router_conn:)
     api_resolve_current_user(router_conn: router_conn)
 
-    if (model = current_user(router_conn: router_conn))
-      return [:ok, current_user: model]
+    if (model = session_user(router_conn: router_conn))
+      return [:ok, session_user: model]
     end
 
     Kit::Auth::Controllers::Api.render_unauthorized
   end
 
-  Kit::Organizer::Services::Callable::Alias.register(id: :api_requires_current_user!, target: self.method(:requires_current_user!))
+  Kit::Organizer::Services::Callable::Alias.register(id: :api_requires_session_user!, target: self.method(:requires_session_user!))
 
   def self.requires_scope!(router_conn:, scope:)
     api_resolve_current_user(router_conn: router_conn)
 
-    if (model = current_user_access_token(router_conn: router_conn))
+    if (model = session_user_access_token(router_conn: router_conn))
       model_scopes = OAuth::Scopes.from_string(model.scopes)
       return [:ok] if model_scopes.includes?(scope)
     end
@@ -58,8 +58,8 @@ module Kit::Auth::Controllers::Api::CurrentUser
     end
 
     [:ok,
-      current_user:              current_user(router_conn: router_conn),
-      current_user_access_token: current_user_access_token(router_conn: router_conn),
+      session_user:              session_user(router_conn: router_conn),
+      session_user_access_token: session_user_access_token(router_conn: router_conn),
     ]
   end
 

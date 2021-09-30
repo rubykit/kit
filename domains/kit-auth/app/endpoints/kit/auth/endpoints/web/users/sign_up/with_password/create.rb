@@ -3,7 +3,7 @@ module Kit::Auth::Endpoints::Web::Users::SignUp::WithPassword::Create
   def self.endpoint(router_conn:)
     Kit::Organizer.call(
       ok:    [
-        [:alias, :web_redirect_if_current_user!],
+        [:alias, :web_redirect_if_session_user!],
         self.method(:set_form_model),
         self.method(:create_user),
         self.method(:redirect),

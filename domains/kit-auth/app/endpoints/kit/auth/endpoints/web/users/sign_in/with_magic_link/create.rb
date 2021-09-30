@@ -6,7 +6,7 @@ module Kit::Auth::Endpoints::Web::Users::SignIn::WithMagicLink::Create
         Kit::Auth::Actions::Applications::LoadWeb,
         Kit::Auth::Actions::Users::IdentifyUser,
         Kit::Auth::Actions::Users::EnsureActiveToken,
-        [:local_ctx, [:alias, :web_redirect_if_missing_scope!], { scope: Kit::Auth::Services::Scopes::USER_SIGN_IN }],
+        [:local_ctx, [:alias, :web_redirect_if_session_missing_scope!], { scope: Kit::Auth::Services::Scopes::USER_SIGN_IN }],
         self.method(:create_sign_in),
         Kit::Auth::Endpoints::Web::Users::SignIn::WithPassword::Create.method(:redirect),
       ],

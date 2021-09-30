@@ -22,10 +22,10 @@ header#header.header
               | Home
 
         ul.navbar-nav.d-flex
-          - if current_user
+          - if session_user
             li.nav-item
               a.nav-link href="#"
-                = current_user.email
+                = session_user.email
             li.nav-item
               = router_link_to(id: 'web|users|sign_out', html: { class: 'nav-link' }, request: request)
                 = I18n.t('kit.auth.pages.header.sign_out.action')

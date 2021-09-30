@@ -11,7 +11,7 @@ if defined?(::ActiveAdmin)
       #admin.site_title_link = kit_admin.root_path
       #admin.authentication_method = :authenticate_user
       admin.authentication_method = false
-      admin.current_user_method = :current_user
+      admin.current_user_method = :session_user
 
       admin.scope_path       = 'admin'
       admin.scope_module     = 'admin'

@@ -1,13 +1,11 @@
 class Kit::Auth::DummyApp::Components::NavbarComponent < Kit::ViewComponents::Components::BaseComponent
 
-  attr_reader :current_user
+  attr_reader :session_user
 
-  def initialize(current_user:, current_user_id_type:, **)
+  def initialize(session_user:, **)
     super
 
-    if current_user_id_type == :cookie
-      @current_user = current_user
-    end
+    @session_user = session_user
   end
 
 end

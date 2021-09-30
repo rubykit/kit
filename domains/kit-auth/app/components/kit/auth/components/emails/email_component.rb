@@ -1,7 +1,7 @@
 class Kit::Auth::Components::Emails::EmailComponent < Kit::Auth::Components::Component
 
   def liquid_assigns_list
-    [:current_user]
+    [:session_user]
   end
 
   def liquid_assigns

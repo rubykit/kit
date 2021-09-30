@@ -3,7 +3,7 @@ module Kit::Auth::Endpoints::Web::Users::SignOut::Destroy
   def self.endpoint(router_conn:)
     Kit::Organizer.call(
       list: [
-        [:alias, :web_require_current_user!],
+        [:alias, :web_require_session_user!],
         self.method(:set_access_token),
         self.method(:clear_cookies),
         self.method(:redirect),
@@ -23,7 +23,7 @@ module Kit::Auth::Endpoints::Web::Users::SignOut::Destroy
   )
 
   def self.set_access_token(router_conn:)
-    [:ok, access_token: router_conn.metadata[:current_user_access_token]]
+    [:ok, access_token: router_conn.metadata[:session_user_access_token]]
   end
 
   def self.clear_cookies(router_conn:)

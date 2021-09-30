@@ -3,7 +3,7 @@ module Kit::Auth::Endpoints::Web::Users::Settings::Devices::Index
   def self.endpoint(router_conn:)
     Kit::Organizer.call(
       list: [
-        [:alias, :web_require_current_user!],
+        [:alias, :web_require_session_user!],
         self.method(:list),
       ],
       ctx:  { router_conn: router_conn },
@@ -20,7 +20,7 @@ module Kit::Auth::Endpoints::Web::Users::Settings::Devices::Index
     list = Kit::Auth::Models::Read::OauthAccessToken
       .where('revoked_at IS NULL')
       .where("(created_at + expires_in * INTERVAL '1 second') > ?", DateTime.now)
-      .where(user_id: router_conn.metadata[:current_user].id)
+      .where(user_id: router_conn.metadata[:session_user].id)
       .preload(:last_request_metadata)
       .load
 

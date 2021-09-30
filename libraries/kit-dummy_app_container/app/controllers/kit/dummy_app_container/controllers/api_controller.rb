@@ -11,7 +11,7 @@ class Kit::DummyAppContainer::Controllers::ApiController < ::ActionController::A
     _, ctx = Kit::Organizer.call(
       list: [
         Kit::Router::Adapters::HttpRails::Conn::Import.method(:import_request),
-        :api_resolve_current_user,
+        :api_resolve_request_user,
         ->(router_conn:) { router_conn.endpoint[:callable].call(router_conn: router_conn) },
       ],
       ctx:  controller_ctx,

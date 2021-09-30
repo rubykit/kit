@@ -4,6 +4,8 @@ list = [
 
   #'kit/auth/controllers/web/web_controller',
   'kit/auth/controllers/web/current_user',
+  'kit/auth/controllers/web/request_user',
+  'kit/auth/controllers/web/session_user',
 ]
 
 autoloader   = Rails.autoloaders.main

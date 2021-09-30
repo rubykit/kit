@@ -5,7 +5,9 @@ module Kit::Error::Exception
   def self.report(exception:, reporter: nil)
     reporter ||= default_exception_reporter
 
-    #binding.pry
+    if ENV['RAILS_ENV'] == 'development'
+      binding.pry # rubocop:disable Lint/Debugger
+    end
 
     reporter.call(exception: exception)
 

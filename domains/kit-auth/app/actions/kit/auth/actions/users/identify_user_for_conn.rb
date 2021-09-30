@@ -7,7 +7,7 @@ module Kit::Auth::Actions::Users::IdentifyUserForConn
     _status, ctx = Kit::Organizer.call(
       list: [
         Kit::Auth::Actions::Users::IdentifyUser,
-        self.method(:export_user_to_router_conn),
+        self.method(:export_current_user_to_router_conn),
       ],
       ctx:  {
         router_conn: router_conn,
@@ -22,20 +22,20 @@ module Kit::Auth::Actions::Users::IdentifyUserForConn
     end
   end
 
-  def self.export_user_to_router_conn(router_conn:, access_token:, access_token_type:)
+  def self.export_current_user_to_router_conn(router_conn:, access_tokens:)
     router_conn.metadata[:current_user_resolved] = true
 
-    user = access_token&.user
-
-    if user
-      router_conn.metadata[:current_user]              = user
-      router_conn.metadata[:current_user_access_token] = access_token
-      router_conn.metadata[:current_user_id_type]      = access_token_type
-
-      [:ok, router_conn: router_conn]
-    else
-      [:error, { attribute: :access_token, desc: 'is invalid' }]
+    if access_tokens[:session]
+      router_conn.metadata[:session_user_access_token] = access_tokens[:session]
+      router_conn.metadata[:session_user]              = access_tokens[:session].user
     end
+
+    if access_tokens[:request]
+      router_conn.metadata[:request_user_access_token] = access_tokens[:request]
+      router_conn.metadata[:request_user]              = access_tokens[:request].user
+    end
+
+    [:ok, router_conn: router_conn]
   end
 
 end

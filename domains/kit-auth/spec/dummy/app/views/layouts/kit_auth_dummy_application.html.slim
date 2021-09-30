@@ -14,7 +14,7 @@ html
     = javascript_include_tag 'kit_auth_dummy_application'
 
   body class="env-#{ Rails.env } #{ Rails.env.development? ? 'debug' : '' }"
-    = render Kit::Auth::DummyApp::Components::NavbarComponent.new(current_user: current_user, current_user_id_type: current_user_id_type, request: request)
+    = render Kit::Auth::DummyApp::Components::NavbarComponent.new(session_user: session_user, session_user_id_type: session_user_id_type, request: request)
 
     main.container.container-max-xl.pt-10
       = render Kit::ViewComponents::Components::FlashComponent.new(router_conn: router_conn, flash: flash.to_h)

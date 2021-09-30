@@ -8,7 +8,7 @@ module Kit::Auth::Endpoints::Web::Users::ConfirmEmail::Update
         self.method(:load_user_email),
         self.method(:ensure_email_not_confirmed),
         Kit::Auth::Actions::Users::EnsureActiveToken,
-        [:local_ctx, [:alias, :web_redirect_if_missing_scope!], { scope: Kit::Auth::Services::Scopes::USER_EMAIL_CONFIRMATION }],
+        [:local_ctx, [:alias, :web_redirect_if_session_missing_scope!], { scope: Kit::Auth::Services::Scopes::USER_EMAIL_CONFIRMATION }],
         self.method(:confirm_email),
         self.method(:redirect),
       ],
