@@ -179,8 +179,8 @@ class Kit::Router::Models::Conn
   end
 
   # Awesome print display.
-  def ai(*options)
-    self.to_h.ai(*options)
+  def ai(options = {})
+    self.to_h.ai(options.merge(class_name_display: 'Kit::Router::Models::Conn'))
   end
 
 end
