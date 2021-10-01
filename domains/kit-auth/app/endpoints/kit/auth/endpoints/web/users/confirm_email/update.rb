@@ -4,12 +4,9 @@ module Kit::Auth::Endpoints::Web::Users::ConfirmEmail::Update
     Kit::Organizer.call(
       ok:    [
         Kit::Auth::Actions::Applications::LoadWeb,
-        Kit::Auth::Actions::Users::IdentifyUser,
-        self.method(:load_user_email),
-        self.method(:ensure_email_not_confirmed),
-        Kit::Auth::Actions::Users::EnsureActiveToken,
-        [:local_ctx, [:alias, :web_redirect_if_session_missing_scope!], { scope: Kit::Auth::Services::Scopes::USER_EMAIL_CONFIRMATION }],
-        self.method(:confirm_email),
+        Kit::Auth::Actions::Users::IdentifyUserForConn,
+        ->(router_conn:) { [:ok, access_token: router_conn.metadata[:request_user_access_token]] },
+        Kit::Auth::Actions::Users::ConfirmEmail,
         self.method(:redirect),
       ],
       error: [
@@ -30,46 +27,16 @@ module Kit::Auth::Endpoints::Web::Users::ConfirmEmail::Update
     target:  self.method(:endpoint),
   )
 
-  def self.load_user_email(access_token:)
-    user_email_id = access_token.data['user_email_id']
-
-    [:ok, user_email: Kit::Auth::Models::Write::UserEmail.find(user_email_id)]
-  end
-
-  def self.ensure_email_not_confirmed(router_conn:, user_email:)
-    if user_email.confirmed?
-      redirect_url = Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|home')
-
-      Kit::Domain::Endpoints::Http.redirect_to(
-        router_conn: router_conn,
-        location:    redirect_url,
-        flash:       {
-          info: I18n.t('kit.auth.notifications.email_confirmation.errors.already_confirmed'),
-        },
-      )
-    else
-      [:ok]
-    end
-  end
-
-  def self.confirm_email(router_conn:, user_email:, access_token:)
-    status, ctx = Kit::Organizer.call(
-      list: [
-        Kit::Auth::Services::AccessToken.method(:revoke),
-        Kit::Auth::Services::UserEmail.method(:confirm),
-      ],
-      ctx:  {
-        router_conn:  router_conn,
-        access_token: access_token,
-        user_email:   user_email,
-      },
-    )
-
-    [status, (status == :error) ? { errors: ctx[:errors] } : {}]
-  end
-
   def self.redirect(router_conn:, redirect_url: nil)
-    redirect_url ||= Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|home')
+    if !redirect_url
+      if router_conn.metadata[:session_user_access_token]&.active?
+        route_id = 'web|users|email_confirmation|after|signed_in'
+      else
+        route_id = 'web|users|email_confirmation|after|signed_out'
+      end
+
+      redirect_url = Kit::Router::Adapters::Http::Mountpoints.path(id: route_id)
+    end
 
     Kit::Domain::Endpoints::Http.redirect_to(
       router_conn: router_conn,

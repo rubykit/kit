@@ -1,5 +1,10 @@
 module Kit::Auth::Endpoints::Events::Users::EmailConfirmed
 
+  include Kit::Contract::Mixin
+  # @doc false
+  Ct = Kit::Router::Contracts
+
+  contract Ct::Hash[router_conn: Ct::RouterConn[params: Ct::Hash[user_email_id: Ct::NotNil]]]
   def self.endpoint(router_conn:)
     Kit::Organizer.call(
       list: [

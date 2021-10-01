@@ -1,7 +1,7 @@
 module Helpers::Routes
 
-  def route_uid_to_path(route_uid)
-    Kit::Router::Adapters::Http::Mountpoints.path(id: route_uid)
+  def route_id_to_path(id:, params: {})
+    Kit::Router::Adapters::Http::Mountpoints.path(id: id, params: params)
   end
 
 end

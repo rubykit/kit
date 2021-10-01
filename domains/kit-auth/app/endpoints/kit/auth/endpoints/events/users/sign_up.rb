@@ -1,5 +1,10 @@
 module Kit::Auth::Endpoints::Events::Users::SignUp
 
+  include Kit::Contract::Mixin
+  # @doc false
+  Ct = Kit::Router::Contracts
+
+  contract Ct::Hash[router_conn: Ct::RouterConn[params: Ct::Hash[user_id: Ct::NotNil, sign_up_method: Ct::NotNil]]]
   def self.endpoint(router_conn:)
     Kit::Organizer.call(
       safe: true,
@@ -9,7 +14,9 @@ module Kit::Auth::Endpoints::Events::Users::SignUp
         #self.method(:notify_user_welcome),
         self.method(:send_event_email_confirmation_request),
       ],
-      ctx:  { router_conn: router_conn },
+      ctx:  {
+        router_conn: router_conn
+      },
     )
   end
 
@@ -29,7 +36,7 @@ module Kit::Auth::Endpoints::Events::Users::SignUp
   def self.notify_user_welcome(user:)
     user_email = user.primary_user_email
 
-    Kit::Router::Services::Adapters.call(
+    Kit::Router::Services::Adapters.cast(
       route_id:     'mailers|users|sign_up',
       adapter_name: :mailer,
       params:       {
@@ -60,7 +67,8 @@ module Kit::Auth::Endpoints::Events::Users::SignUp
     Kit::Events::Services::Event.create_event(
       name: 'user|auth|sign_up',
       data: {
-        user_id: user.id,
+        user_id:        user.id,
+        sign_up_method: router_conn.request[:params][:sign_up_method],
       },
     )
 

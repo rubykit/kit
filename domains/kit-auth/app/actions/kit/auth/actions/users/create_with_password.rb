@@ -1,6 +1,5 @@
 module Kit::Auth::Actions::Users::CreateWithPassword
 
-  #Contract Hash => [Symbol, KeywordArgs[user: Any, errors: Any]]
   def self.call(email:, password:)
     status, ctx = Kit::Organizer.call(
       list: [
@@ -45,8 +44,8 @@ module Kit::Auth::Actions::Users::CreateWithPassword
       route_id:     'event|user|auth|sign_up',
       adapter_name: :async,
       params:       {
-        user_id: user.id,
-        type:    'email',
+        user_id:        user.id,
+        sign_up_method: :email,
       },
     )
 

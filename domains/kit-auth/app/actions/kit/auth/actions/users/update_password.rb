@@ -36,7 +36,7 @@ module Kit::Auth::Actions::Users::UpdatePassword
   end
 
   def self.update_user(user:, hashed_secret:)
-    writeable_model = Kit::Auth::Models::Write::User.find(user.id)
+    writeable_model = user.to_write_record
 
     writeable_model.update!({
       hashed_secret: hashed_secret,
@@ -45,7 +45,7 @@ module Kit::Auth::Actions::Users::UpdatePassword
     if writeable_model.persisted?
       [:ok, user: user.reload]
     else
-      [:error, user: nil, errors: writeable_model.errors]
+      [:error, errors: writeable_model.errors]
     end
   end
 
@@ -54,7 +54,7 @@ module Kit::Auth::Actions::Users::UpdatePassword
       route_id:     'event|users|password_reset',
       adapter_name: :async,
       params:       {
-        user: user,
+        user_id: user.id,
       },
     )
 

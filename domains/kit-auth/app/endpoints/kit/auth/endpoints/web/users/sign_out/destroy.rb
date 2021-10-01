@@ -3,9 +3,11 @@ module Kit::Auth::Endpoints::Web::Users::SignOut::Destroy
   def self.endpoint(router_conn:)
     Kit::Organizer.call(
       list: [
+        Kit::Auth::Actions::Applications::LoadWeb,
+        Kit::Auth::Actions::Users::IdentifyUserForConn,
         [:alias, :web_require_session_user!],
-        self.method(:set_access_token),
-        self.method(:clear_cookies),
+        ->(router_conn:) { [:ok, access_token: router_conn.metadata[:session_user_access_token]] },
+        Kit::Auth::Actions::Users::SignOutWeb,
         self.method(:redirect),
       ],
       ctx:  {
@@ -21,16 +23,6 @@ module Kit::Auth::Endpoints::Web::Users::SignOut::Destroy
     },
     target:  self.method(:endpoint),
   )
-
-  def self.set_access_token(router_conn:)
-    [:ok, access_token: router_conn.metadata[:session_user_access_token]]
-  end
-
-  def self.clear_cookies(router_conn:)
-    router_conn.response[:http][:cookies][:access_token] = { value: nil, encrypted: true }
-
-    [:ok, router_conn: router_conn]
-  end
 
   def self.redirect(router_conn:, redirect_url: nil)
     redirect_url ||= Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|sign_out|after')

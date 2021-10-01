@@ -1,4 +1,4 @@
-module Kit::Auth::Endpoints::Events::Users::SignIn
+module Kit::Auth::Endpoints::Events::Users::SignOut
 
   include Kit::Contract::Mixin
   # @doc false
@@ -16,14 +16,14 @@ module Kit::Auth::Endpoints::Events::Users::SignIn
   end
 
   Kit::Router::Services::Router.register(
-    uid:     'kit_auth|event|user|auth|sign_in',
+    uid:     'kit_auth|event|user|auth|sign_out',
     target:  self.method(:endpoint),
-    aliases: ['event|user|auth|sign_in'],
+    aliases: ['event|user|auth|sign_out'],
   )
 
   def self.persist_event(user_id:)
     Kit::Events::Services::Event.create_event(
-      name: 'user|auth|sign_up',
+      name: 'user|auth|sign_out',
       data: {
         user_id: user_id,
       },

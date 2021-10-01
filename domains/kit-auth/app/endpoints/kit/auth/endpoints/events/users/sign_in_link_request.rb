@@ -1,11 +1,17 @@
 module Kit::Auth::Endpoints::Events::Users::SignInLinkRequest
 
+  include Kit::Contract::Mixin
+  # @doc false
+  Ct = Kit::Router::Contracts
+
+  contract Ct::Hash[router_conn: Ct::RouterConn[params: Ct::Hash[email: Ct::NotNil]]]
   def self.endpoint(router_conn:)
     Kit::Organizer.call(
       list: [
         [:if, Kit::Auth::Services::UserEmail.method(:find_by_email), {
           ok:    [
             Kit::Auth::Actions::Applications::LoadWeb,
+            ->(user_email:) { [:ok, user: user_email.user] },
             Kit::Auth::Actions::AccessTokens::CreateForMagicLink,
             Kit::Auth::Endpoints::Events::Users::SignInLinkRequest.method(:notify_user),
             Kit::Auth::Endpoints::Events::Users::SignInLinkRequest.method(:persist_event_success),
@@ -29,7 +35,7 @@ module Kit::Auth::Endpoints::Events::Users::SignInLinkRequest
   )
 
   def self.notify_user(user_email:, access_token_plaintext_secret:)
-    Kit::Router::Services::Adapters.call(
+    Kit::Router::Services::Adapters.cast(
       route_id:     'mailers|users|sign_in_link',
       adapter_name: :mailer,
       params:       {

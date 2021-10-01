@@ -45,6 +45,8 @@ module Kit::Auth::Services::AccessToken
 
   # Attempts to revoke an `access_token`.
   def self.revoke(access_token:)
+    return [:ok] if access_token.revoked?
+
     status = access_token
       .to_write_record
       .update(revoked_at: DateTime.now)

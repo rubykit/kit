@@ -4,7 +4,8 @@ module Kit::Auth::Endpoints::Web::Users::PasswordReset::Update
     Kit::Organizer.call(
       ok:    [
         Kit::Auth::Actions::Applications::LoadWeb,
-        Kit::Auth::Actions::Users::IdentifyUser,
+        Kit::Auth::Actions::Users::IdentifyUserForConn,
+        ->(router_conn:) { [:ok, access_token: router_conn.metadata[:request_user_access_token]] },
         Kit::Auth::Actions::Users::EnsureActiveToken,
         [:local_ctx, [:alias, :web_redirect_if_session_missing_scope!], { scope: Kit::Auth::Services::Scopes::USER_PASSWORD_UPDATE }],
         self.method(:set_form_model),
@@ -42,9 +43,10 @@ module Kit::Auth::Endpoints::Web::Users::PasswordReset::Update
         Kit::Auth::Actions::Users::SignInWeb,
       ],
       ctx:  {
-        router_conn:  router_conn,
-        user:         router_conn.metadata[:session_user],
-        access_token: access_token,
+        router_conn:    router_conn,
+        user:           access_token.user,
+        access_token:   access_token,
+        sign_in_method: :password,
       }.merge(form_model),
     )
   end

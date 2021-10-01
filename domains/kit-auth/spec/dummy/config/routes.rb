@@ -18,7 +18,8 @@ Rails.application.routes.draw do
   # Dummy app routes -----------------------------------------------------------
 
   list_local = [
-    { route_id: 'web|home', path: '/', verb: :get },
+    { route_id: 'web|home|signed_out', path: '/',     verb: :get },
+    { route_id: 'web|home|signed_in',  path: '/home', verb: :get },
   ]
 
   Kit::Router::Adapters::HttpRails::Routes.mount_rails_targets(rails_router_context: self, list: list_local)

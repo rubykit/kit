@@ -1,11 +1,16 @@
 module Kit::Auth::Endpoints::Events::Users::EmailConfirmationRequest
 
+  include Kit::Contract::Mixin
+  # @doc false
+  Ct = Kit::Router::Contracts
+
+  contract Ct::Hash[router_conn: Ct::RouterConn[params: Ct::Hash[user_email_id: Ct::NotNil]]]
   def self.endpoint(router_conn:)
     Kit::Organizer.call(
       list: [
         Kit::Auth::Actions::Applications::LoadWeb,
         self.method(:load_user_email!),
-        ->(user_email:) { [:ok, user: Kit::Auth::Models::Read::User.find(user_email.id)] },
+        ->(user_email:) { [:ok, user: user_email.user] },
         Kit::Auth::Actions::AccessTokens::CreateForEmailConfirmation,
         self.method(:notify_user),
         self.method(:persist_event),
@@ -30,7 +35,7 @@ module Kit::Auth::Endpoints::Events::Users::EmailConfirmationRequest
   end
 
   def self.notify_user(user_email:, access_token_plaintext_secret:)
-    Kit::Router::Services::Adapters.call(
+    Kit::Router::Services::Adapters.cast(
       route_id:     'mailers|users|email_confirmation_link',
       adapter_name: :mailer,
       params:       {

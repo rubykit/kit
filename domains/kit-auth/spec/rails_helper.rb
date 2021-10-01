@@ -27,6 +27,7 @@ RSpec.configure do |config|
 
   config.filter_rails_from_backtrace!
 
+  config.include Helpers::Applications
   config.include Helpers::Users
   config.include Helpers::Routes
   config.include Helpers::WebAuthentication, type: :feature

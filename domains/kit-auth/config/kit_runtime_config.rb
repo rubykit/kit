@@ -21,3 +21,12 @@ KIT_APP_PATHS['GEM_SPEC_VIEWS']  = File.expand_path('../spec/dummy/app/views', _
 KIT_APP_PATHS['GEM_SPEC_DB']     = File.expand_path('../spec/dummy/db', __dir__)
 
 KIT_APP_PATHS['GEM_SPEC_VIEW_LAYOUT'] = 'kit_auth_dummy_application'
+
+KIT_APP_PATHS['EXECUTE'] ||= []
+KIT_APP_PATHS['EXECUTE'] << ->(config:) do
+  if Rails.env.development? || Rails.env.test?
+    config.factory_bot.definition_file_paths = [
+      File.expand_path('../spec/factories', __dir__),
+    ]
+  end
+end

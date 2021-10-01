@@ -4,7 +4,8 @@ module Kit::Auth::Endpoints::Web::Users::PasswordReset::Edit
     Kit::Organizer.call(
       ok:    [
         Kit::Auth::Actions::Applications::LoadWeb,
-        Kit::Auth::Actions::Users::IdentifyUser,
+        Kit::Auth::Actions::Users::IdentifyUserForConn,
+        ->(router_conn:) { [:ok, access_token: router_conn.metadata[:request_user_access_token]] },
         Kit::Auth::Actions::Users::EnsureActiveToken,
         [:local_ctx, [:alias, :web_redirect_if_session_missing_scope!], { scope: Kit::Auth::Services::Scopes::USER_PASSWORD_UPDATE }],
         self.method(:set_form_model),

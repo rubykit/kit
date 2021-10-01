@@ -1,6 +1,6 @@
 module Kit::Auth::Actions::Applications::LoadWeb
 
-  def self.call(**)
+  def self.call
     uid         = 'webapp'
     application = Kit::Auth::Models::Read::Application.find_by(uid: uid)
 

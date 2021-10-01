@@ -4,9 +4,10 @@ module Kit::Auth::Endpoints::Web::Users::SignIn::WithMagicLink::Create
     Kit::Organizer.call(
       ok:    [
         Kit::Auth::Actions::Applications::LoadWeb,
-        Kit::Auth::Actions::Users::IdentifyUser,
+        Kit::Auth::Actions::Users::IdentifyUserForConn,
+        ->(router_conn:) { [:ok, access_token: router_conn.metadata[:request_user_access_token]] },
         Kit::Auth::Actions::Users::EnsureActiveToken,
-        [:local_ctx, [:alias, :web_redirect_if_session_missing_scope!], { scope: Kit::Auth::Services::Scopes::USER_SIGN_IN }],
+        [:local_ctx, [:alias, :web_redirect_if_missing_scope!], { scope: Kit::Auth::Services::Scopes::USER_SIGN_IN }],
         self.method(:create_sign_in),
         Kit::Auth::Endpoints::Web::Users::SignIn::WithPassword::Create.method(:redirect),
       ],
@@ -34,9 +35,10 @@ module Kit::Auth::Endpoints::Web::Users::SignIn::WithMagicLink::Create
         Kit::Auth::Actions::Users::SignInWeb,
       ],
       ctx:  {
-        router_conn:        router_conn,
-        access_token: access_token,
-        user:               access_token.user,
+        router_conn:    router_conn,
+        access_token:   access_token,
+        user:           access_token.user,
+        sign_in_method: :link,
       },
     )
 

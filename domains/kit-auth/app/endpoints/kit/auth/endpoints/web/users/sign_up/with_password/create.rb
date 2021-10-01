@@ -39,7 +39,8 @@ module Kit::Auth::Endpoints::Web::Users::SignUp::WithPassword::Create
         Kit::Auth::Actions::Users::SignInWeb,
       ],
       ctx:  {
-        router_conn: router_conn,
+        router_conn:    router_conn,
+        sign_in_method: :password,
       }.merge(form_model),
     )
   end
