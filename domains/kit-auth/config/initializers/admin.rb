@@ -83,6 +83,10 @@ if defined?(::ActiveAdmin)
     # config.order_clause = MyOrderClause
   end
 
+  ActiveAdmin::BaseController.class_eval do
+    include Kit::Auth::Controllers::Web::Concerns::RailsCurrentUser
+  end
+
 end
 
 module Kit::Auth::Admin # rubocop:disable Style/Documentation

@@ -7,13 +7,13 @@ class Kit::Auth::Engine < ::Rails::Engine
   ::Kit::Engine.config_engine(
     context:   self,
     namespace: Kit::Auth,
-    file:      __FILE__,
+    path:      __dir__,
   )
 
   ::Kit::Domain.config_domain(
     context:   self,
     namespace: Kit::Auth,
-    file:      __FILE__,
+    path:      __dir__,
   )
 
   initializer 'kit-auth.view_helpers' do

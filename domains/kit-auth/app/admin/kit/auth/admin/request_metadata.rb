@@ -3,6 +3,7 @@ require 'browser'
 module Kit::Auth::Admin::RequestMetadata
 end
 
+=begin
 ActiveAdmin.register Kit::Auth::Models::Write::RequestMetadata, as: 'RequestMetadata', namespace: :kit_auth_admin do
   menu parent: 'Users'
 
@@ -39,3 +40,4 @@ ActiveAdmin.register Kit::Auth::Models::Write::RequestMetadata, as: 'RequestMeta
   end
 
 end
+=end

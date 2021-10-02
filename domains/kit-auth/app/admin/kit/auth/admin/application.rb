@@ -1,6 +1,7 @@
 module Kit::Auth::Admin::Application
 end
 
+=begin
 Kit::Auth::Admin.register Kit::Auth::Models::Read::Application, as: 'Application', namespace: :kit_auth_admin do
   menu label: 'OAuthApplication', parent: 'OAuth'
 
@@ -27,3 +28,4 @@ Kit::Auth::Admin.register Kit::Auth::Models::Read::Application, as: 'Application
   end
 
 end
+=end

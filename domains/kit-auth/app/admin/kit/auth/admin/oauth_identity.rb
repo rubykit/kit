@@ -1,6 +1,7 @@
 module Kit::Auth::Admin::OauthIdentity
 end
 
+=begin
 Kit::Auth::Admin.register Kit::Auth::Models::Read::OauthIdentity, as: 'OauthIdentity', namespace: :kit_auth_admin do
   menu label: 'OAuthIdentity', parent: 'OAuth'
 
@@ -15,3 +16,4 @@ Kit::Auth::Admin.register Kit::Auth::Models::Read::OauthIdentity, as: 'OauthIden
   end
 
 end
+=end

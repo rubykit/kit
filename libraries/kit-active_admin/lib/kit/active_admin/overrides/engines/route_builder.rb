@@ -1,7 +1,7 @@
 class ActiveAdmin::Resource::Routes::RouteBuilder
 
   def routes
-    resource.namespace.settings.url_helpers
+    resource.namespace.settings.url_helpers || super
   end
 
 end
