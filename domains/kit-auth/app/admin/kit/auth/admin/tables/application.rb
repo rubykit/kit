@@ -8,8 +8,6 @@ class Kit::Auth::Admin::Tables::Application < Kit::Auth::Admin::Tables::BaseTabl
       created_at:   nil,
       updated_at:   nil,
       uid:          :code,
-      secret:       :code,
-      redirect_uri: :code,
       scopes:       :code,
       confidential: nil,
     )

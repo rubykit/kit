@@ -3,11 +3,16 @@ require 'browser'
 module Kit::Auth::Admin::RequestMetadata
 end
 
-=begin
-ActiveAdmin.register Kit::Auth::Models::Write::RequestMetadata, as: 'RequestMetadata', namespace: :kit_auth_admin do
-  menu parent: 'Users'
+ActiveAdmin.register Kit::Auth::Models::Write::RequestMetadata, as: 'RequestMetadata', namespace: :kit_auth do
+  menu parent: 'Logs'
 
   actions :all, except: [:new, :edit, :destroy]
+
+  controller do
+    def scoped_collection
+      super.preload(:user)
+    end
+  end
 
   index do
     Kit::Auth::Admin::Tables::RequestMetadata.new(self).index
@@ -40,4 +45,3 @@ ActiveAdmin.register Kit::Auth::Models::Write::RequestMetadata, as: 'RequestMeta
   end
 
 end
-=end

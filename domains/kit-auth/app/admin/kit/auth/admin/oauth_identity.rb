@@ -1,9 +1,8 @@
 module Kit::Auth::Admin::OauthIdentity
 end
 
-=begin
-Kit::Auth::Admin.register Kit::Auth::Models::Read::OauthIdentity, as: 'OauthIdentity', namespace: :kit_auth_admin do
-  menu label: 'OAuthIdentity', parent: 'OAuth'
+ActiveAdmin.register Kit::Auth::Models::Read::OauthIdentity, as: 'OauthIdentity', namespace: :kit_auth do
+  menu label: 'OAuthIdentity', parent: 'Auth'
 
   actions :all, except: [:new, :edit, :destroy]
 
@@ -16,4 +15,3 @@ Kit::Auth::Admin.register Kit::Auth::Models::Read::OauthIdentity, as: 'OauthIden
   end
 
 end
-=end

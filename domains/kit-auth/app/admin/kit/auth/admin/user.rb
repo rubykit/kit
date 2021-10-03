@@ -1,7 +1,7 @@
 module Kit::Auth::Admin::User
 end
 
-ActiveAdmin.register Kit::Auth::Models::Write::User, as: 'User', namespace: :kit_auth_admin do
+ActiveAdmin.register Kit::Auth::Models::Write::User, as: 'User', namespace: :kit_auth do
   menu label: 'Users'
 
   actions :all, except: [:new, :edit, :destroy]

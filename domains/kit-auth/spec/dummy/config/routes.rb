@@ -8,7 +8,9 @@ Rails.application.routes.draw do
 
   #mount Sidekiq::Web => '/sidekiq'
 
-  #Kit::Auth::Admin.routes(self)
+  scope path: 'admin', as: 'admin' do
+    ActiveAdmin.routes(self)
+  end
 
   rails_endpoint_wrapper = ::Kit::Auth::DummyAppContainer::Controllers::WebController
 
