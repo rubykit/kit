@@ -5,7 +5,7 @@ module ActiveAdmin
       def active_admin_resource_for(klass)
         resource = nil
 
-        if respond_to? :active_admin_namespace
+        if klass != NilClass && respond_to?(:active_admin_namespace)
           resource = active_admin_namespace.resource_for klass
 
           if !resource
