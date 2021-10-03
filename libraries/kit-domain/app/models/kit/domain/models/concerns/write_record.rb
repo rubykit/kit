@@ -41,4 +41,14 @@ module Kit::Domain::Models::Concerns::WriteRecord
     self
   end
 
+  # Ex: User#1
+  def model_log_name
+    "#{ self.class.model_name.element.camelize }##{ self.id }"
+  end
+
+  # Ex: User#1|user@rubykit.org
+  def model_verbose_name
+    "#{ self.class.model_name.element.camelize }##{ self.id }"
+  end
+
 end
