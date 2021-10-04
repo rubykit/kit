@@ -1,8 +1,8 @@
 module Kit::Auth::Admin::Application
 end
 
-Kit::Auth::Admin.register Kit::Auth::Models::Read::Application, as: 'Application', namespace: :kit_auth_admin do
-  menu label: 'OAuthApplication', parent: 'OAuth'
+ActiveAdmin.register Kit::Auth::Models::Read::Application, as: 'Application', namespace: :kit_auth do
+  menu label: 'Application', parent: 'Auth'
 
   actions :all, except: [:new, :edit, :destroy]
 
@@ -17,11 +17,7 @@ Kit::Auth::Admin.register Kit::Auth::Models::Read::Application, as: 'Application
 
     columns do
       column do
-        Kit::Auth::Admin::Tables::OauthAccessGrant.new(self).panel_list resource.oauth_access_grants
-      end
-
-      column do
-        Kit::Auth::Admin::Tables::OauthAccessToken.new(self).panel_list resource.access_tokens
+        Kit::Auth::Admin::Tables::UserSecret.new(self).panel_list resource.user_access_tokens, attrs_except: [:application]
       end
     end
   end

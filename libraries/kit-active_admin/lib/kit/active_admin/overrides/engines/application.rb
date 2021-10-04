@@ -1,30 +1,37 @@
-module ActiveAdmin
-  class Application
+class ActiveAdmin::Application
 
-    def load!
-      unless loaded?
-        ActiveSupport::Notifications.publish BeforeLoadEvent, self # before_load hook
-        files.each { |file| load file }                            # load files
-        #namespace(default_namespace)                               # init AA resources
-        ActiveSupport::Notifications.publish AfterLoadEvent, self  # after_load hook
-        @@loaded = true
-      end
+  # Prevent the loading of the default namsepace.
+  #
+  # ### References
+  # - https://github.com/activeadmin/activeadmin/blob/v2.9.0/lib/active_admin/application.rb#L116
+  def load!
+    unless loaded?
+      ActiveSupport::Notifications.publish BeforeLoadEvent, self # before_load hook
+      files.each { |file| load file }                            # load files
+      # NOTE: the change is the next commented line.
+      #namespace(default_namespace)                               # init AA resources
+      ActiveSupport::Notifications.publish AfterLoadEvent, self  # after_load hook
+      @@loaded = true
     end
-
-    def routes(rails_router, list = {})
-      load!
-
-      namespaces_tmp = namespaces
-
-      if !list.empty?
-        namespaces_tmp = namespaces_tmp
-          .instance_variable_get(:@namespaces)
-          .slice(*list)
-          .values
-      end
-
-      Router.new(router: rails_router, namespaces: namespaces_tmp).apply
-    end
-
   end
+
+  # Allow to select what admin namespaces to mount.
+  #
+  # ### References
+  # - https://github.com/activeadmin/activeadmin/blob/v2.9.0/lib/active_admin/application.rb#L140
+  def routes(rails_router, list = {})
+    load!
+
+    namespaces_tmp = namespaces
+
+    if !list.empty?
+      namespaces_tmp = namespaces_tmp
+        .instance_variable_get(:@namespaces)
+        .slice(*list)
+        .values
+    end
+
+    ::ActiveAdmin::Router.new(router: rails_router, namespaces: namespaces_tmp).apply
+  end
+
 end

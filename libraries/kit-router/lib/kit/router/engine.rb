@@ -6,7 +6,7 @@ class Kit::Router::Engine < ::Rails::Engine
   Kit::Engine.config_engine(
     context:   self,
     namespace: Kit::Router,
-    file:      __FILE__,
+    path:      __dir__,
   )
 
   initializer 'kit-router.view_helpers' do

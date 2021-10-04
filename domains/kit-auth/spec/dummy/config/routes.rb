@@ -3,8 +3,14 @@
 Rails.application.routes.draw do
 
   Kit::Router::Services::Router.finalize_endpoints
-  #mount Kit::Auth::Engine => "/kit-auth", as: 'kit_auth'
+
+  mount Kit::Auth::Engine => '/'
+
   #mount Sidekiq::Web => '/sidekiq'
+
+  scope path: 'admin', as: 'admin' do
+    ActiveAdmin.routes(self)
+  end
 
   rails_endpoint_wrapper = ::Kit::Auth::DummyAppContainer::Controllers::WebController
 
