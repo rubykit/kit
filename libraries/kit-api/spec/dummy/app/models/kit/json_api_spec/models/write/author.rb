@@ -2,7 +2,7 @@ class Kit::JsonApiSpec::Models::Write::Author < Kit::JsonApiSpec::Models::WriteR
 
   self.table_name = 'kit_json_api_spec_authors'
 
-  self.whitelisted_columns = [
+  self.allowed_columns = [
     :id,
     :created_at,
     :updated_at,

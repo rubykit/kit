@@ -3,7 +3,7 @@ module Kit::Auth::Models::Read
 
     self.table_name = 'request_metadata'
 
-    self.whitelisted_columns = [
+    self.allowed_columns = [
       :id,
       :created_at,
       :updated_at,

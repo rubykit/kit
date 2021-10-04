@@ -6,7 +6,7 @@ class Kit::Auth::Models::Write::DoorkeeperAccessToken < Kit::Auth::Models::Write
 
   self.table_name = 'user_secrets'
 
-  self.columns_whitelisting = false
+  self.columns_allowlist = false
 
   default_scope { where(category: 'oauth_access_grant') }
 

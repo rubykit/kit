@@ -7,7 +7,7 @@ class Kit::Auth::Models::Write::DoorkeeperApplication < Kit::Auth::Models::Write
 
   self.table_name = 'applications'
 
-  self.columns_whitelisting = false
+  self.columns_allowlist = false
 
   jsonb_accessor :data, {
     secret:       :string,

@@ -4,7 +4,7 @@ module Kit::Geolocation::Models::Read
 
 
 
-    self.whitelisted_columns = [
+    self.allowed_columns = [
       :id,
       :iso3166_alpha2,
       :iso3166_alpha3,

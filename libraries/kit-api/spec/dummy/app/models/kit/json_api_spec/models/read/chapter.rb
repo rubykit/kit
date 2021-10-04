@@ -2,7 +2,7 @@ class Kit::JsonApiSpec::Models::Read::Chapter < Kit::JsonApiSpec::Models::ReadRe
 
   self.table_name = 'kit_json_api_spec_chapters'
 
-  self.whitelisted_columns = [
+  self.allowed_columns = [
     :id,
     :created_at,
     :updated_at,

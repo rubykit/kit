@@ -3,7 +3,7 @@ module Kit::Auth::Models::Read
 
     self.table_name = 'countries'
 
-    self.whitelisted_columns = [
+    self.allowed_columns = [
       :id,
       :iso3166_alpha2,
       :iso3166_alpha3,

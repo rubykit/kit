@@ -2,7 +2,7 @@ class Kit::JsonApiSpec::Models::Write::Book < Kit::JsonApiSpec::Models::WriteRec
 
   self.table_name = 'kit_json_api_spec_books'
 
-  self.whitelisted_columns = [
+  self.allowed_columns = [
     :id,
     :created_at,
     :updated_at,

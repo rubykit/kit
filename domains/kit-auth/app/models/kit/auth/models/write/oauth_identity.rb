@@ -5,7 +5,7 @@ module Kit::Auth::Models::Write
 
     acts_as_paranoid
 
-    self.whitelisted_columns = [
+    self.allowed_columns = [
       :id,
       :created_at,
       :updated_at,

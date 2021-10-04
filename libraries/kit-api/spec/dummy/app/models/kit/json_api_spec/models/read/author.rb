@@ -2,7 +2,7 @@ class Kit::JsonApiSpec::Models::Read::Author < Kit::JsonApiSpec::Models::ReadRec
 
   self.table_name = 'kit_json_api_spec_authors'
 
-  self.whitelisted_columns = [
+  self.allowed_columns = [
     :id,
     :created_at,
     :updated_at,

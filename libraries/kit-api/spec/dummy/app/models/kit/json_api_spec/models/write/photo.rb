@@ -2,7 +2,7 @@ class Kit::JsonApiSpec::Models::Write::Photo < Kit::JsonApiSpec::Models::WriteRe
 
   self.table_name = 'kit_json_api_spec_photos'
 
-  self.whitelisted_columns = [
+  self.allowed_columns = [
     :id,
     :created_at,
     :updated_at,

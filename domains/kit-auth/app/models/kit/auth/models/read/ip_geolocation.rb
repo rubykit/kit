@@ -3,7 +3,7 @@ module Kit::Auth::Models::Read
 
     self.table_name = 'ip_geolocation'
 
-    self.whitelisted_columns = [
+    self.allowed_columns = [
       :id,
       :ip_start,
       :ip_end,

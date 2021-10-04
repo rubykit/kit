@@ -16,7 +16,7 @@ module Kit::Events::Models::Base::Event
 
     read_columns = []
 
-    self.whitelisted_columns = write_columns + read_columns
+    self.allowed_columns = write_columns + read_columns
 
     acts_as_paranoid
 

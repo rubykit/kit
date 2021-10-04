@@ -4,7 +4,7 @@ module Kit::Payment::Models::Write
 
 
 
-    self.whitelisted_columns = [
+    self.allowed_columns = [
       :id,
       :iso4217_alpha,
       :name,

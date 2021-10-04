@@ -10,8 +10,8 @@ module Kit::Domain::Models::Concerns::EngineRecord
   included do
     self.abstract_class = true
 
-    class_attribute :columns_whitelisting
-    self.columns_whitelisting = true
+    class_attribute :columns_allowlist
+    self.columns_allowlist = true
   end
 
   class_methods do

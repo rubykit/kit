@@ -22,7 +22,7 @@ module Kit::Auth::Models::Base::User
       :hashed_secret,
     ]
 
-    self.whitelisted_columns = write_columns + read_columns
+    self.allowed_columns = write_columns + read_columns
   end
 
   def confirmed?

@@ -8,28 +8,28 @@ end
 # - https://github.com/rails/rails/blob/master/activerecord/lib/active_record/model_schema.rb
 module ActiveRecord::ModelSchema::ClassMethods
 
-  def whitelisted_columns
-    @whitelisted_columns
+  def allowed_columns
+    @allowed_columns
   end
 
-  def whitelisted_columns=(columns)
-    @whitelisted_columns = columns.map(&:to_s)
+  def allowed_columns=(columns)
+    @allowed_columns = columns.map(&:to_s)
   end
 
-  def ensure_whitelisted_columns!
+  def ensure_allowed_columns!
     return if self.in?([
       ActiveRecord::SchemaMigration,
       ActiveRecord::InternalMetadata,
     ])
 
-    return if !@whitelisted_columns && !(respond_to?(:columns_whitelisting) && columns_whitelisting)
+    return if !@allowed_columns && !(respond_to?(:columns_allowlist) && columns_allowlist)
 
-    if !defined?(@whitelisted_columns)
-      @whitelisted_columns = []
+    if !defined?(@allowed_columns)
+      @allowed_columns = []
     end
 
-    if @whitelisted_columns.size > 0 || (respond_to?(:columns_whitelisting) && columns_whitelisting)
-      @columns_hash.slice!(*@whitelisted_columns)
+    if @allowed_columns.size > 0 || (respond_to?(:columns_allowlist) && columns_allowlist)
+      @columns_hash.slice!(*@allowed_columns)
     end
   end
 
@@ -37,7 +37,7 @@ module ActiveRecord::ModelSchema::ClassMethods
   def load_schema!
     @columns_hash = connection.schema_cache.columns_hash(table_name).except(*ignored_columns)
 
-    ensure_whitelisted_columns!
+    ensure_allowed_columns!
 
     @columns_hash.each do |name, column|
       define_attribute(

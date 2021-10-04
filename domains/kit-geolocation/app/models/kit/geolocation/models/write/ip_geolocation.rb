@@ -4,7 +4,7 @@ module Kit::Geolocation::Models::Write
 
 
 
-    self.whitelisted_columns = [
+    self.allowed_columns = [
       :id,
       :ip_start,
       :ip_end,
