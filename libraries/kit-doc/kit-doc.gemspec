@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.version     = version
   s.authors     = ['Nathan Appere']
   s.email       = ['nathan@rubykit.org']
-  s.homepage    = 'https://github.com/rubykit/kit/tree/master/libraries/kit-doc'
+  s.homepage    = 'https://github.com/rubykit/kit/tree/main/libraries/kit-doc'
   s.summary     = 'Yard setup & plugins for Kit'
   s.description = 'Kit::Doc is a Yard plugin that generates ExDoc look-alike documentation.'
   s.license     = 'MIT'

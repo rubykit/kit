@@ -15,8 +15,8 @@ List licenses for Kit::Doc and its dependencies.
 ## Kit::Doc
 - [MIT license](http://www.opensource.org/licenses/mit-license.php)
 - **Copyright (c) 2020 Nathan Appere**
-- https://github.com/rubykit/kit/tree/master/libraries/kit-doc
-- https://github.com/rubykit/kit/tree/master/libraries/kit-doc/MIT_LICENSE.md
+- https://github.com/rubykit/kit/tree/main/libraries/kit-doc
+- https://github.com/rubykit/kit/tree/main/libraries/kit-doc/MIT_LICENSE.md
 
 ## ExDoc
 - [Apache license 2.0](http://www.apache.org/licenses/LICENSE-2.0)

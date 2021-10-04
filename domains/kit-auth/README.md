@@ -1,8 +1,8 @@
 <!--pp {} -->
-<img align="left" width="50" height="90" src="https://raw.githubusercontent.com/rubykit/kit/master/domains/kit-auth/docs/assets/images/kit-auth.logo.svg">
+<img align="left" width="50" height="90" src="https://raw.githubusercontent.com/rubykit/kit/main/domains/kit-auth/docs/assets/images/kit-auth.logo.svg">
 <!-- pp-->
 
-[Kit::Auth]: https://github.com/rubykit/kit/tree/master/libraries/kit-auth
+[Kit::Auth]: https://github.com/rubykit/kit/tree/main/libraries/kit-auth
 
 # Kit::Auth
 

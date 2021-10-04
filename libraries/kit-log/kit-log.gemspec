@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.version     = version
   s.authors     = ['Nathan Appere']
   s.email       = ['nathan@rubykit.org']
-  s.homepage    = 'https://github.com/rubykit/kit/tree/master/libraries/kit-log'
+  s.homepage    = 'https://github.com/rubykit/kit/tree/main/libraries/kit-log'
   s.summary     = 'Rspec formatter'
   s.description = 'Kit::Log is a simple logging library for the rubykit framework.'
   s.license     = 'MIT'

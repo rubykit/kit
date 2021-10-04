@@ -1,8 +1,8 @@
 <!--pp {} -->
-<img align="left" width="50" height="90" src="https://raw.githubusercontent.com/rubykit/kit/master/libraries/kit-doc/docs/assets/images/kit-doc.logo.svg">
+<img align="left" width="50" height="90" src="https://raw.githubusercontent.com/rubykit/kit/main/libraries/kit-doc/docs/assets/images/kit-doc.logo.svg">
 <!-- pp-->
 
-[Kit::Doc]: https://github.com/rubykit/kit/tree/master/libraries/kit-doc
+[Kit::Doc]: https://github.com/rubykit/kit/tree/main/libraries/kit-doc
 [Yard]: https://github.com/lsegal/yard
 [ExDoc]: https://github.com/elixir-lang/ex_doc
 [ExDoc assets]: https://github.com/elixir-lang/ex_doc/tree/master/assets

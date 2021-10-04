@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.license     = 'MIT'
   s.author      = 'Nathan Appere'
   s.email       = 'nathan@rubykit.org'
-  s.homepage    = 'https://github.com/rubykit/kit/tree/master/libraries/kit-pagination'
+  s.homepage    = 'https://github.com/rubykit/kit/tree/main/libraries/kit-pagination'
 
   s.metadata = {
     'documentation_uri' => "https://docs.rubykit.org/kit-pagination/v#{ version }",

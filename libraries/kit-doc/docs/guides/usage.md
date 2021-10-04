@@ -1,4 +1,4 @@
-[Kit::Doc]: https://github.com/rubykit/kit/tree/master/libraries/kit-doc
+[Kit::Doc]: https://github.com/rubykit/kit/tree/main/libraries/kit-doc
 
 # Getting started
 
@@ -92,7 +92,7 @@ Kit::Doc::Services::Tasks.create_rake_task_documentation_all_versions!(
 
 The default is:
 ```
-edge:master
+edge:main
 ```
 
 3 - Add it to your project `Rakefile`:

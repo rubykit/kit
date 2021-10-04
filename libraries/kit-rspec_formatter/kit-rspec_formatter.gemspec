@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.version     = version
   s.authors     = ['Nathan Appere']
   s.email       = ['nathan@rubykit.org']
-  s.homepage    = 'https://github.com/rubykit/kit/tree/master/libraries/kit-rspec_formatter'
+  s.homepage    = 'https://github.com/rubykit/kit/tree/main/libraries/kit-rspec_formatter'
   s.summary     = 'Rspec formatter'
   s.description = 'Kit::RspecFormatter is the RSPEC formatter used in tghe Kit project.'
   s.license     = 'MIT'

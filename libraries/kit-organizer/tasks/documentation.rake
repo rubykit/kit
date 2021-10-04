@@ -9,7 +9,7 @@ DOC_CONFIG = Kit::Doc::Services::Config.create_config(
 
   main_redirect_url:  'README.html',
 
-  logo:               'https://raw.githubusercontent.com/rubykit/kit/master/libraries/kit-organizer/docs/assets/images/kit-organizer.logo.svg',
+  logo:               'https://raw.githubusercontent.com/rubykit/kit/main/libraries/kit-organizer/docs/assets/images/kit-organizer.logo.svg',
 
   files_modules:      {
     './' => {

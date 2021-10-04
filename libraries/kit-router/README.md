@@ -1,8 +1,8 @@
 <!--pp {} -->
-<img align="left" width="50" height="90" src="https://raw.githubusercontent.com/rubykit/kit/master/libraries/kit-router/docs/assets/images/kit-router.logo.svg">
+<img align="left" width="50" height="90" src="https://raw.githubusercontent.com/rubykit/kit/main/libraries/kit-router/docs/assets/images/kit-router.logo.svg">
 <!-- pp-->
 
-[Kit::Router]: https://github.com/rubykit/kit/tree/master/libraries/kit-router
+[Kit::Router]: https://github.com/rubykit/kit/tree/main/libraries/kit-router
 
 # Kit::Router
 

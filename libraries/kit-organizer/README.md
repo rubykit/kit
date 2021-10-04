@@ -1,8 +1,8 @@
 <!--pp {} -->
-<img align="left" width="50" height="90" src="https://raw.githubusercontent.com/rubykit/kit/master/libraries/kit-organizer/docs/assets/images/kit-organizer.logo.svg">
+<img align="left" width="50" height="90" src="https://raw.githubusercontent.com/rubykit/kit/main/libraries/kit-organizer/docs/assets/images/kit-organizer.logo.svg">
 <!-- pp-->
 
-[Kit::Organizer]: https://github.com/rubykit/kit/tree/master/libraries/kit-organizer
+[Kit::Organizer]: https://github.com/rubykit/kit/tree/main/libraries/kit-organizer
 
 # Kit::Organizer
 

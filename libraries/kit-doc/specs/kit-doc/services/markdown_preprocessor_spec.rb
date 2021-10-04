@@ -38,7 +38,7 @@ describe Kit::Doc::Services::MarkdownPreprocessor do
         before: <<~DATA,
           # Before
           <!--pp { [KitDoc link](https://github.com/rubykit/kit/blob/$VERSION/libraries/kit-doc) } -->
-          [GitHub link](https://github.com/rubykit/kit/tree/master/libraries/kit-doc)
+          [GitHub link](https://github.com/rubykit/kit/tree/main/libraries/kit-doc)
           <!-- pp-->
           # After
         DATA
@@ -54,7 +54,7 @@ describe Kit::Doc::Services::MarkdownPreprocessor do
           <!--pp {
           [KitDoc link](https://github.com/rubykit/kit/blob/$VERSION/libraries/kit-doc)
           } -->
-          [GitHub link](https://github.com/rubykit/kit/tree/master/libraries/kit-doc)
+          [GitHub link](https://github.com/rubykit/kit/tree/main/libraries/kit-doc)
           <!-- pp-->
           # After
         DATA

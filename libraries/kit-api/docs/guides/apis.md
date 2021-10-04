@@ -1,4 +1,4 @@
-[Kit::Api]: https://github.com/rubykit/kit/tree/master/libraries/kit-api
+[Kit::Api]: https://github.com/rubykit/kit/tree/main/libraries/kit-api
 [JSON:API]: https://jsonapi.org
 [GraphQL]: https://graphql.org/
 [Kit]: https://github.com/rubykit/kit

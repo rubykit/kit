@@ -1,4 +1,4 @@
-[Kit::Api]: https://github.com/rubykit/kit/tree/master/libraries/kit-api
+[Kit::Api]: https://github.com/rubykit/kit/tree/main/libraries/kit-api
 
 # Architecture
 

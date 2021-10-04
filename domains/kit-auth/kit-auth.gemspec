@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.license     = 'MIT'
   s.author      = 'Nathan Appere'
   s.email       = 'nathan@rubykit.org'
-  s.homepage    = 'https://github.com/rubykit/kit/tree/master/domains/kit-auth'
+  s.homepage    = 'https://github.com/rubykit/kit/tree/main/domains/kit-auth'
 
   s.metadata = {
     'source_code_base_uri' => 'https://github.com/rubykit/kit',

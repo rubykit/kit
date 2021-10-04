@@ -9,11 +9,11 @@ DOC_CONFIG_DUMMY_APP = Kit::Doc::Services::Config.create_config(
   output_dir_all_versions: ENV['KIT_DOC_OUTPUT_DIR_ALL_VERSIONS'].presence || 'docs/dist/kat',
   all_versions:            File.expand_path('../docs/VERSIONS', __dir__),
 
-  source_url:              'https://github.com/rubykit/kit/tree/master/libraries/kit-doc',
+  source_url:              'https://github.com/rubykit/kit/tree/main/libraries/kit-doc',
   authors:                 ['John Doe'],
 
   main_redirect_url:       'ab_colla_deus.html',
-  logo:                    'https://raw.githubusercontent.com/rubykit/kit/master/libraries/kit-doc/docs/assets/images/kit-doc.logo.svg',
+  logo:                    'https://raw.githubusercontent.com/rubykit/kit/main/libraries/kit-doc/docs/assets/images/kit-doc.logo.svg',
 
   files_modules:           {
     'specs/dummy/' => {

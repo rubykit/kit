@@ -1,8 +1,8 @@
-[Kit::Doc]: https://github.com/rubykit/kit/tree/master/libraries/kit-doc
+[Kit::Doc]: https://github.com/rubykit/kit/tree/main/libraries/kit-doc
 
 # Writing Documentation
 
-In this document you will learn how to write documentation for [Kit::Doc](https://github.com/rubykit/kit/tree/master/libraries/kit-doc).
+In this document you will learn how to write documentation for [Kit::Doc](https://github.com/rubykit/kit/tree/main/libraries/kit-doc).
 
 ## Markdown
 
