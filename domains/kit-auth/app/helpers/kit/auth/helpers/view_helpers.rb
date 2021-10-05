@@ -1,5 +1,9 @@
 module Kit::Auth::Helpers::ViewHelpers
 
+  def router_conn
+    request.instance_variable_get(:@kit_router_conn)
+  end
+
   def session_user
     kit_router_conn = request.instance_variable_get(:@kit_router_conn)
     return nil if !kit_router_conn

@@ -6,6 +6,8 @@ module Kit::Auth::Endpoints::Web::Users::SignUp::WithPassword::Create
         [:alias, :web_redirect_if_session_user!],
         self.method(:set_form_model),
         self.method(:create_user),
+
+        [:local_ctx, Kit::Auth::Actions::Intents::Consume, { intent_step: :user_sign_up }],
         self.method(:redirect),
       ],
       error: [

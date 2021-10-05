@@ -4,6 +4,7 @@ module Kit::Auth::Endpoints::Web::Users::SignUp::WithPassword::New
     Kit::Organizer.call(
       list: [
         [:alias, :web_redirect_if_session_user!],
+        [:local_ctx, Kit::Auth::Actions::Intents::Save, { intent_step: :user_sign_up, intent_type: router_conn.request[:params][:intent] }],
         self.method(:set_form_model),
         self.method(:set_page_component),
         Kit::Domain::Endpoints::Http.method(:render_form_page),

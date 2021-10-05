@@ -8,7 +8,10 @@ module Kit::Auth::Endpoints::Web::Users::SignIn::WithMagicLink::Create
         ->(router_conn:) { [:ok, access_token: router_conn.metadata[:request_user_access_token]] },
         Kit::Auth::Actions::Users::EnsureActiveToken,
         [:local_ctx, [:alias, :web_redirect_if_missing_scope!], { scope: Kit::Auth::Services::Scopes::USER_SIGN_IN }],
+
         self.method(:create_sign_in),
+
+        [:local_ctx, Kit::Auth::Actions::Intents::Consume, { intent_step: :user_sign_in }],
         Kit::Auth::Endpoints::Web::Users::SignIn::WithPassword::Create.method(:redirect),
       ],
       error: [

@@ -1,5 +1,9 @@
 class Kit::Auth::DummyAppContainer::Controllers::Web::HomeController < Kit::Auth::DummyAppContainer::Controllers::WebController
 
+  def index_signed_in
+    render
+  end
+
   Kit::Router::Services::Router.register_without_target(
     uid:     'kit-auth|spec_app|web|home|signed_in',
     aliases: {
@@ -11,13 +15,13 @@ class Kit::Auth::DummyAppContainer::Controllers::Web::HomeController < Kit::Auth
       ],
     },
     types:   {
-      [:http, :rails] => {
-        target: [self, :index_signed_in],
-      },
+      [:http, :rails] => { target: [self, :index_signed_in], },
     },
   )
 
-  def index_signed_in
+  # ----------------------------------------------------------------------------
+
+  def index_signed_out
     render
   end
 
@@ -32,14 +36,8 @@ class Kit::Auth::DummyAppContainer::Controllers::Web::HomeController < Kit::Auth
       ],
     },
     types:   {
-      [:http, :rails] => {
-        target: [self, :index_signed_out],
-      },
+      [:http, :rails] => { target: [self, :index_signed_out], },
     },
   )
-
-  def index_signed_out
-    render
-  end
 
 end

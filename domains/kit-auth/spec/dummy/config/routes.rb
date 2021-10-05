@@ -30,6 +30,8 @@ Rails.application.routes.draw do
 
   Kit::Router::Adapters::HttpRails::Routes.mount_rails_targets(rails_router_context: self, list: list_local)
 
+  Kit::Auth::DummyApp::Services::Routing.mount_routes_http_web(**args)
+
   # ----------------------------------------------------------------------------
   # Mailer adapter
 
