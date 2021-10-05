@@ -5,6 +5,8 @@ module Kit::Domain::Endpoints::Http
     status ||= 200
     params ||= {}
 
+    params[:router_conn] = router_conn if !params[:router_conn]
+
     page    = component.new(**params)
     content = page.local_render(router_conn: router_conn)
 
