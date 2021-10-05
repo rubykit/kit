@@ -35,7 +35,7 @@ module Kit::Organizer::Services::Callable::LocalCtx
         ctx:  ctx_in_extended,
       )
 
-      ctx_out = ctx_out.slice(*arguments.keys)
+      ctx_out = ctx_out.except(*local_ctx.keys)
 
       [status, ctx_out]
     end
