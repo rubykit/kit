@@ -117,9 +117,9 @@ module Kit::Organizer::Services::Organize
         # Stop execution status is not `:ok`
         break if [:error, :halt].include?(status)
       rescue StandardError => e
-        raise e if !safe
+        Kit::Error.report_exception(exception: e)
 
-        Kit::Error::Exception.report(exception: e)
+        raise e if !safe
       end
 
     [status, ctx]
