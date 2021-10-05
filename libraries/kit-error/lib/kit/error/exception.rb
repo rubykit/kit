@@ -2,7 +2,8 @@
 module Kit::Error::Exception
 
   # Report an `exception` to the `reporter`
-  def self.report(exception:, reporter: nil)
+  def self.report(exception:, extra: nil, reporter: nil)
+    extra    ||= {}
     reporter ||= default_exception_reporter
 
     if ENV['RAILS_ENV'] == 'development'
@@ -19,7 +20,7 @@ module Kit::Error::Exception
 
   # Return the class based exception reporter or logs a warning.
   def self.default_exception_reporter
-    @default_exception_reporter || ->(exception:) { Kit::Error::Log.log(msg: 'No exception_reporter was set! They will be lost.', flags: [:danger]) }
+    @default_exception_reporter || ->(exception:) { Kit::Error::Log.log(msg: 'No exception_reporter was set! They will be lost.', flags: [:error, :danger]) }
   end
 
 end

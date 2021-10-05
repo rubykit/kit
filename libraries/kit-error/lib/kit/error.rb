@@ -36,6 +36,27 @@ end
 
 # Namespace for Kit our error behaviour.
 module Kit::Error
+
+  def self.report(detail:, extra: nil)
+    extra ||= {}
+
+    raise detail
+  rescue StandardError => e
+    report_exception(exception: e, extra: extra)
+  end
+
+  def self.report_exception(exception:, extra: nil)
+    Kit::Error::Exception.report(exception: exception, extra: extra)
+  end
+
+  def self.report_organizer_errors(errors:)
+    (errors || []).each do |error|
+      report(detail: error[:detail], extra: error.except(:detail))
+    end
+
+    [:ok]
+  end
+
 end
 
 require_relative 'error/version'
