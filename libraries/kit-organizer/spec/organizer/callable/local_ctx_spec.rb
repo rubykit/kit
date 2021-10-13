@@ -22,8 +22,6 @@ describe Kit::Organizer::Services::Callable::LocalCtx do
   describe '.resolve' do
     subject { described_class.resolve(args: payload) }
 
-    let(:wrapped_callable) { subject }
-
     it 'returns a wrapped callable' do
       status, ctx = subject
       expect(status).to eq(:ok)
@@ -43,7 +41,6 @@ describe Kit::Organizer::Services::Callable::LocalCtx do
       expect(status).to be :ok
       expect(ctx).to eq(ctx_out)
     end
-
   end
 
 end

@@ -13,7 +13,7 @@ describe Kit::Organizer::Services::Callable::Wrap do
     let(:callable) { ->(b:) { [:ok, { c: b + 1  }] } }
     let(:wrapped_callable) { subject }
 
-    it 'returns a wrapped callable' do
+    it 'returns the expected wrapped callable' do
       status, ctx = subject
       expect(status).to eq(:ok)
       expect(ctx[:callable].call(a: 1)).to eq([:ok, d: 2])

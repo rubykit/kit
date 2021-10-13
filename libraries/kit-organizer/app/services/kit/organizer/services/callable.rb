@@ -10,9 +10,9 @@ module Kit::Organizer::Services::Callable
     @store ||= {
       alias:     Kit::Organizer::Services::Callable::Alias.method(:resolve),
       ctx_call:  Kit::Organizer::Services::Callable::CtxCall.method(:resolve),
-      if:        Kit::Organizer::Services::Callable::If.method(:resolve),
       local_ctx: Kit::Organizer::Services::Callable::LocalCtx.method(:resolve),
       method:    Kit::Organizer::Services::Callable::Method.method(:resolve),
+      nest:      Kit::Organizer::Services::Callable::Nest.method(:resolve),
       wrap:      Kit::Organizer::Services::Callable::Wrap.method(:resolve),
     }
   end
