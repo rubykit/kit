@@ -1,7 +1,7 @@
 require 'oj'
 
 # Contains logic related to generating Json:Api error http responses.
-module Kit::Api::JsonApi::Controllers::Responses::Error
+module Kit::Api::JsonApi::Services::Endpoints::Error
 
   # Generates a valid Json:Api error payload.
   #

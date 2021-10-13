@@ -1,6 +1,6 @@
 RSpec.shared_context 'json:api' do
 
-  let(:jsonapi_media_type) { Kit::Api::JsonApi::Controllers::JsonApi::JSONAPI_MEDIA_TYPE }
+  let(:jsonapi_media_type) { Kit::Api::JsonApi::Services::Endpoints::Guards::JSONAPI_MEDIA_TYPE }
 
   # References:
   # - https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept

@@ -1,13 +1,13 @@
 require_relative '../../../../../config/initializers/api_config'
 
-module Kit::JsonApiSpec::Controllers::Create # rubocop:disable Style/Documentation
+module Kit::JsonApiSpec::Endpoints::Create # rubocop:disable Style/Documentation
 
   def self.endpoint(router_conn:, query_params:, api_request:)
     Kit::Organizer.call(
       list: [
         Kit::Api::JsonApi::Services::Request::Import.method(:import),
         self.method(:create),
-        Kit::Api::Controllers::Api.method(:generate_resolved_query),
+        Kit::Api::Services::Endpoints.method(:generate_resolved_query),
         Kit::Api::JsonApi::Services::Serialization::Query.method(:serialize_query),
       ],
       ctx:  {
@@ -18,10 +18,10 @@ module Kit::JsonApiSpec::Controllers::Create # rubocop:disable Style/Documentati
     )
   end
 
-  Kit::JsonApiSpec::Controllers.register_endpoints(
-    config:   KIT_DUMMY_APP_API_CONFIG,
-    endpoint: self.method(:endpoint),
-    routes:   [
+  Kit::JsonApiSpec::Services::Routing.register_endpoints(
+    resources: KIT_DUMMY_APP_API_CONFIG[:resources],
+    endpoint:  self.method(:endpoint),
+    routes:    [
       { route_type: :create, singular: true },
     ],
   )
@@ -30,12 +30,12 @@ module Kit::JsonApiSpec::Controllers::Create # rubocop:disable Style/Documentati
     resource    = api_request[:top_level_resource]
     model_class = resource[:extra][:model_write]
 
-    data       = router_conn.request.dig(:params, :data, :attributes) || {}
-    _, ctx     = Kit::Api::Controllers::Api.sanitize_writeable_attributes(data: data, template: resource[:writeable_attributes])
+    data       = router_conn.request.dig(:http, :params_body, :data, :attributes) || {}
+    _, ctx     = Kit::Api::Services::Endpoints.sanitize_writeable_attributes(data: data, template: resource[:writeable_attributes])
     attributes = ctx[:model_attributes]
 
-    data       = router_conn.request.dig(:params, :data, :relationships) || {}
-    _, ctx     = Kit::Api::Controllers::Api.sanitize_writeable_relationships(data: data, template: resource[:writeable_relationships])
+    data       = router_conn.request.dig(:http, :params_body, :data, :relationships) || {}
+    _, ctx     = Kit::Api::Services::Endpoints.sanitize_writeable_relationships(data: data, template: resource[:writeable_relationships])
     relationships = ctx[:model_attributes]
 
     values = {}.merge(attributes).merge(relationships)

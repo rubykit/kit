@@ -1,5 +1,5 @@
 # Shared controller logic
-module Kit::Api::Controllers::Api
+module Kit::Api::Services::Endpoints
 
   # Helper to generate a valid `Query` that's already resolved to a single object.
   #
@@ -62,11 +62,11 @@ module Kit::Api::Controllers::Api
     result = {}
 
     template.each do |relationship_name, relationship_data|
-      attr_rs_value = data.dig(relationship_name.to_s, :data.to_s)
+      attr_rs_value = data.dig(relationship_name, :data)
       next if !attr_rs_value
 
-      if attr_rs_value['type'] == relationship_data[:type].to_s
-        result[relationship_data[:field]] = attr_rs_value['id']
+      if attr_rs_value[:type] == relationship_data[:type].to_s
+        result[relationship_data[:field]] = attr_rs_value[:id]
       else
         return [:error, { detail: "Invalid relationship type. Expected `#{ relationship_data[:type] }`, got `#{ attr_rs_value['type'] }`" }]
       end

@@ -1,29 +1,6 @@
 require 'oj'
 
-# Shared controller logic
-module Kit::Api::JsonApi::Controllers::JsonApi
-
-  def self.generate_success_router_response(router_conn:, document:, status_code: nil)
-    status_code ||= 200
-
-    if status_code == 204
-      content = nil
-    else
-      content = document[:response]
-    end
-
-    content_json = content ? ::Oj.dump(content, mode: :json) : nil
-
-    router_conn[:response].deep_merge!({
-      content: content_json,
-      http:    {
-        status: status_code,
-        mime:   :json_api,
-      },
-    })
-
-    [:ok, router_conn: router_conn]
-  end
+module Kit::Api::JsonApi::Services::Endpoints::Guards
 
   JSONAPI_MEDIA_TYPE = 'application/vnd.api+json'.freeze
 

@@ -1,6 +1,6 @@
 require_relative '../../../../../config/initializers/api_config'
 
-module Kit::JsonApiSpec::Controllers::Show # rubocop:disable Style/Documentation
+module Kit::JsonApiSpec::Endpoints::Show # rubocop:disable Style/Documentation
 
   def self.endpoint(router_conn:, query_params:, api_request:)
     Kit::Organizer.call(
@@ -20,10 +20,10 @@ module Kit::JsonApiSpec::Controllers::Show # rubocop:disable Style/Documentation
     )
   end
 
-  Kit::JsonApiSpec::Controllers.register_endpoints(
-    config:   KIT_DUMMY_APP_API_CONFIG,
-    endpoint: self.method(:endpoint),
-    routes:   [
+  Kit::JsonApiSpec::Services::Routing.register_endpoints(
+    resources: KIT_DUMMY_APP_API_CONFIG[:resources],
+    endpoint:  self.method(:endpoint),
+    routes:    [
       { route_type: :show, singular: true },
     ],
   )
