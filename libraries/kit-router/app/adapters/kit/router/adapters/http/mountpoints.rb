@@ -37,11 +37,16 @@ module Kit::Router::Adapters::Http::Mountpoints
     uri.to_s.gsub(%r{\?$}, '')
   end
 
-  def self.url(id:, params: nil, mountpoint_type: nil)
-    path   = path(id: id, params: params, mountpoint_type: mountpoint_type)
+  def self.base_url
     scheme = (ENV['RAILS_FORCE_SSL'] == 'true') ? 'https' : 'http'
 
-    "#{ scheme }://#{ ENV['HTTP_HOST_URL'] }#{ path }"
+    "#{ scheme }://#{ ENV['HTTP_HOST_URL'] }"
+  end
+
+  def self.url(id:, params: nil, mountpoint_type: nil)
+    path = path(id: id, params: params, mountpoint_type: mountpoint_type)
+
+    "#{ base_url }#{ path }"
   end
 
   def self.verb(id:, mountpoint_type: nil)

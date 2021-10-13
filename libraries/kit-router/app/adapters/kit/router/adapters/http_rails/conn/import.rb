@@ -6,15 +6,18 @@
 #
 module Kit::Router::Adapters::HttpRails::Conn::Import
 
-  def self.import_request(rails_request:, rails_cookies:, rails_controller:)
+  def self.import_request(rails_request:, rails_controller:, rails_cookies: nil)
     if (router_conn = rails_request.instance_variable_get(:@kit_router_conn))
       return [:ok, router_conn: router_conn]
     end
 
-    _, cookies_ctx = import_rails_cookies(rails_cookies: rails_cookies)
-    csrf_token     = rails_controller.session[:_csrf_token] ||= SecureRandom.base64(32)
-
-    kit_router_target = rails_request.params[:kit_router_target] || {}
+    if rails_cookies
+      _, cookies_ctx = import_rails_cookies(rails_cookies: rails_cookies)
+      csrf_token     = rails_controller.session[:_csrf_token] ||= SecureRandom.base64(32)
+      cookies        = cookies_ctx[:cookies]
+    else
+      cookies        = {}
+    end
 
     env = rails_request
       .headers
@@ -35,6 +38,19 @@ module Kit::Router::Adapters::HttpRails::Conn::Import
 
     cgi[:KIT_SILENCED_KEYS] = env.select { |k, _v| k.starts_with?('action_') || k.starts_with?('puma') || k.starts_with?('rack') }.keys
 
+    params_query    = rails_request.query_parameters.deep_symbolize_keys
+    params_body     = rails_request.request_parameters.to_h.deep_symbolize_keys rescue {} # rubocop:disable Style/RescueModifier
+
+    path_parameters = rails_request.path_parameters.deep_symbolize_keys
+    params_kit      = path_parameters.select { |k, _v| k.to_s.start_with?('kit_') } # No need to symbolize
+    params_rails    = path_parameters.slice(:controller, :action).deep_symbolize_keys
+    params_path     = path_parameters.except(*(params_rails.keys + params_kit.keys)).deep_symbolize_keys
+
+    params          = params_query.merge(params_body).merge(params_path).deep_symbolize_keys
+
+    kit_router_target  = params_kit[:kit_router_target]  || {}
+    kit_request_config = params_kit[:kit_request_config] || {}
+
     router_conn = Kit::Router::Models::Conn.new(
       adapter:   :http_rails,
 
@@ -47,14 +63,20 @@ module Kit::Router::Adapters::HttpRails::Conn::Import
       client_ip: rails_request.ip,
 
       request:   {
-        params: rails_request.params.to_h.symbolize_keys,
+        params:     params,
+        params_kit: params_kit,
 
-        http:   {
-          cookies:    cookies_ctx[:cookies],
-          headers:    headers,
-          user_agent: rails_request.user_agent,
-          csrf_token: csrf_token,
-          cgi:        cgi,
+        http:       {
+          cookies:      cookies,
+          headers:      headers,
+          user_agent:   rails_request.user_agent,
+          csrf_token:   csrf_token,
+          cgi:          cgi,
+
+          params_query: params_query,
+          params_body:  params_body,
+          params_path:  params_path,
+          params_rails: params_rails,
         },
       },
 
@@ -62,7 +84,7 @@ module Kit::Router::Adapters::HttpRails::Conn::Import
         content: nil,
 
         http:    {
-          cookies: cookies_ctx[:cookies],
+          cookies: cookies.dup,
         },
       },
 
@@ -73,6 +95,7 @@ module Kit::Router::Adapters::HttpRails::Conn::Import
             rails_request:    rails_request,
           },
         },
+        config:   kit_request_config,
       },
     )
 

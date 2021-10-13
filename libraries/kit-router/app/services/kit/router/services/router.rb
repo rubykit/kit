@@ -24,7 +24,6 @@ module Kit::Router::Services::Router
 
     # Delayed declaration of the route.
     if after && !router_store[:endpoints][uid]
-
       Kit::Router::Log.log(msg: "registering delayed for `#{ uid }` (waiting for: #{ after })", flags: [:debug, :routes, :endpoint])
 
       save_afters(uid: uid, target: target, types: types, meta: meta, aliases: aliases, after: after, router_store: router_store)

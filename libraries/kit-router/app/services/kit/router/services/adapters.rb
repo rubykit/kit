@@ -38,11 +38,15 @@ module Kit::Router::Services::Adapters
   def self.create_router_conn(adapter_name:, endpoint_record:, params:, route_id:)
     router_conn = Kit::Router::Models::Conn.new(
       adapter:  adapter_name,
-      params:   params,
+
       route_id: route_id,
       endpoint: {
         uid:      endpoint_record[:uid],
         callable: endpoint_record[:target],
+      },
+
+      request:  {
+        params: params,
       },
     )
 

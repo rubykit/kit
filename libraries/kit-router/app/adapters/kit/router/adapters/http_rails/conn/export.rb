@@ -1,7 +1,7 @@
 # Export a router Conn to a Rails response.
 module Kit::Router::Adapters::HttpRails::Conn::Export
 
-  def self.export_response(router_conn:, rails_cookies:, rails_controller:, rails_response:)
+  def self.export_response(router_conn:, rails_controller:, rails_response:, rails_cookies: nil)
     Kit::Organizer.call(
       list: [
         self.method(:export_rails_cookies),
@@ -64,7 +64,9 @@ module Kit::Router::Adapters::HttpRails::Conn::Export
   end
 
   # REF: https://api.rubyonrails.org/v5.1.7/classes/ActionDispatch/Cookies.html
-  def self.export_rails_cookies(router_conn:, rails_cookies:)
+  def self.export_rails_cookies(router_conn:, rails_cookies: nil)
+    return [:ok] if !rails_cookies
+
     data = router_conn.response[:http][:cookies]
     return [:ok] if data.blank?
 

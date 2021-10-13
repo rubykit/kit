@@ -5,10 +5,11 @@ module Kit::Router::Adapters::HttpRails::Routes
 
   HTTP_VERBS = [:connect, :delete, :get, :options, :patch, :post, :put, :trace]
 
-  def self.mount_http_targets(rails_router_context:, list:, namespace: nil)
+  def self.mount_http_targets(rails_router_context:, list:, request_config: nil, namespace: nil)
     list.each do |attrs|
       # NOTE: this seems like a bad API
-      attrs[:namespace] = namespace if !attrs[:namespace]
+      attrs[:namespace]      = namespace      if !attrs[:namespace]
+      attrs[:request_config] = request_config if !attrs[:request_config]
 
       mount_http_target(rails_router_context: rails_router_context, **attrs)
     end
@@ -16,7 +17,7 @@ module Kit::Router::Adapters::HttpRails::Routes
     [:ok]
   end
 
-  def self.mount_http_target(route_id:, path:, verb:, rails_router_context:, rails_endpoint_wrapper:, namespace: nil)
+  def self.mount_http_target(route_id:, path:, verb:, rails_router_context:, rails_endpoint_wrapper:, request_config: nil, namespace: nil)
     return [:ok] if ENV['KIT_ROUTER'] == 'false'
 
     Kit::Organizer.call(
@@ -35,6 +36,7 @@ module Kit::Router::Adapters::HttpRails::Routes
         namespace:            namespace,
         rails_target:         rails_endpoint_wrapper,
         rails_router_context: rails_router_context,
+        request_config:       request_config,
       },
     )
   end
@@ -127,17 +129,20 @@ module Kit::Router::Adapters::HttpRails::Routes
 
   # Declare endpoint in Rails router with a Rails wrapper.
   # NOTE: please only call this directly if you understand what you are doing!
-  def self.mount_in_rails(rails_router_context:, rails_target:, rails_mountpoint:, kit_router_target: nil)
+  def self.mount_in_rails(rails_router_context:, rails_target:, rails_mountpoint:, endpoint_record:, request_config: nil, kit_router_target: nil)
     http_verb, http_path = rails_mountpoint[:data]
+    request_config     ||= {}
+    route_defaults       = endpoint_record[:meta][:route_defaults] || {}
 
     #puts "DEBUG: mount in rails: #{ http_verb } #{ http_path }"
     rails_router_context.send(:match, http_path, {
       controller: rails_target[0],
       action:     rails_target[1],
       via:        [http_verb],
-      defaults:   {
-        kit_router_target: kit_router_target,
-      },
+      defaults:   route_defaults.merge({
+        kit_request_config: request_config,
+        kit_router_target:  kit_router_target,
+      }),
     },)
 
     [:ok]

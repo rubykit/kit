@@ -59,8 +59,7 @@ class Kit::Router::Models::Conn
   # Initializer with some convenience keys.
   def initialize(adapter:,       route_id:,    endpoint:,
                  metadata:  nil, request: nil, response: nil,
-                 client_ip: nil, port:    nil, protocol: nil,
-                                 params:  nil, adapter_metadata: nil)
+                 client_ip: nil, port:    nil, protocol: nil)
     @adapter  = adapter
     @route_id = route_id
     @endpoint = {
@@ -70,12 +69,12 @@ class Kit::Router::Models::Conn
 
     @metadata = {}
       .deep_merge({
-        adapters: { adapter => (adapter_metadata || {}) },
+        adapters: { adapter => {} },
       })
       .deep_merge(metadata || {})
 
     @request = {
-      params: params || {},
+      params: {},
 
       http:   {
         cookies:      {},
@@ -83,6 +82,7 @@ class Kit::Router::Models::Conn
         params_path:  {},
         params_query: {},
         params_body:  {},
+        params_kit:   {},
       },
 
       mailer: {},
@@ -158,7 +158,7 @@ class Kit::Router::Models::Conn
 
   # Convenience request to access config.
   def config
-    request.metadata[:config] || {}
+    metadata[:config] || {}
   end
 
   # Ensure we return a deep copy to avoid side effects.

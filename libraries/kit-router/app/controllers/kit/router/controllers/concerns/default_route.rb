@@ -1,8 +1,7 @@
-# HttpRails adapter default catch-all controller.
-#
-# This is more of a template than anything, each app container should define its own variation.
-#
-class Kit::Router::Controllers::HttpRails::DefaultBaseRouterController < ::ActionController::Base
+# Mixin that can be used as the route wrapper for endpoints.
+module Kit::Router::Controllers::Concerns::DefaultRouter
+
+  extend ActiveSupport::Concern
 
   def route
     controller_ctx = {
