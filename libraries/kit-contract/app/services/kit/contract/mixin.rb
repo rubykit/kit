@@ -67,13 +67,21 @@ module Kit::Contract::Mixin
 
     def singleton_method_added(method_name)
       super
-      declare_contracts(method_name: method_name, method_type: :singleton_method)
+
+      if Kit::Contract::Services::Runtime.active?
+        declare_contracts(method_name: method_name, method_type: :singleton_method)
+      end
+
       true
     end
 
     def method_added(method_name)
       super
-      declare_contracts(method_name: method_name, method_type: :method)
+
+      if Kit::Contract::Services::Runtime.active?
+        declare_contracts(method_name: method_name, method_type: :method)
+      end
+
       true
     end
 
