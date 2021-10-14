@@ -23,3 +23,11 @@ KIT_APP_PATHS['EXECUTE'] << ->(config:) do
 end
 
 KIT_APP_PATHS['GEM_LOGGER_PATH'] = File.expand_path('../log', __dir__)
+
+KIT_APP_PATHS['RAILS_DEPENDENCIES'] = %w[
+  active_record/railtie
+  action_controller/railtie
+  action_view/railtie
+  active_job/railtie
+  sprockets/railtie
+]
