@@ -1,0 +1,45 @@
+<% content_for :style do %>
+  #route_table_info {
+    padding-top: 0px;
+    font-family: monospace;
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+
+  input.form-control {
+    padding: 0.25rem 0.5rem;
+  }
+<% end %>
+
+<table id='route_table' class='table table-striped table-hover font-monospace route_table' style='font-size: 12px;'>
+  <thead>
+    <tr>
+      <th>Order</th>
+      <th>Verb</th>
+      <th>Path</th>
+      <th>Type</th>
+      <th>Route id</th>
+      <th>Endoint id</th>
+      <th>Helper</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= yield %>
+  </tbody>
+</table>
+
+<script type='text/javascript'>
+  $(document).ready(function() {
+    // DataTable
+    var table = $('#route_table').DataTable({
+      'order': [[0, 'asc']],
+      'paging': false,
+      'dom': "<'d-flex align-items-end'<'ms-auto me-2'i><f>>" + "<'row'<'col-sm-12'tr>>",
+      'language': {
+        'search': '',
+        'searchPlaceholder': 'Search',
+      },
+      'searchHighlight': true,
+    });
+  });
+</script>

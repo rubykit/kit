@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css" />
+  <link rel="stylesheet" media="all" href="https://kit-theme-bootstrap.herokuapp.com/assets/kit_theme_bootstrap_dummy_vendor-5dee1ba11df27d526ce6ba0f379bd0dba29bbd6764843d988b629059a7ea7e7f.css" />
+  <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/plug-ins/1.11.3/features/searchHighlight/dataTables.searchHighlight.css" />
+
+  <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+  <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
+  <script type="text/javascript" language="javascript" src="//cdn.datatables.net/plug-ins/1.11.3/features/searchHighlight/dataTables.searchHighlight.min.js"></script>
+
+  <script src="//bartaz.github.io/sandbox.js/jquery.highlight.js"></script>
+
+  <title>Exception caught - <%= yield :error_name %></title>
+
+  <style>
+    <%= yield :style %>
+  </style>
+
+</head>
+<body>
+
+<%= yield %>
+
+</body>
+</html>

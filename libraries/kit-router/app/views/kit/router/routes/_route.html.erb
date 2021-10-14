@@ -1,0 +1,37 @@
+<%
+badge_for_verb = {
+  'DELETE' => 'danger',
+  'GET'    => 'info',
+  'PATCH'  => 'warning',
+  'POST'   => 'success',
+  'PUT'    => 'primary',
+}
+%>
+
+<tr class='route_row'>
+  <td class='text-end text-muted'>
+    <%= route_counter %>
+  </td>
+  <td class='text-center'>
+    <span class="badge badge-soft-<%= badge_for_verb[route[:verb]] || 'secondary' %> border-transparent"><%= route[:verb] %></span>
+  </td>
+  <td>
+    <a href="<%= route[:path].gsub('(.:format)', '') %>" target="_blank"><%= route[:path] %></a>
+  </td>
+  <td class='text-center text-uppercase'>
+    <% if route[:type] == :kit %>
+      <span class="badge badge-soft-success border-transparent"><%= route[:type] %></span>
+    <% else %>
+      <span class="badge badge-soft-secondary border-transparent"><%= route[:type] %></span>
+    <% end %>
+  </td>
+  <td class='fw-bold'>
+    <%= route[:kit_route_id] %>
+  </td>
+  <td>
+    <%= route[:kit_endpoint_id] || route[:endpoint] %>
+  </td>
+  <td class='fst-italic'>
+    <% if route[:name].present? %><%= route[:name] %><span class='helper'>_path</span><% end %>
+  </td>
+</tr>

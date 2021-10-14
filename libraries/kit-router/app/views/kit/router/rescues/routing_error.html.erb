@@ -1,0 +1,60 @@
+<% content_for :error_name do %>
+Routing error: <%= h @exception.message %>
+<% end %>
+
+<header class='navbar bg-danger'>
+  <div class='container-fluid text-white'>
+    <h1 class='m-0 h3'>
+      <span class='font-emoji me-2 h4'>⚠️</span>
+      <span class='font-monospace'>Routing error</span>
+    </h1>
+  </div>
+</header>
+
+<div id="container" class='container-fluid my-4'>
+
+  <div id='exception_info'>
+    <h2 class='mt-2 font-monospace h4'><%= h @exception.message %></h2>
+    <% unless @exception.failures.empty? %>
+      <p>
+        <h2>Failure reasons:</h2>
+        <ol>
+        <% @exception.failures.each do |route, reason| %>
+          <li><code><%= route.inspect.delete('\\') %></code> failed because <%= reason.downcase %></li>
+        <% end %>
+        </ol>
+      </p>
+    <% end %>
+  </div>
+
+  <ul class="nav nav-style-underline-danger mt-4 font-monospace" style="font-size: 13px;" role="tablist">
+    <li class="nav-item" >
+      <a class="nav-link py-2" id="nav-tab-trace" data-bs-toggle="tab" data-bs-target="#tab-trace" type="button" role="tab" aria-controls="tab-trace">Trace</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link py-2" id="nav-tab-request_and_response" data-bs-toggle="tab" data-bs-target="#tab-request_and_response" type="button" role="tab" aria-controls="tab-request_and_response">Request & Response</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link py-2 active" id="nav-tab-routes" data-bs-toggle="tab" data-bs-target="#tab-routes" type="button" role="tab" aria-controls="tab-routes" aria-selected="true">Routes</a>
+    </li>
+  </ul>
+
+  <div class="tab-content pt-4">
+    <div class="tab-pane fade" id="tab-trace" role="tabpanel" aria-labelledby="nav-tab-trace">
+      <%= render 'kit/router/rescues/trace', traces: @traces, trace_to_show: @trace_to_show %>
+    </div>
+
+    <div class="tab-pane fade" id="tab-request_and_response" role="tabpanel" aria-labelledby="nav-tab-request_and_response">
+      <%= render template: 'kit/router/rescues/_request_and_response' %>
+    </div>
+
+    <div class="tab-pane fade show active" id="tab-routes" role="tabpanel" aria-labelledby="nav-tab-routes">
+      <% if @routes_inspector %>
+        <p class='position-absolute small text-muted fst-italic'>Routes match in priority from top to bottom.</p>
+
+        <%= @routes_inspector.format(ActionDispatch::Routing::HtmlTableFormatter.new(self)) %>
+      <% end %>
+    </div>
+  </div>
+
+</div>

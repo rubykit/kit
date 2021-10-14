@@ -1,0 +1,43 @@
+<% unless @exception.blamed_files.blank? %>
+  <pre id="blame_trace"><code><%= @exception.describe_blame %></code></pre>
+<% end %>
+
+<div class="row col-hr">
+  <div class='col-lg-6'>
+    <h2 class="h4 mt-0 font-primary" style="margin-top: 30px">Request</h2>
+
+    <hr>
+
+    <% if params_valid? %>
+      <p><b>Parameters</b></p> <pre><%= debug_params(@request.filtered_parameters) %></pre>
+    <% end %>
+
+    <hr>
+
+    <div class="details">
+      <p><b>Session</b></p>
+
+      <div id="session_dump">
+        <pre style='font-size: 12px;'><%= debug_hash @request.session %></pre>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="details">
+      <p><b>Env</b></p>
+
+      <div id="env_dump">
+        <pre style='font-size: 12px;'><%= debug_hash @request.env.slice(*@request.class::ENV_METHODS) %></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class='col-lg-6'>
+    <h2 class="h4 mt-0" style="margin-top: 30px">Response</h2>
+
+    <hr>
+
+    <p><b>Headers</b>:</p> <pre><%= debug_headers(defined?(@response) ? @response.headers : {}) %></pre>
+  </div>
+</div>

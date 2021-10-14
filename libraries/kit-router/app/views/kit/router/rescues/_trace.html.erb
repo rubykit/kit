@@ -1,0 +1,76 @@
+<%
+error_index = local_assigns[:error_index] || 0
+
+traces = traces.reject { |_name, trace| trace.size == 0 }
+if traces['Framework Trace'] && traces['Full Trace'] && traces['Framework Trace'].size == traces['Full Trace'].size
+  traces = traces.except('Framework Trace')
+end
+%>
+
+<p>
+  Rails.root <code class='text-secondary'><%= defined?(Rails) && Rails.respond_to?(:root) ? Rails.root : "unset" %></code>
+</p>
+
+<div id="traces-<%= error_index %>">
+
+  <ul class="nav nav-style-underline-danger mt-4 font-monospace" style="font-size: 13px;" role="tablist">
+    <% first = true %>
+    <% traces.each do |name, trace| %>
+      <% id = "#{ name.gsub(/\s/, '-') }-#{ error_index }" %>
+      <a href="#"></a>
+      <li class="nav-item" >
+        <a class="nav-link py-2 <%= first ? 'active' : '' %>" id="nav-tab-trace-<%= id %>" data-bs-toggle="tab" data-bs-target="#tab-trace-<%= id %>" type="button" role="tab" aria-controls="tab-trace-<%= id %>"><%= name %></a>
+      </li>
+      <% first = false %>
+    <% end %>
+  </ul>
+
+  <div class="tab-content pt-4">
+    <% first = true %>
+    <% traces.each do |name, trace| %>
+      <% id = "#{ name.gsub(/\s/, '-') }-#{ error_index }" %>
+      <div class="tab-pane fade <%= first ? 'active show' : '' %>" id="tab-trace-<%= id %>" role="tabpanel" aria-labelledby="nav-tab-trace-<%= id %>">
+        <table id='trace_table_<%= id %>' class='table table-striped table-hover font-monospace route_table' style='font-size: 12px; width: auto;'>
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Gem</th>
+              <th>Version</th>
+              <th>Path</th>
+              <th>Method</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% trace.each do |frame| %>
+              <% trace               = frame[:trace] %>
+              <% exception_object_id =  frame[:exception_object_id] %>
+
+              <% gem_name = trace.split(' (')[0] %>
+              <% file     = trace.split(') ')[1].split(':in ')[0] %>
+              <% path     = file.split(':')[0] %>
+              <% line     = file.split(':')[1] %>
+              <% gem_path = Bundler.load.specs.find {|s| s.name == gem_name }&.full_gem_path %>
+
+              <tr>
+                <td><%= frame[:id] %></td>
+                <td><%= gem_name %></td>
+                <td><%= trace.split(' (')[1].split(') ')[0] %></td>
+                <td>
+                  <% if gem_path %>
+                    <a href="subl://open?url=file://<%= gem_path %>/<%= path %>&line=<%= line %>">
+                    <%= path %>:<%= line %>
+                  <% else %>
+                    <%= path %>:<%= line %>
+                  <% end %>
+                </td>
+                <td><%= trace.split(':in ')[1].gsub('`', '').gsub("'", '') %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      <% first = false %>
+    <% end %>
+  </div>
+
+</div>
