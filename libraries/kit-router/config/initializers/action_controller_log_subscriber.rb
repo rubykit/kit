@@ -22,7 +22,7 @@ if defined?(Rails)
       format = '*/*' if !format
 
       kit_target = payload[:request].path_parameters[:kit_router_target] rescue {} # rubocop:disable Style/RescueModifier
-      target     = kit_target[:route_id] || "#{ payload[:controller] }##{ payload[:action] } "
+      target     = kit_target&.dig(:route_id) || "#{ payload[:controller] }##{ payload[:action] } "
 
       info "Processing by #{ target } as #{ format }"
       info "  Parameters: #{ params.inspect }" unless params.empty?

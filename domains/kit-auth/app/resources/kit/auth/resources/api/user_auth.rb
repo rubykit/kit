@@ -33,6 +33,10 @@ class Kit::Auth::Resources::Api::UserAuth < Kit::Auth::Resources::Api::Resource
   end
 =end
 
+  def self.relationships
+    {}
+  end
+
   def self.writeable_attributes
     {}
   end

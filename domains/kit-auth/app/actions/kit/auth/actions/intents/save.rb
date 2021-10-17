@@ -2,6 +2,9 @@ module Kit::Auth::Actions::Intents::Save
 
   # Persist an intent from a query_parameter for `:intent_step` in a cookie.
   def self.call(router_conn:, intent_step:, intent_type:, intent_store: nil)
+    intent_type = intent_type ? intent_type.to_sym : nil
+    intent_step = intent_step ? intent_step.to_sym : nil
+
     status, ctx = Kit::Organizer.call(
       list: [
         Kit::Auth::Services::Intent.method(:valid_intent_step?),
@@ -10,13 +13,13 @@ module Kit::Auth::Actions::Intents::Save
       ],
       ctx:  {
         router_conn:  router_conn,
-        intent_step:  intent_step ? intent_step.to_sym : nil,
-        intent_type:  intent_type ? intent_type.to_sym : nil,
+        intent_step:  intent_step,
+        intent_type:  intent_type,
         intent_store: intent_store,
       },
     )
 
-    if status == :error
+    if status == :error && intent_type
       Kit::Error.report_organizer_errors(errors: ctx[:errors])
     end
 

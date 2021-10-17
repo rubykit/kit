@@ -22,6 +22,7 @@ module Kit::Auth::Controllers::Web::Concerns::DefaultRoute
         Kit::Router::Adapters::HttpRails::Conn::Import.method(:import_request),
         [:alias, :web_resolve_current_user],
         ->(router_conn:) { router_conn.endpoint[:callable].call(router_conn: router_conn) },
+        Kit::Router::Adapters::HttpRails::Conn::Export.method(:export_response),
       ],
       error: [
         Kit::Router::Adapters::HttpRails::Conn::Export.method(:export_response),
