@@ -29,6 +29,11 @@ if defined?(Rails)
       }
     end
 
+    # Do not display Engine name as a row.
+    def section_title(title)
+      #@buffer << %(<tr><th colspan="4">#{title}</th></tr>)
+    end
+
   end
 
   ActionDispatch::DebugExceptions.class_eval do
@@ -61,7 +66,7 @@ if defined?(Rails)
   ActionDispatch::Routing::RoutesInspector.class_eval do
 
     # Add extra route info.
-    def collect_routes(routes)
+    def collect_routes(routes, engine_name = nil)
       routes
         .collect do |route|
           ActionDispatch::Routing::RouteWrapper.new(route)
@@ -79,8 +84,21 @@ if defined?(Rails)
             type:            route.requirements[:kit_router_target] ? :kit : :rails,
             kit_endpoint_id: route.requirements.dig(:kit_router_target, :endpoint_id),
             kit_route_id:    route.requirements.dig(:kit_router_target, :route_id),
+            engine_name:     engine_name,
           }
         end
+    end
+  end
+
+  # Forward engine name to collect_routes
+  def collect_engine_routes(route)
+    name = route.endpoint
+    return unless route.engine?
+    return if @engines[name]
+
+    routes = route.rack_app.routes
+    if routes.is_a?(ActionDispatch::Routing::RouteSet)
+      @engines[name] = collect_routes(routes.routes, name)
     end
   end
 

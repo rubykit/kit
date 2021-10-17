@@ -31,6 +31,9 @@ badge_for_verb = {
   <td>
     <%= route[:kit_endpoint_id] || route[:endpoint] %>
   </td>
+  <td>
+    <%= route[:engine_name] %>
+  </td>
   <td class='fst-italic'>
     <% if route[:name].present? %><%= route[:name] %><span class='helper'>_path</span><% end %>
   </td>
