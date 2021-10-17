@@ -1,4 +1,4 @@
-module Kit::Auth::Controllers::Api::SessionUser
+module Kit::Auth::Endpoints::Api::Aliases::RequestUser
 
   METADATA_KEY_CURRENT_USER                    = :api_session_user
   METADATA_KEY_CURRENT_USER_OAUTH_ACCESS_TOKEN = :api_session_user_access_token

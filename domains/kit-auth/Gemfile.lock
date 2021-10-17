@@ -28,6 +28,14 @@ PATH
       activeadmin_addons (~> 1.7.1)
 
 PATH
+  remote: ../../libraries/kit-api
+  specs:
+    kit-api (0.1.0)
+      oj (~> 3.3, >= 3.3.5)
+      rails (~> 6.0)
+      urlcrypt (~> 0.1.1)
+
+PATH
   remote: ../../libraries/kit-app_container
   specs:
     kit-app_container (0.1.0)
@@ -573,6 +581,7 @@ GEM
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.0.0)
+    urlcrypt (0.1.2)
     view_component (2.40.0)
       activesupport (>= 5.0.0, < 8.0)
       method_source (~> 1.0)
@@ -606,6 +615,7 @@ DEPENDENCIES
   i18n-interpolate_nested
   jsonb_accessor
   kit-active_admin!
+  kit-api!
   kit-app_container!
   kit-auth!
   kit-contract!

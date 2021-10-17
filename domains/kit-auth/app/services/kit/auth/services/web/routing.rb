@@ -1,4 +1,4 @@
-module Kit::Auth::Services::Routing
+module Kit::Auth::Services::Web::Routing
 
   def self.mount_routes_http_web(context:, rails_endpoint_wrapper:)
     list_web = [

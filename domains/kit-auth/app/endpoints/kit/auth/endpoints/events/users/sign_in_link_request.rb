@@ -7,21 +7,18 @@ module Kit::Auth::Endpoints::Events::Users::SignInLinkRequest
   contract Ct::Hash[router_conn: Ct::RouterConn[params: Ct::Hash[email: Ct::NotNil]]]
   def self.endpoint(router_conn:)
     Kit::Organizer.call(
-      list: [
-        [:if, Kit::Auth::Services::UserEmail.method(:find_by_email), {
-          ok:    [
-            Kit::Auth::Actions::Applications::LoadWeb,
-            ->(user_email:) { [:ok, user: user_email.user] },
-            Kit::Auth::Actions::AccessTokens::CreateForMagicLink,
-            Kit::Auth::Endpoints::Events::Users::SignInLinkRequest.method(:notify_user),
-            Kit::Auth::Endpoints::Events::Users::SignInLinkRequest.method(:persist_event_success),
-          ],
-          error: [
-            Kit::Auth::Endpoints::Events::Users::SignInLinkRequest.method(:persist_event_failure),
-          ],
-        },],
+      ok:    [
+        Kit::Auth::Services::UserEmail.method(:find_by_email),
+        Kit::Auth::Actions::Applications::LoadWeb,
+        ->(user_email:) { [:ok, user: user_email.user] },
+        Kit::Auth::Actions::AccessTokens::CreateForMagicLink,
+        Kit::Auth::Endpoints::Events::Users::SignInLinkRequest.method(:notify_user),
+        Kit::Auth::Endpoints::Events::Users::SignInLinkRequest.method(:persist_event_success),
       ],
-      ctx:  {
+      error: [
+        Kit::Auth::Endpoints::Events::Users::SignInLinkRequest.method(:persist_event_failure),
+      ],
+      ctx:   {
         email:            router_conn.request[:params][:email],
         request_metadata: router_conn.request[:params][:request_metadata],
       },

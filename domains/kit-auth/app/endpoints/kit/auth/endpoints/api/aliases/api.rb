@@ -1,4 +1,4 @@
-module Kit::Auth::Controllers::Api
+module Kit::Auth::Endpoints::Api::Aliases::Api
 
   def self.load_resource!(router_conn:, model:, param: :resource_id, column: :id)
     param    = param.to_sym

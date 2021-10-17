@@ -1,5 +1,5 @@
 # Common aliases for RequestUser
-module Kit::Auth::Controllers::Web::AccessTokens
+module Kit::Auth::Endpoints::Web::Aliases::AccessTokens
 
   def self.redirect_if_missing_scope!(router_conn:, access_token:, scope:, i18n_params: nil)
     model_scopes = Doorkeeper::OAuth::Scopes.from_string(access_token.scopes)

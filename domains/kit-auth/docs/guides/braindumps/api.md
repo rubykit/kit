@@ -35,36 +35,71 @@ Ideally, we want to be able to:
 
 - Avoid attributes that have different authorization strategy: it's easier to do it on the resource directly.
 
+`standard_fields`: `id` `created_at` `updated_at`
 
-### `UserAuth`
-- **Source**: `Users` model
-- **Fields**: `id created_at last_accessed_at two_factors_enabled` (top level model, mostly useful for the relationships)
-- **Read**:   only the current user has acces to this model
-- **Write**:  UNAVAILABLE (or primary email if we want decide not to use UserEmail)
+| **UserAuth** | *Top level model, mostly useful for the relationships.* |
+| --- | --- |
+| FIELDS | `standard_fields` |
+| GET | ✅ restriction: `owner_only` |
+| POST | ❌ *not sure?* |
+| PUT | ✅ *but no fields yet?* |
+| DELETE | ✅ with special scope on token |
 
-### `UserEmail`
-- **Source**: `UsersEmails` model
-- **Fields**: `id user created_at email email_verified primary`
-- **Read**:   only the current user has acces to this model
-- **Write**:  allow to update email + verify the email (thanks to a token with a specific scope)
+| **UserEmail** | *Allow to update email + verify the email (with a token having the correct scopes).* |
+| --- | --- |
+| FIELDS | `standard_fields` `user_id` `email` `verified` `primary` |
+| GET | ✅ restriction: `owner_only` |
+| POST | ✅ `email` |
+| PUT | ✅ `verified` `primary` |
+| DELETE | ✅ *with special scope on token?* |
 
-### `UserSecret`
-- **Source**: `Users` model
-- **Fields**: `id secret secret_confirmation` (+ otp_secret for 2 steps auth)
-- **Read**:   UNAVAILABLE
-- **Write**:  `CREATE UPDATE` to set the account password.
+| **UserSessions** | *Inspect current sessions & disable them.* |
+| --- | --- |
+| FIELDS | `standard_fields` `last_used_at` `location` `device` |
+| GET | ✅ restriction: `owner_only` |
+| POST | ❌ |
+| PUT | ❌ |
+| DELETE | ✅ |
 
-### `UserAccount`
-- **Source**: `Users` + `UsersEmails` models
-- **Fields**: `id email email_verification secret secret_verification`
-- **Read**:   UNAVAILABLE
-- **Write**:  CREATE only (this is a Json:Api hack to abstract the UserAuth + UserEmail + UserSecret complexity to the client, with GraphQL this is not an issue)
+| **UserSecret** | *Update account password.* |
+| --- | --- |
+| FIELDS | `standard_fields` `revoked` `expires_at` |
+| GET | ❌ |
+| POST | ✅ with special scope on token |
+| PUT | ❌ |
+| DELETE | ❌ |
 
-### `UserSessions`
-- **Source**: `OauthTokens` model with the generic access scope.
-- **Fields**: `id created_at last_used_at location device`
-- **Read**:   only the current user has acces to this model
-- **Write**:  `DELETE` to remove the token
+| **UserAccount** | *Hack to create an account in an easier way. Sideload UserAuth, UserEmail, UserAuthToken* |
+| --- | --- |
+| FIELDS | `standard_fields` `revoked` `expires_at` |
+| GET | ❌ |
+| POST | ✅ `email` `secret` |
+| PUT | ❌ |
+| DELETE | ❌ |
+
+| **UserAuthToken** | *Sign in.* |
+| --- | --- |
+| FIELDS | `standard_fields` `revoked` `expires_at` |
+| GET | ❌ |
+| POST | ✅ `email` `secret` |
+| PUT | ❌ |
+| DELETE | ❌ |
+
+### `UserAuthToken`
+- **Source**: `OauthTokens` model with specific scopes: [:all]
+- **Fields**: `id scope token`
+- **Read**:   ❌ (the actual token is hashed afer this)
+- **Write**:  CREATE
+
+### `UserAuthTokenAsync`
+- **Source**: `OauthTokens` model with specific scopes: [:reset_password, :magic_sign_in_link]
+- **Fields**: `id scope`
+- **Read**:   ❌
+- **Write**:  CREATE (to request a token by email)
+
+--------------------
+
+Not really part of this
 
 ### `UserProfile`
 - **Source**: `Users` model
@@ -72,17 +107,6 @@ Ideally, we want to be able to:
 - **Read**:   Public
 - **Write**:  The current user can update the properties
 
-### `UserAuthToken`
-- **Source**: `OauthTokens` model with specific scopes: [:all]
-- **Fields**: `id scope token`
-- **Read**:   Only as a response to CREATE! (because the actual token is hashed afer this)
-- **Write**:  CREATE
-
-### `UserAuthTokenAsync`
-- **Source**: `OauthTokens` model with specific scopes: [:reset_password, :magic_sign_in_link]
-- **Fields**: `id scope`
-- **Read**:   UNAVAILABLE
-- **Write**:  CREATE (to request a token by email)
 
 ## Actions
 

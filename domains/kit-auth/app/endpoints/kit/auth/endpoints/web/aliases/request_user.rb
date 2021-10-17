@@ -1,8 +1,8 @@
-# Common aliases for SessionUser
-module Kit::Auth::Controllers::Web::SessionUser
+# Common aliases for RequestUser
+module Kit::Auth::Endpoints::Web::Aliases::RequestUser
 
-  def self.require_session_user!(router_conn:, i18n_params: nil)
-    return [:ok, session_user: router_conn.metadata[:session_user]] if router_conn.metadata[:session_user]
+  def self.require_request_user!(router_conn:, i18n_params: nil)
+    return [:ok, request_user: router_conn.metadata[:request_user]] if router_conn.metadata[:request_user]
 
     i18n_params ||= {}
 
@@ -15,10 +15,10 @@ module Kit::Auth::Controllers::Web::SessionUser
     )
   end
 
-  Kit::Organizer::Services::Callable::Alias.register(id: :web_require_session_user!, target: self.method(:require_session_user!))
+  Kit::Organizer::Services::Callable::Alias.register(id: :web_require_request_user!, target: self.method(:require_request_user!))
 
-  def self.redirect_if_session_user!(router_conn:, i18n_params: nil)
-    return [:ok] if !router_conn.metadata[:session_user]
+  def self.redirect_if_request_user!(router_conn:, i18n_params: nil)
+    return [:ok] if !router_conn.metadata[:request_user]
 
     i18n_params ||= {}
 
@@ -31,10 +31,10 @@ module Kit::Auth::Controllers::Web::SessionUser
     )
   end
 
-  Kit::Organizer::Services::Callable::Alias.register(id: :web_redirect_if_session_user!, target: self.method(:redirect_if_session_user!))
+  Kit::Organizer::Services::Callable::Alias.register(id: :web_redirect_if_request_user!, target: self.method(:redirect_if_request_user!))
 
-  def self.redirect_if_session_missing_scope!(router_conn:, scope:, i18n_params: nil)
-    model = router_conn.metadata[:session_user_access_token]
+  def self.redirect_if_request_missing_scope!(router_conn:, scope:, i18n_params: nil)
+    model = router_conn.metadata[:request_user_access_token]
     if model
       model_scopes = Doorkeeper::OAuth::Scopes.from_string(model.scopes)
       return [:ok] if model_scopes.include?(scope.to_s)
@@ -51,6 +51,6 @@ module Kit::Auth::Controllers::Web::SessionUser
     )
   end
 
-  Kit::Organizer::Services::Callable::Alias.register(id: :web_redirect_if_session_missing_scope!, target: self.method(:redirect_if_session_missing_scope!))
+  Kit::Organizer::Services::Callable::Alias.register(id: :web_redirect_if_request_missing_scope!, target: self.method(:redirect_if_request_missing_scope!))
 
 end

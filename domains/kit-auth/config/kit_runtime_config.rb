@@ -30,3 +30,12 @@ KIT_APP_PATHS['EXECUTE'] << ->(config:) do
     ]
   end
 end
+
+KIT_APP_PATHS['RAILS_DEPENDENCIES'] = %w[
+  active_record/railtie
+  action_controller/railtie
+  action_view/railtie
+  action_mailer/railtie
+  active_job/railtie
+  sprockets/railtie
+]

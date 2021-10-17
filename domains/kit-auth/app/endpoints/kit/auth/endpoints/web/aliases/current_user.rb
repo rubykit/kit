@@ -1,4 +1,4 @@
-module Kit::Auth::Controllers::Web::CurrentUser
+module Kit::Auth::Endpoints::Web::Aliases::CurrentUser
 
   def self.resolve_current_user(router_conn:)
     if !router_conn.metadata[:current_user_resolved]
