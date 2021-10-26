@@ -53,7 +53,7 @@ By default, the documentation is generated in `docs/dist`. There is no need to g
 You may want to set `:project`, `:source_url` and `:documentation_url`. If not, you can do it later!
 
 ```ruby
-require 'kit-doc'
+require 'kit/doc'
 
 DOC_CONFIG = Kit::Doc::Services::Config.create_config(
   project:           'YOUR_PROJECT_NAME',

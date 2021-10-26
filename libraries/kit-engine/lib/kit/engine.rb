@@ -9,8 +9,8 @@ module Kit::Engine
   def self.config_engine(namespace:, context:, path:)
     context.isolate_namespace namespace
 
-    context.config.assets.paths     << File.expand_path('../../../app/components', path)
-    context.config.eager_load_paths << File.expand_path('../../../app/controllers',   path)
+    context.config.assets.paths     << File.expand_path('../../../app/components',  path)
+    context.config.eager_load_paths << File.expand_path('../../../app/controllers', path)
 
     engine_public_path = File.expand_path('../../../public', path)
     if File.directory?(engine_public_path)

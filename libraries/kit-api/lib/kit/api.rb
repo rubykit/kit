@@ -4,8 +4,8 @@ end
 module Kit::Api # rubocop:disable Style/Documentation
 end
 
-if ENV['RAILS_ENV'] == 'development' || ENV['RAILS_ENV'] == 'test'
-  require 'kit/api/engine'
+if Rails.env.in?(%w[development test])
+  require_relative 'api/engine'
 else
-  require 'kit/api/railtie'
+  require_relative 'api/railtie'
 end

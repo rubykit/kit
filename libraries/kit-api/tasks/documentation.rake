@@ -1,4 +1,4 @@
-require 'kit-doc'
+require 'kit/doc'
 
 DOC_CONFIG = Kit::Doc::Services::Config.create_config(
   gemspec_name:       'kit-api',

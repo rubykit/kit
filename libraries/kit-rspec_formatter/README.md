@@ -13,7 +13,7 @@
 1) Add `kit-rspec_formatter` to your Gemfile
 2) Add the following to your `spec_helper.rb`:
 ```
-require 'kit-rspec_formatter'
+require 'kit/rspec_formatter'
 
 RSpec.configure do |config|
   config.formatter = Kit::RspecFormatter::Formatter

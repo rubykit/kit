@@ -1,1 +1,0 @@
-require 'kit/active_admin'

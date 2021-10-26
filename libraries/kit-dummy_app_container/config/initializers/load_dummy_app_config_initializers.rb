@@ -4,8 +4,8 @@
 
 path = File.expand_path('config/initializers', KIT_APP_PATHS['GEM_SPEC_ROOT'])
 
-Dir["#{ path }/**/*.rb"].each do |initializer|
-  ActiveSupport::Notifications.instrument('load_config_initializer.railties', initializer: initializer) do
-    load(initializer)
+Dir["#{ path }/**/*.rb"].each do |file|
+  ActiveSupport::Notifications.instrument('load_config_initializer.railties', initializer: file) do
+    load(file)
   end
 end

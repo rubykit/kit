@@ -1,5 +1,5 @@
 require 'yard'
-require 'kit-doc'
+require 'kit/doc'
 
 DOC_CONFIG_DUMMY_APP = Kit::Doc::Services::Config.create_config(
   project:                 'kat',
