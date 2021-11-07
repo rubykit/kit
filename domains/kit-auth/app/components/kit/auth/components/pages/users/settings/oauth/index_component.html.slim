@@ -1,0 +1,6 @@
+h2 Social services
+
+- list.each do |el|
+  = render Kit::Auth::Components::Users::OauthIdentityComponent.new(\
+    model: el,
+  )

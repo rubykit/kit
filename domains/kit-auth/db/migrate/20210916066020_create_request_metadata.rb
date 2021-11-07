@@ -9,7 +9,7 @@ class CreateRequestMetadata < ActiveRecord::Migration[5.2] # rubocop:disable Sty
 
       t.inet       :ip,                      null: false
       t.text       :user_agent,              null: false
-      t.jsonb      :utm
+      t.jsonb      :utm,                     null: false, default: {}
     end
   end
 

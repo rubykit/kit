@@ -22,12 +22,25 @@ Rails.application.routes.draw do
 
   # Dummy app routes -----------------------------------------------------------
 
-  list_local = [
-    { route_id: 'web|home|signed_out', path: '/',     verb: :get },
-    { route_id: 'web|home|signed_in',  path: '/home', verb: :get },
+  list_spec_app_rails = [
+    { route_id: 'web|home|signed_out', path: '/',             verb: :get },
+    { route_id: 'web|home|signed_in',  path: '/home',         verb: :get },
   ]
 
-  Kit::Router::Adapters::HttpRails::Routes.mount_rails_targets(rails_router_context: self, list: list_local)
+  Kit::Router::Adapters::HttpRails::Routes.mount_rails_targets(rails_router_context: self, list: list_spec_app_rails)
+
+  list_spec_app_kit = [
+    { route_id: 'web|settings',        path: '/web/settings', verb: :get },
+  ].map do |entry|
+    entry.merge({
+      rails_endpoint_wrapper: [args_web[:rails_endpoint_wrapper], :route],
+      namespace:              [:spec_app, :kit_auth, :web].concat(entry[:namespace] || []),
+    })
+  end
+
+  Kit::Router::Adapters::HttpRails::Routes.mount_http_targets(rails_router_context: self, list: list_spec_app_kit)
+
+  # Kit::Auth default routes ---------------------------------------------------
 
   Kit::Auth::DummyApp::Services::Routing.mount_routes_http_web(**args_web)
   Kit::Auth::DummyApp::Services::Routing.mount_routes_http_api_jsonapi(**args_api)

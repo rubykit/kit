@@ -1,24 +1,27 @@
-module Kit::Auth::Endpoints::Web::Users::Settings::Devices::Index
+module Kit::Auth::Endpoints::Web::Users::Settings::Sessions::Index
 
   def self.endpoint(router_conn:)
     Kit::Organizer.call(
       list: [
         [:alias, :web_require_session_user!],
         self.method(:list),
+        self.method(:render),
       ],
       ctx:  { router_conn: router_conn },
     )
   end
 
   Kit::Router::Services::Router.register(
-    uid:     'kit_auth|web|authorization_tokens|index',
-    aliases: ['web|authorization_tokens|index'],
+    uid:     'kit_auth|web|settings|sessions|index',
+    aliases: ['web|settings|sessions|index'],
     target:  self.method(:endpoint),
   )
 
   def self.list(router_conn:)
-    list = Kit::Auth::Models::Read::OauthAccessToken
-      .where('revoked_at IS NULL')
+    list = Kit::Auth::Models::Read::UserSecret
+      .where(category: 'access_token')
+      .where(scopes: 'user_default')
+      .where(revoked_at: nil)
       .where("(created_at + expires_in * INTERVAL '1 second') > ?", DateTime.now)
       .where(user_id: router_conn.metadata[:session_user].id)
       .preload(:last_request_metadata)
@@ -28,6 +31,7 @@ module Kit::Auth::Endpoints::Web::Users::Settings::Devices::Index
       request_metadata = model.last_request_metadata
       country          = nil
 
+=begin
       if request_metadata
         country = Kit::Auth::Models::Read::IpGeolocation
           .where('ip_start <= ?', request_metadata.ip.to_s)
@@ -35,18 +39,23 @@ module Kit::Auth::Endpoints::Web::Users::Settings::Devices::Index
           .first
           &.country
       end
+=end
 
       {
-        access_token: model.attributes&.symbolize_keys,
-        request_metadata:   request_metadata&.attributes&.symbolize_keys,
-        country:            country&.attributes&.symbolize_keys,
+        access_token:     model.attributes&.symbolize_keys,
+        request_metadata: request_metadata&.attributes&.symbolize_keys,
+        country:          country&.attributes&.symbolize_keys,
       }
     end
 
+    [:ok, list: list]
+  end
+
+  def self.render(router_conn:, list:)
     Kit::Domain::Endpoints::Http.render(
       router_conn: router_conn,
-      component:      Kit::Auth::Components::Pages::Users::Settings::Devices::IndexComponent,
-      params:         {
+      component:   Kit::Auth::Components::Pages::Users::Settings::Sessions::IndexComponent,
+      params:      {
         list: list,
       },
     )

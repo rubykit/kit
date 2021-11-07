@@ -30,6 +30,11 @@ gem 'slim-rails' # DEV MODE ? doesn't get loaded otherwise
 
 gem 'jsonb_accessor'
 
+gem 'omniauth'
+gem 'omniauth-facebook'
+
+gem 'lockbox'
+
 # TMP: because of the require
 gem 'view_component', require: 'view_component/engine'
 

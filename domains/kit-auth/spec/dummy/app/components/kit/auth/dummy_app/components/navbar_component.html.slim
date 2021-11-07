@@ -24,7 +24,7 @@ header#header.header
         ul.navbar-nav.d-flex
           - if session_user
             li.nav-item
-              a.nav-link href="#"
+              = router_link_to(id: 'web|settings', html: { class: 'nav-link' }, request: request)
                 = session_user.email
             li.nav-item
               = router_link_to(id: 'web|users|sign_out', html: { class: 'nav-link' }, request: request)

@@ -13,6 +13,8 @@ end
 Capybara.default_driver    = :rack_test
 Capybara.javascript_driver = :apparition
 
+Capybara.server_port = ENV['PORT']
+
 RSpec.configure do |config|
 
   config.use_transactional_fixtures = false
