@@ -47,7 +47,7 @@ module Kit::Domain::Endpoints::Http
     )
   end
 
-  def self.redirect_with_errors(router_conn:, redirect_url: nil, errors: nil)
+  def self.redirect_with_errors(router_conn:, redirect_url:, errors: nil)
     Kit::Domain::Endpoints::Http.redirect_to(
       router_conn: router_conn,
       location:    redirect_url,
