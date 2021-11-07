@@ -12,6 +12,12 @@ module Kit::Organizer::Services::Context
     local_ctx ||= {}
     ctx_errors  = ctx[:errors]
 
+    if local_ctx[:errors]
+      if local_ctx[:errors].is_a?(::ActiveModel::Errors)
+        local_ctx[:errors] = Kit::Error::Format::ActiveModel.from(local_ctx[:errors])
+      end
+    end
+
     # NOTE: should we just do a deep merge?
     ctx = ctx.merge(local_ctx)
 
