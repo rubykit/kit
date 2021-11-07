@@ -9,6 +9,7 @@ module Kit::Organizer::Services::Callable
   def self.store
     @store ||= {
       alias:     Kit::Organizer::Services::Callable::Alias.method(:resolve),
+      branch:    Kit::Organizer::Services::Callable::Branch.method(:resolve),
       ctx_call:  Kit::Organizer::Services::Callable::CtxCall.method(:resolve),
       local_ctx: Kit::Organizer::Services::Callable::LocalCtx.method(:resolve),
       method:    Kit::Organizer::Services::Callable::Method.method(:resolve),
