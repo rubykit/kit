@@ -77,8 +77,7 @@ module Kit::Router::Services::Router
     [:ok, router_store: router_store]
   end
 
-  # Add aliases.
-  # This supports nested logic.
+  # Add aliases, with support for nested logic.
   def self.handle_aliases(target_id:, aliases:, router_store: nil)
     case aliases
     when Array
@@ -111,6 +110,7 @@ module Kit::Router::Services::Router
 
   EMPTY_TARGET = -> {} # rubocop:disable Lint/EmptyBlock
 
+  # Allow to register aliases for a route not handled by Kit::Router.
   def self.register_without_target(uid:, aliases:, types:)
     register(
       uid:     uid,
@@ -120,6 +120,7 @@ module Kit::Router::Services::Router
     )
   end
 
+  # Ensure a route can be mounted on a given protocol.
   # [:any, :any] against [:http, :rails]
   contract Ct::Hash[endpoint_types: Ct::MountTypes, mounter_type: Ct::MountType]
   def self.can_mount?(endpoint_types:, mounter_type:)
@@ -140,6 +141,7 @@ module Kit::Router::Services::Router
     false
   end
 
+  # Default `router_store` if none is specified.
   def self.router_store
     Kit::Router::Services::Store.router_store
   end
