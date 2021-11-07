@@ -359,6 +359,16 @@ class Kit::ActiveAdmin::Table
     end
   end
 
+  def attr_type_bool(type, name, functor)
+    send(type, name) do |el|
+      ctx.color_tag(!!functor.call(el) ? true : false)
+    end
+  end
+
+  def attr_type_boolean(type, name, functor)
+    attr_type_bool(type, name, functor)
+  end
+
   def attr_type_percentage_bar(type, name, functor)
     send(type, name) do |el|
       ctx.div(:class => 'progress') do
