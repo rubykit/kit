@@ -1,6 +1,6 @@
 KIT_APP_PATHS ||= {}
 
-KIT_APP_PATHS['GEM_RAILTIE']     = 'kit_api'
+KIT_APP_PATHS['GEM_RAILTIE']     = 'kit/api'
 
 KIT_APP_PATHS['GEM_ROOT']        = File.expand_path('..', __dir__)
 KIT_APP_PATHS['GEM_APP']         = File.expand_path('../app', __dir__)

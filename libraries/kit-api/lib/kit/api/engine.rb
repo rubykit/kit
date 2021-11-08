@@ -3,8 +3,6 @@
 # Handles file loading && initializers.
 class Kit::Api::Engine < ::Rails::Engine
 
-  dir = __dir__
-
   initializer 'kit-api.jsonapi_mime_types' do
     media_type = 'application/vnd.api+json'.freeze
 

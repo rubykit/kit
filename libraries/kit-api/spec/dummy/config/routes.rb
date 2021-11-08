@@ -1,5 +1,3 @@
-require 'kit_api'
-
 Rails.application.routes.draw do
 
   endpoints = ->(resource_singular:, resource_plural:) do
