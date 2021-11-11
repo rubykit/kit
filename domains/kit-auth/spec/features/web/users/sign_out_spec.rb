@@ -5,6 +5,9 @@ describe 'web|users|sign_out', type: :feature do
   let(:password) { 'xxxxxx' }
   let(:user)     { create(:user, password: password) }
 
+  let(:post_action_route_id)  { 'web|users|sign_out|after' }
+  let(:post_action_route_url) { route_id_to_path(id: post_action_route_id) }
+
   before do
     web_sign_in(email: user.email, password: password)
   end
@@ -18,7 +21,8 @@ describe 'web|users|sign_out', type: :feature do
     click_link I18n.t('kit.auth.pages.header.sign_out.action')
 
     # Redirect to the correct post action route route
-    assert_current_path route_id_to_path(id: 'web|users|sign_out|after')
+    assert_current_path post_action_route_url
+    expect(page).to have_content post_action_route_id
 
     # Display the expected notification
     flash_text = I18n.t('kit.auth.notifications.sign_out.success', email: user.email)

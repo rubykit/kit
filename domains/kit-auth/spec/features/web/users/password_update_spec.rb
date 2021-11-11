@@ -11,6 +11,9 @@ describe 'web|users|password_reset|edit', type: :feature do
   let(:access_token)                  { create_access_token[1][:access_token] }
   let(:access_token_plaintext_secret) { create_access_token[1][:access_token_plaintext_secret] }
 
+  let(:post_action_route_id)  { 'web|users|password_reset|after' }
+  let(:post_action_route_url) { route_id_to_path(id: post_action_route_id) }
+
   before do
     user
     create_access_token
@@ -36,7 +39,8 @@ describe 'web|users|password_reset|edit', type: :feature do
     click_button I18n.t('kit.auth.pages.users.password_reset.submit')
 
     # Redirect to the correct post action route route
-    assert_current_path route_id_to_path(id: 'web|users|password_reset|after')
+    assert_current_path post_action_route_url
+    expect(page).to have_content post_action_route_id
 
     # Display the expected notification
     flash_text = I18n.t('kit.auth.notifications.password_reset.success', email: user.email)

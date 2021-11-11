@@ -5,11 +5,17 @@ module Kit::Router::Adapters::HttpRails::Routes
 
   HTTP_VERBS = [:connect, :delete, :get, :options, :patch, :post, :put, :trace]
 
-  def self.mount_http_targets(rails_router_context:, list:, request_config: nil, namespace: nil)
+  def self.mount_http_targets(rails_router_context:, list:, rails_endpoint_wrapper: nil, request_config: nil, namespace: nil)
     list.each do |attrs|
-      # NOTE: this seems like a bad API
-      attrs[:namespace]      = namespace      if !attrs[:namespace]
-      attrs[:request_config] = request_config if !attrs[:request_config]
+      attrs = attrs.dup
+
+      {
+        rails_endpoint_wrapper: rails_endpoint_wrapper,
+        namespace:              namespace,
+        request_config:         request_config,
+      }.each do |attr_name, attr_value|
+        attrs[attr_name] = attr_value if !attrs[attr_name]
+      end
 
       mount_http_target(rails_router_context: rails_router_context, **attrs)
     end

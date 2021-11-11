@@ -27,7 +27,7 @@ module Kit::Auth::Services::Web::Routing
 
     list.each do |entry|
       entry.merge!({
-        rails_endpoint_wrapper: [rails_endpoint_wrapper, :route],
+        rails_endpoint_wrapper: rails_endpoint_wrapper,
         namespace:              [:kit_auth, :web].concat(entry[:namespace] || []),
       })
     end
@@ -50,7 +50,7 @@ module Kit::Auth::Services::Web::Routing
     list.each do |entry|
       entry = entry.merge({
         rails_router_context:   context,
-        rails_endpoint_wrapper: [rails_endpoint_wrapper, :route],
+        rails_endpoint_wrapper: rails_endpoint_wrapper,
         namespace:              [:kit_auth, :web].concat(entry[:namespace] || []),
       })
 

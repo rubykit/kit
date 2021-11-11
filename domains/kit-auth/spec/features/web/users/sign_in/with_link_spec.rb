@@ -8,6 +8,9 @@ describe 'web|authorization_tokens|email|create', type: :feature do
   let(:access_token)                  { create_access_token[1][:access_token] }
   let(:access_token_plaintext_secret) { create_access_token[1][:access_token_plaintext_secret] }
 
+  let(:post_action_route_id)  { 'web|users|sign_in|after' }
+  let(:post_action_route_url) { route_id_to_path(id: post_action_route_id) }
+
   before do
     user
     create_access_token
@@ -22,7 +25,8 @@ describe 'web|authorization_tokens|email|create', type: :feature do
     visit route_id_to_path(id: subject, params: { access_token: access_token_plaintext_secret })
 
     # Redirect to the correct post action route route
-    assert_current_path route_id_to_path(id: 'web|users|sign_in|after')
+    assert_current_path post_action_route_url
+    expect(page).to have_content post_action_route_id
 
     # User has been signed-in
     expect(page).to have_content I18n.t('kit.auth.pages.header.sign_out.action')

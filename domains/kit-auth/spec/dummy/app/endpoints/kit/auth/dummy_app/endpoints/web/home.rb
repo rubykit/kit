@@ -1,4 +1,4 @@
-module Kit::Auth::DummyApp::Endpoints::Web::Settings
+module Kit::Auth::DummyApp::Endpoints::Web::Home
 
   def self.endpoint(router_conn:)
     status, ctx = Kit::Domain::Endpoints::Http.redirect_to(
@@ -10,9 +10,16 @@ module Kit::Auth::DummyApp::Endpoints::Web::Settings
   end
 
   Kit::Router::Services::Router.register(
-    uid:     'kit-auth|dummy_app|web|settings',
-    aliases: ['web|settings'],
+    uid:     'kit-auth|dummy_app|web|home',
+    aliases: ['web|home'],
     target:  self.method(:endpoint),
   )
+
+  def self.render(router_conn:)
+    Kit::Domain::Endpoints::Http.render(
+      router_conn: router_conn,
+      component:   Kit::Auth::DummyApp::Components::Pages::HomeComponent,
+    )
+  end
 
 end

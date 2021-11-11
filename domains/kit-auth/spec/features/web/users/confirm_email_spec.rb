@@ -11,6 +11,8 @@ describe 'web|users|email|confirm', type: :feature do
   let(:access_token)                  { create_access_token[1][:access_token] }
   let(:access_token_plaintext_secret) { create_access_token[1][:access_token_plaintext_secret] }
 
+  let(:post_action_route_url)         { route_id_to_path(id: post_action_route_id) }
+
   before do
     user
     create_access_token
@@ -28,7 +30,8 @@ describe 'web|users|email|confirm', type: :feature do
       visit route_id_to_path(id: route, params: { access_token: access_token_plaintext_secret })
 
       # Redirect to the correct post action route route
-      assert_current_path post_confirmation_url
+      assert_current_path post_action_route_url
+      expect(page).to have_content post_action_route_id
 
       # Display the expected notification
       flash_text = I18n.t('kit.auth.notifications.email_confirmation.success', email: user.email)
@@ -45,13 +48,13 @@ describe 'web|users|email|confirm', type: :feature do
   end
 
   context 'when the user is signed_out' do
-    let(:post_confirmation_url) { route_id_to_path(id: 'web|users|email_confirmation|after|signed_out') }
+    let(:post_action_route_id)  { 'web|users|email_confirmation|after|signed_out' }
 
     it_behaves_like 'confirms the email'
   end
 
   context 'when the user is signed_in' do
-    let(:post_confirmation_url) { route_id_to_path(id: 'web|users|email_confirmation|after|signed_in') }
+    let(:post_action_route_id)  { 'web|users|email_confirmation|after|signed_in' }
 
     before do
       web_sign_in(email: user.email, password: password)

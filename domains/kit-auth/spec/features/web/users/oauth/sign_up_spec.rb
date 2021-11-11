@@ -10,8 +10,9 @@ describe 'web|users|oauth|sign_up', type: :feature do
   let(:provider)          { :facebook }
   let(:omniauth_strategy) { :facebook_web }
 
-  let(:default_post_action_route) { route_id_to_path(id: 'web|users|sign_up|after') }
-  let(:callback_route)            { route_id_to_path(id: 'web|users|oauth|callback', params: { provider: provider }) }
+  #let(:callback_route_url)    { route_id_to_path(id: 'web|users|oauth|callback', params: { provider: provider }) }
+
+  let(:post_action_route_url) { route_id_to_path(id: post_action_route_id) }
 
   before do
     expect(Kit::Auth::Models::Write::User.where(email: email).count).to eq 0
@@ -54,7 +55,8 @@ describe 'web|users|oauth|sign_up', type: :feature do
       visit start_route
 
       # Redirect to the correct post action route route
-      assert_current_path post_action_route
+      assert_current_path post_action_route_url
+      expect(page).to have_content post_action_route_id
 
       # User has been signed-in
       expect(page).to have_content I18n.t('kit.auth.pages.header.sign_out.action')
@@ -69,7 +71,7 @@ describe 'web|users|oauth|sign_up', type: :feature do
   end
 
   context 'with valid sign-up data' do
-    let(:post_action_route) { default_post_action_route }
+    let(:post_action_route_id) { 'web|users|sign_up|after' }
 
     it_behaves_like 'a successful sign-up'
   end
