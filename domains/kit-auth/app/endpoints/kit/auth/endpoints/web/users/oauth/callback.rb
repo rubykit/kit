@@ -1,16 +1,82 @@
-# TODO: write better doc!
-# TODO: cleanup redirect strategies && add aliases.
+# # OAuth callback endpoint
+#
+# Define the `.endpoint` where external OAuth providers redirect after authorization has been completed.
+#
+# At this point, we have no knowledge on the user initial intent. This could be fixed by using a session mechanism, but it's simpler to figure out what the most logical action is.
+#
+# ---
+#
+# ## When the user is signed-out
+#
+# ![Signed-out flow chart](https://kroki.io/mermaid/svg/eNqNzkFrgzAYBuB7f8UHhWEhwnRanMJGssrwogPbw04lxFjDnEqMawf98YtTu3nzkMOXvO-T7yRpU8B-t1oBECO8iFaJ6gSHlsuEdqqIMl4pob6fNzqgI5ZhgQlp9Bofo3i8s-c9OAtVgCo4NLL-EhmXR_5JRTkSfQEbtlZwmiYvEd6HcDcX-wgxHqaPDm86cAtvflcF03y6vofpVa90m-NEj3Y_2v_ebfx3MyRIT7CStu2O50CZEnUFuShLf-15HmqVrD-4eRaZKvz75oJYXdbSX-d5HkxFwAhbCNuIIE0PRDBj244xroODS7eZ5zrLaGJpE-tD9Ad4guY6l7KWo51tXeayhWtbPUqG_pyseKckLUeUu8x5dJaieGoHqx92zK_E)
+#
+# - Is there an existing `UserOauthIdentity` with the correct `provider_uid` in the database ?
+#    - YES: `.action_1`
+#       - sign the user in
+#       - save the new provider tokens
+#       - redirect to `web|users|oauth|sign_in|after`
+#    - NO:  Is there an existing `User` with the `provider_email` in the database ?
+#       - YES: `.action_2`
+#          - associate the provider identity to the user
+#          - sign the user in, save the new provider tokens
+#          - redirect to `web|users|oauth|sign_in|after_new_identity`
+#       - NO: `.action_3`
+#          - sign up the user
+#          - associate the provider identity
+#          - sign the user in
+#          - save the new provider tokens
+#          - redirect to `web|users|oauth|sign_up|after`
+#
+# ---
+#
+# ## When the user is already signed-in
+#
+# ![Signed-in flow chart](https://kroki.io/mermaid/svg/eNqNkjFvgzAQhff-ipOyEAmkgkJKE6mVaRiyhCpJh06VZY5gleLUNm0q5cf3gKQEdcl4z-9992x5p_m-gO3i5gaAOclBGiurHbwY1CmvbbHMsLLS_jyOyUAW3-kUwUuoyQSq-m8GXmVgCwSNnzUaewo3ceZMwINV6qXPvRg7IYnJep2uT2sCZ2lawl6rL5mhfsMPLkvgxighuUXiK1qjyKPbAv2OgDnTIa4RY-eORLbZpE9Ltk3G7YXB8x6Or8nmSCX-5lVKY9CM_uU565XW4ceNEFxYAtYrHSRutoiSWi8wBy6spOfKZVnORlEUucZq9Y7et8xsMbvdH1yhSqVnozzP5-cgMJf5LlG79HxANLUQSJ4OyadZFE6upAbxOT1EotZKn4DZNBShuBLox9SSdfkhssLaavovHRRDMbm_tqXPzun5L32Byp4=)
+#
+# - Is there an existing `UserOauthIdentity` with the correct `provider_uid` in the database ?
+#    - YES: Identical user on `UserOauthIdentity` and the request?
+#       - YES: `.action_4`
+#          - nothing specific to do here!
+#          - redirect to `web|users|oauth|no_op`
+#       - NO: `.action_5`
+#          - error out (this should only happen when trying to associate a provider account already attached to another `User`)
+#          - redirect to `web|users|oauth|error|mismatch_identity_users`
+#    - NO: Is `provider_email` associated to another User?
+#       - YES: `.action_6`
+#          - error out
+#          - redirect to `web|users|oauth|error|email_ownership`
+#       - NO: `.action_7`
+#          - associate the email to the account if it is not already
+#          - associate the provider identity
+#          - save the new provider tokens
+#          - redirect to `web|users|oauth|new_identity`
+#
+# ---
+#
+# ## Routes aliases
+#
+# The following aliases are used in this flow:
+#
+# | Alias | Description | Default target |
+# | :-: | :-: | :-: |
+# | <code>web&#124;users&#124;oauth&#124;sign_in&#124;after</code> | After an OAuth sign-in when no new `UserOauthIdentity` was created | <code>web&#124;users&#124;sign_in&#124;after</code> |
+# | <code>web&#124;users&#124;oauth&#124;sign_in&#124;after_new_identity</code> | After an OAuth sign-in where a new `UserOauthIdentity` was created | <code>web&#124;users&#124;oauth&#124;sign_in&#124;after</code> |
+# | <code>web&#124;users&#124;oauth&#124;sign_up&#124;after</code> | After OAuth sign-up | <code>web&#124;users&#124;sign_up&#124;after</code> |
+# | <code>web&#124;users&#124;oauth&#124;no_op</code> | Already signed-in & associated account: nothing to do. | <code>web&#124;users&#124;settings&#124;oauth</code> |
+# | <code>web&#124;users&#124;oauth&#124;error&#124;mismatch_identity_users</code> | | <code>web&#124;users&#124;settings&#124;oauth</code> |
+# | <code>web&#124;users&#124;oauth&#124;error&#124;email_ownership</code> | | <code>web&#124;users&#124;settings&#124;oauth</code> |
+# | <code>web&#124;users&#124;oauth&#124;new_identity</code> | After a new OAuth identity was added to an already signed-in account | <code>web&#124;users&#124;settings&#124;oauth</code> |
+#
+# ## References
+#
+# - https://github.com/omniauth/omniauth
+# - https://github.com/omniauth/omniauth-oauth2
+# - `Kit::Auth::Controllers::Web::Concerns::DefaultRoute.import_omniauth_env`
 module Kit::Auth::Endpoints::Web::Users::Oauth::Callback
 
-  # Omniauth callback endpoint.
-  #
-  # Since this is being hit after a redirect by the Omniauth middleware, we have no context on what the user initial intent was.
-  # (If we wanted to achieve this we would need to use cookies or store (redis, memcached, etc) backed sessions).
-  # In the meantime this is not really an issue, we can figure out what the best flow is.
-  #
-  # We have two high level scenarios when this endpoint is reached:
-  #   - User is signed-in
-  #   - User is signed-out
+  # There are two high level scenarios when this endpoint is reached:
+  #   - `User` is signed-in
+  #   - `User` is signed-out
   def self.endpoint(router_conn:)
     Kit::Organizer.call(
       ok:    [
@@ -36,12 +102,12 @@ module Kit::Auth::Endpoints::Web::Users::Oauth::Callback
     target:  self.method(:endpoint),
   )
 
-  # When the User is already signed-in:
-  #   1a. Existing UserOauthIdentity:
-  #     1a1. Different user on UAI & Session: ERROR_OUT
-  #   1b. No existing UserOauthIdentity:
-  #     1b1. Same email on session_user OR no user with provider_email: ASSOCIATE
-  #     1b2. Email on another User: simplest strategy: ERROR_OUT
+  # When `User` is already signed-in
+  #   - When a `UserOauthIdentity` was found
+  #     - Different user on UAI & Session: ERROR_OUT
+  #   - No existing UserOauthIdentity:
+  #     - Same email on session_user OR no user with provider_email: ASSOCIATE
+  #     - Email on another User: simplest strategy: ERROR_OUT
   def self.signed_in(router_conn:, omniauth_data:, user_oauth_identity:, session_user:)
     Kit::Organizer.call(
       ok:  [
@@ -97,6 +163,7 @@ module Kit::Auth::Endpoints::Web::Users::Oauth::Callback
     )
   end
 
+  # Ensure the OmniAuth data is present in the request and the oauth provider is supported.
   def self.ensure_omniauth_data(router_conn:)
     omniauth_data     = router_conn.metadata[:oauth]
     omniauth_strategy = omniauth_data&.dig(:provider)&.to_sym
@@ -114,6 +181,7 @@ module Kit::Auth::Endpoints::Web::Users::Oauth::Callback
     end
   end
 
+  # Attempt to find an existing `UserOauthIdentity` based on the `provider_uid`.
   def self.load_user_oauth_identity(omniauth_data:)
     model_instance = Kit::Auth::Models::Read::UserOauthIdentity.find_by(provider: omniauth_data[:oauth_provider], provider_uid: omniauth_data[:uid])
 
@@ -165,6 +233,10 @@ module Kit::Auth::Endpoints::Web::Users::Oauth::Callback
     )
   end
 
+  # Associate the OAuth data with the `:user`.
+  #
+  # - Create a `UserOauthIdentity` when it's missing.
+  # - Create a `UserOauthSecret` to save the new access tokens that were returned.
   def self.associate(router_conn:, omniauth_data:, user:, user_oauth_identity: nil)
     Kit::Organizer.call(
       ok:  [
@@ -182,6 +254,7 @@ module Kit::Auth::Endpoints::Web::Users::Oauth::Callback
     )
   end
 
+  # Handle sign-in intent & signs the User in.
   def self.create_sign_in(router_conn:, user_oauth_identity:)
     Kit::Organizer.call(
       list: [
@@ -196,6 +269,7 @@ module Kit::Auth::Endpoints::Web::Users::Oauth::Callback
     )
   end
 
+  # Handle sign-up intent & signs the User up.
   def self.create_sign_up(router_conn:, email:)
     Kit::Organizer.call(
       list: [

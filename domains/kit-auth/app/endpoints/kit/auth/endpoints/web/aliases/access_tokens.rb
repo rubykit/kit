@@ -1,6 +1,7 @@
 # Common aliases for RequestUser
 module Kit::Auth::Endpoints::Web::Aliases::AccessTokens
 
+  # Declares the following alias: `:web_redirect_if_missing_scope!`
   def self.redirect_if_missing_scope!(router_conn:, access_token:, scope:, i18n_params: nil)
     model_scopes = Doorkeeper::OAuth::Scopes.from_string(access_token.scopes)
     return [:ok] if model_scopes.include?(scope.to_s)
