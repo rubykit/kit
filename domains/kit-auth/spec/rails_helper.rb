@@ -33,4 +33,5 @@ RSpec.configure do |config|
   config.include Helpers::WebAuthentication, type: :feature
 
   config.include Helpers::Omniauth::Facebook
+
 end

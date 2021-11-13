@@ -1,12 +1,8 @@
-# ## Flow
+# ## Oauth Callback
 #
-# - Is there an existing `UserOauthIdentity` with the correct `provider_uid` in the database ?
-#    - *YES*: Identical user on `UserOauthIdentity` and the request?
-#       - *YES*: {.signed_in_with_identity}
-#       - *NO*: {.signed_in_with_identity_user_mismatch}
-#    - *NO*: Is `provider_email` already attached to another `User`?
-#       - YES: {.signed_in_without_identity_user_mismatch}
-#       - NO: {.signed_in_without_identity}
+# Used on OAuth redirect when the user is already signed-in.
+#
+# ---
 #
 # ### Default high level implementation:
 #
@@ -29,7 +25,17 @@
 #
 module Kit::Auth::Endpoints::Web::Users::Oauth::Callback::SignedIn
 
-  # Flow when the user is already signed-in.
+  # Called by `Kit::Auth::Endpoints::Web::Users::Oauth::Authentify.endpoint` when the User is already signed-in.
+  #
+  # ### Flow
+  #
+  # - Is there an existing `UserOauthIdentity` with the correct `provider_uid` in the database ?
+  #    - *YES*: Identical user on `UserOauthIdentity` and the request?
+  #       - *YES*: {.signed_in_with_identity}
+  #       - *NO*: {.signed_in_with_identity_user_mismatch}
+  #    - *NO*: Is `provider_email` already attached to another `User`?
+  #       - YES: {.signed_in_without_identity_user_mismatch}
+  #       - NO: {.signed_in_without_identity}
   def self.signed_in(router_conn:, omniauth_data:, user_oauth_identity:, session_user:)
     Kit::Organizer.call(
       ok:  [

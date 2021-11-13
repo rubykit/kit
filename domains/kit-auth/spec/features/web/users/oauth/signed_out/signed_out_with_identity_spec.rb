@@ -1,6 +1,8 @@
-require_relative '../../../../rails_helper' # rubocop:disable Naming/FileName
+require_relative '../../../../../rails_helper' # rubocop:disable Naming/FileName
 
 describe 'web|users|oauth|sign_in', type: :feature do
+  include_context 'omniauth'
+
   let(:route_id)     { 'web|users|oauth|sign_in' }
   let(:route_params) { { provider: provider } }
   let(:start_route)  { route_id_to_path(id: route_id, params: route_params) }
@@ -8,6 +10,8 @@ describe 'web|users|oauth|sign_in', type: :feature do
   let(:email)    { 'user@rubykit.com' }
   let(:password) { 'Abcd12_xxxxxxxxx' }
   let(:user)     { create_user(email: email, password: password) }
+
+  let(:user_oauth_identity) { create(:user_oauth_identity, user: user, provider: provider, provider_uid: omniauth_mock_data[:uid]) }
 
   let(:provider)          { :facebook }
   let(:omniauth_strategy) { :facebook_web }
@@ -17,30 +21,15 @@ describe 'web|users|oauth|sign_in', type: :feature do
   let(:post_action_route_url) { route_id_to_path(id: post_action_route_id) }
 
   before do
-    expect(Kit::Auth::Models::Write::User.where(email: email).count).to eq 0
+    user
+    user_oauth_identity
 
-    OmniAuth.config.test_mode = true
-
-    mock = omniauth_facebook_mock(
-      omniauth_strategy: omniauth_strategy,
-      email:             email,
-    )
-
-    OmniAuth.config.mock_auth[omniauth_strategy]  = mock
-    Rails.application.env_config['omniauth.auth'] = mock
-
-    Kit::Auth::Services::Oauth.providers.clear
-    Kit::Auth::Services::Oauth.providers << {
-      group:             :web,
-      external_name:     :facebook,
-      internal_name:     :facebook,
-      omniauth_strategy: :facebook_web,
-    }
+    expect(Kit::Auth::Models::Write::User.where(email: email).count).to eq 1
+    expect(user.user_oauth_identities.count).to eq 1
   end
 
   after do
-    Rails.application.env_config['omniauth.auth'] = nil
-    OmniAuth.config.test_mode = false
+    expect(user.user_oauth_identities.count).to eq 1
   end
 
   shared_examples 'a successful sign-in' do
@@ -48,8 +37,6 @@ describe 'web|users|oauth|sign_in', type: :feature do
       # Calls the correct event endpoint
       expect(Kit::Router::Services::Adapters).to receive(:cast)
         .with(hash_including(route_id: 'event|user|auth|sign_in', params: hash_including(user_id: user.id, sign_in_method: :oauth)))
-      expect(Kit::Router::Services::Adapters).to receive(:cast)
-        .with(hash_including(route_id: 'event|user|oauth|associate', params: hash_including(user_oauth_identity_id: instance_of(Integer))))
 
       # Visit the page && fill the form
       visit start_route
@@ -68,7 +55,7 @@ describe 'web|users|oauth|sign_in', type: :feature do
   end
 
   context 'with valid sign-in data' do
-    let(:post_action_route_id) { 'web|users|sign_in|after' }
+    let(:post_action_route_id) { 'web|users|oauth|sign_in|after' }
 
     it_behaves_like 'a successful sign-in'
   end

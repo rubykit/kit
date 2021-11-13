@@ -11,7 +11,17 @@ module Kit::Auth::DummyApp::Endpoints::Web::Home
 
   Kit::Router::Services::Router.register(
     uid:     'kit-auth|dummy_app|web|home',
-    aliases: ['web|home'],
+    aliases: {
+      'web|home': {
+        'web|home|signed_in': [
+
+          # OAuth
+          'web|users|oauth|sign_in|after',
+          'web|users|oauth|sign_up|after',
+        ],
+        'web|home|signed_out': [],
+      }
+    },
     target:  self.method(:endpoint),
   )
 

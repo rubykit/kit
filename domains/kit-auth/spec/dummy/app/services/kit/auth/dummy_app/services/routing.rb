@@ -27,22 +27,8 @@ module Kit::Auth::DummyApp::Services::Routing
   # Override the default aliases to test redirect in specs.
   #
   # Note: if you're using this, you probably want to have a look at `Kit::Auth::DummyApp::Endpoints::Web::RouteAlias.endpoint` too.
-  def self.mount_routes_http_web_aliases(context:, rails_endpoint_wrapper:)
-    route_ids = [
-      'web|users|sign_in|after',
-      'web|users|sign_up|after',
-      'web|users|sign_out|after',
-
-      'web|users|password_reset_request|after',
-      'web|users|password_reset|after',
-
-      'web|users|email_confirmation|after|signed_in',
-      'web|users|email_confirmation|after|signed_out',
-
-      # Specs intent routes (specifically for specs)
-      'web|intent|post_sign_in',
-      'web|intent|post_sign_up',
-    ]
+  def self.mount_routes_http_web_aliases(context:, rails_endpoint_wrapper:, routes_ids: nil)
+    route_ids ||= Kit::Auth::DummyApp::Endpoints::Web::RouteAlias::ALIASES
 
     list = route_ids.map do |route_id|
       { route_id: route_id, path: "/web/dummy-app/route-alias/#{ route_id.gsub('|', '__') }", verb: :get }

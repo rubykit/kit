@@ -1,6 +1,8 @@
-require_relative '../../../../rails_helper' # rubocop:disable Naming/FileName
+require_relative '../../../../../rails_helper' # rubocop:disable Naming/FileName
 
 describe 'web|users|oauth|sign_up', type: :feature do
+  include_context 'omniauth'
+
   let(:route_id)     { 'web|users|oauth|sign_up' }
   let(:route_params) { { provider: provider } }
   let(:start_route)  { route_id_to_path(id: route_id, params: route_params) }
@@ -16,29 +18,6 @@ describe 'web|users|oauth|sign_up', type: :feature do
 
   before do
     expect(Kit::Auth::Models::Write::User.where(email: email).count).to eq 0
-
-    OmniAuth.config.test_mode = true
-
-    mock = omniauth_facebook_mock(
-      omniauth_strategy: omniauth_strategy,
-      email:             email,
-    )
-
-    OmniAuth.config.mock_auth[omniauth_strategy]  = mock
-    Rails.application.env_config['omniauth.auth'] = mock
-
-    Kit::Auth::Services::Oauth.providers.clear
-    Kit::Auth::Services::Oauth.providers << {
-      group:             :web,
-      external_name:     :facebook,
-      internal_name:     :facebook,
-      omniauth_strategy: :facebook_web,
-    }
-  end
-
-  after do
-    Rails.application.env_config['omniauth.auth'] = nil
-    OmniAuth.config.test_mode = false
   end
 
   shared_examples 'a successful sign-up' do
@@ -71,7 +50,7 @@ describe 'web|users|oauth|sign_up', type: :feature do
   end
 
   context 'with valid sign-up data' do
-    let(:post_action_route_id) { 'web|users|sign_up|after' }
+    let(:post_action_route_id) { 'web|users|oauth|sign_up|after' }
 
     it_behaves_like 'a successful sign-up'
   end

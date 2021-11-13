@@ -15,24 +15,31 @@ module Kit::Auth::DummyApp::Endpoints::Web::RouteAlias
     )
   end
 
+  ALIASES = [
+    'web|users|sign_in|after',
+    'web|users|sign_up|after',
+    'web|users|sign_out|after',
+
+    'web|users|password_reset|after',
+    'web|users|password_reset_request|after',
+
+    'web|users|email_confirmation|after|signed_in',
+    'web|users|email_confirmation|after|signed_out',
+
+    # Oauth
+    'web|users|oauth|sign_in|after',
+    'web|users|oauth|sign_up|after',
+    'web|users|oauth|sign_in|after_with_new_identity',
+
+    # Specs intent routes (specifically for specs)
+    'web|intent|post_sign_in',
+    'web|intent|post_sign_up',
+  ]
+
   Kit::Router::Services::Router.register(
     uid:     'kit-auth|dummy_app|web|route_alias',
     aliases: {
-      'dummy_app|web|route_alias' => [
-        'web|users|sign_in|after',
-        'web|users|sign_up|after',
-        'web|users|sign_out|after',
-
-        'web|users|password_reset|after',
-        'web|users|password_reset_request|after',
-
-        'web|users|email_confirmation|after|signed_in',
-        'web|users|email_confirmation|after|signed_out',
-
-        # Specs intent routes (specifically for specs)
-        'web|intent|post_sign_in',
-        'web|intent|post_sign_up',
-      ],
+      'dummy_app|web|route_alias' => ALIASES,
     },
     target:  self.method(:endpoint),
   )

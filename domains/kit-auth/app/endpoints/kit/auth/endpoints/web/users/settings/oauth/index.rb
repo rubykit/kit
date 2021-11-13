@@ -13,7 +13,13 @@ module Kit::Auth::Endpoints::Web::Users::Settings::Oauth::Index
 
   Kit::Router::Services::Router.register(
     uid:     'kit_auth|web|settings|oauth|index',
-    aliases: ['web|settings|oauth|index'],
+    aliases: {
+      'web|settings|oauth|index': [
+
+        # OAuth
+        'web|users|oauth|sign_in|after_with_new_identity',
+      ],
+    },
     target:  self.method(:endpoint),
   )
 

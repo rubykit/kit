@@ -1,5 +1,3 @@
-module Helpers::Omniauth; end
-
 module Helpers::Omniauth::Facebook
 
   def omniauth_facebook_mock(omniauth_strategy:, app_id: nil, provider_uid: nil, email: nil, name: nil, image: nil, expires_at: nil)

@@ -1,10 +1,8 @@
-# ## Flow
+# ## Oauth Callback
 #
-# - Is there an existing `UserOauthIdentity` with the correct `provider_uid` in the database ?
-#    - *YES*: {.signed_out_with_identity}
-#    - *NO*:  Is there an existing `User` with the `provider_email` in the database ?
-#       - *YES*: {.signed_out_without_identity_existing_user}
-#       - *NO*: {.signed_out_without_identity_no_user}
+# Used on OAuth redirect when the user is signed-out.
+#
+# ---
 #
 # ### Default high level implementation:
 #
@@ -26,16 +24,25 @@
 #
 module Kit::Auth::Endpoints::Web::Users::Oauth::Callback::SignedOut
 
-  # Flow when the user is signed-out.
+  # Called by `Kit::Auth::Endpoints::Web::Users::Oauth::Authentify.endpoint` when the User is signed-out.
+  #
+  # ### Flow
+  #
+  # - Is there an existing `UserOauthIdentity` with the correct `provider_uid` in the database ?
+  #    - *YES*: {.signed_out_with_identity}
+  #    - *NO*:  Is there an existing `User` with the `provider_email` in the database ?
+  #       - *YES*: {.signed_out_without_identity_existing_user}
+  #       - *NO*: {.signed_out_without_identity_no_user}
   def self.signed_out(router_conn:, omniauth_data:, user_oauth_identity:)
     Kit::Organizer.call(
       ok:  [
+        ->(omniauth_data:) { [:ok, email: omniauth_data[:info][:email]] },
         [:branch, ->(user_oauth_identity:) { [user_oauth_identity ? :has_identity : :no_identity] }, {
           has_identity: [
             self.method(:signed_out_with_identity),
           ],
           no_identity:  [
-            ->(router_conn:) { [:ok, user: Kit::Auth::Services::UserEmail.find_user_by_email(router_conn.metadata[:oauth][:info][:email])[1][:user]] },
+            ->(email:) { [:ok, user: Kit::Auth::Services::UserEmail.find_user_by_email(email: email)[1][:user]] },
             [:branch, ->(user:) { [user ? :user_exists : :no_user] }, {
               user_exists: [self.method(:signed_out_without_identity_existing_user)],
               no_user:     [self.method(:signed_out_without_identity_no_user)],
@@ -53,16 +60,16 @@ module Kit::Auth::Endpoints::Web::Users::Oauth::Callback::SignedOut
 
   # The visitor is signed-out & `UserOauthIdentity` exists in the database
   #
-  # Default implementation:
+  # ### Default high level implementation:
   #   - save the new provider tokens (create new UserOauthSecrets)
   #   - sign the user in
   #   - redirect to `web|users|oauth|sign_in|after`
   def self.signed_out_with_identity(router_conn:, omniauth_data:, user_oauth_identity:)
     Kit::Organizer.call(
       ok:  [
-        self.method(:create_user_oauth_secret),
+        Kit::Auth::Services::UserOauthSecret.method(:create),
         self.method(:create_sign_in),
-        -> { [:ok, redirect_url: 'web|users|oauth|sign_in|after'] },
+        -> { [:ok, redirect_url: Kit::Router::Adapters::Http::Mountpoints.path(id:'web|users|oauth|sign_in|after')] },
         Kit::Auth::Endpoints::Web::Users::SignIn::WithPassword::Create.method(:redirect),
       ],
       ctx: {
@@ -75,20 +82,20 @@ module Kit::Auth::Endpoints::Web::Users::Oauth::Callback::SignedOut
 
   # The visitor is signed-out & `User` exists in the database & there is no existing UserOauthIdentity
   #
-  # Default implementation:
+  # ### Default high level implementation:
   #   - save the provider data (create new `UserOauthIdentity`)
   #   - save the new provider tokens (create new `UserOauthSecrets`)
   #   - sign the user in
   #   - redirect to `web|users|oauth|sign_in|after_with_new_identity`
   #
-  # TODO: add flash notification for connection Oauth provider (similar to {SignedOut.redirect_connect_oauth_account})
+  # TODO: add flash notification for connection Oauth provider (similar to {SignedIn.redirect_connect_oauth_account})
   def self.signed_out_without_identity_existing_user(router_conn:, omniauth_data:, user:)
     Kit::Organizer.call(
       ok:  [
         Kit::Auth::Actions::Oauth::AssociateIdentity,
         Kit::Auth::Services::UserOauthSecret.method(:create),
         self.method(:create_sign_in),
-        -> { [:ok, redirect_url: 'web|users|oauth|sign_in|after_with_new_identity'] },
+        -> { [:ok, redirect_url: Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|oauth|sign_in|after_with_new_identity')] },
         Kit::Auth::Endpoints::Web::Users::SignIn::WithPassword::Create.method(:redirect),
       ],
       ctx: {
@@ -101,25 +108,26 @@ module Kit::Auth::Endpoints::Web::Users::Oauth::Callback::SignedOut
 
   # The visitor is signed-out & `User` does not exists in the database
   #
-  # Default implementation:
+  # ### Default high level implementation:
   #   - save the provider data (create new `UserOauthIdentity`)
   #   - save the new provider tokens (create new `UserOauthSecrets`)
   #   - sign the user up (create new `User`)
   #   - sign the user in
   #   - redirect to `web|users|oauth|sign_up|after`
-  def self.signed_out_without_identity_no_user(router_conn:, omniauth_data:)
+  def self.signed_out_without_identity_no_user(router_conn:, omniauth_data:, email:)
     Kit::Organizer.call(
       ok:  [
+        self.method(:create_sign_up),
         Kit::Auth::Actions::Oauth::AssociateIdentity,
         Kit::Auth::Services::UserOauthSecret.method(:create),
-        self.method(:create_sign_up),
         self.method(:create_sign_in),
-        -> { [:ok, redirect_url: 'web|users|oauth|sign_up|after'] },
+        -> { [:ok, redirect_url: Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|oauth|sign_up|after')] },
         Kit::Auth::Endpoints::Web::Users::SignUp::WithPassword::Create.method(:redirect),
       ],
       ctx: {
         router_conn:   router_conn,
         omniauth_data: omniauth_data,
+        email:         email,
       },
     )
   end
