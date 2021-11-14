@@ -31,6 +31,11 @@ module Kit::Auth::DummyApp::Endpoints::Web::RouteAlias
     'web|users|oauth|sign_up|after',
     'web|users|oauth|sign_in|after_with_new_identity',
 
+    'web|users|oauth|new_identity',
+    'web|users|oauth|error|already_linked',
+    'web|users|oauth|error|users_oauth_identity_conflict',
+    'web|users|oauth|error|users_conflict',
+
     # Specs intent routes (specifically for specs)
     'web|intent|post_sign_in',
     'web|intent|post_sign_up',

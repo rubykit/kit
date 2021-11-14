@@ -31,7 +31,7 @@ describe 'web|users|oauth|sign_in', type: :feature do
       expect(Kit::Router::Services::Adapters).to receive(:cast)
         .with(hash_including(route_id: 'event|user|oauth|associate', params: hash_including(user_oauth_identity_id: instance_of(Integer))))
 
-      # Visit the page && fill the form
+      # Visit the page
       visit start_route
 
       # Redirect to the correct post action route route

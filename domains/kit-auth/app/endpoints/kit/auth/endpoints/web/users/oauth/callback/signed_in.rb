@@ -19,9 +19,9 @@
 # | Alias | Description | Default target |
 # | :-: | :-: | :-: |
 # | <code>web&#124;users&#124;oauth&#124;new_identity</code> | After a new OAuth identity was added to an already signed-in account | <code>web&#124;users&#124;settings&#124;oauth</code> |
-# | <code>web&#124;users&#124;oauth&#124;no_op</code> | Already signed-in & associated account: nothing to do. | <code>web&#124;users&#124;settings&#124;oauth</code> |
-# | <code>web&#124;users&#124;oauth&#124;error&#124;mismatch_identity_users</code> | | <code>web&#124;users&#124;settings&#124;oauth</code> |
-# | <code>web&#124;users&#124;oauth&#124;error&#124;email_ownership</code> | | <code>web&#124;users&#124;settings&#124;oauth</code> |
+# | <code>web&#124;users&#124;oauth&#124;error&#124;already_linked</code> | Already signed-in & associated account: nothing to do. | <code>web&#124;users&#124;settings&#124;oauth</code> |
+# | <code>web&#124;users&#124;oauth&#124;error&#124;users_oauth_identity_conflict</code> | | <code>web&#124;users&#124;settings&#124;oauth</code> |
+# | <code>web&#124;users&#124;oauth&#124;error&#124;users_conflict</code> | | <code>web&#124;users&#124;settings&#124;oauth</code> |
 #
 module Kit::Auth::Endpoints::Web::Users::Oauth::Callback::SignedIn
 
@@ -40,24 +40,28 @@ module Kit::Auth::Endpoints::Web::Users::Oauth::Callback::SignedIn
     Kit::Organizer.call(
       ok:  [
         [:branch, ->(user_oauth_identity:) { [user_oauth_identity ? :has_identity : :no_identity] }, {
-          has_identity: [:nest, {
-            ok:    [
-              self.method(:ensure_user_match_oauth_identity),
-              self.method(:signed_in_with_identity),
-            ],
-            error: [
-              self.method(:signed_in_with_identity_user_mismatch),
-            ],
-          },],
-          no_identity:  [:nest, {
-            ok:    [
-              self.method(:ensure_no_user_with_email),
-              self.method(:signed_in_without_identity),
-            ],
-            error: [
-              self.method(:signed_in_without_identity_user_mismatch),
-            ],
-          },],
+          has_identity: [
+            [:nest, {
+              ok:    [
+                self.method(:ensure_user_match_oauth_identity),
+                self.method(:signed_in_with_identity),
+              ],
+              error: [
+                self.method(:signed_in_with_identity_user_mismatch),
+              ],
+            },],
+          ],
+          no_identity:  [
+            [:nest, {
+              ok:    [
+                self.method(:ensure_no_user_with_email),
+                self.method(:signed_in_without_identity),
+              ],
+              error: [
+                self.method(:signed_in_without_identity_user_mismatch),
+              ],
+            },],
+          ],
         },],
       ],
       ctx: {
@@ -69,17 +73,28 @@ module Kit::Auth::Endpoints::Web::Users::Oauth::Callback::SignedIn
     )
   end
 
-  def self.signed_in_with_identity(router_conn:, redirect_url: nil)
-    redirect_url ||= Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|oauth|no_op')
+  # The visitor is signed-in & there is an existing UserOauthIdentity
+  #
+  # ### Default high level implementation:
+  #   - redirect to `web|users|oauth|error|already_linked`
+  def self.signed_in_with_identity(router_conn:, omniauth_data:, redirect_url: nil)
+    redirect_url ||= Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|oauth|error|already_linked')
+
+    i18n_params = {
+      provider: omniauth_data[:oauth_provider],
+    }.merge(i18n_params || {})
 
     Kit::Domain::Endpoints::Http.redirect_to(
       router_conn: router_conn,
       location:    redirect_url,
+      flash:       {
+        info: I18n.t('kit.auth.notifications.oauth.linking.already_linked', **i18n_params),
+      },
     )
   end
 
   def self.signed_in_with_identity_user_mismatch(router_conn:, session_user:, omniauth_data:, user_oauth_identity:, redirect_url: nil)
-    redirect_url ||= Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|oauth|error|mismatch_identity_users')
+    redirect_url ||= Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|oauth|error|users_oauth_identity_conflict')
 
     i18n_params = {
       session_user_email:             session_user.email,
@@ -91,14 +106,14 @@ module Kit::Auth::Endpoints::Web::Users::Oauth::Callback::SignedIn
       router_conn: router_conn,
       location:    redirect_url,
       flash:       {
-        alert: I18n.t('kit.auth.notifications.oauth.errors.users_identity_conflict', **i18n_params),
+        alert: I18n.t('kit.auth.notifications.oauth.errors.users_oauth_identity_conflict', **i18n_params),
       },
     )
   end
 
   # The visitor is signed-in & there is no existing UserOauthIdentity
   #
-  # Default implementation:
+  # ### Default high level implementation:
   #   - save the provider data (create new `UserOauthIdentity`)
   #   - save the new provider tokens (create new `UserOauthSecrets`)
   #   - redirect to `web|users|oauth|new_identity`
@@ -134,7 +149,7 @@ module Kit::Auth::Endpoints::Web::Users::Oauth::Callback::SignedIn
   end
 
   def self.signed_in_without_identity_user_mismatch(router_conn:, omniauth_data:, redirect_url: nil)
-    redirect_url ||= Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|oauth|error|email_ownership')
+    redirect_url ||= Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|oauth|error|users_conflict')
 
     i18n_params = {
       provider:       omniauth_data[:oauth_provider],
@@ -150,7 +165,8 @@ module Kit::Auth::Endpoints::Web::Users::Oauth::Callback::SignedIn
     )
   end
 
-  def self.ensure_no_user_with_email(router_conn:, session_user:, omniauth_data:)
+  # Ensure that there isn't already another User linked to the provider_email.
+  def self.ensure_no_user_with_email(session_user:, omniauth_data:)
     email       = omniauth_data[:info][:email]
     status, ctx = Kit::Auth::Services::UserEmail.find_user_by_email(email: email)
 
@@ -161,7 +177,8 @@ module Kit::Auth::Endpoints::Web::Users::Oauth::Callback::SignedIn
     end
   end
 
-  def self.ensure_user_match_oauth_identity(router_conn:, session_user:, user_oauth_identity:)
+  # Ensure that the session_user is the same than the `UserOauthIdentity`'s.
+  def self.ensure_user_match_oauth_identity(session_user:, user_oauth_identity:)
     if session_user.id == user_oauth_identity.user_id
       [:ok]
     else
