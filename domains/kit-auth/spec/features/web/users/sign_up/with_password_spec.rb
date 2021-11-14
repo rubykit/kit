@@ -21,7 +21,7 @@ describe 'web|users|sign_up', type: :feature do
         .with(hash_including(route_id: 'event|user|auth|sign_in', params: hash_including(user_id: instance_of(Integer), sign_in_method: :password)))
 
       # Visit the page && fill the form
-      visit start_route
+      visit start_route_url
 
       within('form.component_forms_signup-form') do
         fill_in 'Email',                 with: email
@@ -48,14 +48,14 @@ describe 'web|users|sign_up', type: :feature do
   end
 
   context 'with valid sign-up data' do
-    let(:start_route)           { route_id_to_path(id: route_id) }
+    let(:start_route_url)           { route_id_to_path(id: route_id) }
     let(:post_action_route_id)  { 'web|users|sign_up|after' }
 
     it_behaves_like 'a successful sign-up'
   end
 
   context 'with sign up intent' do
-    let(:start_route)          { route_id_to_path(id: route_id, params: { intent: intent_type }) }
+    let(:start_route_url)          { route_id_to_path(id: route_id, params: { intent: intent_type }) }
     let(:post_action_route_id) { 'web|intent|post_sign_up' }
 
     let(:intent_type)          { :spec_sign_up }

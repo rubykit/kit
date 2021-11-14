@@ -1,5 +1,8 @@
 module Helpers::Users
 
+  # Create a user with the correct Events.
+  #
+  # Note: this is the only difference with using factory bot directly.
   def create_user(email: 'user@rubykit.com', password: 'Abcd12_xxxxxxxxx')
     _status, ctx = Kit::Auth::Actions::Users::CreateWithPassword.call(
       email:    email,

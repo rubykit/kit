@@ -1,14 +1,14 @@
 require_relative '../../../../../rails_helper' # rubocop:disable Naming/FileName
 
-describe 'web|users|oauth|callback', type: :feature, js: true do
+describe 'web|users|oauth|callback', type: :feature do
   include_context 'omniauth'
 
   let(:provider)          { :facebook }
   let(:omniauth_strategy) { :facebook_web }
 
-  let(:start_route_id)     { 'web|users|oauth|callback' }
-  let(:start_route_params) { { provider: provider } }
-  let(:start_route)        { route_id_to_path(id: start_route_id, params: start_route_params) }
+  let(:start_route_id)        { 'web|users|oauth|callback' }
+  let(:start_route_params)    { { provider: provider } }
+  let(:start_route_url)       { route_id_to_path(id: start_route_id, params: start_route_params) }
 
   let(:post_action_route_id)  { 'web|users|oauth|new_identity' }
   let(:post_action_route_url) { route_id_to_path(id: post_action_route_id) }
@@ -36,7 +36,7 @@ describe 'web|users|oauth|callback', type: :feature, js: true do
         .with(hash_including(route_id: 'event|user|oauth|associate', params: hash_including(user_oauth_identity_id: instance_of(Integer))))
 
       # Visit the page
-      visit start_route
+      visit start_route_url
 
       # Redirect to the correct post action route route
       assert_current_path post_action_route_url

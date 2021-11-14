@@ -5,7 +5,7 @@ describe 'web|users|sign_in', type: :feature do
 
   let(:email)    { 'user@rubykit.com' }
   let(:password) { 'Abcd12_xxxxxxxxx' }
-  let(:user)     { create_user(email: email, password: password) }
+  let(:user)     { create(:user, email: email, password: password) }
 
   let(:post_action_route_url) { route_id_to_path(id: post_action_route_id) }
 
@@ -20,7 +20,7 @@ describe 'web|users|sign_in', type: :feature do
         .with(hash_including(route_id: 'event|user|auth|sign_in', params: hash_including(user_id: user.id, sign_in_method: :password)))
 
       # Visit the page && fill the form
-      visit start_route
+      visit start_route_url
 
       within('form.component_forms_signin-form') do
         fill_in 'Email',    with: email
@@ -43,14 +43,14 @@ describe 'web|users|sign_in', type: :feature do
   end
 
   context 'with valid sign-in data' do
-    let(:start_route)          { route_id_to_path(id: route_id) }
+    let(:start_route_url)          { route_id_to_path(id: route_id) }
     let(:post_action_route_id) { 'web|users|sign_in|after' }
 
     it_behaves_like 'a successful sign-in'
   end
 
   context 'with sign in intent' do
-    let(:start_route)          { route_id_to_path(id: route_id, params: { intent: intent_type }) }
+    let(:start_route_url)          { route_id_to_path(id: route_id, params: { intent: intent_type }) }
     let(:post_action_route_id) { 'web|intent|post_sign_in' }
 
     let(:intent_type)          { :spec_sign_in }
