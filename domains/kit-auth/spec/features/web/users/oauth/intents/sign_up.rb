@@ -20,12 +20,9 @@ describe 'web|users|oauth|sign_up', type: :feature do
   before do
     expect(Kit::Auth::Models::Write::User.where(email: email).count).to eq 0
 
-    Kit::Auth::Services::Intent.default_intent_store[:types][intent_type] = ->(router_conn:) { [:ok, redirect_url: post_action_route] }
-    expect(post_action_route).not_to eq default_post_action_route
+    Kit::Auth::Services::Intent.default_intent_store[:types][intent_type] = ->(router_conn:) { [:ok, redirect_url: post_action_route_url] }
   end
 
-=begin
-  # ERROR: there is some cookie issue with Capybara + Omniauth it seems (maybe redirect?). Cannot get the intent to be saved & sent back.
   context 'with sign up intent' do
 
     it 'creates the user account' do
@@ -56,6 +53,5 @@ describe 'web|users|oauth|sign_up', type: :feature do
     end
 
   end
-=end
 
 end

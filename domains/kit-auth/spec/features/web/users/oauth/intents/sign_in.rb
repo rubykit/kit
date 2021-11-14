@@ -28,14 +28,13 @@ describe 'web|users|oauth|sign_in', type: :feature do
     expect(Kit::Auth::Models::Write::User.where(email: email).count).to eq 1
     expect(user.user_oauth_identities.count).to eq 1
 
-    Kit::Auth::Services::Intent.default_intent_store[:types][intent_type] = ->(router_conn:) { [:ok, redirect_url: post_action_route] }
+    Kit::Auth::Services::Intent.default_intent_store[:types][intent_type] = ->(router_conn:) { [:ok, redirect_url: post_action_route_url] }
   end
 
   after do
     expect(user.user_oauth_identities.count).to eq 1
   end
 
-=begin
   # ERROR: there is some cookie issue with Capybara + Omniauth it seems (maybe redirect?). Cannot get the intent to be saved & sent back.
   context 'with sign in intent' do
 
@@ -60,6 +59,5 @@ describe 'web|users|oauth|sign_in', type: :feature do
     end
 
   end
-=end
 
 end

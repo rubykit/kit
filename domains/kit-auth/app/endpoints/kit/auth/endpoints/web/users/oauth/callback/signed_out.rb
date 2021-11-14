@@ -67,9 +67,9 @@ module Kit::Auth::Endpoints::Web::Users::Oauth::Callback::SignedOut
   def self.signed_out_with_identity(router_conn:, omniauth_data:, user_oauth_identity:)
     Kit::Organizer.call(
       ok:  [
+        -> { [:ok, redirect_url: Kit::Router::Adapters::Http::Mountpoints.path(id:'web|users|oauth|sign_in|after')] },
         Kit::Auth::Services::UserOauthSecret.method(:create),
         self.method(:create_sign_in),
-        -> { [:ok, redirect_url: Kit::Router::Adapters::Http::Mountpoints.path(id:'web|users|oauth|sign_in|after')] },
         Kit::Auth::Endpoints::Web::Users::SignIn::WithPassword::Create.method(:redirect),
       ],
       ctx: {
@@ -92,10 +92,10 @@ module Kit::Auth::Endpoints::Web::Users::Oauth::Callback::SignedOut
   def self.signed_out_without_identity_existing_user(router_conn:, omniauth_data:, user:)
     Kit::Organizer.call(
       ok:  [
+        -> { [:ok, redirect_url: Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|oauth|sign_in|after_with_new_identity')] },
         Kit::Auth::Actions::Oauth::AssociateIdentity,
         Kit::Auth::Services::UserOauthSecret.method(:create),
         self.method(:create_sign_in),
-        -> { [:ok, redirect_url: Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|oauth|sign_in|after_with_new_identity')] },
         Kit::Auth::Endpoints::Web::Users::SignIn::WithPassword::Create.method(:redirect),
       ],
       ctx: {
@@ -117,11 +117,11 @@ module Kit::Auth::Endpoints::Web::Users::Oauth::Callback::SignedOut
   def self.signed_out_without_identity_no_user(router_conn:, omniauth_data:, email:)
     Kit::Organizer.call(
       ok:  [
+        -> { [:ok, redirect_url: Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|oauth|sign_up|after')] },
         self.method(:create_sign_up),
         Kit::Auth::Actions::Oauth::AssociateIdentity,
         Kit::Auth::Services::UserOauthSecret.method(:create),
         self.method(:create_sign_in),
-        -> { [:ok, redirect_url: Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|oauth|sign_up|after')] },
         Kit::Auth::Endpoints::Web::Users::SignUp::WithPassword::Create.method(:redirect),
       ],
       ctx: {
