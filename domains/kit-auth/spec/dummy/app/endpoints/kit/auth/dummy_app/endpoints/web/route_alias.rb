@@ -41,12 +41,14 @@ module Kit::Auth::DummyApp::Endpoints::Web::RouteAlias
     'web|intent|post_sign_up',
   ]
 
-  Kit::Router::Services::Router.register(
-    uid:     'kit-auth|dummy_app|web|route_alias',
-    aliases: {
-      'dummy_app|web|route_alias' => ALIASES,
-    },
-    target:  self.method(:endpoint),
-  )
+  if Rails.env.test?
+    Kit::Router::Services::Router.register(
+      uid:     'kit-auth|dummy_app|web|route_alias',
+      aliases: {
+        'dummy_app|web|route_alias' => ALIASES,
+      },
+      target:  self.method(:endpoint),
+    )
+  end
 
 end

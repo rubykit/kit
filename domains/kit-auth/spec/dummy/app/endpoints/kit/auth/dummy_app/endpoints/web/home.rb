@@ -1,12 +1,10 @@
 module Kit::Auth::DummyApp::Endpoints::Web::Home
 
   def self.endpoint(router_conn:)
-    status, ctx = Kit::Domain::Endpoints::Http.redirect_to(
+    Kit::Domain::Endpoints::Http.render(
       router_conn: router_conn,
-      location:    Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|settings|sessions|index'),
+      component:   Kit::Auth::DummyApp::Components::Pages::HomeComponent,
     )
-
-    [:ok, ctx]
   end
 
   Kit::Router::Services::Router.register(
@@ -14,22 +12,23 @@ module Kit::Auth::DummyApp::Endpoints::Web::Home
     aliases: {
       'web|home': {
         'web|home|signed_in': [
+          'web|users|sign_in|after',
+          'web|users|sign_up|after',
+          'web|users|password_reset|after',
+
+          'web|users|email_confirmation|after|signed_in',
+          'web|users|email_confirmation|after|signed_out',
 
           # OAuth
           'web|users|oauth|sign_in|after',
           'web|users|oauth|sign_up|after',
         ],
-        'web|home|signed_out': [],
+        'web|home|signed_out': [
+          'web|users|sign_out|after',
+        ],
       }
     },
     target:  self.method(:endpoint),
   )
-
-  def self.render(router_conn:)
-    Kit::Domain::Endpoints::Http.render(
-      router_conn: router_conn,
-      component:   Kit::Auth::DummyApp::Components::Pages::HomeComponent,
-    )
-  end
 
 end

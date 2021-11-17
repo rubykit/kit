@@ -10,8 +10,8 @@ module Kit::Auth::DummyApp::Services::Routing
 
   def self.mount_routes_http_web(context:, rails_endpoint_wrapper:)
     list = [
-      { route_id: 'web|home',              path: '/',                              verb: :get },
       { route_id: 'web|settings',          path: '/web/settings',                  verb: :get },
+      { route_id: 'web|home',              path: '/',                              verb: :get },
 
       { route_id: 'dummy_app|cookies|set', path: '/web/specs_helpers/cookies/set', verb: :get },
       { route_id: 'dummy_app|cookies|get', path: '/web/specs_helpers/cookies/get', verb: :get },
@@ -32,6 +32,14 @@ module Kit::Auth::DummyApp::Services::Routing
   # Note: if you're using this, you probably want to have a look at `Kit::Auth::DummyApp::Endpoints::Web::RouteAlias.endpoint` too.
   def self.mount_routes_http_web_aliases(context:, rails_endpoint_wrapper:, routes_ids: nil)
     route_ids ||= Kit::Auth::DummyApp::Endpoints::Web::RouteAlias::ALIASES
+
+    # Re=setup the aliases before mounting them (this guards against a loading order that would have overriden some of them).
+    Kit::Router::Services::Router.register_aliases(
+      target_id: 'kit-auth|dummy_app|web|route_alias',
+      aliases:   {
+        'dummy_app|web|route_alias' => route_ids,
+      },
+    )
 
     list = route_ids.map do |route_id|
       { route_id: route_id, path: "/web/dummy-app/route-alias/#{ route_id.gsub('|', '__') }", verb: :get }

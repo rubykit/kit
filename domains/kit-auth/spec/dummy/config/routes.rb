@@ -45,10 +45,12 @@ Rails.application.routes.draw do
     rails_endpoint_wrapper: web_endpoint_wrapper,
   )
 
-  Kit::Auth::DummyApp::Services::Routing.mount_routes_http_web_aliases(
-    context:                self,
-    rails_endpoint_wrapper: web_endpoint_wrapper,
-  )
+  if Rails.env.test?
+    Kit::Auth::DummyApp::Services::Routing.mount_routes_http_web_aliases(
+      context:                self,
+      rails_endpoint_wrapper: web_endpoint_wrapper,
+    )
+  end
 
   Kit::Auth::DummyApp::Services::Routing.mount_routes_http_api_jsonapi(
     context:                self,

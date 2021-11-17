@@ -14,11 +14,16 @@ module Kit::Auth::Endpoints::Web::Users::Settings::Oauth::Index
   Kit::Router::Services::Router.register(
     uid:     'kit_auth|web|settings|oauth|index',
     aliases: {
-      'web|settings|oauth|index': [
-
-        # OAuth
-        'web|users|oauth|sign_in|after_with_new_identity',
-      ],
+      'web|settings|oauth|index': {
+        'web|settings|oauth' => [
+          # OAuth
+          'web|users|oauth|sign_in|after_with_new_identity',
+          'web|users|oauth|new_identity',
+          'web|users|oauth|error|already_linked',
+          'web|users|oauth|error|users_oauth_identity_conflict',
+          'web|users|oauth|error|users_conflict',
+        ],
+      },
     },
     target:  self.method(:endpoint),
   )
