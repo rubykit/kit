@@ -30,7 +30,7 @@ module Kit::Router::Services::Router
     else
       Kit::Router::Services::Store::Endpoint.add_endpoint(uid: uid, target: target, types: types, meta: meta, router_store: router_store)
 
-      handle_aliases(target_id: uid, aliases: aliases, router_store: router_store)
+      register_aliases(target_id: uid, aliases: aliases, router_store: router_store)
       handle_afters(uid: uid, router_store: router_store)
     end
 
@@ -66,7 +66,7 @@ module Kit::Router::Services::Router
       list.each do |el|
         Kit::Router::Services::Store::Endpoint.add_endpoint(uid: el[:uid], target: el[:target], types: el[:types], meta: el[:meta], router_store: router_store)
 
-        handle_aliases(target_id: el[:uid], aliases: el[:aliases], router_store: router_store)
+        register_aliases(target_id: el[:uid], aliases: el[:aliases], router_store: router_store)
       end
     end
 
@@ -78,17 +78,17 @@ module Kit::Router::Services::Router
   end
 
   # Add aliases, with support for nested logic.
-  def self.handle_aliases(target_id:, aliases:, router_store: nil)
+  def self.register_aliases(target_id:, aliases:, router_store: nil)
     case aliases
     when Array
       aliases.each do |alias_id|
         Kit::Router::Services::Store::Alias.add_alias(target_id: target_id, alias_id: alias_id, router_store: router_store)
       end
     when Hash
-      handle_aliases(target_id: target_id, aliases: aliases.keys)
+      register_aliases(target_id: target_id, aliases: aliases.keys)
 
       aliases.each do |alias_id, aliases_sublist|
-        handle_aliases(target_id: alias_id, aliases: aliases_sublist)
+        register_aliases(target_id: alias_id, aliases: aliases_sublist)
       end
     else
       Kit::Router::Services::Store::Alias.add_alias(target_id: target_id, alias_id: aliases, router_store: router_store)
