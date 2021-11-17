@@ -10,8 +10,14 @@ class Kit::Auth::Models::Write::UserSecret < Kit::Auth::Models::WriteRecord
     class_name:  'Kit::Auth::Models::Write::User',
     foreign_key: 'user_id'
 
-  belongs_to :last_request_metadata,
-    class_name: 'Kit::Auth::Models::Write::RequestMetadata',
-    optional:   true
+  has_one :last_request_metadata_link, -> { where(category: 'last') },
+    class_name: 'Kit::Auth::Models::Write::RequestMetadataLink',
+    as:         :target_object
+
+  has_one :last_request_metadata,
+    through:     :last_request_metadata_link,
+    source:      :request_metadata,
+    class_name:  'Kit::Auth::Models::Write::RequestMetadata',
+    foreign_key: 'request_metadata_id'
 
 end

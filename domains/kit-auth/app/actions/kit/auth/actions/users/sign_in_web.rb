@@ -6,7 +6,7 @@ module Kit::Auth::Actions::Users::SignInWeb
         Kit::Auth::Actions::Applications::LoadWeb,
         Kit::Auth::Actions::RequestMetadata::Create,
         Kit::Auth::Actions::AccessTokens::CreateForSignIn,
-        Kit::Auth::Actions::AccessTokens::UpdateRequestMetadata,
+        Kit::Auth::Actions::AccessTokens::LinkRequestMetadata,
         self.method(:save_access_token_in_cookies),
         self.method(:send_event),
 

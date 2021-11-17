@@ -1,24 +1,12 @@
-module Kit::Auth::Models::Write
-  class RequestMetadata < Kit::Auth::Models::WriteRecord
+class Kit::Auth::Models::Write::RequestMetadata < Kit::Auth::Models::WriteRecord
 
-    self.table_name = 'request_metadata'
+  include Kit::Auth::Models::Base::RequestMetadata
 
-    acts_as_paranoid
+  belongs_to :user,
+    class_name: 'Kit::Auth::Models::Write::User',
+    optional:   true
 
-    self.allowed_columns = [
-      :id,
-      :created_at,
-      :updated_at,
-      :deleted_at,
-      :user_id,
-      :ip,
-      :user_agent,
-      :utm,
-    ]
+  has_many   :request_metadata_links,
+    class_name: 'Kit::Auth::Models::Write::RequestMetadataLink'
 
-    belongs_to :user,
-      class_name: 'Kit::Auth::Models::Write::User',
-      optional:   true
-
-  end
 end

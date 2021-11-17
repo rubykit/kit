@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_25_161054) do
+ActiveRecord::Schema.define(version: 2021_11_15_170903) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -54,6 +54,19 @@ ActiveRecord::Schema.define(version: 2021_10_25_161054) do
     t.index ["user_id"], name: "index_request_metadata_on_user_id"
   end
 
+  create_table "request_metadata_links", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "deleted_at"
+    t.bigint "request_metadata_id", null: false
+    t.string "target_object_type", null: false
+    t.bigint "target_object_id", null: false
+    t.text "category"
+    t.index ["deleted_at"], name: "index_request_metadata_links_on_deleted_at"
+    t.index ["request_metadata_id"], name: "index_request_metadata_links_on_request_metadata_id"
+    t.index ["target_object_type", "target_object_id"], name: "index_request_metadata_links_on_target_object"
+  end
+
   create_table "user_oauth_identities", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -78,7 +91,7 @@ ActiveRecord::Schema.define(version: 2021_10_25_161054) do
     t.string "provider_app_id", null: false
     t.text "secret_token", null: false
     t.text "secret_refresh_token"
-    t.datetime "expires_at"
+    t.integer "expires_at"
     t.index ["deleted_at"], name: "index_user_oauth_secrets_on_deleted_at"
     t.index ["user_oauth_identity_id", "provider_app_id", "secret_token", "deleted_at"], name: "index_user_oauth_secrets_token_deleted_at"
     t.index ["user_oauth_identity_id", "provider_app_id", "secret_token"], name: "index_user_oauth_secrets_token_unique", unique: true, where: "(deleted_at IS NULL)"
@@ -124,6 +137,7 @@ ActiveRecord::Schema.define(version: 2021_10_25_161054) do
     t.index ["email_confirmed_at"], name: "index_users_on_email_confirmed_at"
   end
 
+  add_foreign_key "request_metadata_links", "request_metadata"
   add_foreign_key "user_oauth_identities", "users"
   add_foreign_key "user_oauth_secrets", "user_oauth_identities"
   add_foreign_key "user_secrets", "applications"
