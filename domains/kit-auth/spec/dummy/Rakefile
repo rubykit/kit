@@ -1,3 +1,7 @@
 # NOTE: this is loaded by the top level Rakefile.
 
-Rails.application.load_tasks
+if !defined?(RAKEFILE_LOADED_RAILS_TASKS) || !RAKEFILE_LOADED_RAILS_TASKS
+  # NOTE: Some tasks cause both the Gem Rakefile && dummy app one to be loaded.
+  Rails.application.load_tasks
+  RAKEFILE_LOADED_RAILS_TASKS = true
+end

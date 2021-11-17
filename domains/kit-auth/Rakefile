@@ -12,7 +12,11 @@ require 'kit/dummy_app_container/rails_application'
 APP_RAKEFILE = File.expand_path('spec/dummy/Rakefile', __dir__)
 load 'rails/tasks/engine.rake'
 
-Rails.application.load_tasks
+if !defined?(RAKEFILE_LOADED_RAILS_TASKS) || !RAKEFILE_LOADED_RAILS_TASKS
+  # NOTE: Some tasks cause both the Gem Rakefile && dummy app one to be loaded.
+  Rails.application.load_tasks
+  RAKEFILE_LOADED_RAILS_TASKS = true
+end
 
 import 'tasks/documentation.rake'
 import 'tasks/router.rake'
