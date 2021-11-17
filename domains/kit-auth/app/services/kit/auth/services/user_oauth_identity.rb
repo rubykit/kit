@@ -12,4 +12,17 @@ module Kit::Auth::Services::UserOauthIdentity
     [:ok, user_oauth_identity: user_oauth_identity.to_read_record]
   end
 
+  def self.destroy(user_oauth_identity:)
+    user_oauth_identity = user_oauth_identity.to_write_record
+
+    user_oauth_identity.user_oauth_secrets.destroy_all
+    user_oauth_identity.destroy
+
+    if user_oauth_identity.deleted?
+      [:ok]
+    else
+      [:error, code: :destroy_failed]
+    end
+  end
+
 end

@@ -33,7 +33,7 @@ describe 'web|users|oauth|callback', type: :feature do
     it 'adds the oauth provider account' do
       # Calls the correct event endpoint
       expect(Kit::Router::Services::Adapters).to receive(:cast)
-        .with(hash_including(route_id: 'event|user|oauth|associate', params: hash_including(user_oauth_identity_id: instance_of(Integer))))
+        .with(hash_including(route_id: 'event|user|oauth|linked', params: hash_including(user_oauth_identity_id: instance_of(Integer))))
 
       # Visit the page
       visit start_route_url
@@ -43,7 +43,7 @@ describe 'web|users|oauth|callback', type: :feature do
       expect(page).to have_content post_action_route_id
 
       # Display the expected notification
-      flash_text = I18n.t('kit.auth.notifications.oauth.linking.success', provider: provider)
+      flash_text = I18n.t('kit.auth.notifications.oauth.link.success', provider: provider)
       expect(page.body.include?(flash_text)).to be true
     end
 

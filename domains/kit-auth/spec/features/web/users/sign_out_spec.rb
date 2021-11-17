@@ -12,10 +12,14 @@ describe 'web|users|sign_out', type: :feature do
     web_sign_in(email: user.email, password: password)
   end
 
+  let(:user_secret) { user.user_secrets.find_by(category: :access_token) }
+
   it 'signs the user out' do
     # Calls the correct event endpoint
     expect(Kit::Router::Services::Adapters).to receive(:cast)
-      .with(hash_including(route_id: 'event|user|auth|sign_out', params: hash_including(user_id: user.id)))
+      .with(hash_including(route_id: 'event|user|auth|sign_out', params: hash_including(user_id: user.id, user_secret_id: user_secret.id)))
+    expect(Kit::Router::Services::Adapters).to receive(:cast)
+      .with(hash_including(route_id: 'event|user|auth|access_token|revoked', params: hash_including(user_id: user.id, user_secret_id: user_secret.id)))
 
     # Click the top-bar link for sign-out
     click_link I18n.t('kit.auth.pages.header.sign_out.action')

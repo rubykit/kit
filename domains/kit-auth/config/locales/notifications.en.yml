@@ -22,6 +22,9 @@ en:
           already: "${kit.auth.notifications.sign_out.success}"
           required: "This page requires you to be signed-out."
 
+          devices:
+            success: "This device has been signed-out."
+
         email_confirmation:
           success: "Your email address has been successfully confirmed."
 
@@ -49,9 +52,13 @@ en:
           missing: "Missing scopes: %{scopes}"
 
         oauth:
-          linking:
+          link:
             succcess: "Your %{provider} account was successfully linked to your current account!"
             already_linked: "This %{provider} identity is already associated with your account."
+            destroyed: ""
+
+          unlink:
+            succcess: "The %{provider} account was successfully unliked from your account."
 
           errors:
             users_conflict: "This %{provider} account email <b>%{provider_email}</b> belongs to another local account."

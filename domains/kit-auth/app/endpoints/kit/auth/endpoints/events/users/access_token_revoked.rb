@@ -1,4 +1,4 @@
-module Kit::Auth::Endpoints::Events::Users::SignOut
+module Kit::Auth::Endpoints::Events::Users::AccessTokenRevoked
 
   include Kit::Contract::Mixin
   # @doc false
@@ -16,9 +16,9 @@ module Kit::Auth::Endpoints::Events::Users::SignOut
   end
 
   Kit::Router::Services::Router.register(
-    uid:     'kit_auth|event|user|auth|sign_out',
+    uid:     'kit_auth|event|user|auth|access_token|revoked',
     target:  self.method(:endpoint),
-    aliases: ['event|user|auth|sign_out'],
+    aliases: ['event|user|auth|access_token|revoked'],
   )
 
   def self.load_from_params(router_conn:)
@@ -32,7 +32,7 @@ module Kit::Auth::Endpoints::Events::Users::SignOut
 
   def self.persist_event(user_id:, user_secret_id:)
     Kit::Events::Services::Event.create_event(
-      name: 'user|auth|sign_out',
+      name: 'user|auth|access_token|revoked',
       data: {
         user_id:        user_id,
         user_secret_id: user_secret_id,

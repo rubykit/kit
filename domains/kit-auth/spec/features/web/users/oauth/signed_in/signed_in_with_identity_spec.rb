@@ -42,7 +42,7 @@ describe 'web|users|oauth|callback', type: :feature do
       expect(page).to have_content post_action_route_id
 
       # Display the expected notification
-      flash_text = I18n.t('kit.auth.notifications.oauth.linking.already_linked', provider: provider)
+      flash_text = I18n.t('kit.auth.notifications.oauth.link.already_linked', provider: provider)
       expect(page.body.include?(flash_text)).to be true
     end
 

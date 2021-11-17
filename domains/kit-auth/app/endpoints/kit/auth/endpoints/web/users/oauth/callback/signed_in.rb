@@ -88,7 +88,7 @@ module Kit::Auth::Endpoints::Web::Users::Oauth::Callback::SignedIn
       router_conn: router_conn,
       location:    redirect_url,
       flash:       {
-        info: I18n.t('kit.auth.notifications.oauth.linking.already_linked', **i18n_params),
+        info: I18n.t('kit.auth.notifications.oauth.link.already_linked', **i18n_params),
       },
     )
   end
@@ -120,7 +120,7 @@ module Kit::Auth::Endpoints::Web::Users::Oauth::Callback::SignedIn
   def self.signed_in_without_identity(router_conn:, omniauth_data:, session_user:)
     Kit::Organizer.call(
       ok:  [
-        Kit::Auth::Actions::Oauth::AssociateIdentity,
+        Kit::Auth::Actions::Oauth::LinkIdentity,
         Kit::Auth::Services::UserOauthSecret.method(:create),
         self.method(:redirect_connect_oauth_account),
       ],
@@ -143,7 +143,7 @@ module Kit::Auth::Endpoints::Web::Users::Oauth::Callback::SignedIn
       router_conn: router_conn,
       location:    redirect_url,
       flash:       {
-        success: I18n.t('kit.auth.notifications.oauth.linking.success', **i18n_params),
+        success: I18n.t('kit.auth.notifications.oauth.link.success', **i18n_params),
       },
     )
   end

@@ -1,4 +1,4 @@
-module Kit::Auth::Actions::Oauth::AssociateIdentity
+module Kit::Auth::Actions::Oauth::LinkIdentity
 
   def self.call(router_conn:, user:, omniauth_data:)
     Kit::Organizer.call(
@@ -17,7 +17,7 @@ module Kit::Auth::Actions::Oauth::AssociateIdentity
 
   def self.send_event(user_oauth_identity:)
     Kit::Router::Services::Adapters.cast(
-      route_id:     'event|user|oauth|associate',
+      route_id:     'event|user|oauth|linked',
       adapter_name: :async,
       params:       {
         user_oauth_identity_id: user_oauth_identity.id,

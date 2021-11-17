@@ -13,17 +13,23 @@ module Kit::Auth::Endpoints::Web::Users::Settings::Sessions::Index
 
   Kit::Router::Services::Router.register(
     uid:     'kit_auth|web|settings|sessions|index',
-    aliases: ['web|settings|sessions|index'],
+    aliases: {
+      'web|settings|sessions|index': [
+        'web|settings|sessions',
+      ],
+    },
     target:  self.method(:endpoint),
   )
 
   def self.list(router_conn:)
-    list = Kit::Auth::Models::Read::UserSecret
+    # Note: currently has to be in write mode because of polymorphic relationship issue.
+    list = Kit::Auth::Models::Write::UserSecret
       .where(category: 'access_token')
       .where(scopes: 'user_default')
       .where(revoked_at: nil)
       .where("(created_at + expires_in * INTERVAL '1 second') > ?", DateTime.now)
       .where(user_id: router_conn.metadata[:session_user].id)
+      .order(created_at: :desc)
       .preload(:last_request_metadata)
       .load
 

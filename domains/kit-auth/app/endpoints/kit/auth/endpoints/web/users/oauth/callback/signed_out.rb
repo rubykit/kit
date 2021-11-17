@@ -93,7 +93,7 @@ module Kit::Auth::Endpoints::Web::Users::Oauth::Callback::SignedOut
     Kit::Organizer.call(
       ok:  [
         -> { [:ok, redirect_url: Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|oauth|sign_in|after_with_new_identity')] },
-        Kit::Auth::Actions::Oauth::AssociateIdentity,
+        Kit::Auth::Actions::Oauth::LinkIdentity,
         Kit::Auth::Services::UserOauthSecret.method(:create),
         self.method(:create_sign_in),
         Kit::Auth::Endpoints::Web::Users::SignIn::WithPassword::Create.method(:redirect),
@@ -119,7 +119,7 @@ module Kit::Auth::Endpoints::Web::Users::Oauth::Callback::SignedOut
       ok:  [
         -> { [:ok, redirect_url: Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|oauth|sign_up|after')] },
         self.method(:create_sign_up),
-        Kit::Auth::Actions::Oauth::AssociateIdentity,
+        Kit::Auth::Actions::Oauth::LinkIdentity,
         Kit::Auth::Services::UserOauthSecret.method(:create),
         self.method(:create_sign_in),
         Kit::Auth::Endpoints::Web::Users::SignUp::WithPassword::Create.method(:redirect),
