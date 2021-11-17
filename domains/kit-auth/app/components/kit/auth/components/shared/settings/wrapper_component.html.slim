@@ -1,0 +1,16 @@
+.card.rounded.mt-5.overflow-hidden style='background-color: #fafafa;'
+  .card-body.row.m-0.p-0.col-hr
+
+    .col-3.p-4
+      h1.h4.pb-2
+        | Settings
+
+      ul.nav.nav-pills.nav-fill.flex-column
+        - sections.each_as_kwargs do |name:, icon:, route_id:|
+          = router_link_to(id: route_id, html: { class: 'nav-link text-start' }, request: request)
+            i.me-2 class=icon
+            span
+              = name
+
+    .col-9.p-4
+      = content

@@ -1,3 +1,11 @@
-div
-  b
-    | #{ provider }
+.card
+  .card-body.d-flex.align-items-center
+    .h3.m-0.p-0
+      .fab.fab-colored class="fa-#{ provider }"
+    .ms-2.fw-bold
+      | #{ provider.capitalize }
+    .ms-2
+      | #{ model.data['email'] }
+
+    = router_link_to(id: 'web|settings|oauth|destroy', params: { user_oauth_identity_id: model.id }, html: { class: 'btn btn-sm btn-ghost-border-danger ms-auto' })
+      | Disconnect

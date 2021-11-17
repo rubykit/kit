@@ -15,6 +15,10 @@ class Kit::Auth::Components::Users::DeviceComponent < Kit::Auth::Components::Com
     model[:access_token]
   end
 
+  def platform_icon
+    user_agent&.device&.mobile? ? 'fas fa-mobile-alt' : 'fas fa-desktop'
+  end
+
   def app
     user_agent&.name
   end
@@ -45,7 +49,7 @@ class Kit::Auth::Components::Users::DeviceComponent < Kit::Auth::Components::Com
   end
 
   def last_date
-    model&.dig(:request_metadata, :created_at)&.strftime('%A %F')
+    model&.dig(:request_metadata, :created_at)&.strftime('%b %d at %H:%M')
   end
 
   def user_agent
