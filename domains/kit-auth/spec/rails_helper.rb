@@ -19,6 +19,7 @@ require 'kit/dummy_app_container/rails_rspec'
 require 'spec_helper'
 
 Dir[File.expand_path('support/**/*.rb', __dir__)].sort.each { |f| require f } # rubocop:disable Lint/RedundantDirGlobSort
+require 'kit/domain/spec/support/helpers/routes'
 
 RSpec.configure do |config|
   config.use_transactional_fixtures = false
@@ -27,9 +28,10 @@ RSpec.configure do |config|
 
   config.filter_rails_from_backtrace!
 
+  config.include Kit::Domain::Spec::Support::Helpers::Routes
+
   config.include Helpers::Applications
   config.include Helpers::Users
-  config.include Helpers::Routes
   config.include Helpers::WebAuthentication, type: :feature
 
   config.include Helpers::Omniauth::Facebook
