@@ -10,11 +10,8 @@ module Kit::Auth::DummyApp::Services::Routing
 
   def self.mount_routes_http_web(context:, rails_endpoint_wrapper:)
     list = [
-      { route_id: 'web|settings',          path: '/web/settings',                  verb: :get },
-      { route_id: 'web|home',              path: '/',                              verb: :get },
-
-      { route_id: 'dummy_app|cookies|set', path: '/web/specs_helpers/cookies/set', verb: :get },
-      { route_id: 'dummy_app|cookies|get', path: '/web/specs_helpers/cookies/get', verb: :get },
+      { route_id: 'web|settings',          path: '/web/settings',              verb: :get },
+      { route_id: 'web|home',              path: '/',                          verb: :get },
     ]
 
     Kit::Router::Adapters::HttpRails::Routes.mount_http_targets(

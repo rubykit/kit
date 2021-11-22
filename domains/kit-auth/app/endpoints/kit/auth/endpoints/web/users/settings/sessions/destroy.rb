@@ -7,6 +7,7 @@ module Kit::Auth::Endpoints::Web::Users::Settings::Sessions::Destroy
         Kit::Auth::Actions::Users::IdentifyUserForConn,
         [:alias, :web_require_session_user!],
         self.method(:load_user_secret),
+        [:local_ctx, Kit::Domain::Endpoints::Http::Web.method(:require_belongs_to!), nil, { parent: :session_user, child: :user_secret }],
         Kit::Auth::Actions::Users::RevokeAccessToken,
         self.method(:redirect),
       ],
@@ -19,10 +20,12 @@ module Kit::Auth::Endpoints::Web::Users::Settings::Sessions::Destroy
   Kit::Router::Services::Router.register(
     uid:     'kit_auth|web|settings|sessions|destroy',
     aliases: {
-      'web|settings|sessions|destroy' => [
-        'web|users|access_token|destroy',
-        'web|users|user_secret|destroy',
-      ],
+      'web|settings|sessions|destroy' => {
+        'web|users|access_token|revoke'       => [],
+        'web|settings|sessions|destroy|after' => [
+          'web|users|access_token|revoke|after',
+        ],
+      },
     },
     target:  self.method(:endpoint),
   )
@@ -35,7 +38,7 @@ module Kit::Auth::Endpoints::Web::Users::Settings::Sessions::Destroy
   end
 
   def self.redirect(router_conn:, redirect_url: nil, i18n_params: nil)
-    redirect_url ||= Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|settings|sessions')
+    redirect_url ||= Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|settings|sessions|destroy|after')
     i18n_params  ||= {}
 
     Kit::Domain::Endpoints::Http.redirect_to(

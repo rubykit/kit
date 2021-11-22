@@ -19,10 +19,10 @@ module Helpers::Users
     application ||= Kit::Auth::Actions::Applications::LoadWeb.call.dig(1, :application)
     secret       = Kit::Auth::Actions::AccessTokens::CreateForSignIn.call(user: user, application: application).dig(1, :access_token_plaintext_secret)
 
-    visit route_id_to_path(id: 'dummy_app|cookies|set', params: {
-      cookie_name:      :access_token,
-      cookie_value:     secret,
-      cookie_encrypted: true,
+    visit route_id_to_path(id: 'specs|cookies|set', params: {
+      name:      :access_token,
+      value:     secret,
+      encrypted: true,
     },)
   end
 

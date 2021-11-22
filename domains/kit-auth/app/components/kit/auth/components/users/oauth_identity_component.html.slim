@@ -1,4 +1,4 @@
-.card
+.card data-type='oauth_identity' data-oauth_identity-id=model.id
   .card-body.d-flex.align-items-center
     .h3.m-0.p-0
       .fab.fab-colored class="fa-#{ provider }"
@@ -7,5 +7,5 @@
     .ms-2
       | #{ model.data['email'] }
 
-    = router_link_to(id: 'web|settings|oauth|destroy', params: { user_oauth_identity_id: model.id }, html: { class: 'btn btn-sm btn-ghost-border-danger ms-auto' })
+    = router_link_to(id: 'web|settings|oauth|destroy', params: { user_oauth_identity_id: model.id }, html: { class: 'btn btn-sm btn-ghost-border-danger ms-auto', data: { action: 'oauth_identity.delete' } })
       | Disconnect

@@ -45,6 +45,13 @@ Rails.application.routes.draw do
     rails_endpoint_wrapper: web_endpoint_wrapper,
   )
 
+  if Rails.env.test? || Rails.env.development?
+    Kit::Domain::Services::Specs::Routing.mount_routes_http_web(
+      context:                self,
+      rails_endpoint_wrapper: web_endpoint_wrapper,
+    )
+  end
+
   if Rails.env.test?
     Kit::Auth::DummyApp::Services::Routing.mount_routes_http_web_aliases(
       context:                self,

@@ -1,4 +1,4 @@
-.card.mb-2
+.card.mb-2 data-type='session.device' data-session-id=token[:id]
   .card-body.d-flex.align-items-center
     .h3.m-0.p-0
       .fab class=platform_icon
@@ -14,6 +14,5 @@
         span.ms-3.fs-80p
           | #{ last_date }
 
-    .ms-auto.btn.btn-sm.btn-ghost-border-danger
-    = router_link_to(id: 'web|settings|sessions|destroy', params: { user_secret_id: token[:id] }, html: { class: 'btn btn-sm btn-ghost-border-danger ms-auto' })
+    = router_link_to(id: 'web|settings|sessions|destroy', params: { user_secret_id: token[:id] }, html: { class: 'btn btn-sm btn-ghost-border-danger ms-auto', data: { action: 'session.delete' } })
       | Log out

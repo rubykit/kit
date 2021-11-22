@@ -36,9 +36,17 @@ module Kit::Auth::DummyApp::Endpoints::Web::RouteAlias
     'web|users|oauth|error|users_oauth_identity_conflict',
     'web|users|oauth|error|users_conflict',
 
+    # Settings
+    'web|settings|sessions|destroy|after',
+    'web|settings|oauth|destroy|after',
+
     # Specs intent routes (specifically for specs)
     'web|intent|post_sign_in',
     'web|intent|post_sign_up',
+
+    # Errors
+    'web|errors|forbidden',
+    'web|errors|missing_scope',
   ]
 
   if Rails.env.test?

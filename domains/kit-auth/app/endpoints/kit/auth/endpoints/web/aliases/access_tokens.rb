@@ -2,15 +2,16 @@
 module Kit::Auth::Endpoints::Web::Aliases::AccessTokens
 
   # Declares the following alias: `:web_redirect_if_missing_scope!`
-  def self.redirect_if_missing_scope!(router_conn:, access_token:, scope:, i18n_params: nil)
+  def self.redirect_if_missing_scope!(router_conn:, access_token:, scope:, redirect_url: nil, i18n_params: nil)
     model_scopes = Doorkeeper::OAuth::Scopes.from_string(access_token.scopes)
     return [:ok] if model_scopes.include?(scope.to_s)
 
-    i18n_params ||= {}
+    redirect_url ||= Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|errors|missing_scope')
+    i18n_params  ||= {}
 
     Kit::Domain::Endpoints::Http.redirect_to(
       router_conn: router_conn,
-      location:    Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|sign_in'),
+      location:    redirect_url,
       flash:       {
         alert: I18n.t('kit.auth.notifications.scopes.missing', **i18n_params.merge(scopes: [scope])),
       },

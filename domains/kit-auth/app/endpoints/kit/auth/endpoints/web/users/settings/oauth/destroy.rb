@@ -7,6 +7,7 @@ module Kit::Auth::Endpoints::Web::Users::Settings::Oauth::Destroy
         Kit::Auth::Actions::Users::IdentifyUserForConn,
         [:alias, :web_require_session_user!],
         self.method(:load_oauth_user_identity),
+        [:local_ctx, Kit::Domain::Endpoints::Http::Web.method(:require_belongs_to!), nil, { parent: :session_user, child: :user_oauth_identity }],
         Kit::Auth::Actions::Oauth::UnlinkIdentity,
         self.method(:redirect),
       ],
@@ -19,9 +20,12 @@ module Kit::Auth::Endpoints::Web::Users::Settings::Oauth::Destroy
   Kit::Router::Services::Router.register(
     uid:     'kit_auth|web|settings|oauth|destroy',
     aliases: {
-      'web|settings|oauth|destroy' => [
-        'web|user_oauth_identity|destroy',
-      ],
+      'web|settings|oauth|destroy' => {
+        'web|user_oauth_identity|destroy'  => [],
+        'web|settings|oauth|destroy|after' => [
+          'web|user_oauth_identity|destroy|after',
+        ],
+      },
     },
     target:  self.method(:endpoint),
   )
@@ -34,7 +38,7 @@ module Kit::Auth::Endpoints::Web::Users::Settings::Oauth::Destroy
   end
 
   def self.redirect(router_conn:, user_oauth_identity:, redirect_url: nil, i18n_params: nil)
-    redirect_url ||= Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|settings|oauth')
+    redirect_url ||= Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|settings|oauth|destroy|after')
 
     i18n_params = {
       provider: user_oauth_identity.provider,

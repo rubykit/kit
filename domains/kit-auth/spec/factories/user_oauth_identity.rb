@@ -4,6 +4,8 @@ FactoryBot.define do
 
     user
 
+    provider_uid { Faker::Alphanumeric.alphanumeric(number: 10) }
+
   end
 
 end

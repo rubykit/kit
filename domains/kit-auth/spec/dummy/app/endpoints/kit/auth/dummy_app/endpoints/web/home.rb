@@ -22,6 +22,10 @@ module Kit::Auth::DummyApp::Endpoints::Web::Home
           # OAuth
           'web|users|oauth|sign_in|after',
           'web|users|oauth|sign_up|after',
+
+          # Errors
+          'web|errors|forbidden',
+          'web|errors|missing_scope',
         ],
         'web|home|signed_out': [
           'web|users|sign_out|after',

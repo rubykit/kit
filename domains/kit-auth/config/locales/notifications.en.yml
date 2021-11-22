@@ -58,9 +58,15 @@ en:
             destroyed: ""
 
           unlink:
-            succcess: "The %{provider} account was successfully unliked from your account."
+            success: "The %{provider} account was successfully un-linked from your account."
 
           errors:
             users_conflict: "This %{provider} account email <b>%{provider_email}</b> belongs to another local account."
             users_oauth_identity_conflict: "You are currently signed in with <b>%{session_user_email}</b>, but this %{provider} account is associated with another local account: <b>%{user_oauth_identity_user_email}</b>."
             provider_unsupported: "%{provider} is not a supported OAuth provider."
+
+
+        errors:
+          forbidden: "You do not have the authorization to perform this action."
+          unauthorized: "You need to authenticate in order to access this ressource."
+

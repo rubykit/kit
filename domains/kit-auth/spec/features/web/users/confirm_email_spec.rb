@@ -3,8 +3,7 @@ require_relative '../../../rails_helper' # rubocop:disable Naming/FileName
 describe 'web|users|email|confirm', type: :feature do
   let(:route) { 'web|users|email|confirm' }
 
-  let(:password)   { 'xxxxxx' }
-  let(:user)       { create(:user, password: password) }
+  let(:user)       { create(:user) }
   let(:user_email) { user.primary_user_email }
 
   let(:create_access_token)           { Kit::Auth::Actions::AccessTokens::CreateForEmailConfirmation.call(user: user, user_email: user_email, application: app_web) }
@@ -57,7 +56,7 @@ describe 'web|users|email|confirm', type: :feature do
     let(:post_action_route_id)  { 'web|users|email_confirmation|after|signed_in' }
 
     before do
-      web_sign_in(email: user.email, password: password)
+      web_sign_in(user: user)
     end
 
     it_behaves_like 'confirms the email'
