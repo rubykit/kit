@@ -2,8 +2,8 @@
 module Kit::Organizer
 
   # Shortcut to `Kit::Organizer::Services::Organize.call`
-  def self.call(list: nil, ctx: nil, ok: nil, error: nil, safe: nil)
-    arguments = { list: list, ctx: ctx, ok: ok, error: error, safe: safe }
+  def self.call(list: nil, ctx: nil, ok: nil, error: nil, safe: nil, replace_halt: nil)
+    arguments = { list: list, ctx: ctx, ok: ok, error: error, safe: safe, replace_halt: replace_halt }
 
     Kit::Organizer::Services::Organize.call(**arguments)
   end

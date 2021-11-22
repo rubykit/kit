@@ -30,8 +30,9 @@ module Kit::Organizer::Services::Callable::CtxCall
       target_callable = arguments[target_callable_key]
 
       Kit::Organizer.call(
-        list: [target_callable],
-        ctx:  ctx_in,
+        list:         [target_callable],
+        ctx:          ctx_in,
+        replace_halt: false,
       )
     end
 

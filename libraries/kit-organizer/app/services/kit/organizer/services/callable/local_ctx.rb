@@ -48,8 +48,9 @@ module Kit::Organizer::Services::Callable::LocalCtx
         .merge(renamed_ctx)
 
       status, ctx_out = Kit::Organizer.call(
-        list: [callable],
-        ctx:  ctx_in_extended,
+        list:         [callable],
+        ctx:          ctx_in_extended,
+        replace_halt: false,
       )
 
       ctx_out = ctx_out
