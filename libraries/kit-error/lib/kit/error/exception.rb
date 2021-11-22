@@ -7,6 +7,8 @@ module Kit::Error::Exception
     reporter ||= default_exception_reporter
 
     if ENV['RAILS_ENV'] == 'development'
+      puts ap exception.backtrace[0..19].reverse
+      puts ap exception.message
       binding.pry # rubocop:disable Lint/Debugger
     end
 
