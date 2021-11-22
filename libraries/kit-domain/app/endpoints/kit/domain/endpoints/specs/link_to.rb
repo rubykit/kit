@@ -4,7 +4,7 @@ module Kit::Domain::Endpoints::Specs::LinkTo
   def self.endpoint(router_conn:)
     Kit::Domain::Endpoints::Http.render(
       router_conn: router_conn,
-      component:   Kit::Auth::DummyApp::Components::LinkToComponent,
+      component:   Kit::Domain::Components::Specs::LinkToComponent,
       params:      {
         router_conn: router_conn,
       },
