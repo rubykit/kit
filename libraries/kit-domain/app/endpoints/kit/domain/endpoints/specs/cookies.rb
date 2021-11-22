@@ -1,9 +1,9 @@
 # To avoid "magic" in specs, we use these endpoint to set cookies when needed.
-module Kit::Auth::DummyApp::Endpoints::Cookies
+module Kit::Domain::Endpoints::Specs::Cookies
 
   def self.endpoint_get(router_conn:)
-    cookie_name      = router_conn[:params][:cookie_name]&.to_sym
-    cookie_encrypted = router_conn[:params][:cookie_encrypted] == 'true'
+    cookie_name      = router_conn[:params][:name]&.to_sym
+    cookie_encrypted = router_conn[:params][:encrypted] == 'true'
     cookie_value     = router_conn.request[:http][:cookies][cookie_name]&.dig(:value)
 
     response = router_conn[:response]
@@ -16,15 +16,15 @@ module Kit::Auth::DummyApp::Endpoints::Cookies
   end
 
   Kit::Router::Services::Router.register(
-    uid:     'kit-auth|dummy_app|cookies|get',
-    aliases: ['dummy_app|cookies|get'],
+    uid:     'kit-domain|specs|cookies|get',
+    aliases: ['specs|cookies|get'],
     target:  self.method(:endpoint_get),
   )
 
   def self.endpoint_set(router_conn:)
-    cookie_name      = router_conn[:params][:cookie_name]&.to_sym
-    cookie_value     = router_conn[:params][:cookie_value]
-    cookie_encrypted = router_conn[:params][:cookie_encrypted] == 'true'
+    cookie_name      = router_conn[:params][:name]&.to_sym
+    cookie_value     = router_conn[:params][:value]
+    cookie_encrypted = router_conn[:params][:encrypted] == 'true'
 
     if cookie_name
       router_conn.response[:http][:cookies][cookie_name] = { value: cookie_value, encrypted: cookie_encrypted }
@@ -32,15 +32,15 @@ module Kit::Auth::DummyApp::Endpoints::Cookies
 
     status, ctx = Kit::Domain::Endpoints::Http.redirect_to(
       router_conn: router_conn,
-      location:    Kit::Router::Adapters::Http::Mountpoints.path(id: 'dummy_app|cookies|get', params: { cookie_name: cookie_name, cookie_encrypted: cookie_encrypted }),
+      location:    Kit::Router::Adapters::Http::Mountpoints.path(id: 'specs|cookies|get', params: { name: cookie_name, encrypted: cookie_encrypted }),
     )
 
     [:ok, ctx]
   end
 
   Kit::Router::Services::Router.register(
-    uid:     'kit-auth|dummy_app|cookies|set',
-    aliases: ['dummy_app|cookies|set'],
+    uid:     'kit-domain|specs|cookies|set',
+    aliases: ['specs|cookies|set'],
     target:  self.method(:endpoint_set),
   )
 

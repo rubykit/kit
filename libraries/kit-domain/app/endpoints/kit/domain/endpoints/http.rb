@@ -80,4 +80,12 @@ module Kit::Domain::Endpoints::Http
     )
   end
 
+  def self.halt_if_redirect!(router_conn:)
+    if router_conn.dig(:response, :http, :redirect, :location)
+      [:halt]
+    else
+      [:ok]
+    end
+  end
+
 end
