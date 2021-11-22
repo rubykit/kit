@@ -20,6 +20,15 @@ GIT
       slim-rails
       view_component
 
+GIT
+  remote: https://github.com/twalpole/apparition.git
+  revision: ca86be4d54af835d531dbcd2b86e7b2c77f85f34
+  ref: ca86be4d54af835d531dbcd2b86e7b2c77f85f34
+  specs:
+    apparition (0.6.0)
+      capybara (~> 3.13, < 4)
+      websocket-driver (>= 0.6.5)
+
 PATH
   remote: ../../libraries/kit-active_admin
   specs:
@@ -245,9 +254,6 @@ GEM
     annotate (2.7.5)
       activerecord (>= 3.2, < 7.0)
       rake (>= 10.4, < 13.0)
-    apparition (0.6.0)
-      capybara (~> 3.13, < 4)
-      websocket-driver (>= 0.6.5)
     arbre (1.4.0)
       activesupport (>= 3.0.0, < 6.2)
       ruby2_keywords (>= 0.0.2, < 1.0)
@@ -609,7 +615,7 @@ PLATFORMS
 
 DEPENDENCIES
   annotate (~> 2.7, >= 2.7.4)
-  apparition
+  apparition!
   awesome_print!
   better_errors
   bootstrap-email (>= 1.0.0.alpha)
