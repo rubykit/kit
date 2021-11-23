@@ -24,10 +24,10 @@ header#header.header
         ul.navbar-nav.d-flex
           - if session_user
             li.nav-item
-              a.nav-link href="#"
+              = router_link_to(id: 'web|settings', html: { class: 'nav-link' }, request: request)
                 = session_user.email
             li.nav-item
-              = router_link_to(id: 'web|users|sign_out', html: { class: 'nav-link' }, request: request)
+              = router_link_to(id: 'web|users|sign_out', html: { class: 'nav-link', rel: 'nofollow' }, request: request)
                 = I18n.t('kit.auth.pages.header.sign_out.action')
           - else
             li.nav-item

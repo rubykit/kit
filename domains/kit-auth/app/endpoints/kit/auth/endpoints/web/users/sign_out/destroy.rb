@@ -7,6 +7,7 @@ module Kit::Auth::Endpoints::Web::Users::SignOut::Destroy
         Kit::Auth::Actions::Users::IdentifyUserForConn,
         [:alias, :web_require_session_user!],
         ->(router_conn:) { [:ok, access_token: router_conn.metadata[:session_user_access_token]] },
+        Kit::Auth::Actions::Users::RevokeAccessToken,
         Kit::Auth::Actions::Users::SignOutWeb,
         self.method(:redirect),
       ],

@@ -6,6 +6,10 @@ class Kit::Auth::Models::Read::User < Kit::Auth::Models::ReadRecord
     class_name:  'Kit::Auth::Models::Read::UserSecret',
     foreign_key: :user_id
 
+  has_many :user_oauth_identities,
+    class_name:  'Kit::Auth::Models::Read::UserOauthIdentity',
+    foreign_key: :user_id
+
   # For compatibility reasons with Doorkeeper, perfect example
   has_many :access_grants,
     class_name:  'Kit::Auth::Models::Write::DoorkeeperAccessGrant',

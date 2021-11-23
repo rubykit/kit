@@ -1,7 +1,7 @@
 # Service that contains varous user related logic.
 module Kit::Auth::Services::UserEmail
 
-  def self.find_by_email(email:)
+  def self.find_user_by_email(email:)
     if email.blank?
       return [:error, detail: "Invalid email `#{ email }`"]
     end

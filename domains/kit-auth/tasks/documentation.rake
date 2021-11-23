@@ -27,6 +27,14 @@ DOC_CONFIG = Kit::Doc::Services::Config.create_config(
       },
     ],
 
+    'Endpoints'    => [
+      {
+        inclusion:     %r{^Kit::Auth::Endpoints::.*},
+        display_title: Kit::Doc::Services::Tasks::Helpers.display_last_name,
+        css_classes:   Kit::Doc::Services::Tasks::Helpers.display_css_padding(hide: 'Kit::Auth::Endpoints::'),
+      },
+    ],
+
     'Services'     => [
       {
         inclusion:     %r{^Kit::Auth::Services::.*},

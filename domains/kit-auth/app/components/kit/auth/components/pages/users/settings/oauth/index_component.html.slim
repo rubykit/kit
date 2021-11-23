@@ -1,0 +1,17 @@
+= render Kit::Auth::Components::Shared::Settings::WrapperComponent.new do
+
+  h2.h3 Social services
+
+  - if list.size > 0
+    hr
+
+    - list.each do |el|
+      = render Kit::Auth::Components::Users::OauthIdentityComponent.new(\
+        model: el,
+      )
+
+  hr
+
+  h3.h4 Connect a new account:
+
+  = render Kit::Auth::Components::Pages::Users::Settings::Oauth::SocialButtonsComponent.new

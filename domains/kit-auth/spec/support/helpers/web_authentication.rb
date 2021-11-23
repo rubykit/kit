@@ -1,6 +1,7 @@
 module Helpers::WebAuthentication
 
-  def web_sign_in(email: 'user@rubykit.com', password: 'Abcd12_xxxxxxxxx')
+  # Sign-in the user by going through the real sign in flow.
+  def web_real_sign_in(email: 'user@rubykit.com', password: 'Abcd12_xxxxxxxxx')
     visit route_id_to_path(id: 'web|users|sign_in')
 
     within('form.component_forms_signin-form') do
@@ -8,17 +9,40 @@ module Helpers::WebAuthentication
       fill_in 'Password', with: password
     end
 
-    click_button 'Sign in'
+    click_button I18n.t('kit.auth.pages.users.sign_in.with_password.submit')
 
     assert_current_path route_id_to_path(id: 'web|users|sign_in|after')
 
     user
   end
 
-  def web_sign_out
-    click_link 'Sign out'
+  # Sign-out the user by going through the real sign-out flow.
+  def web_real_sign_out(**)
+    click_link I18n.t('kit.auth.pages.header.sign_out.action')
 
     assert_current_path route_id_to_path(id: 'web|users|sign_out|after')
+  end
+
+  # Sign-in the user by directly creating an access_token && setting in in the cookies
+  def web_sign_in(user:, application: nil)
+    application ||= Kit::Auth::Actions::Applications::LoadWeb.call[1][:application]
+
+    _, ctx = Kit::Auth::Actions::AccessTokens::CreateForSignIn.call(user: user, application: application)
+
+    visit route_id_to_path(id: 'specs|cookies|set', params: {
+      name:      :access_token,
+      value:     ctx[:access_token_plaintext_secret],
+      encrypted: true,
+    },)
+  end
+
+  # Sign-out the user by directly clearing the cookies
+  def web_sign_out(**)
+    visit route_id_to_path(id: 'specs|cookies|set', params: {
+      name:      :access_token,
+      value:     nil,
+      encrypted: true,
+    },)
   end
 
 end

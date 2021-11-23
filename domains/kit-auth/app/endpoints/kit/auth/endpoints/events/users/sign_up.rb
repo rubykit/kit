@@ -63,7 +63,7 @@ module Kit::Auth::Endpoints::Events::Users::SignUp
     [:ok]
   end
 
-  def self.persist_event(user:)
+  def self.persist_event(router_conn:, user:)
     Kit::Events::Services::Event.create_event(
       name: 'user|auth|sign_up',
       data: {

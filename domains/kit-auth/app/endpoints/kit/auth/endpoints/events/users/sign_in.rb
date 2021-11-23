@@ -9,7 +9,7 @@ module Kit::Auth::Endpoints::Events::Users::SignIn
     Kit::Organizer.call(
       list: [
         ->(router_conn:) { [:ok, user_id: router_conn.request[:params][:user_id]] },
-        Kit::Auth::Endpoints::Events::Users::SignIn.method(:persist_event),
+        self.method(:persist_event),
       ],
       ctx:  { router_conn: router_conn },
     )

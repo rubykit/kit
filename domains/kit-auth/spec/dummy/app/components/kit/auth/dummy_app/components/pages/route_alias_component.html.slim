@@ -1,0 +1,12 @@
+.mt-4.text-center
+  h1.fw-bold Route alias
+
+  .lead
+    | Helper to ensure route aliases are properly registered in their flow.
+    br
+    | Displays the route_name that was saved when mounting the route.
+
+  h2.mt-5
+    ' Route name:
+    code#route_name
+      = router_conn[:route_id]

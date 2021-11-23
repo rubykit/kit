@@ -6,7 +6,7 @@ describe 'web|users|sign_up', type: :feature do
   let(:email)    { 'user@rubykit.com' }
   let(:password) { 'Abcd12_xxxxxxxxx' }
 
-  let(:default_post_action_route) { route_id_to_path(id: 'web|users|sign_up|after') }
+  let(:post_action_route_url) { route_id_to_path(id: post_action_route_id) }
 
   before do
     expect(Kit::Auth::Models::Write::User.where(email: email).count).to eq 0
@@ -21,7 +21,7 @@ describe 'web|users|sign_up', type: :feature do
         .with(hash_including(route_id: 'event|user|auth|sign_in', params: hash_including(user_id: instance_of(Integer), sign_in_method: :password)))
 
       # Visit the page && fill the form
-      visit start_route
+      visit start_route_url
 
       within('form.component_forms_signup-form') do
         fill_in 'Email',                 with: email
@@ -32,7 +32,8 @@ describe 'web|users|sign_up', type: :feature do
       click_button I18n.t('kit.auth.pages.header.sign_up.action')
 
       # Redirect to the correct post action route route
-      assert_current_path post_action_route
+      assert_current_path post_action_route_url
+      expect(page).to have_content post_action_route_id
 
       # User has been signed-in
       expect(page).to have_content I18n.t('kit.auth.pages.header.sign_out.action')
@@ -47,20 +48,23 @@ describe 'web|users|sign_up', type: :feature do
   end
 
   context 'with valid sign-up data' do
-    let(:start_route)       { route_id_to_path(id: route_id) }
-    let(:post_action_route) { default_post_action_route }
+    let(:start_route_url)           { route_id_to_path(id: route_id) }
+    let(:post_action_route_id)  { 'web|users|sign_up|after' }
 
     it_behaves_like 'a successful sign-up'
   end
 
   context 'with sign up intent' do
-    let(:intent_type)       { :spec_sign_up }
-    let(:start_route)       { route_id_to_path(id: route_id, params: { intent: intent_type }) }
-    let(:post_action_route) { route_id_to_path(id: 'web|intent|post_sign_up') }
+    let(:start_route_url)          { route_id_to_path(id: route_id, params: { intent: intent_type }) }
+    let(:post_action_route_id) { 'web|intent|post_sign_up' }
+
+    let(:intent_type)          { :spec_sign_up }
 
     before do
-      Kit::Auth::Services::Intent.default_intent_store[:types][intent_type] = ->(router_conn:) { [:ok, redirect_url: post_action_route] }
-      expect(post_action_route).not_to eq default_post_action_route
+      Kit::Auth::Services::Intent.default_intent_store[:types][intent_type] = ->(router_conn:) { [:ok, redirect_url: post_action_route_url] }
+
+      # Ensure the intent route is not aliased on the same mount point.
+      expect(post_action_route_url).not_to eq route_id_to_path(id: 'web|users|sign_up|after')
     end
 
     it_behaves_like 'a successful sign-up'

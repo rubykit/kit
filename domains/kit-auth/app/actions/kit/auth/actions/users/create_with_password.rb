@@ -6,8 +6,8 @@ module Kit::Auth::Actions::Users::CreateWithPassword
         #Kit::Auth::Services::Contracts::EmailSignup.method(:validate),
         #Kit::Auth::Services::Contracts::Password.method(:validate),
         Kit::Auth::Services::Password.method(:generate_hashed_secret),
-        Kit::Auth::Actions::Users::CreateWithPassword.method(:persist_user),
-        Kit::Auth::Actions::Users::CreateWithPassword.method(:send_event),
+        self.method(:persist_user),
+        self.method(:send_event),
       ],
       ctx:  {
         email:    email,

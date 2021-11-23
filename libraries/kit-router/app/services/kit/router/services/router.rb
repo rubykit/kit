@@ -30,7 +30,7 @@ module Kit::Router::Services::Router
     else
       Kit::Router::Services::Store::Endpoint.add_endpoint(uid: uid, target: target, types: types, meta: meta, router_store: router_store)
 
-      handle_aliases(target_id: uid, aliases: aliases, router_store: router_store)
+      register_aliases(target_id: uid, aliases: aliases, router_store: router_store)
       handle_afters(uid: uid, router_store: router_store)
     end
 
@@ -66,7 +66,7 @@ module Kit::Router::Services::Router
       list.each do |el|
         Kit::Router::Services::Store::Endpoint.add_endpoint(uid: el[:uid], target: el[:target], types: el[:types], meta: el[:meta], router_store: router_store)
 
-        handle_aliases(target_id: el[:uid], aliases: el[:aliases], router_store: router_store)
+        register_aliases(target_id: el[:uid], aliases: el[:aliases], router_store: router_store)
       end
     end
 
@@ -77,19 +77,18 @@ module Kit::Router::Services::Router
     [:ok, router_store: router_store]
   end
 
-  # Add aliases.
-  # This supports nested logic.
-  def self.handle_aliases(target_id:, aliases:, router_store: nil)
+  # Add aliases, with support for nested logic.
+  def self.register_aliases(target_id:, aliases:, router_store: nil)
     case aliases
     when Array
       aliases.each do |alias_id|
         Kit::Router::Services::Store::Alias.add_alias(target_id: target_id, alias_id: alias_id, router_store: router_store)
       end
     when Hash
-      handle_aliases(target_id: target_id, aliases: aliases.keys)
+      register_aliases(target_id: target_id, aliases: aliases.keys)
 
       aliases.each do |alias_id, aliases_sublist|
-        handle_aliases(target_id: alias_id, aliases: aliases_sublist)
+        register_aliases(target_id: alias_id, aliases: aliases_sublist)
       end
     else
       Kit::Router::Services::Store::Alias.add_alias(target_id: target_id, alias_id: aliases, router_store: router_store)
@@ -111,6 +110,7 @@ module Kit::Router::Services::Router
 
   EMPTY_TARGET = -> {} # rubocop:disable Lint/EmptyBlock
 
+  # Allow to register aliases for a route not handled by Kit::Router.
   def self.register_without_target(uid:, aliases:, types:)
     register(
       uid:     uid,
@@ -120,6 +120,7 @@ module Kit::Router::Services::Router
     )
   end
 
+  # Ensure a route can be mounted on a given protocol.
   # [:any, :any] against [:http, :rails]
   contract Ct::Hash[endpoint_types: Ct::MountTypes, mounter_type: Ct::MountType]
   def self.can_mount?(endpoint_types:, mounter_type:)
@@ -140,6 +141,7 @@ module Kit::Router::Services::Router
     false
   end
 
+  # Default `router_store` if none is specified.
   def self.router_store
     Kit::Router::Services::Store.router_store
   end

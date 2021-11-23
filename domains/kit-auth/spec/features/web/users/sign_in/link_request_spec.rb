@@ -3,7 +3,7 @@ require_relative '../../../../rails_helper' # rubocop:disable Naming/FileName
 describe 'web|users|sign_in_link_request|new', type: :feature do
 
   let(:email)    { 'user@rubykit.com' }
-  let(:user)     { create_user(email: email) }
+  let(:user)     { create(:user, email: email) }
 
   before do
     user

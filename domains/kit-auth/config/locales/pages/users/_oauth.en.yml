@@ -1,0 +1,21 @@
+en:
+  kit:
+    auth:
+      pages:
+        users:
+          oauth:
+
+            apple:
+              submit: "Apple"
+
+            facebook:
+              submit: "Facebook"
+
+            google:
+              submit: "Google"
+
+            twitter:
+              submit: "Twitter"
+
+            linkedin:
+              submit: "Linkedin"

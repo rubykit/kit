@@ -3,7 +3,6 @@ module Kit::Auth::Actions::Users::SignOutWeb
   def self.call(router_conn:, access_token:)
     Kit::Organizer.call(
       list: [
-        Kit::Auth::Services::AccessToken.method(:revoke),
         self.method(:clear_access_token_cookies),
         self.method(:send_event),
       ],
@@ -25,7 +24,8 @@ module Kit::Auth::Actions::Users::SignOutWeb
       route_id:     'event|user|auth|sign_out',
       adapter_name: :async,
       params:       {
-        user_id: access_token.user_id,
+        user_id:        access_token.user_id,
+        user_secret_id: access_token.id,
       },
     )
 

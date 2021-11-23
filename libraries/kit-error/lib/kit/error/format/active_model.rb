@@ -6,7 +6,8 @@ module Kit::Error::Format::ActiveModel
 
   # Convert `ActiveModel` errors output to `Kit` errors output
   def self.from(errors)
-    if errors.respond_to?(:errors)
+    # Note: if we call errors once to many it will cause errors.
+    if errors.respond_to?(:errors) && !errors.is_a?(::ActiveModel::Errors)
       errors = errors.errors
     end
     if errors.respond_to?(:messages)

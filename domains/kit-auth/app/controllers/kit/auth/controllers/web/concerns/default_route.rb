@@ -20,6 +20,7 @@ module Kit::Auth::Controllers::Web::Concerns::DefaultRoute
     Kit::Organizer.call(
       ok:    [
         Kit::Router::Adapters::HttpRails::Conn::Import.method(:import_request),
+        Kit::Auth::Controllers::Web::Concerns::DefaultRoute.method(:import_omniauth_env),
         [:alias, :web_resolve_current_user],
         ->(router_conn:) { router_conn.endpoint[:callable].call(router_conn: router_conn) },
         Kit::Router::Adapters::HttpRails::Conn::Export.method(:export_response),
@@ -31,6 +32,17 @@ module Kit::Auth::Controllers::Web::Concerns::DefaultRoute
     )
 
     return
+  end
+
+  # Omniauth sets its data on the request env, import it on the router_conn metadata.
+  def self.import_omniauth_env(router_conn:, rails_request:)
+    omniauth_meta = rails_request.env['omniauth.auth']
+
+    if omniauth_meta
+      router_conn.metadata[:oauth] = omniauth_meta.deep_symbolize_keys
+    end
+
+    [:ok, router_conn: router_conn]
   end
 
 end

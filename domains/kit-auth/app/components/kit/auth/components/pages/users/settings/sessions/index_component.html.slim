@@ -1,0 +1,13 @@
+= render Kit::Auth::Components::Shared::Settings::WrapperComponent.new do
+
+  h2.h3 Security & Login
+
+  hr
+
+  h3.h4.pt-2.mb-4
+    | Where you're logged in
+
+  - list.each do |el|
+    = render Kit::Auth::Components::Users::DeviceComponent.new(model: el)
+
+  hr

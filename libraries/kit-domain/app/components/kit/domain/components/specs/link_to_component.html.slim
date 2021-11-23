@@ -1,0 +1,14 @@
+h3
+  | Url:
+  code = url
+
+h3
+  | Verb:
+  code = method
+
+form action=url method='POST'
+
+  input name='_method'  value=method    type='hidden'
+  input name=csrf_param value=csrf_token type='hidden'
+
+  input type='submit' value='Redirect'

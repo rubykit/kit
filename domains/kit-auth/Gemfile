@@ -30,6 +30,11 @@ gem 'slim-rails' # DEV MODE ? doesn't get loaded otherwise
 
 gem 'jsonb_accessor'
 
+gem 'omniauth'
+gem 'omniauth-facebook'
+
+gem 'lockbox'
+
 # TMP: because of the require
 gem 'view_component', require: 'view_component/engine'
 
@@ -59,7 +64,8 @@ group :development, :test do
 
   gem 'listen'
 
-  gem 'apparition'
+  #gem 'apparition'
+  gem 'apparition', github: 'twalpole/apparition', ref: 'ca86be4d54af835d531dbcd2b86e7b2c77f85f34'
   gem 'capybara'
 end
 

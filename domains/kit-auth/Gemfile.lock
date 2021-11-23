@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/rubykit/awesome_print.git
-  revision: d5b47c15cdca52a5cfd624bc15c86a7efea8b4c2
+  revision: 06a25a2d4ccc5dfe66a637968632b794d48f2285
   branch: feature/custom-nesting
   specs:
     awesome_print (1.9.1)
@@ -19,6 +19,15 @@ GIT
       sass-rails (>= 6)
       slim-rails
       view_component
+
+GIT
+  remote: https://github.com/twalpole/apparition.git
+  revision: ca86be4d54af835d531dbcd2b86e7b2c77f85f34
+  ref: ca86be4d54af835d531dbcd2b86e7b2c77f85f34
+  specs:
+    apparition (0.6.0)
+      capybara (~> 3.13, < 4)
+      websocket-driver (>= 0.6.5)
 
 PATH
   remote: ../../libraries/kit-active_admin
@@ -245,9 +254,6 @@ GEM
     annotate (2.7.5)
       activerecord (>= 3.2, < 7.0)
       rake (>= 10.4, < 13.0)
-    apparition (0.6.0)
-      capybara (~> 3.13, < 4)
-      websocket-driver (>= 0.6.5)
     arbre (1.4.0)
       activesupport (>= 3.0.0, < 6.2)
       ruby2_keywords (>= 0.0.2, < 1.0)
@@ -272,8 +278,9 @@ GEM
     browser (5.3.1)
     builder (3.2.4)
     byebug (11.1.3)
-    capybara (3.35.3)
+    capybara (3.36.0)
       addressable
+      matrix
       mini_mime (>= 0.1.3)
       nokogiri (~> 1.8)
       rack (>= 1.6.0)
@@ -389,14 +396,16 @@ GEM
     listen (3.7.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
+    lockbox (0.6.6)
     loofah (2.12.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
       mini_mime (>= 0.1.1)
     marcel (1.0.1)
+    matrix (0.4.2)
     method_source (1.0.0)
-    mini_mime (1.1.1)
+    mini_mime (1.1.2)
     mini_portile2 (2.6.1)
     minitest (5.14.4)
     multi_json (1.15.0)
@@ -407,7 +416,7 @@ GEM
       activesupport (>= 4.2)
       railties (>= 4.2)
     nio4r (2.5.8)
-    nokogiri (1.12.4)
+    nokogiri (1.12.5)
       mini_portile2 (~> 2.6.1)
       racc (~> 1.4)
     oauth2 (1.4.7)
@@ -420,6 +429,11 @@ GEM
     omniauth (1.9.1)
       hashie (>= 3.4.6)
       rack (>= 1.6.2, < 3)
+    omniauth-facebook (8.0.0)
+      omniauth-oauth2 (~> 1.2)
+    omniauth-oauth2 (1.7.1)
+      oauth2 (~> 1.4)
+      omniauth (>= 1.9, < 3)
     omniauth-rails_csrf_protection (0.1.2)
       actionpack (>= 4.2)
       omniauth (>= 1.3.1)
@@ -447,7 +461,7 @@ GEM
     public_suffix (4.0.6)
     puma (5.4.0)
       nio4r (~> 2.0)
-    racc (1.5.2)
+    racc (1.6.0)
     rack (2.2.3)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
@@ -601,7 +615,7 @@ PLATFORMS
 
 DEPENDENCIES
   annotate (~> 2.7, >= 2.7.4)
-  apparition
+  apparition!
   awesome_print!
   better_errors
   bootstrap-email (>= 1.0.0.alpha)
@@ -638,6 +652,9 @@ DEPENDENCIES
   letter_opener
   liquid (~> 5.0, >= 5.0.1)
   listen
+  lockbox
+  omniauth
+  omniauth-facebook
   paranoia
   pry
   pry-byebug

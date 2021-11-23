@@ -1,5 +1,18 @@
-div
-  b
-    | #{device} - #{country_name}
-  p
-    | #{app} | #{last_date}
+.card.mb-2 data-type='session.device' data-session-id=token[:id]
+  .card-body.d-flex.align-items-center
+    .h3.m-0.p-0
+      .fab class=platform_icon
+    .ms-3
+      div
+        span.fw-bold
+          | #{ device }
+        span.ms-2.text-muted.fst-italic
+          | #{ app } #{ token[:id] }
+      div
+        span
+          | #{ country_name }
+        span.ms-3.fs-80p
+          | #{ last_date }
+
+    = router_link_to(id: 'web|settings|sessions|destroy', params: { user_secret_id: token[:id] }, html: { class: 'btn btn-sm btn-ghost-border-danger ms-auto', data: { action: 'session.delete' } })
+      | Log out

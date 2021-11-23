@@ -66,13 +66,14 @@ module Kit::Organizer::Services::Organize
   # @param filter Allows to slice specific keys on the context
   # @return The updated context.
   # contract Ct::Hash[list: Ct::Operations, ctx: Ct::Optional[Ct::Hash], filter: Ct::Optional[Ct::Or[Ct::Hash[ok: Ct::Array], Ct::Hash[error: Ct::Array]]]] => Ct::ResultTupple
-  def self.call(list: nil, ctx: nil, ok: nil, error: nil, safe: nil)
-    status = :ok
-    ctx    = (ctx || {}).dup
+  def self.call(list: nil, ctx: nil, ok: nil, error: nil, safe: nil, replace_halt: nil)
+    status         = :ok
+    ctx            = (ctx || {}).dup
+    replace_halt   = true  if replace_halt == nil
+    safe           = false if safe == nil
 
     list_error = (error || [])
     list_ok    = (list  || ok)
-    safe     ||= false
 
     status, ctx = call_list(list: list_ok, status: status, ctx: ctx, safe: safe)
 
@@ -81,7 +82,7 @@ module Kit::Organizer::Services::Organize
       status, ctx = call_list(list: list_error, status: status, ctx: ctx, safe: safe)
     end
 
-    if status == :halt
+    if status == :halt && replace_halt
       status = :ok
     end
 

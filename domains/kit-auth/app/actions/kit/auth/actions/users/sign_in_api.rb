@@ -6,7 +6,7 @@ module Kit::Auth::Actions::Users::SignInApi
         Kit::Auth::Actions::Applications::LoadApi,
         Kit::Auth::Actions::RequestMetadata::Create,
         Kit::Auth::Actions::AccessTokens::CreateForSignIn,
-        Kit::Auth::Actions::AccessTokens::UpdateRequestMetadata,
+        Kit::Auth::Actions::AccessTokens::LinkRequestMetadata,
       ],
       ctx:  {
         user:        user,

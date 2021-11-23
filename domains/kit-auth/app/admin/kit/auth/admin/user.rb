@@ -14,6 +14,14 @@ ActiveAdmin.register Kit::Auth::Models::Write::User, as: 'User', namespace: :kit
 
   show do
     Kit::Auth::Admin::Tables::User.new(self).panel resource
+
+    hr
+
+    Kit::Auth::Admin::Tables::UserOauthIdentity.new(self).panel_list(resource.user_oauth_identities,
+      title:        'UserOauthIdentities',
+      attrs_list:   :all,
+      attrs_except: [:user, :data],
+    )
   end
 
   filter :email

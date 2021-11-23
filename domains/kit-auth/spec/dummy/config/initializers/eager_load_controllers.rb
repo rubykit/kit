@@ -1,6 +1,6 @@
 list = [
   'app/controllers/kit/auth/dummy_app_container/controllers/web_controller',
-  'app/controllers/kit/auth/dummy_app_container/controllers/web/home_controller',
+  'app/controllers/kit/auth/dummy_app_container/controllers/web/example_controller',
 ]
 
 autoloader   = Rails.autoloaders.main
