@@ -1,6 +1,6 @@
 module Kit::Auth::Endpoints::Web::Users::PasswordResetRequest::New
 
-  def self.endpoint(router_conn:)
+  def self.endpoint(router_conn:, component: nil)
     Kit::Organizer.call(
       ok:  [
         [:alias, :web_redirect_if_session_user!],
@@ -8,7 +8,10 @@ module Kit::Auth::Endpoints::Web::Users::PasswordResetRequest::New
         self.method(:set_page_component),
         Kit::Domain::Endpoints::Http.method(:render_form_page),
       ],
-      ctx: { router_conn: router_conn },
+      ctx:   {
+        router_conn: router_conn,
+        component:   component,
+      },
     )
   end
 
@@ -24,8 +27,8 @@ module Kit::Auth::Endpoints::Web::Users::PasswordResetRequest::New
     [:ok, form_model: form_model]
   end
 
-  def self.set_page_component
-    [:ok, component: Kit::Auth::Components::Pages::Users::PasswordResetRequest::NewComponent]
+  def self.set_page_component(component: nil)
+    [:ok, component: component || Kit::Auth::Components::Pages::Users::PasswordResetRequest::NewComponent]
   end
 
 end

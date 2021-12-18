@@ -1,6 +1,6 @@
 module Kit::Auth::Endpoints::Web::Users::PasswordReset::Edit
 
-  def self.endpoint(router_conn:)
+  def self.endpoint(router_conn:, component: nil)
     Kit::Organizer.call(
       ok:    [
         Kit::Auth::Actions::Applications::LoadWeb,
@@ -19,6 +19,7 @@ module Kit::Auth::Endpoints::Web::Users::PasswordReset::Edit
       ],
       ctx:   {
         router_conn: router_conn,
+        component:   component,
       },
     )
   end
@@ -35,8 +36,8 @@ module Kit::Auth::Endpoints::Web::Users::PasswordReset::Edit
     [:ok, form_model: form_model]
   end
 
-  def self.set_page_component
-    [:ok, component: Kit::Auth::Components::Pages::Users::PasswordReset::EditComponent]
+  def self.set_page_component(component: nil)
+    [:ok, component: component || Kit::Auth::Components::Pages::Users::PasswordReset::EditComponent]
   end
 
   def self.render_form_page(router_conn:, form_model:, component:, errors: nil)

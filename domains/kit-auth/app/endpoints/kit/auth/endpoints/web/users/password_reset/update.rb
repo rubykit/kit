@@ -1,6 +1,6 @@
 module Kit::Auth::Endpoints::Web::Users::PasswordReset::Update
 
-  def self.endpoint(router_conn:)
+  def self.endpoint(router_conn:, component: nil)
     Kit::Organizer.call(
       ok:    [
         Kit::Auth::Actions::Applications::LoadWeb,
@@ -19,7 +19,10 @@ module Kit::Auth::Endpoints::Web::Users::PasswordReset::Update
         Kit::Auth::Endpoints::Web::Users::PasswordReset::Edit.method(:set_page_component),
         Kit::Auth::Endpoints::Web::Users::PasswordReset::Edit.method(:render_form_page),
       ],
-      ctx:   { router_conn: router_conn },
+      ctx:   {
+        router_conn: router_conn,
+        component:   component,
+      },
     )
   end
 

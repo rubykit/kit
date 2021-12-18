@@ -8,4 +8,8 @@ class Kit::Auth::Components::Pages::Users::SignUp::WithPassword::NewComponent < 
     @model = model
   end
 
+  def has_social_providers?
+    Kit::Auth::Services::Oauth.providers.select { |el| el[:group] == :web }.count > 0
+  end
+
 end
