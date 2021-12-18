@@ -1,7 +1,7 @@
 # Meta elements + title
 class Kit::ViewComponents::Components::MetaComponent < Kit::ViewComponents::Components::BaseComponent
 
-  attr_reader router_conn:
+  attr_reader :router_conn
 
   def initialize(*, router_conn:, **)
     super
