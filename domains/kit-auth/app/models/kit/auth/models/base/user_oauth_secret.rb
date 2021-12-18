@@ -7,8 +7,11 @@ module Kit::Auth::Models::Base::UserOauthSecret
 
     acts_as_paranoid
 
-    encrypts :token,         encrypted_attribute: :secret_token
-    encrypts :refresh_token, encrypted_attribute: :secret_refresh_token
+    # TODO: fix this, issues on code reload
+    if self.respond_to?(:encrypts)
+      encrypts :token,         encrypted_attribute: :secret_token
+      encrypts :refresh_token, encrypted_attribute: :secret_refresh_token
+    end
 
     read_columns = []
 
