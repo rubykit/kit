@@ -1,6 +1,8 @@
 # Shared logic for any Domain Component
 class Kit::ViewComponents::Components::FormComponent < Kit::ViewComponents::Components::BaseComponent
 
+  include ActionController::RequestForgeryProtection
+
   attr_reader :form_action, :form_method, :model, :csrf_token
 
   def initialize(form_action:, form_method:, model:, csrf_token: nil, **)

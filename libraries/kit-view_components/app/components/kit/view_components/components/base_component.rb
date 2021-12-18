@@ -27,11 +27,11 @@ class Kit::ViewComponents::Components::BaseComponent < ::ViewComponent::Base
   end
 
   def random_id(lid = id)
-    @random_id ||= "#{ lid.underscore }_#{ SecureRandom.hex(4) }"
+    @random_id ||= "#{ lid.to_s.underscore }_#{ SecureRandom.hex(4) }"
   end
 
   def self.component_class_name
-    name = self.name.underscore.split('components/')[1].downcase.dasherize.gsub('/', '_').delete_suffix('-component')
+    name = self.name.to_s.underscore.split('components/')[1].downcase.dasherize.gsub('/', '_').delete_suffix('-component')
 
     "component_#{ name }"
   end
