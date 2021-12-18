@@ -13,7 +13,7 @@ module Kit::JsonApiSpec::Services::Routing # rubocop:disable Style/Documentation
           target:  endpoint,
           meta:    {
             route_defaults: {
-              kit_api_top_level_resource: resource_object,
+              kit_api_top_level_resource: -> { resource_object },
               kit_api_singular:           route[:singular],
             },
           },

@@ -1,9 +1,5 @@
 #require 'sidekiq/web'
 
-def configure_router_adapters
-
-end
-
 Rails.application.routes.draw do
 
   # Endpoint declaration is considered over

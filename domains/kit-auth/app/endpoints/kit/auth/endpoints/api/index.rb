@@ -17,8 +17,8 @@ module Kit::Auth::Endpoints::Api::Index # rubocop:disable Style/Documentation
   end
 
   resources = {
-    user_auth:  Kit::Auth::Resources::Api::UserAuth.to_h,
-    user_email: Kit::Auth::Resources::Api::UserEmail.to_h,
+    user_auth:  -> { Kit::Auth::Resources::Api::UserAuth.to_h },
+    user_email: -> { Kit::Auth::Resources::Api::UserEmail.to_h },
   }
 
   resources.each do |name, resource|

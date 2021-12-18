@@ -20,7 +20,7 @@ module Kit::Auth::Controllers::Api::Concerns::DefaultRoute
             ->(router_conn:) do
               [:ok, api_request: {
                 config:             router_conn.config[:api],
-                top_level_resource: router_conn.request[:params_kit][:kit_api_top_level_resource],
+                top_level_resource: router_conn.request[:params_kit][:kit_api_top_level_resource].call,
                 singular:           router_conn.request[:params_kit][:kit_api_singular],
               },]
             end,
