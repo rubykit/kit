@@ -158,6 +158,8 @@ PATH
       browser
       doorkeeper (~> 5.4.0)
       email_inquire (~> 0.10.0)
+      jsonb_accessor
+      lockbox
       oauth2 (~> 1.4.4)
       omniauth (~> 1.9.1)
       omniauth-rails_csrf_protection (~> 0.1.2)
