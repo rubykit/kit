@@ -1,5 +1,5 @@
 # Mixin that can be used as the route wrapper for endpoints.
-module Kit::Router::Controllers::Concerns::DefaultRouter
+module Kit::Router::Controllers::Concerns::DefaultRoute
 
   extend ActiveSupport::Concern
 
