@@ -1,4 +1,4 @@
-require 'json_schemer'
+#require 'json_schemer'
 
 # Json-schema validation logic.
 module Kit::Api::JsonApi::Services::SchemaValidation
