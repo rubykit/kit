@@ -10,11 +10,11 @@ module Kit::ViewComponents::Middlewares::Meta
     l = ->(key) { rails_controller&.helpers&.asset_url(t.(key)) rescue '' } # rubocop:disable Style/RescueModifier
 
     router_conn[:metadata][:meta] = {
-      :title                 => t.('app.title'),
+      :title                 => t.('meta.title'),
       :keywords              => t.('meta.keywords'),
       :description           => t.('meta.description'),
 
-      :application_name      => t.('app.name'),
+      :application_name      => t.('meta.application_name'),
 
       :'og:description'      => t.('meta.og.description'),
       :'og:image'            => l.('meta.og.image'),
