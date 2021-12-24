@@ -5,14 +5,14 @@ module Kit::ViewComponents::Middlewares::JsEnv
 
   def self.call(router_conn:)
     router_conn[:metadata][:js_env] = {
-      current_env: Rails.env.to_s,
+      env_type:  Rails.env.to_s,
 
-      kit:         {
+      kit:       {
         route_id:    router_conn.route_id,
         endpoint_id: router_conn.endpoint[:id],
       },
 
-      analytics:   {
+      analytics: {
         segment_key: ENV['ANALYTICS_SEGMENT_SOURCE_CLIENT_KEY'],
         google_mid:  ENV['ANALYTICS_GA_MID'],
       },
