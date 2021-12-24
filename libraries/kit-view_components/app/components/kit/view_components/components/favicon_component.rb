@@ -48,12 +48,20 @@ class Kit::ViewComponents::Components::FaviconComponent < Kit::ViewComponents::C
     I18n.t("#{ i18n_prefix }.favicon.safari_pinned_tab.theme_color")
   end
 
-  def windows_background_color
-    I18n.t("#{ i18n_prefix }.favicon.windows.background_color")
+  def windows_tile_color
+    I18n.t("#{ i18n_prefix }.favicon.windows.tile_color")
   end
 
   def android_chrome_theme_color
     I18n.t("#{ i18n_prefix }.favicon.android_chrome.theme_color")
+  end
+
+  def ios_app_name
+    I18n.t("#{ i18n_prefix }.favicon.ios.app_name")
+  end
+
+  def app_name
+    I18n.t("#{ i18n_prefix }.favicon.app_name")
   end
 
 end
