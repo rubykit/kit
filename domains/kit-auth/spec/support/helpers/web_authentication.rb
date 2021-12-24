@@ -7,9 +7,9 @@ module Helpers::WebAuthentication
     within('form.component_forms_signin-form') do
       fill_in 'Email',    with: email
       fill_in 'Password', with: password
-    end
 
-    click_button I18n.t('kit.auth.pages.users.sign_in.with_password.submit')
+      find('button[type="submit"]').click
+    end
 
     assert_current_path route_id_to_path(id: 'web|users|sign_in|after')
 
