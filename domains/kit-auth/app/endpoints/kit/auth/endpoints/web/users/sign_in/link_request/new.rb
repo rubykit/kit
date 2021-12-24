@@ -1,6 +1,6 @@
 module Kit::Auth::Endpoints::Web::Users::SignIn::LinkRequest::New
 
-  def self.endpoint(router_conn:, component:)
+  def self.endpoint(router_conn:, component: nil)
     Kit::Organizer.call(
       list: [
         [:alias, :web_redirect_if_session_user!],
@@ -8,7 +8,7 @@ module Kit::Auth::Endpoints::Web::Users::SignIn::LinkRequest::New
         self.method(:set_page_component),
         Kit::Domain::Endpoints::Http.method(:render_form_page),
       ],
-      ctx:   {
+      ctx:  {
         router_conn: router_conn,
         component:   component,
       },
