@@ -19,7 +19,7 @@ class Kit::Auth::Components::Emails::Users::PasswordResetLinkComponent < Kit::Au
   end
 
   def liquid_assigns_list
-    [:user_email, :reset_link]
+    super + [:user_email, :reset_link]
   end
 
 end

@@ -1,7 +1,7 @@
 class Kit::Auth::Components::Emails::EmailComponent < Kit::Auth::Components::Component
 
   def liquid_assigns_list
-    [:session_user]
+    [:session_user, :brand]
   end
 
   def liquid_assigns
@@ -12,6 +12,12 @@ class Kit::Auth::Components::Emails::EmailComponent < Kit::Auth::Components::Com
     content = super
 
     BootstrapEmail::Compiler.new(content, type: :string).perform_full_compile.html_safe
+  end
+
+  def brand
+    {
+      logo_url: I18n.t('kit.auth.logo_url'),
+    }
   end
 
 end

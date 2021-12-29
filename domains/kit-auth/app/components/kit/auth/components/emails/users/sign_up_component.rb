@@ -9,7 +9,7 @@ class Kit::Auth::Components::Emails::Users::SignUpComponent < Kit::Auth::Compone
   end
 
   def liquid_assigns_list
-    [:user_email]
+    super + [:user_email]
   end
 
 end

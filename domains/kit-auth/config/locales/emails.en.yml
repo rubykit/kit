@@ -5,3 +5,6 @@ en:
       emails:
 
         from: 'no-reply@rubykit.org'
+
+        brand:
+          logo_url: "${kit.auth.logo_url}"

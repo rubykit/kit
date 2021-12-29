@@ -19,7 +19,7 @@ class Kit::Auth::Components::Emails::Users::SignInLinkComponent < Kit::Auth::Com
   end
 
   def liquid_assigns_list
-    [:user_email, :sign_in_link]
+    super + [:user_email, :sign_in_link]
   end
 
 end

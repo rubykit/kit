@@ -38,7 +38,7 @@ gem 'lockbox'
 # TMP: because of the require
 gem 'view_component', require: 'view_component/engine'
 
-gem 'bootstrap-email', '>= 1.0.0.alpha'
+gem 'bootstrap-email', '~> 1.1', '>= 1.1.1'
 gem 'kit_liquid_rails'
 #gem 'letter_opener', git: 'https://github.com/Kulgar/letter_opener.git', group: :development
 gem 'letter_opener', group: :development

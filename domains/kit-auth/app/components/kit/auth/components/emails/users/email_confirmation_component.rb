@@ -19,7 +19,7 @@ class Kit::Auth::Components::Emails::Users::EmailConfirmationComponent < Kit::Au
   end
 
   def liquid_assigns_list
-    [:user_email, :confirmation_link]
+    super + [:user_email, :confirmation_link]
   end
 
 end
