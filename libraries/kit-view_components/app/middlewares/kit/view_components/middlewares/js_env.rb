@@ -5,7 +5,7 @@ module Kit::ViewComponents::Middlewares::JsEnv
 
   def self.call(router_conn:)
     router_conn[:metadata][:js_env] = {
-      env_type:  Rails.env.to_s,
+      env_mode:  Rails.env.to_s,
 
       kit:       {
         route_id:    router_conn.route_id,
