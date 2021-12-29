@@ -21,6 +21,7 @@ module Kit::Router::Adapters::HttpRails::Conn::Export
     content       = response[:content]
     mime          = response[:http][:mime]
     status        = response[:http][:status] || 200
+    layout        = response[:http][:layout] || !(response[:http][:layout] == false)
 
     content_type  = mime ? Mime[mime.to_sym].to_s : nil
 
@@ -36,7 +37,7 @@ module Kit::Router::Adapters::HttpRails::Conn::Export
     if redirect_status?(status: status)
       handle_redirect(router_conn: router_conn, rails_controller: rails_controller)
     elsif mime == :html
-      rails_controller.render status: status, content_type: content_type, layout: true, html: content
+      rails_controller.render status: status, content_type: content_type, layout: layout, html: content
     else
       rails_controller.render status: status, content_type: content_type, body: content
     end

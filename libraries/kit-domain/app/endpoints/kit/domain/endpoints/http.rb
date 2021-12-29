@@ -2,7 +2,7 @@
 module Kit::Domain::Endpoints::Http
 
   # Render a component & setup the `:router_conn`'s `response` for http.
-  def self.render(router_conn:, component:, params: nil, status: nil)
+  def self.render(router_conn:, component:, params: nil, status: nil, layout: nil)
     status ||= 200
     params ||= {}
 
@@ -16,6 +16,7 @@ module Kit::Domain::Endpoints::Http
     response[:content]       = content
     response[:http][:status] = status
     response[:http][:mime]   = :html
+    response[:http][:layout] = layout.is_a?(Symbol) ? layout.to_s : layout
 
     [:ok, router_conn: router_conn]
   end
