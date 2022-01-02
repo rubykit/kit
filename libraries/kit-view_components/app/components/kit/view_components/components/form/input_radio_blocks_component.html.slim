@@ -1,12 +1,12 @@
 .row.form-group
   .col-sm-3.col-form-label
     label for=input_id
-      = label
+      == label
       - if required
         span.text-danger.fw-bold.ms-1 *
     - if info
       small.form-text
-        = info
+        == info
 
   .col-sm-9
     .row class=((errors_list.size > 0) ? 'is-invalid' : nil)
