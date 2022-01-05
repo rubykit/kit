@@ -1,13 +1,13 @@
-.row.form-group
-  label.col-sm-3.col-form-label for=input_id
+.row.form-group.mb-0
+  label.col-form-label class=col_label_class for=input_id
     == label
     - if required
       span.text-danger.font-weight-bold.ml-1 *
-  .col-sm-9
+  div class=col_input_class
     input.form-control id=input_id name=name placeholder=placeholder type=input_type value=value required=required data-input-mask=mask class=input_class_to_s
 
     - if info
-      small.form-text
+      .form-info
         == info
 
     = render Kit::ViewComponents::Components::Form::ErrorsFeedbackComponent.new(errors_list: errors_list)

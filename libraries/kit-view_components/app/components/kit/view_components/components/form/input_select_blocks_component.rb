@@ -1,12 +1,14 @@
 class Kit::ViewComponents::Components::Form::InputSelectBlocksComponent < Kit::ViewComponents::Components::Form::InputComponent
 
-  attr_reader :values
+  attr_reader :values, :col_box_class
 
-  def initialize(*, values:,  **)
+  def initialize(*, values:, col_box_class: nil,  **)
     super
 
     @value  = value || []
     @values = values
+
+    @col_box_class = col_box_class || 'col-sm-6 px-2'
   end
 
   def list_values

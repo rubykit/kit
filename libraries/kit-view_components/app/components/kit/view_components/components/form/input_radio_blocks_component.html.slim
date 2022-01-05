@@ -1,17 +1,17 @@
-.row.form-group
-  .col-sm-3.col-form-label
+.row.form-group.mb-0 data-input-type='select-blocks-radio'
+  .col-form-label class=col_label_class
     label for=input_id
       == label
       - if required
         span.text-danger.fw-bold.ms-1 *
     - if info
-      small.form-text
+      .form-info
         == info
 
-  .col-sm-9
+  .col-form-input class=col_input_class
     .row class=((errors_list.size > 0) ? 'is-invalid' : nil)
       - list_values.each do |el|
-        .col-sm-6.px-2
+        div class=col_box_class
           .form-control.mb-2
             .form-check
               input.form-check-input id=el[:input_id] name=name type="radio" value=el[:value] checked=el[:selected]
