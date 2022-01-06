@@ -10,7 +10,7 @@
           == info
 
   .col-form-input class="#{ label ? col_input_class : 'col' }"
-    .input-group.input-group-vertical class=((errors_list.size > 0) ? 'is-invalid' : nil)
+    .input-group class=input_group_class
       - list_values.each do |el|
         .form-control
           .form-check
