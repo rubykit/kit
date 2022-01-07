@@ -38,12 +38,7 @@ module Kit::Router::Adapters::Http::Mountpoints
   end
 
   def self.base_url
-    scheme = (ENV['RAILS_FORCE_SSL'] == 'true') ? 'https' : 'http'
-    host   = ENV['HOST']
-    port   = ENV['PORT']
-    port   = ":#{ port }" if port
-
-    "#{ scheme }://#{ host }#{ port }"
+    ENV['URL']
   end
 
   def self.url(id:, params: nil, mountpoint_type: nil)
