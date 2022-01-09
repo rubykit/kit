@@ -1,14 +1,13 @@
 class Kit::ViewComponents::Components::Form::InputTextComponent < Kit::ViewComponents::Components::Form::InputComponent
 
-  attr_reader :mask, :mask_placeholder
+  attr_reader :mask
 
-  def initialize(*, mask: nil, mask_placeholder: nil, **)
+  def initialize(*, mask: nil, **)
     super
 
     @input_type = 'text'
 
-    @mask             = mask
-    @mask_placeholder = mask_placeholder
+    @mask = mask.is_a?(String) ? mask : mask.to_json
   end
 
 end

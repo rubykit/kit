@@ -4,7 +4,18 @@
     - if required
       span.text-danger.font-weight-bold.ml-1 *
   div class=col_input_class
-    input.form-control id=input_id name=name placeholder=placeholder type=input_type value=value required=required data-input-mask=mask class=input_class_to_s
+    - if group.empty?
+      input.form-control id=input_id name=name placeholder=placeholder type=input_type value=value required=required data-input-mask=mask class=input_class_to_s
+    - else
+      .input-group
+        - if group[:before]
+          .input-group-text
+            == group[:before]
+        input.form-control id=input_id name=name placeholder=placeholder type=input_type value=value required=required data-input-mask=mask class=input_class_to_s
+        - if group[:after]
+          .input-group-text
+            == group[:after]
+
 
     - if info
       .form-info

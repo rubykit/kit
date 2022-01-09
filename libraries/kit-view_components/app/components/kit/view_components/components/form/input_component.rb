@@ -1,9 +1,9 @@
 # Shared logic for any Domain Component
 class Kit::ViewComponents::Components::Form::InputComponent < Kit::ViewComponents::Components::BaseComponent
 
-  attr_reader :help, :label, :name, :value, :errors, :ids, :info, :input_type, :placeholder, :required, :input_class, :info_under_label, :col_input_class, :col_label_class
+  attr_reader :help, :label, :name, :value, :errors, :ids, :info, :input_type, :placeholder, :required, :input_class, :info_under_label, :col_input_class, :col_label_class, :group
 
-  def initialize(name:, label: nil, value: nil, help: nil, info: nil, placeholder: nil, required: false, input_class: nil, info_under_label: nil, col_input_class: nil, col_label_class: nil, errors: nil, **)
+  def initialize(name:, label: nil, value: nil, help: nil, info: nil, placeholder: nil, required: false, input_class: nil, info_under_label: nil, col_input_class: nil, col_label_class: nil, group: nil, errors: nil, **)
     super
 
     @label            = label
@@ -13,6 +13,7 @@ class Kit::ViewComponents::Components::Form::InputComponent < Kit::ViewComponent
     @info             = info
     @errors           = errors || []
     @required         = required == nil ? false : required
+    @group            = group || {}
 
     @col_label_class  = col_label_class || 'col-sm-3'
     @col_input_class  = col_input_class || 'col-sm-9'
