@@ -26,6 +26,7 @@ module Kit::Auth::Endpoints::Web::Aliases::CurrentUser
     ]
   end
 
-  Kit::Organizer::Services::Callable::Alias.register(id: :web_resolve_current_user, target: self.method(:resolve_current_user))
+  Kit::Organizer::Services::Callable::Alias.register(id: :kit_auth_web_resolve_current_user, target: self.method(:resolve_current_user))
+  Kit::Organizer::Services::Callable::Alias.register(id: :web_resolve_current_user,          target: self.method(:resolve_current_user))
 
 end

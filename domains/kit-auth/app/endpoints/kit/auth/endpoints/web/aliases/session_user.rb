@@ -15,7 +15,8 @@ module Kit::Auth::Endpoints::Web::Aliases::SessionUser
     )
   end
 
-  Kit::Organizer::Services::Callable::Alias.register(id: :web_require_session_user!, target: self.method(:require_session_user!))
+  Kit::Organizer::Services::Callable::Alias.register(id: :kit_auth_web_require_session_user!, target: self.method(:require_session_user!))
+  Kit::Organizer::Services::Callable::Alias.register(id: :web_require_session_user!,          target: self.method(:require_session_user!))
 
   def self.redirect_if_session_user!(router_conn:, i18n_params: nil)
     return [:ok] if !router_conn.metadata[:session_user]
@@ -31,7 +32,8 @@ module Kit::Auth::Endpoints::Web::Aliases::SessionUser
     )
   end
 
-  Kit::Organizer::Services::Callable::Alias.register(id: :web_redirect_if_session_user!, target: self.method(:redirect_if_session_user!))
+  Kit::Organizer::Services::Callable::Alias.register(id: :kit_auth_web_redirect_if_session_user!, target: self.method(:redirect_if_session_user!))
+  Kit::Organizer::Services::Callable::Alias.register(id: :web_redirect_if_session_user!,          target: self.method(:redirect_if_session_user!))
 
   def self.redirect_if_session_missing_scope!(router_conn:, scope:, i18n_params: nil)
     model = router_conn.metadata[:session_user_access_token]
@@ -51,6 +53,7 @@ module Kit::Auth::Endpoints::Web::Aliases::SessionUser
     )
   end
 
-  Kit::Organizer::Services::Callable::Alias.register(id: :web_redirect_if_session_missing_scope!, target: self.method(:redirect_if_session_missing_scope!))
+  Kit::Organizer::Services::Callable::Alias.register(id: :kit_auth_web_redirect_if_session_missing_scope!, target: self.method(:redirect_if_session_missing_scope!))
+  Kit::Organizer::Services::Callable::Alias.register(id: :web_redirect_if_session_missing_scope!,          target: self.method(:redirect_if_session_missing_scope!))
 
 end
