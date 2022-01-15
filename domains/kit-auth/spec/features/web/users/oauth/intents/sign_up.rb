@@ -13,14 +13,21 @@ describe 'web|users|oauth|sign_up', type: :feature do
   let(:post_action_route_id)  { 'web|intent|post_sign_up' }
   let(:post_action_route_url) { route_id_to_path(id: post_action_route_id) }
 
-  let(:intent_type) { :spec_sign_up }
+  let(:intent_type) { :user_sign_up }
 
   let(:email) { 'user@rubykit.com' }
 
   before do
     expect(Kit::Auth::Models::Write::User.where(email: email).count).to eq 0
 
-    Kit::Router::Adapters::Http::Intent::Store.default_intent_store[:types][intent_type] = ->(router_conn:) { [:ok, redirect_url: post_action_route_url] }
+    Kit::Router::Adapters::Http::Intent::Store.default_intent_store[intent_type] = {
+      get: ->(router_conn:, **)                { [:ok, intent_value: 'not_used_here_anyway'] },
+      use: ->(router_conn:, intent_value:, **) { [:ok, redirect_url: post_action_route_url] },
+    }
+  end
+
+  after do
+    Kit::Router::Adapters::Http::Intent::Store.default_intent_store[intent_type] = nil
   end
 
   context 'with sign up intent' do

@@ -1,20 +1,20 @@
+# Attempt to act on a previously saved user intent of :intent_type
 module Kit::Router::Adapters::Http::Intent::Actions::Consume
 
-  def self.call(router_conn:, intent_step:, intent_store: nil)
+  def self.call(router_conn:, intent_type:, intent_store: nil)
     status, ctx = Kit::Organizer.call(
       ok:    [
-        Kit::Router::Adapters::Http::Intent.method(:valid_intent_step?),
-        Kit::Router::Adapters::Http::Intent.method(:load_from_cookie),
-        Kit::Router::Adapters::Http::Intent.method(:valid_intent_type?),
-        [:ctx_call, :intent_callable],
-        Kit::Router::Adapters::Http::Intent.method(:clean_cookie),
+        Kit::Router::Adapters::Http::Intent.method(:get_intent_strategy),
+        Kit::Router::Adapters::Http::Intent.method(:load_intent_value_from_cookie),
+        Kit::Router::Adapters::Http::Intent.method(:use_intent_value),
+        Kit::Router::Adapters::Http::Intent.method(:clear_cookie),
       ],
       error: [
-        Kit::Router::Adapters::Http::Intent.method(:clean_cookie),
+        Kit::Router::Adapters::Http::Intent.method(:clear_cookie),
       ],
       ctx:   {
         router_conn:  router_conn,
-        intent_step:  intent_step.to_sym,
+        intent_type:  intent_type.to_sym,
         intent_store: intent_store,
       },
     )
@@ -24,7 +24,7 @@ module Kit::Router::Adapters::Http::Intent::Actions::Consume
       return [:ok, router_conn: router_conn]
     end
 
-    [:ok, ctx.except(:intent_step, :intent_type, :intent_store, :intent_callable)]
+    [:ok, ctx.except(:intent_type, :intent_value, :intent_store, :intent_strategy)]
   end
 
 end

@@ -4,12 +4,12 @@ module Kit::Auth::Endpoints::Web::Users::SignIn::WithPassword::New
     Kit::Organizer.call(
       list: [
         [:alias, :web_redirect_if_session_user!],
-        [:local_ctx, Kit::Router::Adapters::Http::Intent::Actions::Save, { intent_step: :user_sign_in, intent_type: router_conn.request[:params][:intent] }],
+        [:local_ctx, Kit::Router::Adapters::Http::Intent::Actions::Save, { intent_type: :user_sign_in }],
         self.method(:set_form_model),
         self.method(:set_page_component),
         Kit::Domain::Endpoints::Http.method(:render_form_page),
       ],
-      ctx:   {
+      ctx:  {
         router_conn: router_conn,
         component:   component,
       },

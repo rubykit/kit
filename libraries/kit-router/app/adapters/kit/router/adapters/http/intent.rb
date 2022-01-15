@@ -1,45 +1,60 @@
+# Logic to persist a user intent through a series of actions.
 module Kit::Router::Adapters::Http::Intent
 
-  def self.persist_in_cookie(router_conn:, intent_step:, intent_type:)
+  # Get the registered intent Strategy for :intent_type
+  def self.get_intent_strategy(intent_type:, intent_store: nil)
+    intent_store  ||= Kit::Router::Adapters::Http::Intent::Store.default_intent_store
+    intent_strategy = intent_store[intent_type.to_sym]
+
+    if intent_strategy
+      [:ok, intent_strategy: intent_strategy]
+    else
+      [:error, { code: :router_unknown_intent_type, detail: "Unknown intent type `#{ intent_type }`" }]
+    end
+  end
+
+  # Use :intent_strategy to retrieve an :intent_value
+  def self.get_intent_value(router_conn:, intent_strategy:)
+    intent_strategy[:get].call(router_conn: router_conn)
+  end
+
+  # Use :intent_strategy to act on an :intent_value
+  def self.use_intent_value(router_conn:, intent_value:, intent_strategy:)
+    intent_strategy[:use].call(router_conn: router_conn, intent_value: intent_value)
+  end
+
+  # ----------------------------------------------------------------------------
+
+  # Persist the tupple [:intent_type, :intent_value] in a cookie for later user
+  def self.save_intent_value_in_cookie(router_conn:, intent_type:, intent_value:)
     return [:ok] if !intent_type
 
-    router_conn.response[:http][:cookies][intent_step.to_sym] = { value: intent_type.to_sym, encrypted: true }
+    cookie_name = get_cookie_name(intent_type: intent_type)[1][:cookie_name]
+
+    router_conn.response[:http][:cookies][cookie_name] = { value: intent_value.to_s, encrypted: true }
 
     [:ok, router_conn: router_conn]
   end
 
-  def self.load_from_cookie(router_conn:, intent_step:)
-    intent_type = router_conn.request[:http][:cookies].dig(intent_step.to_sym, :value)
-    intent_type = intent_type.to_sym if intent_type
+  # Retrieve the cookie (if set) containing the :intent_value of an :intent_type
+  def self.load_intent_value_from_cookie(router_conn:, intent_type:)
+    cookie_name  = get_cookie_name(intent_type: intent_type)[1][:cookie_name]
+    intent_value = router_conn.request[:http][:cookies].dig(cookie_name.to_sym, :value)
 
-    [:ok, intent_type: intent_type]
+    [:ok, intent_value: intent_value]
   end
 
-  def self.clean_cookie(router_conn:, intent_step:)
-    router_conn.response[:http][:cookies][intent_step] = { value: nil, encrypted: true }
+  # Clear the cookie for :intent_type
+  def self.clear_cookie(router_conn:, intent_type:)
+    cookie_name = get_cookie_name(intent_type: intent_type)[1][:cookie_name]
+    router_conn.response[:http][:cookies][cookie_name] = { value: nil, encrypted: true }
 
     [:ok, router_conn: router_conn]
   end
 
-  def self.valid_intent_step?(intent_step:, intent_store: nil)
-    intent_store ||= Kit::Router::Adapters::Http::Intent::Store.default_intent_store
-    intent_step    = intent_step.to_sym
-
-    if intent_store[:steps].include?(intent_step)
-      [:ok]
-    else
-      [:error, { code: :auth_invalid_intent_step, detail: "Unknown intent step `#{ intent_step }`" }]
-    end
-  end
-
-  def self.valid_intent_type?(intent_type:, intent_store: nil)
-    intent_store ||= Kit::Router::Adapters::Http::Intent::Store.default_intent_store
-
-    if intent_type && (value = intent_store[:types][intent_type.to_sym])
-      [:ok, intent_callable: value]
-    else
-      [:error, { code: :auth_invalid_intent_type, detail: "Invalid intent type `#{ intent_type }`" }]
-    end
+  # Generate the cookie name for a given :intent_type
+  def self.get_cookie_name(intent_type:)
+    [:ok, cookie_name: "intent|#{ intent_type }"]
   end
 
 end

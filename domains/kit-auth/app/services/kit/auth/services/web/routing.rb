@@ -44,8 +44,8 @@ module Kit::Auth::Services::Web::Routing
       #{ route_id: 'web|users|oauth|authentify',      path: '/web/oauth/authentify/:provider',             verb: :get,    namespace: [:oauth] },
       { route_id: 'web|users|oauth|callback',        path: '/web/oauth/callback/:provider',               verb: :get,    namespace: [:oauth] },
 
-      { route_id: 'web|users|oauth|sign_up',         path: '/web/oauth/sign-up/:provider',                verb: :get,    namespace: [:oauth], request_config: { intent_step: :user_sign_up } },
-      { route_id: 'web|users|oauth|sign_in',         path: '/web/oauth/sign-in/:provider',                verb: :get,    namespace: [:oauth], request_config: { intent_step: :user_sign_in } },
+      { route_id: 'web|users|oauth|sign_up',         path: '/web/oauth/sign-up/:provider',                verb: :get,    namespace: [:oauth], request_config: { intent_type: :user_sign_up } },
+      { route_id: 'web|users|oauth|sign_in',         path: '/web/oauth/sign-in/:provider',                verb: :get,    namespace: [:oauth], request_config: { intent_type: :user_sign_in } },
 
       { route_id: 'web|settings|oauth|destroy', path: '/web/settings/oauth/:user_oauth_identity_id', verb: :delete, namespace: [:oauth] },
     ]

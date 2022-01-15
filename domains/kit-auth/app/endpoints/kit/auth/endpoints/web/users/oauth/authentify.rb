@@ -54,16 +54,14 @@ module Kit::Auth::Endpoints::Web::Users::Oauth::Authentify
 
   # Save the intent if any.
   #
-  # Since the endpoint is used for different scenarios, so we try to recover the `intent_step` from the mountpoint if it has mot been explicitely provided.
-  def self.save_intent(router_conn:, intent_step: nil)
-    intent_step ||= router_conn.dig(:metadata, :config, :intent_step)
-    intent_type = router_conn.request[:params][:intent]
+  # Since the endpoint is used for different scenarios, so we try to recover the `intent_type` from the mountpoint if it has mot been explicitely provided.
+  def self.save_intent(router_conn:, intent_type: nil)
+    intent_type ||= router_conn.dig(:metadata, :config, :intent_type)
 
-    return [:ok] if !intent_step || !intent_type
+    return [:ok] if !intent_type
 
     Kit::Router::Adapters::Http::Intent::Actions::Save.call(
       router_conn: router_conn,
-      intent_step: intent_step.to_sym,
       intent_type: intent_type.to_sym,
     )
   end
