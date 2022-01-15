@@ -61,7 +61,7 @@ module Kit::Auth::Endpoints::Web::Users::Oauth::Authentify
 
     return [:ok] if !intent_step || !intent_type
 
-    Kit::Auth::Actions::Intents::Save.call(
+    Kit::Router::Adapters::Http::Intent::Actions::Save.call(
       router_conn: router_conn,
       intent_step: intent_step.to_sym,
       intent_type: intent_type.to_sym,

@@ -1,16 +1,16 @@
-module Kit::Auth::Actions::Intents::Consume
+module Kit::Router::Adapters::Http::Intent::Actions::Consume
 
   def self.call(router_conn:, intent_step:, intent_store: nil)
     status, ctx = Kit::Organizer.call(
       ok:    [
-        Kit::Auth::Services::Intent.method(:valid_intent_step?),
-        Kit::Auth::Services::Intent.method(:load_from_cookie),
-        Kit::Auth::Services::Intent.method(:valid_intent_type?),
+        Kit::Router::Adapters::Http::Intent.method(:valid_intent_step?),
+        Kit::Router::Adapters::Http::Intent.method(:load_from_cookie),
+        Kit::Router::Adapters::Http::Intent.method(:valid_intent_type?),
         [:ctx_call, :intent_callable],
-        Kit::Auth::Services::Intent.method(:clean_cookie),
+        Kit::Router::Adapters::Http::Intent.method(:clean_cookie),
       ],
       error: [
-        Kit::Auth::Services::Intent.method(:clean_cookie),
+        Kit::Router::Adapters::Http::Intent.method(:clean_cookie),
       ],
       ctx:   {
         router_conn:  router_conn,

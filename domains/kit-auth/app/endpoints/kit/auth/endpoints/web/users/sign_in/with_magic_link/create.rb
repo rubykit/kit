@@ -11,7 +11,7 @@ module Kit::Auth::Endpoints::Web::Users::SignIn::WithMagicLink::Create
 
         self.method(:create_sign_in),
 
-        [:local_ctx, Kit::Auth::Actions::Intents::Consume, { intent_step: :user_sign_in }],
+        [:local_ctx, Kit::Router::Adapters::Http::Intent::Actions::Consume, { intent_step: :user_sign_in }],
         Kit::Auth::Endpoints::Web::Users::SignIn::WithPassword::Create.method(:redirect),
       ],
       error: [

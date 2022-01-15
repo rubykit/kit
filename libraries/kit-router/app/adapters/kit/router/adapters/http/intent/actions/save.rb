@@ -1,4 +1,4 @@
-module Kit::Auth::Actions::Intents::Save
+module Kit::Router::Adapters::Http::Intent::Actions::Save
 
   # Persist an intent from a query_parameter for `:intent_step` in a cookie.
   def self.call(router_conn:, intent_step:, intent_type:, intent_store: nil)
@@ -7,9 +7,9 @@ module Kit::Auth::Actions::Intents::Save
 
     status, ctx = Kit::Organizer.call(
       list: [
-        Kit::Auth::Services::Intent.method(:valid_intent_step?),
-        Kit::Auth::Services::Intent.method(:valid_intent_type?),
-        Kit::Auth::Services::Intent.method(:persist_in_cookie),
+        Kit::Router::Adapters::Http::Intent.method(:valid_intent_step?),
+        Kit::Router::Adapters::Http::Intent.method(:valid_intent_type?),
+        Kit::Router::Adapters::Http::Intent.method(:persist_in_cookie),
       ],
       ctx:  {
         router_conn:  router_conn,

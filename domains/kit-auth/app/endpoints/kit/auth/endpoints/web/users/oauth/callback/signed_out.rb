@@ -136,7 +136,7 @@ module Kit::Auth::Endpoints::Web::Users::Oauth::Callback::SignedOut
   def self.create_sign_in(router_conn:, user_oauth_identity:)
     Kit::Organizer.call(
       list: [
-        [:local_ctx, Kit::Auth::Actions::Intents::Consume, { intent_step: :user_sign_in }],
+        [:local_ctx, Kit::Router::Adapters::Http::Intent::Actions::Consume, { intent_step: :user_sign_in }],
         Kit::Auth::Actions::Users::SignInWeb,
       ],
       ctx:  {
@@ -151,7 +151,7 @@ module Kit::Auth::Endpoints::Web::Users::Oauth::Callback::SignedOut
   def self.create_sign_up(router_conn:, email:)
     Kit::Organizer.call(
       list: [
-        [:local_ctx, Kit::Auth::Actions::Intents::Consume, { intent_step: :user_sign_up }],
+        [:local_ctx, Kit::Router::Adapters::Http::Intent::Actions::Consume, { intent_step: :user_sign_up }],
         Kit::Auth::Actions::Users::CreateWithoutPassword,
       ],
       ctx:  {

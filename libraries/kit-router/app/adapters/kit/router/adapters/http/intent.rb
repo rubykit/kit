@@ -1,4 +1,4 @@
-module Kit::Auth::Services::Intent
+module Kit::Router::Adapters::Http::Intent
 
   def self.persist_in_cookie(router_conn:, intent_step:, intent_type:)
     return [:ok] if !intent_type
@@ -22,7 +22,7 @@ module Kit::Auth::Services::Intent
   end
 
   def self.valid_intent_step?(intent_step:, intent_store: nil)
-    intent_store ||= default_intent_store
+    intent_store ||= Kit::Router::Adapters::Http::Intent::Store.default_intent_store
     intent_step    = intent_step.to_sym
 
     if intent_store[:steps].include?(intent_step)
@@ -33,27 +33,13 @@ module Kit::Auth::Services::Intent
   end
 
   def self.valid_intent_type?(intent_type:, intent_store: nil)
-    intent_store ||= default_intent_store
+    intent_store ||= Kit::Router::Adapters::Http::Intent::Store.default_intent_store
 
     if intent_type && (value = intent_store[:types][intent_type.to_sym])
       [:ok, intent_callable: value]
     else
       [:error, { code: :auth_invalid_intent_type, detail: "Invalid intent type `#{ intent_type }`" }]
     end
-  end
-
-  def self.create_intent_store
-    {
-      steps: [
-        :user_sign_in,
-        :user_sign_up,
-      ],
-      types: {},
-    }
-  end
-
-  def self.default_intent_store
-    @default_intent_store ||= create_intent_store
   end
 
 end

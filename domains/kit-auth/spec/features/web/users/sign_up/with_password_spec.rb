@@ -61,7 +61,7 @@ describe 'web|users|sign_up', type: :feature do
     let(:intent_type)          { :spec_sign_up }
 
     before do
-      Kit::Auth::Services::Intent.default_intent_store[:types][intent_type] = ->(router_conn:) { [:ok, redirect_url: post_action_route_url] }
+      Kit::Router::Adapters::Http::Intent::Store.default_intent_store[:types][intent_type] = ->(router_conn:) { [:ok, redirect_url: post_action_route_url] }
 
       # Ensure the intent route is not aliased on the same mount point.
       expect(post_action_route_url).not_to eq route_id_to_path(id: 'web|users|sign_up|after')
