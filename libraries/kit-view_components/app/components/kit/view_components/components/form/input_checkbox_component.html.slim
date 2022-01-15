@@ -1,0 +1,16 @@
+.row.form-group.mb-0
+  .col
+    .form-control
+      .form-check.mb-0
+
+        input.form-check-input id=input_id name=name placeholder=placeholder type=input_type class=input_class_to_s value=value checked=selected
+
+        label.form-check-label for=input_id
+          == label
+          - if required
+            span.text-danger.fw-bold.ms-1 *
+        - if info
+          .form-info
+            == info
+
+        = render Kit::ViewComponents::Components::Form::ErrorsFeedbackComponent.new(errors_list: errors_list)
