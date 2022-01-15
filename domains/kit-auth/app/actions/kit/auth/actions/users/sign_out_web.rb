@@ -14,7 +14,7 @@ module Kit::Auth::Actions::Users::SignOutWeb
   end
 
   def self.clear_access_token_cookies(router_conn:)
-    router_conn.response[:http][:cookies][:access_token] = { value: nil, encrypted: true }
+    router_conn.response[:http][:cookies][:access_token] = { value: nil, encrypted: true, delete: true }
 
     [:ok, router_conn: router_conn]
   end

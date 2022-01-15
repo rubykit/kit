@@ -119,6 +119,7 @@ module Kit::Router::Adapters::HttpRails::Conn::Import
           raw_name:  k,
           value:     rails_cookies.encrypted[k],
           raw_value: rails_cookies[k],
+          encrypted: true,
         }
       elsif k.start_with?(Kit::Router::Adapters::HttpRails::Conn.cookies_signed_prefix)
         name = k.gsub(%r{^#{ Kit::Router::Adapters::HttpRails::Conn.cookies_signed_prefix.gsub('|', '\|') }}, '')
@@ -127,6 +128,7 @@ module Kit::Router::Adapters::HttpRails::Conn::Import
           raw_name:  k,
           value:     rails_cookies.signed[k],
           raw_value: rails_cookies[k],
+          signed:    true,
         }
       else
         name = k.to_sym

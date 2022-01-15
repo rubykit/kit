@@ -13,7 +13,7 @@ module Kit::Auth::Actions::Users::EnsureActiveToken
 
     if error
       # CLeanup cookies in case that's where we got the token from.
-      router_conn.response[:http][:cookies][:access_token] = { value: nil, encrypted: true }
+      router_conn.response[:http][:cookies][:access_token] = { value: nil, encrypted: true, delete: true }
 
       [:error, error]
     else

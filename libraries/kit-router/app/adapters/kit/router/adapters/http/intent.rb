@@ -47,14 +47,14 @@ module Kit::Router::Adapters::Http::Intent
   # Clear the cookie for :intent_type
   def self.clear_cookie(router_conn:, intent_type:)
     cookie_name = get_cookie_name(intent_type: intent_type)[1][:cookie_name]
-    router_conn.response[:http][:cookies][cookie_name] = { value: nil, encrypted: true }
+    router_conn.response[:http][:cookies][cookie_name] = { value: nil, encrypted: true, delete: true }
 
     [:ok, router_conn: router_conn]
   end
 
   # Generate the cookie name for a given :intent_type
   def self.get_cookie_name(intent_type:)
-    [:ok, cookie_name: "intent|#{ intent_type }"]
+    [:ok, cookie_name: "intent_#{ intent_type }"]
   end
 
 end

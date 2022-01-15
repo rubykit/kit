@@ -73,17 +73,33 @@ module Kit::Router::Adapters::HttpRails::Conn::Export
 
     data.each do |name, cookie|
       payload = cookie.slice(:value, :expires)
+      delete  = cookie[:delete]
+
       if cookie[:encrypted] == true
         cookie_name = "#{ Kit::Router::Adapters::HttpRails::Conn.cookies_encrypted_prefix }#{ name }"
-        rails_cookies.encrypted[cookie_name] = payload
+
+        if delete
+          rails_cookies.delete(cookie_name)
+        else
+          rails_cookies.encrypted[cookie_name] = payload
+        end
       elsif cookie[:signed] == true
         cookie_name = "#{ Kit::Router::Adapters::HttpRails::Conn.cookies_signed_prefix }#{ name }"
-        rails_cookies.signed[cookie_name] = payload
+
+        if delete
+          rails_cookies.delete(cookie_name)
+        else
+          rails_cookies.signed[cookie_name] = payload
+        end
       else
         cookie_name = name
-        rails_cookies[cookie_name] = payload
-      end
 
+        if delete
+          rails_cookies.delete(cookie_name)
+        else
+          rails_cookies[cookie_name] = payload
+        end
+      end
     end
 
     [:ok]
