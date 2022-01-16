@@ -7,7 +7,7 @@ module Kit::Auth::Endpoints::Web::Users::SignIn::WithPassword::Create
         self.method(:set_form_model),
         self.method(:create_sign_in),
 
-        [:local_ctx, Kit::Router::Adapters::Http::Intent::Actions::Consume, { intent_type: :user_sign_in }],
+        [:local_ctx, Kit::Router::Adapters::Http::Intent::Actions::Consume, { intent_type: :user_auth }],
         self.method(:redirect),
       ],
       error: [

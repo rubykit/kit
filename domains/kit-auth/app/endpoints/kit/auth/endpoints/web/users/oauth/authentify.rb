@@ -56,6 +56,9 @@ module Kit::Auth::Endpoints::Web::Users::Oauth::Authentify
   #
   # Since the endpoint is used for different scenarios, so we try to recover the `intent_type` from the mountpoint if it has mot been explicitely provided.
   def self.save_intent(router_conn:, intent_type: nil)
+    # TODO: disable this for now? Needs to audit usefulness.
+    return [:ok]
+
     intent_type ||= router_conn.dig(:metadata, :config, :intent_type)
 
     return [:ok] if !intent_type

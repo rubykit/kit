@@ -2,17 +2,24 @@
 module Kit::Auth::Endpoints::Web::Aliases::SessionUser
 
   def self.require_session_user!(router_conn:, i18n_params: nil)
-    return [:ok, session_user: router_conn.metadata[:session_user]] if router_conn.metadata[:session_user]
+    if router_conn.metadata[:session_user]
+      [:ok, session_user: router_conn.metadata[:session_user]]
+    else
+      Kit::Router::Adapters::Http::Intent::Actions::Save.call(
+        router_conn: router_conn,
+        intent_type: :user_auth,
+      )
 
-    i18n_params ||= {}
+      i18n_params ||= {}
 
-    Kit::Domain::Endpoints::Http.redirect_to(
-      router_conn: router_conn,
-      location:    Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|sign_in'),
-      flash:       {
-        alert: I18n.t('kit.auth.notifications.sign_in.required', **i18n_params),
-      },
-    )
+      Kit::Domain::Endpoints::Http.redirect_to(
+        router_conn: router_conn,
+        location:    Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|sign_in'),
+        flash:       {
+          alert: I18n.t('kit.auth.notifications.sign_in.required', **i18n_params),
+        },
+      )
+    end
   end
 
   Kit::Organizer::Services::Callable::Alias.register(id: :kit_auth_web_require_session_user!, target: self.method(:require_session_user!))

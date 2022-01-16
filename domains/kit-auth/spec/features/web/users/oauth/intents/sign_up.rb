@@ -13,7 +13,7 @@ describe 'web|users|oauth|sign_up', type: :feature do
   let(:post_action_route_id)  { 'web|intent|post_sign_up' }
   let(:post_action_route_url) { route_id_to_path(id: post_action_route_id) }
 
-  let(:intent_type) { :user_sign_up }
+  let(:intent_type) { :user_auth }
 
   let(:email) { 'user@rubykit.com' }
 

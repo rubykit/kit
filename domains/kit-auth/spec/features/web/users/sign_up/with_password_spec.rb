@@ -58,7 +58,7 @@ describe 'web|users|sign_up', type: :feature do
     let(:start_route_url)      { route_id_to_path(id: route_id, params: { intent: intent_type }) }
     let(:post_action_route_id) { 'web|intent|post_sign_up' }
 
-    let(:intent_type)          { :user_sign_up }
+    let(:intent_type)          { :user_auth }
 
     before do
       Kit::Router::Adapters::Http::Intent::Store.default_intent_store[intent_type] = {
