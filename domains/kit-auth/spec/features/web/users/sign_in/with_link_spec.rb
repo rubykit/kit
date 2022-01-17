@@ -1,6 +1,6 @@
 require_relative '../../../../rails_helper' # rubocop:disable Naming/FileName
 
-describe 'web|authorization_tokens|email|create', type: :feature do
+describe 'web|users|sign_in|with_magic_link|create', type: :feature do
 
   let(:user) { create(:user) }
 

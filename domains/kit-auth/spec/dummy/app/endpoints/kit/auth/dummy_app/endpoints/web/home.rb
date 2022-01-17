@@ -20,8 +20,8 @@ module Kit::Auth::DummyApp::Endpoints::Web::Home
           'web|users|email_confirmation|after|signed_out',
 
           # OAuth
-          'web|users|oauth|sign_in|after',
-          'web|users|oauth|sign_up|after',
+          'web|users|sign_in|oauth|after',
+          'web|users|sign_up|oauth|after',
 
           # Errors
           'web|errors|forbidden',

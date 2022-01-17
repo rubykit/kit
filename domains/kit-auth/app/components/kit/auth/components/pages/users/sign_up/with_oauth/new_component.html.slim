@@ -14,12 +14,6 @@
         b
           == t('kit.auth.pages.users.sign_up.with_password.sign_in.link_text')
 
-    - if has_social_providers?
-      .mt-4
-        = render Kit::Auth::Components::Forms::SignUpSocialButtonsComponent.new(**args)
+    .mt-4
+      = render Kit::Auth::Components::Forms::SignUpSocialButtonsComponent.new(**args)
 
-      .hr.mt-4.mb-5
-        | Or
-
-    .my-4
-      = render Kit::Auth::Components::Forms::SignupFormComponent.new(**args)

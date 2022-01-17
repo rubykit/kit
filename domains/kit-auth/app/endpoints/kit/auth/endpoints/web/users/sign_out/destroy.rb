@@ -18,9 +18,12 @@ module Kit::Auth::Endpoints::Web::Users::SignOut::Destroy
   end
 
   Kit::Router::Services::Router.register(
-    uid:     'kit_auth|web|authorization_tokens|destroy',
+    uid:     'kit_auth|web|users|sign_out|destroy',
     aliases: {
-      'web|authorization_tokens|destroy': ['web|users|sign_out'],
+      'web|users|sign_out|destroy' => [
+        'web|authorization_tokens|destroy',
+        'web|users|sign_out',
+      ],
     },
     target:  self.method(:endpoint),
   )

@@ -16,9 +16,9 @@ module Kit::Auth::Endpoints::Web::Users::SignIn::LinkRequest::New
   end
 
   Kit::Router::Services::Router.register(
-    uid:     'kit_auth|web|users|sign_in_link_request|new',
+    uid:     'kit_auth|web|users|sign_in|with_magic_link|request|new',
     target:  self.method(:endpoint),
-    aliases: ['web|users|sign_in_link_request|new'],
+    aliases: ['web|users|sign_in|with_magic_link|request|new'],
   )
 
   def self.set_form_model

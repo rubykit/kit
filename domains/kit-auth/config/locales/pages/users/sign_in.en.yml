@@ -12,7 +12,7 @@ en:
               submit: "Sign in with email"
 
               sign_up:
-                pre_link_text: "Not registered?"
+                pre_link_text: "Not registered yet?"
                 link_text: "Create an account!"
 
               password_reset:

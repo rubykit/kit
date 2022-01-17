@@ -1,6 +1,6 @@
 require_relative '../../../rails_helper' # rubocop:disable Naming/FileName
 
-describe 'web|users|password_reset_request|new', type: :feature do
+describe 'web|users|password_reset|request|new', type: :feature do
 
   let(:email)    { 'user@rubykit.com' }
   let(:user)     { create(:user, email: email) }

@@ -48,7 +48,7 @@ describe 'web|users|sign_out', type: :feature do
       .with(hash_including(route_id: 'event|user|auth|access_token|revoked', params: hash_including(user_id: user.id, user_secret_id: user_secret.id)))
 
     # Visit the url
-    visit_route_id(id: 'web|authorization_tokens|destroy')
+    visit_route_id(id: 'web|users|sign_out|destroy')
 
     # Redirect to the correct post action route route
     assert_current_path post_action_route_url

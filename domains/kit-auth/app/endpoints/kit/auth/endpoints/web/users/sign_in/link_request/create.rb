@@ -20,9 +20,9 @@ module Kit::Auth::Endpoints::Web::Users::SignIn::LinkRequest::Create
   end
 
   Kit::Router::Services::Router.register(
-    uid:     'kit_auth|web|users|sign_in_link_request|create',
+    uid:     'kit_auth|web|users|sign_in|with_magic_link|request|create',
     aliases: [
-      'web|users|sign_in_link_request|create',
+      'web|users|sign_in|with_magic_link|request|create',
     ],
     target:  self.method(:endpoint),
   )

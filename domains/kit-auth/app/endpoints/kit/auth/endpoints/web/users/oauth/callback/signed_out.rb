@@ -63,11 +63,11 @@ module Kit::Auth::Endpoints::Web::Users::Oauth::Callback::SignedOut
   # ### Default high level implementation:
   #   - save the new provider tokens (create new UserOauthSecrets)
   #   - sign the user in
-  #   - redirect to `web|users|oauth|sign_in|after`
+  #   - redirect to `web|users|sign_in|oauth|after`
   def self.signed_out_with_identity(router_conn:, omniauth_data:, user_oauth_identity:)
     Kit::Organizer.call(
       ok:  [
-        -> { [:ok, redirect_url: Kit::Router::Adapters::Http::Mountpoints.path(id:'web|users|oauth|sign_in|after')] },
+        -> { [:ok, redirect_url: Kit::Router::Adapters::Http::Mountpoints.path(id:'web|users|sign_in|oauth|after')] },
         Kit::Auth::Services::UserOauthSecret.method(:create),
         self.method(:create_sign_in),
         Kit::Auth::Endpoints::Web::Users::SignIn::WithPassword::Create.method(:redirect),
@@ -86,13 +86,13 @@ module Kit::Auth::Endpoints::Web::Users::Oauth::Callback::SignedOut
   #   - save the provider data (create new `UserOauthIdentity`)
   #   - save the new provider tokens (create new `UserOauthSecrets`)
   #   - sign the user in
-  #   - redirect to `web|users|oauth|sign_in|after_with_new_identity`
+  #   - redirect to `web|users|sign_in|oauth|after_with_new_identity`
   #
   # TODO: add flash notification for connection Oauth provider (similar to {SignedIn.redirect_connect_oauth_account})
   def self.signed_out_without_identity_existing_user(router_conn:, omniauth_data:, user:)
     Kit::Organizer.call(
       ok:  [
-        -> { [:ok, redirect_url: Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|oauth|sign_in|after_with_new_identity')] },
+        -> { [:ok, redirect_url: Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|sign_in|oauth|after_with_new_identity')] },
         Kit::Auth::Actions::Oauth::LinkIdentity,
         Kit::Auth::Services::UserOauthSecret.method(:create),
         self.method(:create_sign_in),
@@ -113,11 +113,11 @@ module Kit::Auth::Endpoints::Web::Users::Oauth::Callback::SignedOut
   #   - save the new provider tokens (create new `UserOauthSecrets`)
   #   - sign the user up (create new `User`)
   #   - sign the user in
-  #   - redirect to `web|users|oauth|sign_up|after`
+  #   - redirect to `web|users|sign_up|oauth|after`
   def self.signed_out_without_identity_no_user(router_conn:, omniauth_data:, email:)
     Kit::Organizer.call(
       ok:  [
-        -> { [:ok, redirect_url: Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|oauth|sign_up|after')] },
+        -> { [:ok, redirect_url: Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|sign_up|oauth|after')] },
         self.method(:create_sign_up),
         Kit::Auth::Actions::Oauth::LinkIdentity,
         Kit::Auth::Services::UserOauthSecret.method(:create),

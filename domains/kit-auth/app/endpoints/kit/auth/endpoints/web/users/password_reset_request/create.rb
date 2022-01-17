@@ -21,8 +21,8 @@ module Kit::Auth::Endpoints::Web::Users::PasswordResetRequest::Create
   end
 
   Kit::Router::Services::Router.register(
-    uid:     'kit_auth|web|users|password_reset_request|create',
-    aliases: ['web|users|password_reset_request|create'],
+    uid:     'kit_auth|web|users|password_reset|request|create',
+    aliases: ['web|users|password_reset|request|create'],
     target:  self.method(:endpoint),
   )
 

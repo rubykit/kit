@@ -17,7 +17,7 @@ module Kit::Auth::Endpoints::Web::Users::Settings::Oauth::Index
       'web|settings|oauth|index': {
         'web|settings|oauth' => [
           # OAuth
-          'web|users|oauth|sign_in|after_with_new_identity',
+          'web|users|sign_in|oauth|after_with_new_identity',
           'web|users|oauth|new_identity',
           'web|users|oauth|error|already_linked',
           'web|users|oauth|error|users_oauth_identity_conflict',

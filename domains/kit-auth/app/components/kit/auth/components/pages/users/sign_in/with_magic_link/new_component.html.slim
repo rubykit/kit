@@ -11,13 +11,15 @@
     .mt-4
       = render Kit::Auth::Components::Forms::MagicLinkComponent.new(**args)
 
-    .hr.my-6
-      | Or
+    - if router_exists?(id: 'web|users|password_reset|request|new')
+      .hr.my-6
+        | Or
 
-    .mt-4
-      = router_link_to(id: 'web|users|password_reset_request|new', html: { class: 'btn btn-primary col-12' }, request: request)
-        == t('kit.auth.pages.users.sign_in.with_magic_link.password_reset.link_text')
+      .mt-4
+        = router_link_to(id: 'web|users|password_reset|request|new', html: { class: 'btn btn-primary col-12' }, request: request)
+          == t('kit.auth.pages.users.sign_in.with_magic_link.password_reset.link_text')
 
-.text-center.mt-6
-  = router_link_to(id: 'web|users|sign_in')
-    == t('kit.auth.pages.users.sign_in.with_magic_link.sign_in.link_text')
+- if router_exists?(id: 'web|users|sign_in|new')
+  .text-center.mt-6
+    = router_link_to(id: 'web|users|sign_in|new')
+      == t('kit.auth.pages.users.sign_in.with_magic_link.sign_in.link_text')

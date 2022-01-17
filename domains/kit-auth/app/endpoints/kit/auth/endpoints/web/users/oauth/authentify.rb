@@ -26,10 +26,14 @@ module Kit::Auth::Endpoints::Web::Users::Oauth::Authentify
   Kit::Router::Services::Router.register(
     uid:     'kit_auth|web|users|oauth|authentify',
     aliases: {
-      'web|users|oauth|authentify' => [
-        'web|users|oauth|sign_up',
-        'web|users|oauth|sign_in',
-      ],
+      'web|users|oauth|authentify' => {
+        'web|users|oauth|sign_up' => [
+          'web|users|sign_up|oauth|create',
+        ],
+        'web|users|oauth|sign_in' => [
+          'web|users|sign_in|oauth|create',
+        ],
+      }
     },
     target:  self.method(:endpoint),
   )

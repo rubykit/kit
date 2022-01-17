@@ -2,7 +2,7 @@ module Helpers::WebAuthentication
 
   # Sign-in the user by going through the real sign in flow.
   def web_real_sign_in(email: 'user@rubykit.com', password: 'Abcd12_xxxxxxxxx')
-    visit route_id_to_path(id: 'web|users|sign_in')
+    visit route_id_to_path(id: 'web|users|sign_in|with_password|new')
 
     within('form.component_forms_signin-form') do
       fill_in 'Email',    with: email

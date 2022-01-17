@@ -10,7 +10,7 @@ describe 'web|users|oauth|callback', type: :feature do
   let(:start_route_params)    { { provider: provider } }
   let(:start_route_url)       { route_id_to_path(id: start_route_id, params: start_route_params) }
 
-  let(:post_action_route_id)  { 'web|users|oauth|sign_in|after' }
+  let(:post_action_route_id)  { 'web|users|sign_in|oauth|after' }
   let(:post_action_route_url) { route_id_to_path(id: post_action_route_id) }
 
   let(:email)    { 'user@rubykit.com' }

@@ -14,7 +14,7 @@ module Kit::Auth::Endpoints::Web::Aliases::SessionUser
 
       Kit::Domain::Endpoints::Http.redirect_to(
         router_conn: router_conn,
-        location:    Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|sign_in'),
+        location:    Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|sign_in|new'),
         flash:       {
           alert: I18n.t('kit.auth.notifications.sign_in.required', **i18n_params),
         },
@@ -53,7 +53,7 @@ module Kit::Auth::Endpoints::Web::Aliases::SessionUser
 
     Kit::Domain::Endpoints::Http.redirect_to(
       router_conn: router_conn,
-      location:    Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|sign_in'),
+      location:    Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|sign_in|new'),
       flash:       {
         alert: I18n.t('kit.auth.notifications.scopes.missing', **i18n_params.merge(scopes: [scope])),
       },

@@ -7,7 +7,7 @@ module Kit::Auth::Endpoints::Web::Users::SignIn::WithMagicLink::Create
         Kit::Auth::Actions::Users::IdentifyUserForConn,
         ->(router_conn:) { [:ok, access_token: router_conn.metadata[:request_user_access_token]] },
         Kit::Auth::Actions::Users::EnsureActiveToken,
-        [:local_ctx, [:alias, :web_redirect_if_missing_scope!], { scope: Kit::Auth::Services::Scopes::USER_SIGN_IN, redirect_url: Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|sign_in') }],
+        [:local_ctx, [:alias, :web_redirect_if_missing_scope!], { scope: Kit::Auth::Services::Scopes::USER_SIGN_IN, redirect_url: Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|sign_in|new') }],
 
         self.method(:create_sign_in),
 
@@ -24,10 +24,12 @@ module Kit::Auth::Endpoints::Web::Users::SignIn::WithMagicLink::Create
   end
 
   Kit::Router::Services::Router.register(
-    uid:     'kit_auth|web|authorization_tokens|email|create',
-    aliases: [
-      'web|authorization_tokens|email|create',
-    ],
+    uid:     'kit_auth|web|users|sign_in|with_magic_link|create',
+    aliases: {
+      'web|users|sign_in|with_magic_link|create' => [
+        'web|authorization_tokens|email|create',
+      ],
+    },
     target:  self.method(:endpoint),
   )
 
@@ -55,7 +57,7 @@ module Kit::Auth::Endpoints::Web::Users::SignIn::WithMagicLink::Create
 
     if Kit::Organizer.has_error_code?(code: error_code, errors: errors)
       error_text   = I18n.t('kit.auth.notifications.sign_in.link.revoked')
-      redirect_url = Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|sign_in_link_request|new')
+      redirect_url = Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|sign_in|link|request|new')
 
       [:ok, errors: [{ detail: error_text, code: error_code }], overwrite_errors: true, redirect_url: redirect_url]
     else
@@ -68,7 +70,7 @@ module Kit::Auth::Endpoints::Web::Users::SignIn::WithMagicLink::Create
 
     if Kit::Organizer.has_error_code?(code: error_code, errors: errors)
       error_text   = I18n.t('kit.auth.notifications.sign_in.link.expired')
-      redirect_url = Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|sign_in_link_request|new')
+      redirect_url = Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|sign_in|link|request|new')
 
       [:ok, errors: [{ detail: error_text, code: error_code }], overwrite_errors: true, redirect_url: redirect_url]
     else

@@ -11,7 +11,7 @@ class Kit::Auth::Components::Emails::Users::SignInLinkComponent < Kit::Auth::Com
 
   def sign_in_link
     Kit::Router::Adapters::Http::Mountpoints.url(
-      id:     'web|authorization_tokens|email|create',
+      id:     'web|users|sign_in|with_magic_link|create',
       params: {
         access_token: access_token_plaintext_secret,
       },

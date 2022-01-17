@@ -23,10 +23,12 @@ module Kit::Auth::Endpoints::Web::Users::SignUp::WithPassword::Create
   end
 
   Kit::Router::Services::Router.register(
-    uid:     'kit_auth|web|users|create',
-    aliases: [
-      'web|users|create',
-    ],
+    uid:     'kit_auth|web|users|sign_up|with_password|create',
+    aliases: {
+      'web|users|sign_up|with_password|create' => [
+        'web|users|create',
+      ],
+    },
     target:  self.method(:endpoint),
   )
 

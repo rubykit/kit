@@ -14,23 +14,8 @@
         b
           == t('kit.auth.pages.users.sign_in.with_password.sign_up.link_text')
 
-    - if router_exists?(id: 'web|users|sign_in|oauth|create')
-      .mt-4
-        = render Kit::Auth::Components::Forms::SignInSocialButtonsComponent.new(**args)
-
-    - if router_exists?(id: 'web|users|sign_in|with_password|new') && router_exists?(id: 'web|users|sign_in|oauth|create')
-      .hr.mt-4.mb-5
-        | Or
-
-    - if router_exists?(id: 'web|users|sign_in|with_password|new')
-      .mt-4
-        = render Kit::Auth::Components::Forms::SigninFormComponent.new(**args)
-
-/.text-center.mt-3
-  ' #{ t('kit.auth.pages.users.sign_in.with_password.password_reset.pre_link_text') }
-  = router_link_to(id: 'web|users|password_reset|request|new')
-    b
-      == t('kit.auth.pages.users.sign_in.with_password.password_reset.link_text')
+    .mt-4
+      = render Kit::Auth::Components::Forms::SignInSocialButtonsComponent.new(**args)
 
 - if router_exists?(id: 'web|users|sign_in|with_magic_link|request|new')
   .text-center.mt-3

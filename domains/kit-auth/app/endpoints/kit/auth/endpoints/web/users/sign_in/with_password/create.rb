@@ -22,9 +22,9 @@ module Kit::Auth::Endpoints::Web::Users::SignIn::WithPassword::Create
   end
 
   Kit::Router::Services::Router.register(
-    uid:     'kit_auth|web|authorization_tokens|create',
+    uid:     'kit_auth|web|users|sign_in|with_password|create',
     aliases: [
-      'web|authorization_tokens|create',
+      'web|users|sign_in|with_password|create',
     ],
     target:  self.method(:endpoint),
   )

@@ -1,7 +1,7 @@
 require_relative '../../../../rails_helper' # rubocop:disable Naming/FileName
 
-describe 'web|users|sign_up', type: :feature do
-  let(:route_id) { 'web|users|sign_up' }
+describe 'web|users|sign_up|with_password|new', type: :feature do
+  let(:route_id) { 'web|users|sign_up|with_password|new' }
 
   let(:email)    { 'user@rubykit.com' }
   let(:password) { 'Abcd12_xxxxxxxxx' }

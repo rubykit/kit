@@ -69,7 +69,7 @@ describe 'web|users|password_reset|edit', type: :feature do
   context 'with a token with invalid scope' do
 
     let(:create_access_token)  { Kit::Auth::Actions::AccessTokens::CreateForSignIn.call(user: user, application: app_web) }
-    let(:post_action_route_id) { 'web|users|sign_in' }
+    let(:post_action_route_id) { 'web|users|sign_in|with_password|new' }
 
     it 'redirects with the correct error message' do
       # Visit the page

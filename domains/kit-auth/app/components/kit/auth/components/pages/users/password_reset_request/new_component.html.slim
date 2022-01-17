@@ -12,5 +12,5 @@
       = render Kit::Auth::Components::Forms::PasswordResetRequestComponent.new(**args)
 
 .text-center.mt-3
-  = router_link_to(id: 'web|users|sign_in')
+  = router_link_to(id: 'web|users|sign_in|with_password|new')
     == t('kit.auth.pages.users.password.reset_request.sign_in.action')

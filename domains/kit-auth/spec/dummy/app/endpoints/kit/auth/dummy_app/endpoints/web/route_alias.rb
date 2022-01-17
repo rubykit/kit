@@ -27,9 +27,9 @@ module Kit::Auth::DummyApp::Endpoints::Web::RouteAlias
     'web|users|email_confirmation|after|signed_out',
 
     # Oauth
-    'web|users|oauth|sign_in|after',
-    'web|users|oauth|sign_up|after',
-    'web|users|oauth|sign_in|after_with_new_identity',
+    'web|users|sign_in|oauth|after',
+    'web|users|sign_up|oauth|after',
+    'web|users|sign_in|oauth|after_with_new_identity',
 
     'web|users|oauth|new_identity',
     'web|users|oauth|error|already_linked',

@@ -37,4 +37,11 @@ module Kit::Router::ViewHelpers::HttpRoutes
     content_tag('a', url, html, &block)
   end
 
+  def router_exists?(id:)
+    router_url(id: id)
+    true
+  rescue StandardError
+    false
+  end
+
 end

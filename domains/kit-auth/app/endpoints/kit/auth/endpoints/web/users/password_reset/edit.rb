@@ -60,7 +60,7 @@ module Kit::Auth::Endpoints::Web::Users::PasswordReset::Edit
 
     if Kit::Organizer.has_error_code?(code: error_code, errors: errors)
       error_text   = I18n.t('kit.auth.notifications.password_reset.link.revoked')
-      redirect_url = Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|password_reset_request|new')
+      redirect_url = Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|password_reset|request|new')
 
       [:ok, {
         errors:           [{ detail: error_text, code: error_code }],
@@ -77,7 +77,7 @@ module Kit::Auth::Endpoints::Web::Users::PasswordReset::Edit
 
     if Kit::Organizer.has_error_code?(code: error_code, errors: errors)
       error_text   = I18n.t('kit.auth.notifications.password_reset.link.expired')
-      redirect_url = Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|password_reset_request|new')
+      redirect_url = Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|password_reset|request|new')
 
       [:ok, {
         errors:           [{ detail: error_text, code: error_code }],

@@ -1,6 +1,6 @@
 require_relative '../../../../rails_helper' # rubocop:disable Naming/FileName
 
-describe 'web|users|sign_in_link_request|new', type: :feature do
+describe 'web|users|sign_in|with_magic_link|request|new', type: :feature do
 
   let(:email)    { 'user@rubykit.com' }
   let(:user)     { create(:user, email: email) }
@@ -24,7 +24,7 @@ describe 'web|users|sign_in_link_request|new', type: :feature do
     click_button I18n.t('kit.auth.pages.users.sign_in.with_magic_link.submit')
 
     # Redirect to the correct post action route route
-    assert_current_path route_id_to_path(id: 'web|users|sign_in_link_request|create')
+    assert_current_path route_id_to_path(id: 'web|users|sign_in|with_magic_link|request|create')
     expect(page).to have_content I18n.t('kit.auth.pages.users.sign_in.with_magic_link.after.title')
   end
 
