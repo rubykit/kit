@@ -153,6 +153,10 @@ module Kit::Auth::Endpoints::Web::Users::Oauth::Callback::SignedOut
       list: [
         [:local_ctx, Kit::Router::Adapters::Http::Intent::Actions::Consume, { intent_type: :user_auth }],
         Kit::Auth::Actions::Users::CreateWithoutPassword,
+
+        ->(user:) { [:ok, user_email: Kit::Auth::Models::Write::UserEmail.find(user.id)] },
+        Kit::Auth::Services::UserEmail.method(:confirm),
+        ->(user:) { [:ok, user: user.reload] },
       ],
       ctx:  {
         router_conn:    router_conn,
