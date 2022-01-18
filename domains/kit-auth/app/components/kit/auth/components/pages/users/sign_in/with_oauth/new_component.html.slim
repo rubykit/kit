@@ -1,25 +1,25 @@
 .text-center.mt-4
   h1.mb-2.fw-bold
-    == t('kit.auth.pages.users.sign_in.with_password.title')
-- if I18n.exists?('kit.auth.pages.users.sign_in.with_password.lead')
+    == t('kit.auth.pages.users.sign_in.with_oauth.title')
+- if I18n.exists?('kit.auth.pages.users.sign_in.with_oauth.lead')
   .text-center.mt-1
-    == t('kit.auth.pages.users.sign_in.with_password.lead')
+    == t('kit.auth.pages.users.sign_in.with_oauth.lead')
 
 .row
   .offset-lg-4.col-lg-4
 
     .text-center.mt-1
-      ' #{ t('kit.auth.pages.users.sign_in.with_password.sign_up.pre_link_text') }
+      ' #{ t('kit.auth.pages.users.sign_in.with_oauth.sign_up.pre_link_text') }
       = router_link_to(id: 'web|users|sign_up|new')
         b
-          == t('kit.auth.pages.users.sign_in.with_password.sign_up.link_text')
+          == t('kit.auth.pages.users.sign_in.with_oauth.sign_up.link_text')
 
     .mt-4
       = render Kit::Auth::Components::Forms::SignInSocialButtonsComponent.new(**args)
 
 - if router_exists?(id: 'web|users|sign_in|with_magic_link|request|new')
   .text-center.mt-3
-    ' #{ t('kit.auth.pages.users.sign_in.with_password.magic_link.pre_link_text') }
+    ' #{ t('kit.auth.pages.users.sign_in.with_oauth.magic_link.pre_link_text') }
     = router_link_to(id: 'web|users|sign_in|with_magic_link|request|new')
       b
-        == t('kit.auth.pages.users.sign_in.with_password.magic_link.link_text')
+        == t('kit.auth.pages.users.sign_in.with_oauth.magic_link.link_text')

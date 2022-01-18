@@ -23,6 +23,19 @@ en:
                 pre_link_text: 'Forgot your password?'
                 link_text: 'Get help signing in.'
 
+            with_oauth:
+              title: "${kit.auth.pages.users.sign_in.with_password.title}"
+              lead: "${kit.auth.pages.users.sign_in.with_password.lead}"
+              submit: "${kit.auth.pages.users.sign_in.with_password.submit}"
+
+              sign_up:
+                pre_link_text: "${kit.auth.pages.users.sign_in.with_password.sign_up.pre_link_text}"
+                link_text: "${kit.auth.pages.users.sign_in.with_password.sign_up.link_text}"
+
+              magic_link:
+                pre_link_text: "${kit.auth.pages.users.sign_in.with_password.magic_link.pre_link_text}"
+                link_text: "${kit.auth.pages.users.sign_in.with_password.magic_link.link_text}"
+
             with_magic_link:
 
               title: "Sign in without your password"

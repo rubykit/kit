@@ -12,3 +12,11 @@ en:
               sign_in:
                 pre_link_text: "Already have an account?"
                 link_text: "Sign in!"
+
+            with_oauth:
+              title: "${kit.auth.pages.users.sign_up.with_password.title}"
+              submit: "${kit.auth.pages.users.sign_up.with_password.submit}"
+
+              sign_in:
+                pre_link_text: "${kit.auth.pages.users.sign_up.with_password.sign_in.pre_link_text}"
+                link_text: "${kit.auth.pages.users.sign_up.with_password.sign_in.link_text}"
