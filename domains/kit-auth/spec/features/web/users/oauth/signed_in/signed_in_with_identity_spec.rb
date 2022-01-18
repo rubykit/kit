@@ -3,11 +3,11 @@ require_relative '../../../../../rails_helper' # rubocop:disable Naming/FileName
 describe 'web|users|oauth|callback', type: :feature do
   include_context 'omniauth'
 
-  let(:provider)          { :facebook }
+  let(:omniauth_provider) { :facebook }
   let(:omniauth_strategy) { :facebook_web }
 
   let(:start_route_id)        { 'web|users|oauth|callback' }
-  let(:start_route_params)    { { provider: provider } }
+  let(:start_route_params)    { { provider: omniauth_provider } }
   let(:start_route_url)       { route_id_to_path(id: start_route_id, params: start_route_params) }
 
   let(:post_action_route_id)  { 'web|users|oauth|error|already_linked' }
@@ -16,7 +16,8 @@ describe 'web|users|oauth|callback', type: :feature do
   let(:user)  { create(:user) }
   let(:email) { user.email }
 
-  let(:user_oauth_identity) { create(:user_oauth_identity, user: user, provider: provider, provider_uid: omniauth_mock_data[:uid]) }
+  let(:omniauth_mock_data)  { omniauth_mock_data_facebook }
+  let(:user_oauth_identity) { create(:user_oauth_identity, user: user, provider: omniauth_provider, provider_uid: omniauth_mock_data[:uid]) }
 
   before do
     user
@@ -42,7 +43,7 @@ describe 'web|users|oauth|callback', type: :feature do
       expect(page).to have_content post_action_route_id
 
       # Display the expected notification
-      flash_text = I18n.t('kit.auth.notifications.oauth.link.already_linked', provider: provider)
+      flash_text = I18n.t('kit.auth.notifications.oauth.link.already_linked', provider: omniauth_provider)
       expect(page.body.include?(flash_text)).to be true
     end
 

@@ -3,7 +3,7 @@ require_relative '../../../../../rails_helper' # rubocop:disable Naming/FileName
 describe 'web|users|oauth|sign_up', type: :feature do
   include_context 'omniauth'
 
-  let(:provider)          { :facebook }
+  let(:omniauth_provider) { :facebook }
   let(:omniauth_strategy) { :facebook_web }
 
   let(:start_route_id)        { 'web|users|oauth|sign_up' }

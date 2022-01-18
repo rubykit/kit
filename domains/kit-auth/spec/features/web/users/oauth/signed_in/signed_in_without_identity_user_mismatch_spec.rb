@@ -3,11 +3,11 @@ require_relative '../../../../../rails_helper' # rubocop:disable Naming/FileName
 describe 'web|users|oauth|callback', type: :feature do
   include_context 'omniauth'
 
-  let(:provider)          { :facebook }
+  let(:omniauth_provider) { :facebook }
   let(:omniauth_strategy) { :facebook_web }
 
   let(:start_route_id)        { 'web|users|oauth|callback' }
-  let(:start_route_params)    { { provider: provider } }
+  let(:start_route_params)    { { provider: omniauth_provider } }
   let(:start_route_url)       { route_id_to_path(id: start_route_id, params: start_route_params) }
 
   let(:post_action_route_id)  { 'web|users|oauth|error|users_conflict' }
@@ -55,7 +55,7 @@ describe 'web|users|oauth|callback', type: :feature do
 
       # Display the expected notification
       i18n_params = {
-        provider:       provider,
+        provider:       omniauth_provider,
         provider_email: user_other.email,
       }
 
