@@ -135,7 +135,7 @@ class Kit::Router::Models::Conn
   def dig(name, *names)
     name = name.to_sym
     if name.in?(ATTRS)
-      send(name).dig(*names)
+      (names.size > 0) ? send(name).dig(*names) : send(name)
     else
       nil
     end
