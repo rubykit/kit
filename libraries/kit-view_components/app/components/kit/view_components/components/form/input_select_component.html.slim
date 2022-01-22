@@ -1,0 +1,20 @@
+.row.form-group.mb-0 data-input-type='select-block-checkbox'
+
+  .col-form-label class=col_label_class
+    label for=input_id
+      == label
+      - if required
+        span.text-danger.fw-bold.ms-1 *
+    - if info
+      .form-info
+        == info
+
+  .col-form-input class=col_input_class
+    .row.mx-n2 class=((errors_list.size > 0) ? 'is-invalid' : nil)
+
+    select.form-select name=name data-control=data_control
+      - list_values.each do |el|
+        option value=el[:value] id=el[:input_id] selected=el[:selected] data=el[:html_data]
+          == el[:label]
+
+    = render Kit::ViewComponents::Components::Form::ErrorsFeedbackComponent.new(errors_list: errors_list)
