@@ -16,10 +16,12 @@ module Kit::Router::Services::Store
   after Ct::RouterStore
   def self.create_store
     {
-      endpoints:   {},
-      aliases:     {},
-      mountpoints: [],
-      afters:      {},
+      endpoints:         {},
+      aliases:           {},
+      mountpoints:       [],
+
+      delayed_endpoints: {},
+      delayed_aliases:   {},
 =begin
       mountpoints: {
         [:http, :rails] => [],

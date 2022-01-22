@@ -26,23 +26,23 @@ module Kit::Router::Services::Router
     if after && !router_store[:endpoints][uid]
       Kit::Router::Log.log(msg: "registering delayed for `#{ uid }` (waiting for: #{ after })", flags: [:debug, :routes, :endpoint])
 
-      save_afters(uid: uid, target: target, types: types, meta: meta, aliases: aliases, after: after, router_store: router_store)
+      save_delayed_endpoint(uid: uid, target: target, types: types, meta: meta, aliases: aliases, after: after, router_store: router_store)
     else
       Kit::Router::Services::Store::Endpoint.add_endpoint(uid: uid, target: target, types: types, meta: meta, router_store: router_store)
 
       register_aliases(target_id: uid, aliases: aliases, router_store: router_store)
-      handle_afters(uid: uid, router_store: router_store)
+      handle_delayed_endpoint(uid: uid, router_store: router_store)
     end
 
     [:ok]
   end
 
   # Because of engine initializers loading order, we need to delay the declaration of certain routes.
-  def self.save_afters(uid:, target:, types:, meta:, aliases:, after:, router_store: nil)
+  def self.save_delayed_endpoint(uid:, target:, types:, meta:, aliases:, after:, router_store: nil)
     router_store ||= self.router_store
     after          = after.to_sym
 
-    list = router_store[:afters][after] ||= []
+    list = router_store[:delayed_endpoints][after] ||= []
 
     list << {
       uid:     uid,
@@ -57,11 +57,11 @@ module Kit::Router::Services::Router
 
   # Once a route is registered, check if there were some delayed declartions for that uid.
   # If so, register them now.
-  def self.handle_afters(uid:, router_store: nil)
+  def self.handle_delayed_endpoint(uid:, router_store: nil)
     router_store ||= self.router_store
     uid            = uid.to_sym
 
-    list = router_store[:afters][uid] || []
+    list = router_store[:delayed_endpoints][uid] || []
     if list.size > 0
       list.each do |el|
         Kit::Router::Services::Store::Endpoint.add_endpoint(uid: el[:uid], target: el[:target], types: el[:types], meta: el[:meta], router_store: router_store)
@@ -70,7 +70,7 @@ module Kit::Router::Services::Router
       end
     end
 
-    router_store[:afters].delete(uid)
+    router_store[:delayed_endpoints].delete(uid)
 
     #binding.pry
 
@@ -101,8 +101,8 @@ module Kit::Router::Services::Router
   def self.finalize_endpoints(router_store: nil)
     router_store ||= self.router_store
 
-    router_store[:afters].each do |uid, _|
-      handle_afters(uid: uid, router_store: router_store)
+    router_store[:delayed_endpoints].each do |uid, _|
+      handle_delayed_endpoint(uid: uid, router_store: router_store)
     end
 
     [:ok]
