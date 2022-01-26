@@ -4,6 +4,8 @@ module Kit::Auth::Controllers::Web::Concerns::DefaultRoute
   extend ActiveSupport::Concern
 
   included do
+    # TODO: audit if both are necessary? (not super important if not)
+    include Kit::Router::Controllers::Concerns::RouterConn
     include Kit::Auth::Controllers::Web::Concerns::RailsCurrentUser
 
     protect_from_forgery with: :exception

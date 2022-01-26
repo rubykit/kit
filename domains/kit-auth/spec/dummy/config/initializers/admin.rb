@@ -2,72 +2,43 @@ if defined?(::ActiveAdmin)
 
   ::ActiveAdmin.setup do |config|
 
-  ::ActiveAdmin.setup do |config|
-    config.namespace :kit_auth do |admin|
-      admin.route_prefix = 'admin'
+    config.namespace :kit_auth do |ns|
+      ns.route_prefix = 'admin'
     end
-   end
 
-    #config.site_title = "Admin"
-    # config.site_title_link = "/"
-    # config.site_title_image = "logo.png"
-    # config.favicon = 'favicon.ico'
+    config.route_prefix = 'admin'
+    config.root_to      = 'kit/auth/users#index'
+
+    config.site_title   = "Kit::Auth - Default Admin"
 
     config.display_name_methods = [:model_verbose_name]
 
-    #config.root_prefix = 'admin'
+    config.authentication_method = :authenticate_admin_user!
+    config.current_user_method   = :current_admin_user
 
-    # config.authorization_adapter = ActiveAdmin::CanCanAdapter
-    # config.pundit_default_policy = "MyDefaultPunditPolicy"
-    # config.pundit_policy_namespace = :admin
-    # config.cancan_ability_class = "Ability"
-    # config.on_unauthorized_access = :access_denied
+    config.logout_link_path   = ->(*) { Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|sign_out|destroy') }
+    config.logout_link_method = :delete
+    #config.logout_link_method = ->(*) { Kit::Router::Adapters::Http::Mountpoints.verb(id: 'web|users|sign_out|destroy') }
 
-    # config.current_user_method = :current_admin_user
-
-    # config.logout_link_path = :destroy_admin_user_session_path
-    # config.logout_link_method = :get
-
-    # config.root_to = 'dashboard#index'
-
-    config.comments = false
-    # config.comments_registration_name = 'AdminComment'
-    # config.comments_order = 'created_at ASC'
+    config.comments      = false
     config.comments_menu = false
-    # config.comments_menu = { parent: 'Admin', priority: 1 }
-
     config.batch_actions = false
 
-    # config.before_action :do_something_awesome
     config.filter_attributes = [:hashed_secret, :password, :password_confirmation]
 
     config.localize_format = :long
 
-    # == Meta Tags
-    #   config.meta_tags = { author: 'My Company' }
-    #   config.meta_tags_for_logged_out_pages = {}
-
-    # config.breadcrumb = false
-
-    # config.create_another = true
-
-    #   config.register_stylesheet 'my_stylesheet.css'
-    #   config.register_stylesheet 'my_print_stylesheet.css', media: :print
-    #   config.register_javascript 'my_javascript.js'
-
-    # config.csv_options = { col_sep: ';' }
-    # config.csv_options = { force_quotes: true }
-
-    # config.default_per_page = 30
-    # config.max_per_page = 10_000
-
-    # config.filters = true
     config.include_default_association_filters = false
+  end
 
-    # config.head = ''.html_safe
-    # config.footer = 'my custom footer text'
+  ActiveAdmin::BaseController.class_eval do
+    helper ActiveAdmin::ViewsHelper
 
-    # config.order_clause = MyOrderClause
+    # Note: redundant with dummy WebController in this case, but the declaration happens way later and does not work for the following Admin Concern.
+    include Kit::Router::Controllers::Concerns::RouterConn
+    include Kit::Auth::Controllers::Web::Concerns::RailsCurrentUser
+
+    include Kit::Auth::DummyAppContainer::Controllers::Web::Concerns::Admin
   end
 
 end

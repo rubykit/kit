@@ -2,50 +2,74 @@ module Kit::Auth::Controllers::Web::Concerns::RailsCurrentUser
 
   extend ActiveSupport::Concern
 
-  included do
-    before_action :resolve_current_user
-  end
+  def kit_auth_resolve_current_user
+    kit_router_conn = get_kit_router_conn
+    return nil if !kit_router_conn
 
-  def resolve_current_user
     Kit::Organizer.call(
       list: [
-        Kit::Router::Adapters::HttpRails::Conn::Import.method(:import_request),
         [:alias, :web_resolve_current_user],
       ],
       ctx:  {
-        rails_request:    request,
-        rails_cookies:    cookies,
-        rails_controller: self,
+        router_conn: kit_router_conn,
       },
     )
   end
 
   def session_user
-    kit_router_conn = request.instance_variable_get(:@kit_router_conn)
+    kit_router_conn = get_kit_router_conn
     return nil if !kit_router_conn
 
-    kit_router_conn.metadata[:session_user]
+    @kit_session_user ||= kit_router_conn.metadata[:session_user]
+
+    if !@kit_session_user
+      kit_auth_resolve_current_user
+      @kit_session_user = kit_router_conn.metadata[:session_user]
+    end
+
+    @kit_session_user
   end
 
   def session_user_access_token
-    kit_router_conn = request.instance_variable_get(:@kit_router_conn)
+    kit_router_conn = get_kit_router_conn
     return nil if !kit_router_conn
 
-    kit_router_conn.metadata[:session_user_access_token]
+    @kit_session_user_access_token ||= kit_router_conn.metadata[:session_user_access_token]
+
+    if !@kit_session_user_access_token
+      kit_auth_resolve_current_user
+      @kit_session_user_access_token = kit_router_conn.metadata[:session_user_access_token]
+    end
+
+    @kit_session_user_access_token
   end
 
   def request_user
-    kit_router_conn = request.instance_variable_get(:@kit_router_conn)
+    kit_router_conn = get_kit_router_conn
     return nil if !kit_router_conn
 
-    kit_router_conn.metadata[:request_user]
+    @kit_request_user ||= kit_router_conn.metadata[:request_user]
+
+    if !@kit_request_user
+      kit_auth_resolve_current_user
+      @kit_request_user = kit_router_conn.metadata[:request_user]
+    end
+
+    @kit_request_user
   end
 
   def request_user_access_token
-    kit_router_conn = request.instance_variable_get(:@kit_router_conn)
+    kit_router_conn = get_kit_router_conn
     return nil if !kit_router_conn
 
-    kit_router_conn.metadata[:request_user_access_token]
+    @kit_request_user_access_token ||= kit_router_conn.metadata[:request_user_access_token]
+
+    if !@kit_request_user_access_token
+      kit_auth_resolve_current_user
+      @kit_request_user_access_token = kit_router_conn.metadata[:request_user_access_token]
+    end
+
+    @kit_request_user_access_token
   end
 
 end

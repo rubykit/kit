@@ -27,6 +27,9 @@ header#header.header
               = router_link_to(id: 'web|settings', html: { class: 'nav-link' }, request: request)
                 = session_user.email
             li.nav-item
+              = link_to(admin_kit_auth_root_path, class: 'nav-link text-danger fw-700', target: '_blank')
+                | Admin
+            li.nav-item
               = router_link_to(id: 'web|users|sign_out|destroy', html: { class: 'nav-link', rel: 'nofollow' }, request: request)
                 = I18n.t('kit.auth.pages.header.sign_out.action')
           - else
