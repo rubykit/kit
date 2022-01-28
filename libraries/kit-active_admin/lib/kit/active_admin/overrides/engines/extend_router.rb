@@ -18,6 +18,10 @@ class ActiveAdmin::Router
           module: namespace.scope_module,
         })
 
+        if !options[:as]
+          options = options.except(:as)
+        end
+
         router.scope(options) do
           router.root namespace.root_to_options.merge(to: namespace.root_to, as: :root)
         end
@@ -36,6 +40,10 @@ class ActiveAdmin::Router
       path:   config.namespace.scope_path,
       module: config.namespace.scope_module,
     })
+
+    if !options[:as]
+      options = options.except(:as)
+    end
 
     router.scope(options) do
       define_routes(config)
