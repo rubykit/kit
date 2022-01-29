@@ -1,9 +1,9 @@
-class Kit::Auth::Models::Read::RequestMetadataLink < Kit::Auth::Models::ReadRecord
+class Kit::Domain::Models::Read::RequestMetadataLink < Kit::Domain::Models::ReadRecord
 
-  include Kit::Auth::Models::Base::RequestMetadataLink
+  include Kit::Domain::Models::Base::RequestMetadataLink
 
   belongs_to :request_metadata,
-    class_name: 'Kit::Auth::Models::Read::RequestMetadata'
+    class_name: 'Kit::Domain::Models::Read::RequestMetadata'
 
   belongs_to :target_object, polymorphic: true
 

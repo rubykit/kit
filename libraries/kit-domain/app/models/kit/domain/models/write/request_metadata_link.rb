@@ -1,9 +1,9 @@
-class Kit::Auth::Models::Write::RequestMetadataLink < Kit::Auth::Models::WriteRecord
+class Kit::Domain::Models::Write::RequestMetadataLink < Kit::Domain::Models::WriteRecord
 
-  include Kit::Auth::Models::Base::RequestMetadataLink
+  include Kit::Domain::Models::Base::RequestMetadataLink
 
   belongs_to :request_metadata,
-    class_name: 'Kit::Auth::Models::Write::RequestMetadata'
+    class_name: 'Kit::Domain::Models::Write::RequestMetadata'
 
   belongs_to :target_object, polymorphic: true
 

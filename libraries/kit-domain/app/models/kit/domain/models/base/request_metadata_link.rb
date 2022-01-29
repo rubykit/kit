@@ -1,4 +1,4 @@
-module Kit::Auth::Models::Base::RequestMetadataLink
+module Kit::Domain::Models::Base::RequestMetadataLink
 
   extend ActiveSupport::Concern
 
