@@ -7,7 +7,7 @@ if defined?(::ActiveAdmin)
     end
 
     config.route_prefix = 'admin'
-    config.root_to      = 'kit/auth/users#index'
+    config.root_to      = 'kit/auth/auth_users#index'
 
     config.site_title   = "Kit::Auth - Default Admin"
 

@@ -7,6 +7,6 @@ class Kit::Auth::Models::Write::RequestMetadata < Kit::Auth::Models::WriteRecord
     optional:   true
 
   has_many   :request_metadata_links,
-    class_name: 'Kit::Auth::Models::Write::RequestMetadataLink'
+    class_name: 'Kit::Domain::Models::Write::RequestMetadataLink'
 
 end

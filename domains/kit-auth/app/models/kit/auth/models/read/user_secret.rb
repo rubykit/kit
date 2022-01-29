@@ -11,7 +11,7 @@ class Kit::Auth::Models::Read::UserSecret < Kit::Auth::Models::ReadRecord
     foreign_key: 'user_id'
 
   has_one :last_request_metadata_link, -> { where(category: 'last') },
-    class_name: 'Kit::Auth::Models::Read::RequestMetadataLink',
+    class_name: 'Kit::Domain::Models::Read::RequestMetadataLink',
     as:         :target_object
 
   has_one :last_request_metadata,

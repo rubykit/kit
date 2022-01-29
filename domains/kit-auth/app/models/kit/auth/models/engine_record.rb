@@ -1,7 +1,5 @@
-module Kit::Auth::Models
-  class EngineRecord < Kit::Auth::Models::ApplicationRecord
+class Kit::Auth::Models::EngineRecord < Kit::Auth::Models::ApplicationRecord
 
-    include Kit::Domain::Models::Concerns::EngineRecord
+  include Kit::Domain::Models::Concerns::EngineRecord
 
-  end
 end

@@ -1,7 +1,5 @@
-module Kit::Auth::Models
-  class ApplicationRecord < ActiveRecord::Base
+class Kit::Auth::Models::ApplicationRecord < ActiveRecord::Base
 
-    self.abstract_class = true
+  self.abstract_class = true
 
-  end
 end

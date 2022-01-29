@@ -11,7 +11,7 @@ class Kit::Auth::Models::Write::UserSecret < Kit::Auth::Models::WriteRecord
     foreign_key: 'user_id'
 
   has_one :last_request_metadata_link, -> { where(category: 'last') },
-    class_name: 'Kit::Auth::Models::Write::RequestMetadataLink',
+    class_name: 'Kit::Domain::Models::Write::RequestMetadataLink',
     as:         :target_object
 
   has_one :last_request_metadata,

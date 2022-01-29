@@ -1,9 +1,7 @@
-module Kit::Auth::Models
-  class WriteRecord < EngineRecord
+class Kit::Auth::Models::WriteRecord < Kit::Auth::Models::EngineRecord
 
-    include Kit::Domain::Models::Concerns::WriteRecord
+  include Kit::Domain::Models::Concerns::WriteRecord
 
-    establish_connection :primary_write
+  establish_connection :primary_write
 
-  end
 end

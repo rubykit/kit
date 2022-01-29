@@ -1,25 +1,37 @@
 module Kit::Auth::Admin::Application
-end
 
-ActiveAdmin.register Kit::Auth::Models::Read::Application, as: 'Application', namespace: :kit_auth do
-  menu label: 'Application', parent: 'Auth'
+  def self.register_resource(modeL: nil, name: nil, namespace: nil, menu_opts: nil)
+    model     ||= Kit::Auth::Models::Read::Application
+    name      ||= 'Application'
+    namespace ||= :kit_auth
+    menu_opts = {
+      label:  name,
+      parent: 'Auth',
+    }.merge(menu_opts || {})
 
-  actions :all, except: [:new, :edit, :destroy]
+    ActiveAdmin.register model, as: name, namespace: namespace  do
+      menu menu_opts
 
-  index do
-    Kit::Auth::Admin::Tables::Application.new(self).index
-  end
+      actions :all, except: [:new, :edit, :destroy]
 
-  show do
-    Kit::Auth::Admin::Tables::Application.new(self).panel resource
+      index do
+        Kit::Auth::Admin::Tables::Application.new(self).index
+      end
 
-    hr
+      show do
+        Kit::Auth::Admin::Tables::Application.new(self).panel resource
 
-    columns do
-      column do
-        Kit::Auth::Admin::Tables::UserSecret.new(self).panel_list resource.user_access_tokens, attrs_except: [:application]
+        hr
+
+        columns do
+          column do
+            Kit::Auth::Admin::Tables::UserSecret.new(self).panel_list resource.user_access_tokens, attrs_except: [:application]
+          end
+        end
       end
     end
+
+    [:ok]
   end
 
 end

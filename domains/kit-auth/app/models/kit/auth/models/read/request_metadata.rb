@@ -6,6 +6,6 @@ class Kit::Auth::Models::Read::RequestMetadata < Kit::Auth::Models::ReadRecord
     class_name: 'Kit::Auth::Models::Read::User'
 
   has_many   :request_metadata_links,
-    class_name: 'Kit::Auth::Models::Read::RequestMetadataLink'
+    class_name: 'Kit::Domain::Models::Read::RequestMetadataLink'
 
 end

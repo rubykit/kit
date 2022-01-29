@@ -45,10 +45,10 @@ ActiveRecord::Schema.define(version: 2021_11_15_170903) do
   create_table "request_metadata", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "deleted_at"
-    t.bigint "user_id"
     t.inet "ip", null: false
     t.text "user_agent", null: false
-    t.jsonb "utm"
+    t.jsonb "utm", default: {}, null: false
+    t.bigint "user_id"
     t.index ["created_at"], name: "index_request_metadata_on_created_at"
     t.index ["deleted_at"], name: "index_request_metadata_on_deleted_at"
     t.index ["user_id"], name: "index_request_metadata_on_user_id"
@@ -91,7 +91,7 @@ ActiveRecord::Schema.define(version: 2021_11_15_170903) do
     t.string "provider_app_id", null: false
     t.text "secret_token", null: false
     t.text "secret_refresh_token"
-    t.integer "expires_at"
+    t.datetime "expires_at"
     t.index ["deleted_at"], name: "index_user_oauth_secrets_on_deleted_at"
     t.index ["user_oauth_identity_id", "provider_app_id", "secret_token", "deleted_at"], name: "index_user_oauth_secrets_token_deleted_at"
     t.index ["user_oauth_identity_id", "provider_app_id", "secret_token"], name: "index_user_oauth_secrets_token_unique", unique: true, where: "(deleted_at IS NULL)"
@@ -137,6 +137,7 @@ ActiveRecord::Schema.define(version: 2021_11_15_170903) do
     t.index ["email_confirmed_at"], name: "index_users_on_email_confirmed_at"
   end
 
+  add_foreign_key "request_metadata", "users"
   add_foreign_key "request_metadata_links", "request_metadata"
   add_foreign_key "user_oauth_identities", "users"
   add_foreign_key "user_oauth_secrets", "user_oauth_identities"

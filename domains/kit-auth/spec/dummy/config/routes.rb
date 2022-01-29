@@ -1,5 +1,3 @@
-#require 'sidekiq/web'
-
 Rails.application.routes.draw do
 
   # Endpoint declaration is considered over
@@ -64,8 +62,10 @@ Rails.application.routes.draw do
   # Admin
 
   scope path: 'admin', as: 'admin' do
+    Kit::Auth::Admin.register_namespace
+    Kit::Auth::Admin.register_resources
+    Kit::Auth::Admin.setup_tables
     ActiveAdmin.routes(self)
-    #mount Sidekiq::Web => '/admin/sidekiq'
   end
 
 end
