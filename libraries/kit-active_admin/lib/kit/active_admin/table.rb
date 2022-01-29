@@ -6,19 +6,42 @@ class Kit::ActiveAdmin::Table
     @ctx = ctx
   end
 
-  def attributes_for_list
+  def self.attributes_for_all
     raise "IMPLEMENT ME"
+  end
+
+  # Dummy default implementation
+  def self.attributes_for_list
+    attributes_for_index
+  end
+
+  # Dummy default implementation
+  def self.attributes_for_index
+    attributes_for_all
+  end
+
+  # Dummy default implementation
+  def self.attributes_for_show
+    attributes_for_all
+  end
+
+  def attributes_for_all
+    self.class.attributes_for_all
+  end
+
+  def attributes_for_list
+    self.class.attributes_for_list
   end
 
   def attributes_for_index
-    raise "IMPLEMENT ME"
+    self.class.attributes_for_index
   end
 
   def attributes_for_show
-    raise "IMPLEMENT ME"
+    self.class.attributes_for_show
   end
 
-  def base_attributes
+  def self.base_attributes
     {
       id:             :model_id,
       created_at:     nil,
@@ -26,6 +49,9 @@ class Kit::ActiveAdmin::Table
     }
   end
 
+  def base_attributes
+    self.class.base_attributes
+  end
 
   def panel(el, options = {}, &block)
     options[:attrs_list] = :show if options[:attrs_list].blank?
