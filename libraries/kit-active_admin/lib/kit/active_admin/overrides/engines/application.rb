@@ -34,4 +34,11 @@ class ActiveAdmin::Application
     ::ActiveAdmin::Router.new(router: rails_router, namespaces: namespaces_tmp).apply
   end
 
+  # Prevents AA from hijacking auto-loading behaviour.
+  #
+  # ### References
+  # - https://github.com/activeadmin/activeadmin/blob/v2.9.0/lib/active_admin/application.rb#L177
+  def remove_active_admin_load_paths_from_rails_autoload_and_eager_load
+  end
+
 end
