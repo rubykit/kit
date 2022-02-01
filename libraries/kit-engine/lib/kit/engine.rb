@@ -1,5 +1,3 @@
-require 'pry'
-
 module Kit # rubocop:disable Style/Documentation
 end
 
