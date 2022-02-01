@@ -73,6 +73,10 @@ module Kit::Router::Adapters::HttpRails::Conn::Import
           csrf_token:   csrf_token,
           cgi:          cgi,
 
+          referrer:     rails_request.referrer,
+          path:         rails_request.path,
+          url:          rails_request.url,
+
           params_query: params_query,
           params_body:  params_body,
           params_path:  params_path,
