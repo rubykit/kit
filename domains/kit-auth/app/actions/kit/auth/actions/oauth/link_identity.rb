@@ -17,7 +17,7 @@ module Kit::Auth::Actions::Oauth::LinkIdentity
 
   def self.send_event(user_oauth_identity:)
     Kit::Router::Services::Adapters.cast(
-      route_id:     'event|user|oauth|linked',
+      route_id:     'event|users|oauth|linked',
       adapter_name: :async,
       params:       {
         user_oauth_identity_id: user_oauth_identity.id,

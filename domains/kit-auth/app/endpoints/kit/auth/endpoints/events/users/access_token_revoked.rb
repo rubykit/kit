@@ -16,9 +16,9 @@ module Kit::Auth::Endpoints::Events::Users::AccessTokenRevoked
   end
 
   Kit::Router::Services::Router.register(
-    uid:     'kit_auth|event|user|auth|access_token|revoked',
+    uid:     'kit_auth|event|users|auth|access_token|revoked',
     target:  self.method(:endpoint),
-    aliases: ['event|user|auth|access_token|revoked'],
+    aliases: ['event|users|auth|access_token|revoked'],
   )
 
   def self.load_from_params(router_conn:)
@@ -31,8 +31,8 @@ module Kit::Auth::Endpoints::Events::Users::AccessTokenRevoked
   end
 
   def self.persist_event(user_id:, user_secret_id:)
-    Kit::Events::Services::Event.create_event(
-      name: 'user|auth|access_token|revoked',
+    Kit::Events::Services::Event.persist_event(
+      name: 'users|auth|access_token|revoked',
       data: {
         user_id:        user_id,
         user_secret_id: user_secret_id,

@@ -66,7 +66,7 @@ module Kit::Auth::Actions::Users::ConfirmEmail
 
   def self.send_event(user_email:)
     Kit::Router::Services::Adapters.cast(
-      route_id:     'event|users|email_confirmed',
+      route_id:     'event|users|auth|email_confirmation|confirmed',
       adapter_name: :async,
       params:       {
         user_email_id: user_email.id,

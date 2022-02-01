@@ -2,14 +2,13 @@ require_relative '../../../rails_helper' # rubocop:disable Naming/FileName
 
 describe 'web|users|sign_out', type: :feature do
 
-  let(:password) { 'xxxxxx' }
-  let(:user)     { create(:user, password: password) }
+  let(:user)     { create(:user) }
 
   let(:post_action_route_id)  { 'web|users|sign_out|after' }
   let(:post_action_route_url) { route_id_to_path(id: post_action_route_id) }
 
   before do
-    web_real_sign_in(email: user.email, password: password)
+    web_sign_in(user: user)
   end
 
   let(:user_secret) { user.user_secrets.find_by(category: :access_token) }
@@ -17,9 +16,11 @@ describe 'web|users|sign_out', type: :feature do
   it 'signs the user out through the top-bar' do
     # Calls the correct event endpoint
     expect(Kit::Router::Services::Adapters).to receive(:cast)
-      .with(hash_including(route_id: 'event|user|auth|sign_out', params: hash_including(user_id: user.id, user_secret_id: user_secret.id)))
+      .with(hash_including(route_id: 'event|users|auth|sign_out', params: hash_including(user_id: user.id, user_secret_id: user_secret.id)))
     expect(Kit::Router::Services::Adapters).to receive(:cast)
-      .with(hash_including(route_id: 'event|user|auth|access_token|revoked', params: hash_including(user_id: user.id, user_secret_id: user_secret.id)))
+      .with(hash_including(route_id: 'event|users|auth|access_token|revoked', params: hash_including(user_id: user.id, user_secret_id: user_secret.id)))
+
+    visit route_id_to_path(id: 'web|home')
 
     # Click the top-bar link for sign-out
     click_link I18n.t('kit.auth.pages.header.sign_out.action')
@@ -43,9 +44,9 @@ describe 'web|users|sign_out', type: :feature do
   it 'signs the user out through the endpoint' do
     # Calls the correct event endpoint
     expect(Kit::Router::Services::Adapters).to receive(:cast)
-      .with(hash_including(route_id: 'event|user|auth|sign_out', params: hash_including(user_id: user.id, user_secret_id: user_secret.id)))
+      .with(hash_including(route_id: 'event|users|auth|sign_out', params: hash_including(user_id: user.id, user_secret_id: user_secret.id)))
     expect(Kit::Router::Services::Adapters).to receive(:cast)
-      .with(hash_including(route_id: 'event|user|auth|access_token|revoked', params: hash_including(user_id: user.id, user_secret_id: user_secret.id)))
+      .with(hash_including(route_id: 'event|users|auth|access_token|revoked', params: hash_including(user_id: user.id, user_secret_id: user_secret.id)))
 
     # Visit the url
     visit_route_id(id: 'web|users|sign_out|destroy')

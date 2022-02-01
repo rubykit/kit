@@ -12,18 +12,17 @@ module Kit::Auth::Endpoints::Events::Users::SignUp
         self.method(:load_user!),
         self.method(:persist_event),
         #self.method(:notify_user_welcome),
-        self.method(:send_event_email_confirmation_request),
       ],
       ctx:  {
-        router_conn: router_conn
+        router_conn: router_conn,
       },
     )
   end
 
   Kit::Router::Services::Router.register(
-    uid:     'kit_auth|event|user|auth|sign_up',
+    uid:     'kit_auth|event|users|auth|sign_up',
     target:  self.method(:endpoint),
-    aliases: ['event|user|auth|sign_up'],
+    aliases: ['event|users|auth|sign_up'],
   )
 
   def self.load_user!(router_conn:)
@@ -53,7 +52,7 @@ module Kit::Auth::Endpoints::Events::Users::SignUp
     return [:ok] if user_email.confirmed?
 
     Kit::Router::Services::Adapters.cast(
-      route_id:     'event|users|email_confirmation_request',
+      route_id:     'event|users|auth|email_confirmation|request',
       adapter_name: :async,
       params:       {
         user_email_id: user_email.id,
@@ -64,11 +63,11 @@ module Kit::Auth::Endpoints::Events::Users::SignUp
   end
 
   def self.persist_event(router_conn:, user:)
-    Kit::Events::Services::Event.create_event(
-      name: 'user|auth|sign_up',
+    Kit::Events::Services::Event.persist_event(
+      name: 'users|auth|sign_up',
       data: {
-        user_id:        user.id,
-        sign_up_method: router_conn.request[:params][:sign_up_method],
+        user_id: user.id,
+        method:  router_conn.request[:params][:sign_up_method],
       },
     )
 

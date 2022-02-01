@@ -9,6 +9,7 @@ module Kit::Auth::Endpoints::Events::Users::PasswordResetRequest
     Kit::Organizer.call(
       ok:    [
         Kit::Auth::Services::UserEmail.method(:find_by_email),
+        ->(request_metadata_id:) { [:ok, request_metadata: Kit::Auth::Models::Read::RequestMetadata.find_by(id: request_metadata_id)] },
         Kit::Auth::Actions::Applications::LoadWeb,
         ->(user_email:) { [:ok, user: user_email.user] },
         Kit::Auth::Actions::AccessTokens::CreateForPasswordReset,
@@ -19,15 +20,15 @@ module Kit::Auth::Endpoints::Events::Users::PasswordResetRequest
         self.method(:persist_event_failure),
       ],
       ctx:   {
-        email:            router_conn.request[:params][:email],
-        request_metadata: router_conn.request[:params][:request_metadata],
+        email:               router_conn.request[:params][:email],
+        request_metadata_id: router_conn.request[:params][:request_metadata_id],
       },
     )
   end
 
   Kit::Router::Services::Router.register(
-    uid:     'kit_auth|event|users|password_reset_request',
-    aliases: ['event|users|password_reset_request'],
+    uid:     'kit_auth|event|users|auth|password_reset_request',
+    aliases: ['event|users|auth|password_reset_request'],
     target:  self.method(:endpoint),
   )
 
@@ -45,19 +46,21 @@ module Kit::Auth::Endpoints::Events::Users::PasswordResetRequest
   end
 
   def self.persist_event_success(user_email:, access_token:)
-    Kit::Events::Services::Event.create_event(
-      name: 'users|password_reset_request|success',
+    Kit::Events::Services::Event.persist_event(
+      name: 'users|auth|password_reset_request|success',
       data: {
-        user_id:         user_email.user_id,
-        user_email_id:   user_email.id,
-        access_token_id: access_token.id,
+        email:               email,
+        request_metadata_id: request_metadata.id,
+        user_id:             user_email.user_id,
+        user_email_id:       user_email.id,
+        access_token_id:     access_token.id,
       },
     )
   end
 
   def self.persist_event_failure(email:, request_metadata:)
-    Kit::Events::Services::Event.create_event(
-      name: 'users|password_reset_request|failure',
+    Kit::Events::Services::Event.persist_event(
+      name: 'users|auth|password_reset_request|failure',
       data: {
         email:               email,
         request_metadata_id: request_metadata.id,

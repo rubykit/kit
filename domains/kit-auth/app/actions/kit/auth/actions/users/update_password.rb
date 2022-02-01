@@ -51,7 +51,7 @@ module Kit::Auth::Actions::Users::UpdatePassword
 
   def self.send_event(user:)
     Kit::Router::Services::Adapters.cast(
-      route_id:     'event|users|password_reset',
+      route_id:     'event|users|auth|password_reset',
       adapter_name: :async,
       params:       {
         user_id: user.id,

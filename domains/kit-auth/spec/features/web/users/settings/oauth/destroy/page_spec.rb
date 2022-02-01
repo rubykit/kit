@@ -19,7 +19,7 @@ describe 'web|settings|oauth', type: :feature do
   it 'displays a link to delete the user_oauth_identity & delete it' do
     # Calls the correct event endpoint
     expect(Kit::Router::Services::Adapters).to receive(:cast)
-      .with(hash_including(route_id: 'event|user|oauth|unlinked', params: hash_including(
+      .with(hash_including(route_id: 'event|users|oauth|unlinked', params: hash_including(
         user_id:                second_user_oauth_identity.user_id,
         user_oauth_identity_id: second_user_oauth_identity.id,
         provider:               second_user_oauth_identity.provider,

@@ -21,7 +21,7 @@ module Kit::Auth::Actions::Users::SignOutWeb
 
   def self.send_event(access_token:)
     Kit::Router::Services::Adapters.cast(
-      route_id:     'event|user|auth|sign_out',
+      route_id:     'event|users|auth|sign_out',
       adapter_name: :async,
       params:       {
         user_id:        access_token.user_id,

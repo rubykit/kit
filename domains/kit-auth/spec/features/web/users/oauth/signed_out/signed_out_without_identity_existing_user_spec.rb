@@ -28,9 +28,9 @@ describe 'web|users|oauth|callback', type: :feature do
     it 'signs the user in' do
       # Calls the correct event endpoint
       expect(Kit::Router::Services::Adapters).to receive(:cast)
-        .with(hash_including(route_id: 'event|user|auth|sign_in', params: hash_including(user_id: user.id, sign_in_method: :oauth)))
+        .with(hash_including(route_id: 'event|users|auth|sign_in', params: hash_including(user_id: user.id, sign_in_method: :oauth)))
       expect(Kit::Router::Services::Adapters).to receive(:cast)
-        .with(hash_including(route_id: 'event|user|oauth|linked', params: hash_including(user_oauth_identity_id: instance_of(Integer))))
+        .with(hash_including(route_id: 'event|users|oauth|linked', params: hash_including(user_oauth_identity_id: instance_of(Integer))))
 
       # Visit the page
       visit start_route_url

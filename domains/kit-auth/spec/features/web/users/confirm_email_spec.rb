@@ -23,7 +23,7 @@ describe 'web|users|email|confirm', type: :feature do
     it 'confirms the email' do
       # Calls the correct event endpoint
       expect(Kit::Router::Services::Adapters).to receive(:cast)
-        .with(hash_including(route_id: 'event|users|email_confirmed', params: hash_including(user_email_id: user_email.id)))
+        .with(hash_including(route_id: 'event|users|auth|email_confirmation|confirmed', params: hash_including(user_email_id: user_email.id)))
 
       # Visit the page
       visit route_id_to_path(id: route, params: { access_token: access_token_plaintext_secret })

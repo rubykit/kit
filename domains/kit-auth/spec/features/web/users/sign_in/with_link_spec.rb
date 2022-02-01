@@ -19,7 +19,7 @@ describe 'web|users|sign_in|with_magic_link|create', type: :feature do
   it 'signs the user in' do
     # Calls the correct event endpoint
     expect(Kit::Router::Services::Adapters).to receive(:cast)
-      .with(hash_including(route_id: 'event|user|auth|sign_in', params: hash_including(user_id: user.id, sign_in_method: :link)))
+      .with(hash_including(route_id: 'event|users|auth|sign_in', params: hash_including(user_id: user.id, sign_in_method: :link)))
 
     # Visit the page
     visit route_id_to_path(id: subject, params: { access_token: access_token_plaintext_secret })

@@ -17,7 +17,7 @@ describe 'web|users|sign_in|with_password|new', type: :feature do
     it 'signs the user in' do
       # Calls the correct event endpoint
       expect(Kit::Router::Services::Adapters).to receive(:cast)
-        .with(hash_including(route_id: 'event|user|auth|sign_in', params: hash_including(user_id: user.id, sign_in_method: :password)))
+        .with(hash_including(route_id: 'event|users|auth|sign_in', params: hash_including(user_id: user.id, sign_in_method: :password)))
 
       # Visit the page && fill the form
       visit start_route_url

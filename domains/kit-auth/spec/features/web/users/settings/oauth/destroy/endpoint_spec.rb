@@ -23,7 +23,7 @@ describe 'web|settings|oauth|destroy', type: :feature do
     it 'revokes the session on the correct route' do
       # Calls the correct event endpoint
       expect(Kit::Router::Services::Adapters).to receive(:cast)
-        .with(hash_including(route_id: 'event|user|oauth|unlinked', params: hash_including(
+        .with(hash_including(route_id: 'event|users|oauth|unlinked', params: hash_including(
           user_id:                second_user_oauth_identity.user_id,
           user_oauth_identity_id: second_user_oauth_identity.id,
           provider:               second_user_oauth_identity.provider,

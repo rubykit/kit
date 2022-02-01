@@ -17,7 +17,7 @@ module Kit::Auth::Actions::Oauth::UnlinkIdentity
 
   def self.send_event(user_oauth_identity:)
     Kit::Router::Services::Adapters.cast(
-      route_id:     'event|user|oauth|unlinked',
+      route_id:     'event|users|oauth|unlinked',
       adapter_name: :async,
       params:       {
         user_id:                user_oauth_identity.user_id,

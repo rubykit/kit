@@ -16,9 +16,9 @@ module Kit::Auth::Endpoints::Events::Users::Oauth::Unlink
   end
 
   Kit::Router::Services::Router.register(
-    uid:     'kit_auth|event|user|oauth|unlinked',
+    uid:     'kit_auth|event|users|oauth|unlinked',
     target:  self.method(:endpoint),
-    aliases: ['event|user|oauth|unlinked'],
+    aliases: ['event|users|oauth|unlinked'],
   )
 
   def self.load_from_params(router_conn:)
@@ -33,7 +33,7 @@ module Kit::Auth::Endpoints::Events::Users::Oauth::Unlink
   end
 
   def self.persist_event(user_id:, user_oauth_identity_id:, provider:, provider_uid:)
-    Kit::Events::Services::Event.create_event(
+    Kit::Events::Services::Event.persist_event(
       name: 'user|oauth|unlinked',
       data: {
         user_id:                user_id,

@@ -15,7 +15,7 @@ describe 'web|users|password_reset|request|new', type: :feature do
   it 'when user exists' do
     # Calls the correct event endpoint
     expect(Kit::Router::Services::Adapters).to receive(:cast)
-      .with(hash_including(route_id: 'event|users|password_reset_request', params: hash_including(email: email)))
+      .with(hash_including(route_id: 'event|users|auth|password_reset_request', params: hash_including(email: email)))
 
     # Visit the page && fill the form
     visit route_id_to_path(id: subject)

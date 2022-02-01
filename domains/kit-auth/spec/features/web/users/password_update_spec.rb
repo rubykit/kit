@@ -29,9 +29,9 @@ describe 'web|users|password_reset|edit', type: :feature do
     it 'lets the user update its password' do
       # Calls the correct event endpoint
       expect(Kit::Router::Services::Adapters).to receive(:cast)
-        .with(hash_including(route_id: 'event|users|password_reset', params: hash_including(user_id: user.id)))
+        .with(hash_including(route_id: 'event|users|auth|password_reset', params: hash_including(user_id: user.id)))
       expect(Kit::Router::Services::Adapters).to receive(:cast)
-        .with(hash_including(route_id: 'event|user|auth|sign_in', params: hash_including(user_id: user.id, sign_in_method: :password)))
+        .with(hash_including(route_id: 'event|users|auth|sign_in', params: hash_including(user_id: user.id, sign_in_method: :password)))
 
       # Visit the page
       visit route_id_to_path(id: route_id, params: { access_token: access_token_plaintext_secret })

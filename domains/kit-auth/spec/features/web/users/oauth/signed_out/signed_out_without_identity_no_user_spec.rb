@@ -25,11 +25,11 @@ describe 'web|users|oauth|callback', type: :feature do
     it 'creates the user account' do
       # Calls the correct event endpoint
       expect(Kit::Router::Services::Adapters).to receive(:cast)
-        .with(hash_including(route_id: 'event|user|auth|sign_up', params: hash_including(user_id: instance_of(Integer), sign_up_method: :oauth)))
+        .with(hash_including(route_id: 'event|users|auth|sign_up', params: hash_including(user_id: instance_of(Integer), sign_up_method: :oauth)))
       expect(Kit::Router::Services::Adapters).to receive(:cast)
-        .with(hash_including(route_id: 'event|user|auth|sign_in', params: hash_including(user_id: instance_of(Integer), sign_in_method: :oauth)))
+        .with(hash_including(route_id: 'event|users|auth|sign_in', params: hash_including(user_id: instance_of(Integer), sign_in_method: :oauth)))
       expect(Kit::Router::Services::Adapters).to receive(:cast)
-        .with(hash_including(route_id: 'event|user|oauth|linked', params: hash_including(user_oauth_identity_id: instance_of(Integer))))
+        .with(hash_including(route_id: 'event|users|oauth|linked', params: hash_including(user_oauth_identity_id: instance_of(Integer))))
 
       # Visit the page
       visit start_route_url

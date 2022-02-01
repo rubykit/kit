@@ -48,7 +48,7 @@ describe 'web|users|oauth|sign_in', type: :feature do
     it 'signs the user in' do
       # Calls the correct event endpoint
       expect(Kit::Router::Services::Adapters).to receive(:cast)
-        .with(hash_including(route_id: 'event|user|auth|sign_in', params: hash_including(user_id: user.id, sign_in_method: :oauth)))
+        .with(hash_including(route_id: 'event|users|auth|sign_in', params: hash_including(user_id: user.id, sign_in_method: :oauth)))
 
       # Visit the page
       visit start_route_url

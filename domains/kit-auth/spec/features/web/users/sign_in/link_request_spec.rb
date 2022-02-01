@@ -12,7 +12,7 @@ describe 'web|users|sign_in|with_magic_link|request|new', type: :feature do
   it 'when user exists' do
     # Calls the correct event endpoint
     expect(Kit::Router::Services::Adapters).to receive(:cast)
-      .with(hash_including(route_id: 'event|users|sign_in_link_request', params: hash_including(email: email)))
+      .with(hash_including(route_id: 'event|users|auth|sign_in|link|request', params: hash_including(email: email)))
 
     # Visit the page && fill the form
     visit route_id_to_path(id: subject)

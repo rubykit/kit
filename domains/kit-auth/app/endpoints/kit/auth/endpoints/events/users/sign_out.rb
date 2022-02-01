@@ -16,9 +16,9 @@ module Kit::Auth::Endpoints::Events::Users::SignOut
   end
 
   Kit::Router::Services::Router.register(
-    uid:     'kit_auth|event|user|auth|sign_out',
+    uid:     'kit_auth|event|users|auth|sign_out',
     target:  self.method(:endpoint),
-    aliases: ['event|user|auth|sign_out'],
+    aliases: ['event|users|auth|sign_out'],
   )
 
   def self.load_from_params(router_conn:)
@@ -26,13 +26,13 @@ module Kit::Auth::Endpoints::Events::Users::SignOut
 
     [:ok, {
       user_id:        params[:user_id],
-      user_secret_id: params[:user_secret],
+      user_secret_id: params[:user_secret_id],
     },]
   end
 
   def self.persist_event(user_id:, user_secret_id:)
-    Kit::Events::Services::Event.create_event(
-      name: 'user|auth|sign_out',
+    Kit::Events::Services::Event.persist_event(
+      name: 'users|auth|sign_out',
       data: {
         user_id:        user_id,
         user_secret_id: user_secret_id,

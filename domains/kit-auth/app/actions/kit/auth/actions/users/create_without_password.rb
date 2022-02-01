@@ -37,7 +37,7 @@ module Kit::Auth::Actions::Users::CreateWithoutPassword
 
   def self.send_event(user:, sign_up_method:)
     Kit::Router::Services::Adapters.cast(
-      route_id:     'event|user|auth|sign_up',
+      route_id:     'event|users|auth|sign_up',
       adapter_name: :async,
       params:       {
         user_id:        user.id,

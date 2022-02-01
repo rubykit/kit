@@ -31,7 +31,7 @@ describe 'web|settings|sessions|destroy', type: :feature do
 
     it 'revokes the session on the correct route' do
       expect(Kit::Router::Services::Adapters).to receive(:cast)
-        .with(hash_including(route_id: 'event|user|auth|access_token|revoked', params: hash_including(user_id: user.id, user_secret_id: second_access_token.id)))
+        .with(hash_including(route_id: 'event|users|auth|access_token|revoked', params: hash_including(user_id: user.id, user_secret_id: second_access_token.id)))
 
       visit_route_id(id: 'web|settings|sessions|destroy', params: { user_secret_id: second_access_token.id })
 

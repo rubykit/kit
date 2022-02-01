@@ -17,11 +17,11 @@ module Kit::Auth::Actions::Users::RequestPasswordReset
 
   def self.send_event(email:, request_metadata:)
     Kit::Router::Services::Adapters.cast(
-      route_id:     'event|users|password_reset_request',
+      route_id:     'event|users|auth|password_reset_request',
       adapter_name: :async,
       params:       {
-        email:            email,
-        request_metadata: request_metadata,
+        email:               email,
+        request_metadata_id: request_metadata.id,
       },
     )
   end

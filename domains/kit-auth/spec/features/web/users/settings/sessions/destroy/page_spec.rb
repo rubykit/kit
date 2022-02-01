@@ -25,7 +25,7 @@ describe 'web|settings|sessions', type: :feature do
   it 'displays a link to end the session & revokes the access_token' do
     # Calls the correct event endpoint
     expect(Kit::Router::Services::Adapters).to receive(:cast)
-      .with(hash_including(route_id: 'event|user|auth|access_token|revoked', params: hash_including(user_id: user.id, user_secret_id: second_access_token.id)))
+      .with(hash_including(route_id: 'event|users|auth|access_token|revoked', params: hash_including(user_id: user.id, user_secret_id: second_access_token.id)))
 
     visit route_id_to_path(id: 'web|settings|sessions')
 

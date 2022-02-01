@@ -27,7 +27,7 @@ module Kit::Auth::Actions::Users::SignInWeb
 
   def self.send_event(user:, sign_in_method:)
     Kit::Router::Services::Adapters.cast(
-      route_id:     'event|user|auth|sign_in',
+      route_id:     'event|users|auth|sign_in',
       adapter_name: :async,
       params:       {
         user_id:        user.id,

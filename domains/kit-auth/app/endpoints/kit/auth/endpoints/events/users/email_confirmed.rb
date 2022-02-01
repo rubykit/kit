@@ -18,9 +18,9 @@ module Kit::Auth::Endpoints::Events::Users::EmailConfirmed
   end
 
   Kit::Router::Services::Router.register(
-    uid:     'kit_auth|event|users|email_confirmed',
+    uid:     'kit_auth|event|users|auth|email_confirmation|confirmed',
     target:  self.method(:endpoint),
-    aliases: ['event|users|email_confirmed'],
+    aliases: ['event|users|auth|email_confirmation|confirmed'],
   )
 
   def self.load_user_email!(router_conn:)
@@ -31,8 +31,8 @@ module Kit::Auth::Endpoints::Events::Users::EmailConfirmed
   end
 
   def self.persist_event(user_email:)
-    Kit::Events::Services::Event.create_event(
-      name: 'users|email_confirmed',
+    Kit::Events::Services::Event.persist_event(
+      name: 'users|auth|email_confirmation|confirmed',
       data: {
         user_id:       user_email.user_id,
         user_email_id: user_email.id,

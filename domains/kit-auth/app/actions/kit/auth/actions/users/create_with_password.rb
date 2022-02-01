@@ -41,7 +41,7 @@ module Kit::Auth::Actions::Users::CreateWithPassword
 
   def self.send_event(user:)
     Kit::Router::Services::Adapters.cast(
-      route_id:     'event|user|auth|sign_up',
+      route_id:     'event|users|auth|sign_up',
       adapter_name: :async,
       params:       {
         user_id:        user.id,

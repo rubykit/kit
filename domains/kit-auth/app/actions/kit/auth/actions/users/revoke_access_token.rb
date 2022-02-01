@@ -15,7 +15,7 @@ module Kit::Auth::Actions::Users::RevokeAccessToken
 
   def self.send_event(access_token:)
     Kit::Router::Services::Adapters.cast(
-      route_id:     'event|user|auth|access_token|revoked',
+      route_id:     'event|users|auth|access_token|revoked',
       adapter_name: :async,
       params:       {
         user_id:        access_token.user_id,

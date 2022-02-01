@@ -34,7 +34,7 @@ describe 'web|users|oauth|callback', type: :feature do
     it 'adds the oauth provider account' do
       # Calls the correct event endpoint
       expect(Kit::Router::Services::Adapters).to receive(:cast)
-        .with(hash_including(route_id: 'event|user|oauth|linked', params: hash_including(user_oauth_identity_id: instance_of(Integer))))
+        .with(hash_including(route_id: 'event|users|oauth|linked', params: hash_including(user_oauth_identity_id: instance_of(Integer))))
 
       # Visit the page
       visit start_route_url
