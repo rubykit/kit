@@ -6,14 +6,15 @@ class Kit::ViewComponents::Components::BaseComponent < ::ViewComponent::Base
   def initialize(router_conn: nil, classes: [], errors_list: nil, **rest)
     super
 
-    @args = {
-      router_conn: router_conn,
-      classes:     classes,
-    }.merge(rest)
-
     @router_conn = router_conn
     @classes     = [classes].flatten
     @errors_list = ([errors_list].flatten || []) - [nil]
+
+    @args = {
+      router_conn: router_conn,
+      classes:     classes,
+      errors_list: errors_list,
+    }.merge(rest)
 
     self.classes << component_class_name
   end
