@@ -21,10 +21,16 @@ module Kit::Router::Adapters::AsyncRails
   end
 
   def self.enqueue_job(router_conn:)
+    params = router_conn[:request][:params].to_h
+
+    if params.key?(:emitted_at)
+      params[:emitted_at] = DateTime.now
+    end
+
     job = default_job_adapter.perform_later(
       route_id:     router_conn[:route_id],
       endpoint_uid: router_conn[:endpoint][:uid],
-      params:       router_conn[:request][:params].to_h,
+      params:       params,
     )
 
     router_conn[:response][:content] = {
