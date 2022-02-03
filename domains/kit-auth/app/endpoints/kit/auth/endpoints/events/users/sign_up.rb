@@ -9,6 +9,7 @@ module Kit::Auth::Endpoints::Events::Users::SignUp
     Kit::Organizer.call(
       safe: true,
       list: [
+        self.method(:load_from_params),
         self.method(:load_user!),
         self.method(:persist_event),
         #self.method(:notify_user_welcome),
@@ -25,11 +26,18 @@ module Kit::Auth::Endpoints::Events::Users::SignUp
     aliases: ['event|users|auth|sign_up'],
   )
 
-  def self.load_user!(router_conn:)
-    user_id = router_conn.request[:params][:user_id]
-    user    = Kit::Auth::Models::Read::User.find_by!(id: user_id)
+  def self.load_from_params(router_conn:)
+    params = router_conn.request[:params]
 
-    [:ok, user: user]
+    [:ok, {
+      user_id:        params[:user_id],
+      sign_up_method: params[:sign_up_method],
+      emitted_at:     params[:emitted_at],
+    },]
+  end
+
+  def self.load_user!(user_id:)
+    [:ok, user: Kit::Auth::Models::Read::User.find_by!(id: user_id)]
   end
 
   def self.notify_user_welcome(user:)
@@ -62,13 +70,13 @@ module Kit::Auth::Endpoints::Events::Users::SignUp
     [:ok]
   end
 
-  def self.persist_event(router_conn:, user:)
+  def self.persist_event(user:, sign_up_method:, emitted_at: nil)
     Kit::Events::Services::Event.persist_event(
       name: 'users|auth|sign_up',
       data: {
         user_id: user.id,
-        method:  router_conn.request[:params][:sign_up_method],
-      },
+        method:  sign_up_method,
+      }.merge(emitted_at ? { emitted_at: emitted_at } : {}),
     )
 
     [:ok]

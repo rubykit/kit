@@ -9,6 +9,7 @@ module Kit::Auth::Endpoints::Events::Users::Oauth::Link
     Kit::Organizer.call(
       list: [
         ->(router_conn:) { [:ok, user_oauth_identity_id: router_conn.request[:params][:user_oauth_identity_id]] },
+        ->(router_conn:) { [:ok, emitted_at:             router_conn.request[:params][:emitted_at]] },
         self.method(:persist_event),
       ],
       ctx:  { router_conn: router_conn },
@@ -21,7 +22,7 @@ module Kit::Auth::Endpoints::Events::Users::Oauth::Link
     aliases: ['event|users|oauth|linked'],
   )
 
-  def self.persist_event(user_oauth_identity_id:)
+  def self.persist_event(user_oauth_identity_id:, emitted_at: nil)
     user_oauth_identity = Kit::Auth::Models::Read::UserOauthIdentity.find_by(id: user_oauth_identity_id)
 
     Kit::Events::Services::Event.persist_event(
@@ -30,7 +31,7 @@ module Kit::Auth::Endpoints::Events::Users::Oauth::Link
         user_id:                user_oauth_identity.user_id,
         user_oauth_identity_id: user_oauth_identity.id,
         provider:               user_oauth_identity.provider,
-      },
+      }.merge(emitted_at ? { emitted_at: emitted_at } : {}),
     )
   end
 

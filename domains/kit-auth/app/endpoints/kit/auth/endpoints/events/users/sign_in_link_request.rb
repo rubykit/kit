@@ -8,6 +8,7 @@ module Kit::Auth::Endpoints::Events::Users::SignInLinkRequest
   def self.endpoint(router_conn:)
     Kit::Organizer.call(
       ok:    [
+        ->(router_conn:) { [:ok, emitted_at: router_conn.request[:params][:emitted_at]] },
         Kit::Auth::Services::UserEmail.method(:find_by_email),
         ->(request_metadata_id:) { [:ok, request_metadata: Kit::Auth::Models::Read::RequestMetadata.find_by(id: request_metadata_id)] },
         Kit::Auth::Actions::Applications::LoadWeb,
@@ -45,7 +46,7 @@ module Kit::Auth::Endpoints::Events::Users::SignInLinkRequest
     [:ok]
   end
 
-  def self.persist_event_success(user_email:, access_token:, email:, request_metadata:)
+  def self.persist_event_success(user_email:, access_token:, email:, request_metadata:, emitted_at: nil)
     Kit::Events::Services::Event.persist_event(
       name: 'users|auth|sign_in|link|request|success',
       data: {
@@ -54,17 +55,17 @@ module Kit::Auth::Endpoints::Events::Users::SignInLinkRequest
         user_id:             user_email.user_id,
         user_email_id:       user_email.id,
         access_token_id:     access_token.id,
-      },
+      }.merge(emitted_at ? { emitted_at: emitted_at } : {}),
     )
   end
 
-  def self.persist_event_failure(email:, request_metadata:)
+  def self.persist_event_failure(email:, request_metadata:, emitted_at: nil)
     Kit::Events::Services::Event.persist_event(
       name: 'users|auth|sign_in|link|request|failure',
       data: {
         email:               email,
         request_metadata_id: request_metadata.id,
-      },
+      }.merge(emitted_at ? { emitted_at: emitted_at } : {}),
     )
   end
 

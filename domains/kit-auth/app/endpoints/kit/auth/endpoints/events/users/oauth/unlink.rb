@@ -29,10 +29,11 @@ module Kit::Auth::Endpoints::Events::Users::Oauth::Unlink
       user_id:                params[:user_id],
       provider:               params[:provider],
       provider_uid:           params[:provider_uid],
+      emitted_at:             params[:emitted_at],
     },]
   end
 
-  def self.persist_event(user_id:, user_oauth_identity_id:, provider:, provider_uid:)
+  def self.persist_event(user_id:, user_oauth_identity_id:, provider:, provider_uid:, emitted_at: nil)
     Kit::Events::Services::Event.persist_event(
       name: 'user|oauth|unlinked',
       data: {
@@ -40,7 +41,7 @@ module Kit::Auth::Endpoints::Events::Users::Oauth::Unlink
         user_oauth_identity_id: user_oauth_identity_id,
         provider:               provider,
         provider_uid:           provider_uid,
-      },
+      }.merge(emitted_at ? { emitted_at: emitted_at } : {}),
     )
   end
 

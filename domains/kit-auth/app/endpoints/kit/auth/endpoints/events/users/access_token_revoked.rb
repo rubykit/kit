@@ -27,16 +27,17 @@ module Kit::Auth::Endpoints::Events::Users::AccessTokenRevoked
     [:ok, {
       user_id:        params[:user_id],
       user_secret_id: params[:user_secret],
+      emitted_at:     params[:emitted_at],
     },]
   end
 
-  def self.persist_event(user_id:, user_secret_id:)
+  def self.persist_event(user_id:, user_secret_id:, emitted_at: nil)
     Kit::Events::Services::Event.persist_event(
       name: 'users|auth|access_token|revoked',
       data: {
         user_id:        user_id,
         user_secret_id: user_secret_id,
-      },
+      }.merge(emitted_at ? { emitted_at: emitted_at } : {}),
     )
   end
 

@@ -10,7 +10,8 @@ module Kit::Auth::Endpoints::Events::Users::EmailConfirmationRequest
       list: [
         Kit::Auth::Actions::Applications::LoadWeb,
         self.method(:load_user_email!),
-        ->(user_email:) { [:ok, user: user_email.user] },
+        ->(user_email:)  { [:ok, user: user_email.user] },
+        ->(router_conn:) { [:ok, emitted_at: router_conn.request[:params][:emitted_at]] },
         Kit::Auth::Actions::AccessTokens::CreateForEmailConfirmation,
         self.method(:notify_user),
         self.method(:persist_event),
@@ -47,14 +48,14 @@ module Kit::Auth::Endpoints::Events::Users::EmailConfirmationRequest
     [:ok]
   end
 
-  def self.persist_event(user_email:)
+  def self.persist_event(user_email:, emitted_at: nil)
     Kit::Events::Services::Event.persist_event(
       name: 'users|auth|email_confirmation|request',
       data: {
         user_id:       user_email.user_id,
         user_email_id: user_email.id,
         email:         user_email.email,
-      },
+      }.merge(emitted_at ? { emitted_at: emitted_at } : {}),
     )
   end
 
