@@ -36,7 +36,7 @@ module Kit::Auth::Endpoints::Events::Users::SignIn
       name: 'users|auth|sign_in',
       data: {
         user_id: user_id,
-        method:  params[:sign_in_method],
+        method:  sign_in_method,
       }.merge(emitted_at ? { emitted_at: emitted_at } : {}),
     )
   end

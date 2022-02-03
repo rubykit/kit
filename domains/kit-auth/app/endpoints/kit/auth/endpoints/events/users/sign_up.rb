@@ -12,7 +12,6 @@ module Kit::Auth::Endpoints::Events::Users::SignUp
         self.method(:load_from_params),
         self.method(:load_user!),
         self.method(:persist_event),
-        #self.method(:notify_user_welcome),
       ],
       ctx:  {
         router_conn: router_conn,
@@ -38,36 +37,6 @@ module Kit::Auth::Endpoints::Events::Users::SignUp
 
   def self.load_user!(user_id:)
     [:ok, user: Kit::Auth::Models::Read::User.find_by!(id: user_id)]
-  end
-
-  def self.notify_user_welcome(user:)
-    user_email = user.primary_user_email
-
-    Kit::Router::Services::Adapters.cast(
-      route_id:     'mailers|users|sign_up',
-      adapter_name: :mailer,
-      params:       {
-        user_email_id: user_email.id,
-      },
-    )
-
-    [:ok]
-  end
-
-  def self.send_event_email_confirmation_request(user:)
-    user_email = user.primary_user_email
-
-    return [:ok] if user_email.confirmed?
-
-    Kit::Router::Services::Adapters.cast(
-      route_id:     'event|users|auth|email_confirmation|request',
-      adapter_name: :async,
-      params:       {
-        user_email_id: user_email.id,
-      },
-    )
-
-    [:ok]
   end
 
   def self.persist_event(user:, sign_up_method:, emitted_at: nil)
