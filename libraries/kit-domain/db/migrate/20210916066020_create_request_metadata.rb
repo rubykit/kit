@@ -6,7 +6,7 @@ class CreateRequestMetadata < ActiveRecord::Migration[5.2] # rubocop:disable Sty
       t.datetime   :deleted_at, index: true, default: nil
 
       t.inet       :ip,                      null: false
-      t.text       :user_agent,              null: false
+      t.jsonb      :data,                    null: false, default: {}
       t.jsonb      :utm,                     null: false, default: {}
     end
   end

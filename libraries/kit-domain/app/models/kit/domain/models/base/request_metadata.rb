@@ -12,10 +12,15 @@ module Kit::Domain::Models::Base::RequestMetadata
       :created_at,
       :updated_at,
       :deleted_at,
+
       :ip,
-      :user_agent,
       :utm,
+      :data,
     ]
+  end
+
+  def user_agent
+    data['user_agent']
   end
 
 end
