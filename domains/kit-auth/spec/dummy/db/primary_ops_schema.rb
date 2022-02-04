@@ -46,7 +46,7 @@ ActiveRecord::Schema.define(version: 2021_11_15_170903) do
     t.datetime "created_at", null: false
     t.datetime "deleted_at"
     t.inet "ip", null: false
-    t.text "user_agent", null: false
+    t.jsonb "data", default: {}, null: false
     t.jsonb "utm", default: {}, null: false
     t.bigint "user_id"
     t.index ["created_at"], name: "index_request_metadata_on_created_at"

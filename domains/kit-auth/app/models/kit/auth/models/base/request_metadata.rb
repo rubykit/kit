@@ -12,11 +12,17 @@ module Kit::Auth::Models::Base::RequestMetadata
       :created_at,
       :updated_at,
       :deleted_at,
-      :user_id,
+
       :ip,
-      :user_agent,
       :utm,
+      :data,
+
+      :user_id,
     ]
+  end
+
+  def user_agent
+    data['user_agent']
   end
 
 end

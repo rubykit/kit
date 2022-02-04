@@ -13,9 +13,7 @@ module Kit::Auth::Endpoints::Events::Users::SignUp
         self.method(:load_user!),
         self.method(:persist_event),
       ],
-      ctx:  {
-        router_conn: router_conn,
-      },
+      ctx:  { router_conn: router_conn },
     )
   end
 

@@ -8,9 +8,9 @@ module Kit::Auth::Endpoints::Events::Users::SignInLinkRequest
   def self.endpoint(router_conn:)
     Kit::Organizer.call(
       ok:    [
-        ->(router_conn:) { [:ok, emitted_at: router_conn.request[:params][:emitted_at]] },
-        Kit::Auth::Services::UserEmail.method(:find_by_email),
+        self.method(:load_from_params),
         ->(request_metadata_id:) { [:ok, request_metadata: Kit::Auth::Models::Read::RequestMetadata.find_by(id: request_metadata_id)] },
+        Kit::Auth::Services::UserEmail.method(:find_by_email),
         Kit::Auth::Actions::Applications::LoadWeb,
         ->(user_email:) { [:ok, user: user_email.user] },
         Kit::Auth::Actions::AccessTokens::CreateForMagicLink,
@@ -20,10 +20,7 @@ module Kit::Auth::Endpoints::Events::Users::SignInLinkRequest
       error: [
         self.method(:persist_event_failure),
       ],
-      ctx:   {
-        email:               router_conn.request[:params][:email],
-        request_metadata_id: router_conn.request[:params][:request_metadata_id],
-      },
+      ctx:   { router_conn: router_conn },
     )
   end
 
@@ -32,6 +29,16 @@ module Kit::Auth::Endpoints::Events::Users::SignInLinkRequest
     aliases: ['event|users|auth|sign_in|link|request'],
     target:  self.method(:endpoint),
   )
+
+  def self.load_from_params(router_conn:)
+    params = router_conn.request[:params]
+
+    [:ok, {
+      email:               params[:email],
+      request_metadata_id: params[:request_metadata_id],
+      emitted_at:          params[:emitted_at],
+    },]
+  end
 
   def self.notify_user(user_email:, access_token_plaintext_secret:)
     Kit::Router::Services::Adapters.cast(
@@ -50,10 +57,10 @@ module Kit::Auth::Endpoints::Events::Users::SignInLinkRequest
     Kit::Events::Services::Event.persist_event(
       name: 'users|auth|sign_in|link|request|success',
       data: {
+        session_uid:         request_metadata.data['session_uid'],
+        user_email_id:       user_email.id,
         email:               email,
         request_metadata_id: request_metadata.id,
-        user_id:             user_email.user_id,
-        user_email_id:       user_email.id,
         access_token_id:     access_token.id,
       }.merge(emitted_at ? { emitted_at: emitted_at } : {}),
     )
@@ -63,6 +70,7 @@ module Kit::Auth::Endpoints::Events::Users::SignInLinkRequest
     Kit::Events::Services::Event.persist_event(
       name: 'users|auth|sign_in|link|request|failure',
       data: {
+        session_uid:         request_metadata.data['session_uid'],
         email:               email,
         request_metadata_id: request_metadata.id,
       }.merge(emitted_at ? { emitted_at: emitted_at } : {}),
