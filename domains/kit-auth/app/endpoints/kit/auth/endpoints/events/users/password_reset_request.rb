@@ -59,7 +59,7 @@ module Kit::Auth::Endpoints::Events::Users::PasswordResetRequest
       data: {
         session_uid:         request_metadata.data['session_uid'],
         user_email_id:       user_email.id,
-        email:               email,
+        email:               user_email.email,
         request_metadata_id: request_metadata.id,
         access_token_id:     access_token.id,
       }.merge(emitted_at ? { emitted_at: emitted_at } : {}),

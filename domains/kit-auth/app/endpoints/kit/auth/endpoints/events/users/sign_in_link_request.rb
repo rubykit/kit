@@ -53,13 +53,13 @@ module Kit::Auth::Endpoints::Events::Users::SignInLinkRequest
     [:ok]
   end
 
-  def self.persist_event_success(user_email:, access_token:, email:, request_metadata:, emitted_at: nil)
+  def self.persist_event_success(user_email:, access_token:, request_metadata:, emitted_at: nil)
     Kit::Events::Services::Event.persist_event(
       name: 'users|auth|sign_in|link|request|success',
       data: {
         session_uid:         request_metadata.data['session_uid'],
         user_email_id:       user_email.id,
-        email:               email,
+        email:               user_email.email,
         request_metadata_id: request_metadata.id,
         access_token_id:     access_token.id,
       }.merge(emitted_at ? { emitted_at: emitted_at } : {}),
