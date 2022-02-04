@@ -51,6 +51,7 @@ module Kit::Router::Adapters::HttpRails::Conn::Import
     kit_router_target  = params_kit[:kit_router_target]  || {}
     kit_request_config = params_kit[:kit_request_config] || {}
 
+
     router_conn = Kit::Router::Models::Conn.new(
       adapter:   :http_rails,
 
@@ -69,8 +70,6 @@ module Kit::Router::Adapters::HttpRails::Conn::Import
         http:       {
           cookies:      cookies,
           headers:      headers,
-          user_agent:   rails_request.user_agent,
-          csrf_token:   csrf_token,
           cgi:          cgi,
 
           referrer:     rails_request.referrer,
@@ -81,6 +80,10 @@ module Kit::Router::Adapters::HttpRails::Conn::Import
           params_body:  params_body,
           params_path:  params_path,
           params_rails: params_rails,
+
+          user_agent:   rails_request.user_agent,
+          csrf_token:   csrf_token,
+          session_uid:  rails_request.session_options[:id].to_s,
         },
       },
 
