@@ -2,10 +2,10 @@ class Kit::Auth::Components::Inputs::PasswordComponent < Kit::Auth::Components::
 
   attr_reader :visible
 
-  def initialize(label:, name:, value:, help: nil, errors: [], visible: false, **)
+  def initialize(**)
     super
+
     @input_type = 'password'
-    @visible    = visible
   end
 
 end

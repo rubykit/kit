@@ -5,13 +5,13 @@
       span.text-danger.fw-bold.ms-1 *
   div class=col_input_class
     - if group.empty?
-      input.form-control id=input_id name=name placeholder=placeholder type=input_type value=value required=required data-input-mask=mask class=input_class_to_s
+      input.form-control id=input_id name=name placeholder=placeholder type=input_type value=value required=required data-input-mask=mask class=input_class_to_s data=input_data
     - else
       .input-group
         - if group[:before]
           .input-group-text
             == group[:before]
-        input.form-control id=input_id name=name placeholder=placeholder type=input_type value=value required=required data-input-mask=mask class=input_class_to_s
+        input.form-control id=input_id name=name placeholder=placeholder type=input_type value=value required=required data-input-mask=mask class=input_class_to_s data=input_data
         - if group[:after]
           .input-group-text
             == group[:after]
