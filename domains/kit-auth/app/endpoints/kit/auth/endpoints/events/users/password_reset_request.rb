@@ -53,7 +53,7 @@ module Kit::Auth::Endpoints::Events::Users::PasswordResetRequest
     [:ok]
   end
 
-  def self.persist_event_success(user_email:, access_token:, emitted_at: nil)
+  def self.persist_event_success(user_email:, access_token:, request_metadata:, emitted_at: nil)
     Kit::Events::Services::Event.persist_event(
       name: 'users|auth|password_reset_request|success',
       data: {
