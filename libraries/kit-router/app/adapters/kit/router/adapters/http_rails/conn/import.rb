@@ -76,6 +76,8 @@ module Kit::Router::Adapters::HttpRails::Conn::Import
           path:         rails_request.path,
           url:          rails_request.url,
 
+          body:         rails_request.body.read,
+
           params_query: params_query,
           params_body:  params_body,
           params_path:  params_path,
