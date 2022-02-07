@@ -33,6 +33,10 @@ module Kit::Router::Services::Adapters
     )
 
     [:ok]
+  rescue Exception => e # rubocop:disable Lint/RescueException
+    Kit::Error.report_exception(exception: e)
+
+    [:ok]
   end
 
   def self.create_router_conn(adapter_name:, endpoint_record:, params:, route_id:)

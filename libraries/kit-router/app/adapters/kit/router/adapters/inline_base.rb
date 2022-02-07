@@ -13,7 +13,11 @@ module Kit::Router::Adapters::InlineBase
   end
 
   def self.cast(router_conn:)
-    call(router_conn: router_conn)
+    begin
+      call(router_conn: router_conn)
+    rescue Exception => e # rubocop:disable Lint/RescueException
+      Kit::Error.report_exception(exception: e)
+    end
 
     [:ok]
   end
