@@ -1,0 +1,18 @@
+en:
+
+  active_admin:
+
+    filters:
+      predicates:
+        contains: "Contains"
+        equals: "Equals"
+        eq: "Equals"
+        starts_with: "Starts with"
+        ends_with: "Ends with"
+        greater_than: "Greater than"
+        gt: "Greater than"
+        less_than: "Less than"
+        lt: "Less than"
+        not_contains: "Does Not Contain"
+        not_equals: "Does not equals"
+        not_eq: "Does not equals"
