@@ -9,7 +9,7 @@ module Kit::Auth::Admin::RequestMetadata
     namespace ||= :kit_auth
     menu_opts = {
       label:  name,
-      parent: 'Logs',
+      parent: 'Developer',
     }.merge(menu_opts || {})
 
     ActiveAdmin.register model, as: name, namespace: namespace  do
