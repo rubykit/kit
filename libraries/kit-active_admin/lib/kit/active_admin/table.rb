@@ -385,6 +385,16 @@ class Kit::ActiveAdmin::Table
     end
   end
 
+  def attr_type_date_tag(type, name, functor)
+    send(type, name) do |el|
+      ctx.date_tag functor.call(el)
+    end
+  end
+
+  def attr_type_date(type, name, functor)
+    attr_type_date_tag(type, name, functor)
+  end
+
   def attr_type_bool(type, name, functor)
     send(type, name) do |el|
       ctx.color_tag(!!functor.call(el) ? true : false)

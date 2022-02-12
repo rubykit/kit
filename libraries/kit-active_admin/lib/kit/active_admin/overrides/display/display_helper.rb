@@ -27,7 +27,8 @@ module ActiveAdmin
         when String, Numeric, Symbol, Arbre::Element
           object.to_s
         when Date, Time, DateTime
-          Arbre::Context.new { code I18n.localize object, format: ActiveAdmin.application.localize_format }
+          #Arbre::Context.new { code I18n.localize object, format: ActiveAdmin.application.localize_format }
+          Arbre::Context.new { date_tag object }
         else
           if defined?(::ActiveRecord) && object.is_a?(ActiveRecord::Base) ||
              defined?(::Mongoid)      && object.class.include?(Mongoid::Document)

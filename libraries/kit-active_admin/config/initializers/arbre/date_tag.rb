@@ -23,11 +23,11 @@ module ArbreCustomComponents
         format = "%Y-%m-%d %H:%M:%S %Z"
       end
 
-      set_attribute "data-datetime-timezone",  value.strftime("%Z")
-      set_attribute "data-datetime-timestamp", value.to_i
+      set_attribute "data-datetime-timezone",  value&.strftime("%Z")
+      set_attribute "data-datetime-timestamp", value&.to_i
       set_attribute "data-datetime-format",    format
 
-      code value.strftime(format)
+      code value&.strftime(format)
     end
   end
 
