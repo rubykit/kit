@@ -1,9 +1,9 @@
 class Kit::ActiveAdmin::Table
 
-  attr_reader :ctx
+  attr_reader :caller_ctx
 
-  def initialize(ctx)
-    @ctx = ctx
+  def initialize(caller_ctx)
+    @caller_ctx = caller_ctx
   end
 
   def self.attributes_for_all
@@ -72,15 +72,15 @@ class Kit::ActiveAdmin::Table
       panel_options['data-toggle'] = 'closed'
     end
 
-    ctx.panel title, panel_options do
+    caller_ctx.panel title, panel_options do
       if block
-        ctx.div :class => 'panel_contents_inner_topbar' do
-          yield ctx
+        caller_ctx.div :class => 'panel_contents_inner_topbar' do
+          yield caller_ctx
         end
       end
 
       if el
-        ctx.attributes_table_for el do
+        caller_ctx.attributes_table_for el do
           build_for_html_display :row, list
         end
       end
@@ -113,10 +113,10 @@ class Kit::ActiveAdmin::Table
       panel_options['data-toggle'] = 'closed'
     end
 
-    ctx.panel title, panel_options do
+    caller_ctx.panel title, panel_options do
       if block
-        ctx.div :class => 'panel_contents_inner_topbar' do
-          yield ctx
+        caller_ctx.div :class => 'panel_contents_inner_topbar' do
+          yield caller_ctx
         end
       end
 
@@ -137,8 +137,8 @@ class Kit::ActiveAdmin::Table
     options[:class] = '' if !options[:class]
     options[:class] +=' table_list'
 
-    ctx.table_for(relation, options) do |subctx|
-      @ctx = subctx
+    caller_ctx.table_for(relation, options) do |subcaller_ctx|
+      @caller_ctx = subcaller_ctx
       build_for_html_display :column, list
     end
   end
@@ -149,11 +149,11 @@ class Kit::ActiveAdmin::Table
 
     paginated_relation = relation
       .order(options[:order])
-      .page(ctx.params[param_name])
+      .page(caller_ctx.params[param_name])
       .per(50)
 
-    ctx.paginated_collection(paginated_relation, download_links: false, param_name: param_name) do
-      local_instance.list ctx.collection, options
+    caller_ctx.paginated_collection(paginated_relation, download_links: false, param_name: param_name) do
+      local_instance.list caller_ctx.collection, options
     end
   end
 
@@ -246,21 +246,21 @@ class Kit::ActiveAdmin::Table
     end
 
     if block_given?
-      ctx.column(name, sortable: sortable) do |el|
+      caller_ctx.column(name, sortable: sortable) do |el|
         yield el
       end
     else
-      ctx.column(name, sortable: sortable)
+      caller_ctx.column(name, sortable: sortable)
     end
   end
 
   def row(name)
     if block_given?
-      ctx.row(name) do |el|
+      caller_ctx.row(name) do |el|
         yield el
       end
     else
-      ctx.row(name)
+      caller_ctx.row(name)
     end
   end
 
@@ -330,12 +330,12 @@ class Kit::ActiveAdmin::Table
   def attr_type_model_id(type, name, functor)
     send(type, name) do |el|
       if name == :id
-        ctx.code(ctx.auto_link el, "##{el.id}")
+        caller_ctx.code(caller_ctx.auto_link el, "##{el.id}")
       else
         el = functor.call(el)
 
         text = "##{el.try(:id).try(:to_s)}"
-        ctx.code(ctx.auto_link el, text)
+        caller_ctx.code(caller_ctx.auto_link el, text)
       end
     end
   end
@@ -344,7 +344,7 @@ class Kit::ActiveAdmin::Table
     send(type, name) do |el|
       el = functor.call(el)
       text = el.try(:model_log_name)
-      ctx.code(ctx.auto_link el, text)
+      caller_ctx.code(caller_ctx.auto_link el, text)
     end
   end
 
@@ -352,7 +352,7 @@ class Kit::ActiveAdmin::Table
     send(type, name) do |el|
       el = functor.call(el)
       text = el.try(:model_verbose_name)
-      ctx.code(ctx.auto_link el, text)
+      caller_ctx.code(caller_ctx.auto_link el, text)
     end
   end
 
@@ -363,8 +363,8 @@ class Kit::ActiveAdmin::Table
       if object
         str = "##{object.id} #{object.uid.upcase}"
 
-        ctx.a href: ctx.auto_url_for(object) do
-          ctx.status_tag(str, class: "#{object.model_name.element}_#{object.uid}")
+        caller_ctx.a href: caller_ctx.auto_url_for(object) do
+          caller_ctx.status_tag(str, class: "#{object.model_name.element}_#{object.uid}")
         end
       else
         nil
@@ -375,19 +375,19 @@ class Kit::ActiveAdmin::Table
   def attr_type_status_tag(type, name, functor)
     send(type, name) do |el|
       v = functor.call(el)
-      ctx.status_tag v[0], v[1]
+      caller_ctx.status_tag v[0], v[1]
     end
   end
 
   def attr_type_color_tag(type, name, functor)
     send(type, name) do |el|
-      ctx.color_tag functor.call(el)
+      caller_ctx.color_tag functor.call(el)
     end
   end
 
   def attr_type_date_tag(type, name, functor)
     send(type, name) do |el|
-      ctx.date_tag functor.call(el)
+      caller_ctx.date_tag functor.call(el)
     end
   end
 
@@ -397,7 +397,7 @@ class Kit::ActiveAdmin::Table
 
   def attr_type_bool(type, name, functor)
     send(type, name) do |el|
-      ctx.color_tag(!!functor.call(el) ? true : false)
+      caller_ctx.color_tag(!!functor.call(el) ? true : false)
     end
   end
 
@@ -407,9 +407,9 @@ class Kit::ActiveAdmin::Table
 
   def attr_type_percentage_bar(type, name, functor)
     send(type, name) do |el|
-      ctx.div(:class => 'progress') do
+      caller_ctx.div(:class => 'progress') do
         value = functor.call(el)
-        ctx.div(:class => "progress-bar", :role => "progressbar", :style => "width: #{value.to_i}%;", :'aria-valuenow' => value.to_i, :'aria-valuemin' => "0", :'aria-valuemax' => "100") do
+        caller_ctx.div(:class => "progress-bar", :role => "progressbar", :style => "width: #{value.to_i}%;", :'aria-valuenow' => value.to_i, :'aria-valuemin' => "0", :'aria-valuemax' => "100") do
           '% 2.2f%' % value
         end
       end
@@ -418,49 +418,49 @@ class Kit::ActiveAdmin::Table
 
   def attr_type_code(type, name, functor)
     send(type, name) do |el|
-      ctx.code functor.call(el)
+      caller_ctx.code functor.call(el)
     end
   end
 
   def attr_type_color_tag_with_code(type, name, functor)
     send(type, name) do |el|
       color_tag, code = functor.call(el)
-      ctx.span do
-        ctx.color_tag color_tag
-        ctx.code      code, style: 'margin-left: 5px;'
+      caller_ctx.span do
+        caller_ctx.color_tag color_tag
+        caller_ctx.code      code, style: 'margin-left: 5px;'
       end
     end
   end
 
   def attr_type_img(type, name, functor)
     send(type, name) do |el|
-      ctx.img functor.call(el)
+      caller_ctx.img functor.call(el)
     end
   end
 
   def attr_type_pre(type, name, functor)
     send(type, name) do |el|
-      ctx.pre functor.call(el)
+      caller_ctx.pre functor.call(el)
     end
   end
 
   def attr_type_amount_tag(type, name, functor)
     send(type, name) do |el|
-      ctx.amount_tag functor.call(el)
+      caller_ctx.amount_tag functor.call(el)
     end
   end
 
   def attr_type_link_to(type, name, functor)
     send(type, name) do |el|
       v = functor.call(el)
-      ctx.send :link_to, *v
+      caller_ctx.send :link_to, *v
     end
   end
 
   def attr_type_code_link_to(type, name, functor)
     send(type, name) do |el|
-      v = functor.call(el)
-      ctx.code ctx.send :link_to, *v
+      v = functor.call(el: el, routes: Rails.application.routes.url_helpers)
+      caller_ctx.code caller_ctx.send :link_to, *v
     end
   end
 
@@ -469,10 +469,10 @@ class Kit::ActiveAdmin::Table
       v     = functor.call(el)
       links = v[1]
 
-      ctx.code(v[0], style: 'margin-right: 4px;')
+      caller_ctx.code(v[0], style: 'margin-right: 4px;')
 
       links.each do |data|
-        ctx.span(style: 'position: relative; top: -1px;') do
+        caller_ctx.span(style: 'position: relative; top: -1px;') do
           if !data[2]
             data[2] = {}
           end
@@ -481,7 +481,7 @@ class Kit::ActiveAdmin::Table
             data[2][:class] = 'inline-btn'
           end
 
-          ctx.link_to(*data)
+          caller_ctx.link_to(*data)
         end
       end
       nil
@@ -495,10 +495,10 @@ class Kit::ActiveAdmin::Table
       color = v[1]
       links = v[2]
 
-      ctx.status_tag(value, color, style: 'margin-right: 4px;')
+      caller_ctx.status_tag(value, color, style: 'margin-right: 4px;')
 
       links.each do |data|
-        ctx.span(style: 'position: relative; top: -1px;') do
+        caller_ctx.span(style: 'position: relative; top: -1px;') do
           if !data[2]
             data[2] = {}
           end
@@ -507,7 +507,7 @@ class Kit::ActiveAdmin::Table
             data[2][:class] = 'inline-btn'
           end
 
-          ctx.link_to(*data)
+          caller_ctx.link_to(*data)
         end
       end
       nil
@@ -519,7 +519,7 @@ class Kit::ActiveAdmin::Table
       links = functor.call(el) || []
 
       links.each do |data|
-        ctx.span(style: 'position: relative; top: -1px;') do
+        caller_ctx.span(style: 'position: relative; top: -1px;') do
           if !data[2]
             data[2] = {}
           end
@@ -528,7 +528,7 @@ class Kit::ActiveAdmin::Table
             data[2][:class] = 'inline-btn'
           end
 
-          ctx.link_to(*data)
+          caller_ctx.link_to(*data)
         end
       end
       nil
@@ -546,7 +546,7 @@ class Kit::ActiveAdmin::Table
         object = v
         text   = object.try(:id)
       end
-      ctx.auto_link object, text
+      caller_ctx.auto_link object, text
     end
   end
 
@@ -554,9 +554,9 @@ class Kit::ActiveAdmin::Table
     send(type, name) do |el|
       v = functor.call(el)
       if v[1] && v[2]
-        ctx.link_to(ctx.image_tag(v[1], v[3]), v[2])
+        caller_ctx.link_to(caller_ctx.image_tag(v[1], v[3]), v[2])
       else
-        ctx.code "MISSING IMAGE"
+        caller_ctx.code "MISSING IMAGE"
       end
     end
   end
@@ -564,7 +564,7 @@ class Kit::ActiveAdmin::Table
   def attr_type_pre_yaml(type, name, functor)
     send(type, name) do |el|
       v = functor.call(el)
-      ctx.pre v.to_yaml.gsub("---\n", '').gsub("--- ", '')
+      caller_ctx.pre v.to_yaml.gsub("---\n", '').gsub("--- ", '')
     end
   end
 
