@@ -568,4 +568,44 @@ class Kit::ActiveAdmin::Table
     end
   end
 
+  def attr_type_json_readonly(type, name, functor)
+    send(type, name) do |el|
+      v = functor.call(el)
+      caller_ctx.div class: 'container_json_editor_readonly' do
+        caller_ctx.textarea JSON.pretty_generate(v), class: 'json_editor_readonly', style: 'display: none;'
+      end
+    end
+  end
+
+  def attr_type_json_readonly_with_options(type, name, functor)
+    send(type, name) do |el|
+      v, opts = functor.call(el)
+
+      defaults_options = {
+        class: 'json_editor_readonly',
+        style: 'display: none;',
+      }
+
+      opts.each do |opt_k, opt_v|
+        if defaults_options[opt_k]
+          defaults_options[opt_k] = + " #{ opt_v }"
+        else
+          defaults_options[opt_k] = opt_v
+        end
+      end
+
+      container_options = {
+        class: 'container_json_editor_readonly',
+      }
+
+      if opts[:height]
+        container_options[:style] = "height: #{ opts[:height] };"
+      end
+
+      caller_ctx.div(container_options) do
+        caller_ctx.textarea JSON.pretty_generate(v), defaults_options
+      end
+    end
+  end
+
 end

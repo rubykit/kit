@@ -10,6 +10,7 @@
 
 //= require ./components/confirm-dialog
 //= require ./components/panel
+//= require ./components/json-readonly
 
 $(function() {
   // Prevent accidental scrolling in number inputs
