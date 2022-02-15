@@ -22,7 +22,7 @@ module Kit::Domain::Admin
 
   def self.register_resources(namespace: nil)
     list = [
-      Kit::Domain::Admin::Events,
+      Kit::Domain::Admin::Event,
       Kit::Domain::Admin::RequestMetadata,
     ]
 

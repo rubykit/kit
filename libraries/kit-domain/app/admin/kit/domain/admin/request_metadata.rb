@@ -5,7 +5,7 @@ module Kit::Domain::Admin::RequestMetadata
   def self.register_resource(modeL: nil, name: nil, namespace: nil, menu_opts: nil)
     model     ||=  Kit::Domain::Models::Write::RequestMetadata
     name      ||= 'RequestMetadata'
-    namespace ||= :kit_auth
+    namespace ||= :kit_domain
     menu_opts = {
       label:  name,
       parent: 'Logs',
