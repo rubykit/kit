@@ -55,7 +55,7 @@ module Kit::Auth::Endpoints::Events::Users::EmailConfirmationRequest
   end
 
   def self.persist_event(user_email:, emitted_at: nil)
-    Kit::Events::Services::Event.persist_event(
+    Kit::Domain::Services::Event.persist_event(
       name: 'users|auth|email_confirmation|request',
       data: {
         user_id:       user_email.user_id,

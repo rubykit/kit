@@ -1,4 +1,4 @@
-module Kit::Events::Services::Event
+module Kit::Domain::Services::Event
 
   # Persist event & fire a generic event_model|created event
   def self.persist_event(name:, data:, metadata: nil)
@@ -19,7 +19,7 @@ module Kit::Events::Services::Event
   def self.create_event_model(name:, data:, metadata: nil)
     metadata ||= {}
 
-    event_model = Kit::Events::Models::Write::Event.create({
+    event_model = Kit::Domain::Models::Write::Event.create({
       name:     name,
       data:     data,
       metadata: metadata,

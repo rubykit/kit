@@ -32,7 +32,7 @@ module Kit::Auth::Endpoints::Events::Users::SignOut
   end
 
   def self.persist_event(user_id:, user_secret_id:, emitted_at: nil)
-    Kit::Events::Services::Event.persist_event(
+    Kit::Domain::Services::Event.persist_event(
       name: 'users|auth|sign_out',
       data: {
         user_id:        user_id,

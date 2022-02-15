@@ -34,7 +34,7 @@ module Kit::Auth::Endpoints::Events::Users::Oauth::Unlink
   end
 
   def self.persist_event(user_id:, user_oauth_identity_id:, provider:, provider_uid:, emitted_at: nil)
-    Kit::Events::Services::Event.persist_event(
+    Kit::Domain::Services::Event.persist_event(
       name: 'user|oauth|unlinked',
       data: {
         user_id:                user_id,

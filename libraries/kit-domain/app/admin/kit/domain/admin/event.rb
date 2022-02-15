@@ -1,7 +1,7 @@
 module Kit::Domain::Admin::Event
 
   def self.register_resource(modeL: nil, name: nil, namespace: nil, menu_opts: nil)
-    model     ||=  Kit::Events::Models::Write::Event
+    model     ||=  Kit::Domain::Models::Write::Event
     name      ||= 'Event'
     namespace ||= :kit_domain
     menu_opts = {

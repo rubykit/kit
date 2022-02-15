@@ -54,7 +54,7 @@ module Kit::Auth::Endpoints::Events::Users::SignInLinkRequest
   end
 
   def self.persist_event_success(user_email:, access_token:, request_metadata:, emitted_at: nil)
-    Kit::Events::Services::Event.persist_event(
+    Kit::Domain::Services::Event.persist_event(
       name: 'users|auth|sign_in|link|request|success',
       data: {
         session_uid:         request_metadata.data['session_uid'],
@@ -67,7 +67,7 @@ module Kit::Auth::Endpoints::Events::Users::SignInLinkRequest
   end
 
   def self.persist_event_failure(email:, request_metadata:, emitted_at: nil)
-    Kit::Events::Services::Event.persist_event(
+    Kit::Domain::Services::Event.persist_event(
       name: 'users|auth|sign_in|link|request|failure',
       data: {
         session_uid:         request_metadata.data['session_uid'],

@@ -25,7 +25,7 @@ module Kit::Auth::Endpoints::Events::Users::Oauth::Link
   def self.persist_event(user_oauth_identity_id:, emitted_at: nil)
     user_oauth_identity = Kit::Auth::Models::Read::UserOauthIdentity.find_by(id: user_oauth_identity_id)
 
-    Kit::Events::Services::Event.persist_event(
+    Kit::Domain::Services::Event.persist_event(
       name: 'user|oauth|linked',
       data: {
         user_id:                user_oauth_identity.user_id,

@@ -1,4 +1,4 @@
-module Kit::Events::Models::Base::Event
+module Kit::Domain::Models::Base::Event
   extend ActiveSupport::Concern
 
   included do

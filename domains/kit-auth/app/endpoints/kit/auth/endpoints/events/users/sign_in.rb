@@ -32,7 +32,7 @@ module Kit::Auth::Endpoints::Events::Users::SignIn
   end
 
   def self.persist_event(user_id:, sign_in_method:, emitted_at: nil)
-    Kit::Events::Services::Event.persist_event(
+    Kit::Domain::Services::Event.persist_event(
       name: 'users|auth|sign_in',
       data: {
         user_id: user_id,

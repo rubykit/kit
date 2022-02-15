@@ -31,7 +31,7 @@ module Kit::Auth::Endpoints::Events::Users::PasswordReset
   end
 
   def self.persist_event(user_id:, emitted_at: nil)
-    Kit::Events::Services::Event.persist_event(
+    Kit::Domain::Services::Event.persist_event(
       name: 'users|auth|password_reset',
       data: {
         user_id: user_id,
