@@ -27,7 +27,7 @@ module Kit::Router::Adapters::AsyncRails
   def self.enqueue_job(router_conn:)
     params = router_conn[:request][:params].to_h
 
-    if params.key?(:emitted_at)
+    if !params.key?(:emitted_at)
       params[:emitted_at] = DateTime.now
     end
 
