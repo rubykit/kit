@@ -4,6 +4,7 @@ class Kit::Domain::Admin::Tables::Event < Kit::ActiveAdmin::Table
     {
       id:         nil,
       created_at: nil,
+      emitted_at: nil,
 
       name:       :code,
       data:       :pre_yaml,

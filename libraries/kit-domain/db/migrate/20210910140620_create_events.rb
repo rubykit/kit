@@ -5,6 +5,7 @@ class CreateEvents < ActiveRecord::Migration[6.1] # rubocop:disable Style/Docume
 
     create_table(:events, id: :uuid, default: 'gen_random_uuid()', force: false) do |t|
       t.datetime    :created_at,  null: false
+      t.datetime    :emitted_at
       t.datetime    :deleted_at
 
       t.string      :name,        null: false
@@ -15,6 +16,7 @@ class CreateEvents < ActiveRecord::Migration[6.1] # rubocop:disable Style/Docume
     add_index :events, :deleted_at
     add_index :events, [:id,         :deleted_at]
     add_index :events, [:created_at, :deleted_at]
+    add_index :events, [:emitted_at, :deleted_at]
     add_index :events, [:name,       :deleted_at]
 
     add_index :events, :metadata, using: :gin

@@ -32,10 +32,11 @@ module Kit::Auth::Endpoints::Events::Users::PasswordReset
 
   def self.persist_event(user_id:, emitted_at: nil)
     Kit::Domain::Services::Event.persist_event(
-      name: 'users|auth|password_reset',
-      data: {
+      name:       'users|auth|password_reset',
+      data:       {
         user_id: user_id,
-      }.merge(emitted_at ? { emitted_at: emitted_at } : {}),
+      },
+      emitted_at: emitted_at,
     )
   end
 

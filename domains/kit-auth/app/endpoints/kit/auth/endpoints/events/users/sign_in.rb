@@ -33,11 +33,12 @@ module Kit::Auth::Endpoints::Events::Users::SignIn
 
   def self.persist_event(user_id:, sign_in_method:, emitted_at: nil)
     Kit::Domain::Services::Event.persist_event(
-      name: 'users|auth|sign_in',
-      data: {
+      name:       'users|auth|sign_in',
+      data:       {
         user_id: user_id,
         method:  sign_in_method,
-      }.merge(emitted_at ? { emitted_at: emitted_at } : {}),
+      },
+      emitted_at: emitted_at,
     )
   end
 

@@ -9,6 +9,7 @@ module Kit::Domain::Models::Base::Event
       :created_at,
       :deleted_at,
 
+      :emitted_at,
       :name,
       :data,
       :metadata,

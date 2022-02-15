@@ -55,25 +55,27 @@ module Kit::Auth::Endpoints::Events::Users::SignInLinkRequest
 
   def self.persist_event_success(user_email:, access_token:, request_metadata:, emitted_at: nil)
     Kit::Domain::Services::Event.persist_event(
-      name: 'users|auth|sign_in|link|request|success',
-      data: {
+      name:       'users|auth|sign_in|link|request|success',
+      data:       {
         session_uid:         request_metadata.data['session_uid'],
         user_email_id:       user_email.id,
         email:               user_email.email,
         request_metadata_id: request_metadata.id,
         access_token_id:     access_token.id,
-      }.merge(emitted_at ? { emitted_at: emitted_at } : {}),
+      },
+      emitted_at: emitted_at,
     )
   end
 
   def self.persist_event_failure(email:, request_metadata:, emitted_at: nil)
     Kit::Domain::Services::Event.persist_event(
-      name: 'users|auth|sign_in|link|request|failure',
-      data: {
+      name:       'users|auth|sign_in|link|request|failure',
+      data:       {
         session_uid:         request_metadata.data['session_uid'],
         email:               email,
         request_metadata_id: request_metadata.id,
-      }.merge(emitted_at ? { emitted_at: emitted_at } : {}),
+      },
+      emitted_at: emitted_at,
     )
   end
 

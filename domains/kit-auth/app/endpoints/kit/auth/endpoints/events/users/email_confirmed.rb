@@ -12,7 +12,7 @@ module Kit::Auth::Endpoints::Events::Users::EmailConfirmed
         self.method(:load_user_email!),
         self.method(:persist_event),
       ],
-      ctx:  { router_conn: router_conn, },
+      ctx:  { router_conn: router_conn },
     )
   end
 
@@ -39,12 +39,13 @@ module Kit::Auth::Endpoints::Events::Users::EmailConfirmed
 
   def self.persist_event(user_email:, emitted_at: nil)
     Kit::Domain::Services::Event.persist_event(
-      name: 'users|auth|email_confirmation|confirmed',
-      data: {
+      name:       'users|auth|email_confirmation|confirmed',
+      data:       {
         user_id:       user_email.user_id,
         user_email_id: user_email.id,
         email:         user_email.email,
-      }.merge(emitted_at ? { emitted_at: emitted_at } : {}),
+      },
+      emitted_at: emitted_at,
     )
   end
 

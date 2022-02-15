@@ -56,12 +56,13 @@ module Kit::Auth::Endpoints::Events::Users::EmailConfirmationRequest
 
   def self.persist_event(user_email:, emitted_at: nil)
     Kit::Domain::Services::Event.persist_event(
-      name: 'users|auth|email_confirmation|request',
-      data: {
+      name:       'users|auth|email_confirmation|request',
+      data:       {
         user_id:       user_email.user_id,
         user_email_id: user_email.id,
         email:         user_email.email,
-      }.merge(emitted_at ? { emitted_at: emitted_at } : {}),
+      },
+      emitted_at: emitted_at,
     )
   end
 
