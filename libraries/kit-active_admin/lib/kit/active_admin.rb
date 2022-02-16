@@ -3,10 +3,8 @@ module Kit
   end
 end
 
-require_relative "active_admin/engine"
-
-require_relative "active_admin/table"
-require_relative "active_admin/overrides"
+require_relative 'active_admin/engine'
+require_relative 'active_admin/overrides'
 
 # NOTE: to be able to load the assets
 require 'activeadmin_addons'
