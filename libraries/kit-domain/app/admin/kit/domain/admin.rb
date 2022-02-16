@@ -22,8 +22,8 @@ module Kit::Domain::Admin
 
   def self.register_resources(namespace: nil)
     list = [
-      Kit::Domain::Admin::Event,
-      Kit::Domain::Admin::RequestMetadata,
+      Kit::Domain::Admin::Resources::Event,
+      Kit::Domain::Admin::Resources::RequestMetadata,
     ]
 
     list.each do |el|

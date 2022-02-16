@@ -1,6 +1,6 @@
-class Kit::Auth::Admin::Tables::UserOauthSecret < Kit::ActiveAdmin::Table
+class Kit::Auth::Admin::Attributes::UserOauthSecret < Kit::Admin::Attributes
 
-  def self.attributes_for_all
+  def self.all
     base_attributes.merge(
       user_oauth_identity:  :model_verbose,
 

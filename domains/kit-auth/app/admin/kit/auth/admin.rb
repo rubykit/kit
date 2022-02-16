@@ -22,12 +22,12 @@ module Kit::Auth::Admin
 
   def self.register_resources(namespace: nil)
     list = [
-      Kit::Auth::Admin::Application,
-      Kit::Auth::Admin::RequestMetadata,
-      Kit::Auth::Admin::User,
-      Kit::Auth::Admin::UserOauthIdentity,
-      Kit::Auth::Admin::UserOauthSecret,
-      Kit::Auth::Admin::UserSecret,
+      Kit::Auth::Admin::Resources::Application,
+      Kit::Auth::Admin::Resources::RequestMetadata,
+      Kit::Auth::Admin::Resources::User,
+      Kit::Auth::Admin::Resources::UserOauthIdentity,
+      Kit::Auth::Admin::Resources::UserOauthSecret,
+      Kit::Auth::Admin::Resources::UserSecret,
     ]
 
     list.each do |el|

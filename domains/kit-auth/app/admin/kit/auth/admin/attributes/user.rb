@@ -1,6 +1,6 @@
-class Kit::Auth::Admin::Tables::User < Kit::ActiveAdmin::Table
+class Kit::Auth::Admin::Attributes::User < Kit::Admin::Attributes
 
-  def self.attributes_for_all
+  def self.all
     base_attributes.merge(
       email:        :code,
       created_at:   nil,

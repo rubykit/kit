@@ -1,6 +1,6 @@
-class Kit::Domain::Admin::Tables::Event < Kit::ActiveAdmin::Table
+class Kit::Domain::Admin::Attributes::Event < Kit::Admin::Attributes
 
-  def self.attributes_for_all
+  def self.all
     {
       id:         nil,
       created_at: nil,

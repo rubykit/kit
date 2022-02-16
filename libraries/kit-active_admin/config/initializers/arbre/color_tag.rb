@@ -13,7 +13,7 @@ module ArbreCustomComponents
 
     def build(*args)
       args[0] = args[0].to_s.to_sym
-      args[1] = { :class => TAG_LIST[args[0]] || 'grey' }
+      args[1] = { class: TAG_LIST[args[0]] || 'grey' }
       status_tag(*args)
     end
   end
