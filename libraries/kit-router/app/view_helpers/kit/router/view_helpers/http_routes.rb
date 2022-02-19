@@ -21,12 +21,17 @@ module Kit::Router::ViewHelpers::HttpRoutes
     end
     verb   = router_verb(id: id)
 
-    active = (active == nil) ? true : active
+    active = (active == nil) ? true : active # rubocop:disable Style/RedundantSelfAssignmentBranch
 
     html[:href] = url
 
     if verb.to_sym != :get
       html['data-method'] = verb
+    end
+
+    # NOTE: this is to support Slim class notation, can't see any side effect?
+    if html[:class]
+      html[:class] = html[:class].gsub('.', ' ')
     end
 
     if active && Kit::Router::Adapters::Http::Mountpoints.request_route?(request: request, id: id)
