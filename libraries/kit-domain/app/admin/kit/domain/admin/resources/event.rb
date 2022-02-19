@@ -23,6 +23,8 @@ module Kit::Domain::Admin::Resources::Event
 
   def self.setup_index
     proc do
+      config.sort_order = 'created_at_desc'
+
       index do
         Kit::Admin::Services::Renderers::Index.render(ctx: self,
           attrs: Kit::Domain::Admin::Attributes::Event.index,
