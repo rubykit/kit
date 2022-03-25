@@ -5,7 +5,7 @@ class Kit::ViewComponents::Components::FormComponent < Kit::ViewComponents::Comp
 
   attr_reader :form_action, :form_method, :model, :csrf_token
 
-  def initialize(form_action:, form_method:, model:, csrf_token: nil, **)
+  def initialize(form_action:, form_method:, model: nil, csrf_token: nil, **)
     super
 
     @form_action = form_action
