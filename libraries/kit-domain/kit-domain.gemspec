@@ -23,12 +23,12 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 3.0'
 
-  s.add_dependency 'activerecord-nulldb-adapter', '~> 0.4.0'
-  s.add_dependency 'multiverse',                  '~> 0.2.1'
-  s.add_dependency 'paranoia',                    '~> 2.4', '>= 2.4.3'
-  s.add_dependency 'pg',                          '~> 1.2.3'
+  s.add_dependency 'activerecord-nulldb-adapter', '>= 0.4.0'
+  s.add_dependency 'multiverse',                  '>= 0.2.1'
+  s.add_dependency 'paranoia',                    '>= 2.4', '>= 2.4.3'
+  s.add_dependency 'pg',                          '>= 1.2.3'
 
-  s.add_dependency 'rails',                       '~> 6.1.0'
+  s.add_dependency 'rails',                       '>= 6.1.0'
   s.add_dependency 'slim-rails'
 
   s.add_dependency 'i18n-interpolate_nested'
