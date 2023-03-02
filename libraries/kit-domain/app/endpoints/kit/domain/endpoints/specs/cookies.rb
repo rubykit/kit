@@ -1,4 +1,4 @@
-# To avoid "magic" in specs, we use these endpoint to set cookies when needed.
+# To avoid "magic" in specs, we use these endpoint to manually set cookies when needed.
 module Kit::Domain::Endpoints::Specs::Cookies
 
   def self.endpoint_get(router_conn:)

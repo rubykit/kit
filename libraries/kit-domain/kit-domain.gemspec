@@ -28,7 +28,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'paranoia',                    '>= 2.4', '>= 2.4.3'
   s.add_dependency 'pg',                          '>= 1.2.3'
 
-  s.add_dependency 'rails',                       '>= 6.1.0'
+  s.add_dependency 'rails',                       '>= 6.1'
   s.add_dependency 'slim-rails'
 
   s.add_dependency 'i18n-interpolate_nested'

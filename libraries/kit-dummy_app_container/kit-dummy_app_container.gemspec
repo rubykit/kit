@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 3.0'
 
-  s.add_dependency 'rails', '~> 6.1'
+  s.add_dependency 'rails', '>= 6.1'
   s.add_dependency 'sidekiq'
   s.add_dependency 'view_component'
 
