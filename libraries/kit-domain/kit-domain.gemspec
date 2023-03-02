@@ -33,7 +33,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'i18n-interpolate_nested'
 
-  s.add_dependency 'activeadmin', '~> 2.9.0'
+  #s.add_dependency 'activeadmin', '~> 2.9.0'
 
   s.add_development_dependency 'annotate'
   s.add_development_dependency 'rubocop'
