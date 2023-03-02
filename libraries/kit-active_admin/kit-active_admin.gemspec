@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 3.0'
 
-  s.add_dependency 'activeadmin',             '~> 2.9.0'
+  s.add_dependency 'activeadmin',             '~> 2.13.1'
   s.add_dependency 'activeadmin_addons',      '~> 1.7.1'
   s.add_dependency 'activeadmin_json_editor', '~> 0.0.9'
 end
