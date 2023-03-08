@@ -15,12 +15,6 @@ module Kit::Domain::Endpoints::Specs::Cookies
     [:ok, { router_conn: router_conn }]
   end
 
-  Kit::Router::Services::Router.register(
-    uid:     'kit-domain|specs|cookies|get',
-    aliases: ['specs|cookies|get'],
-    target:  self.method(:endpoint_get),
-  )
-
   def self.endpoint_set(router_conn:)
     cookie_name      = router_conn[:params][:name]&.to_sym
     cookie_value     = router_conn[:params][:value]
@@ -38,10 +32,18 @@ module Kit::Domain::Endpoints::Specs::Cookies
     [:ok, ctx]
   end
 
-  Kit::Router::Services::Router.register(
-    uid:     'kit-domain|specs|cookies|set',
-    aliases: ['specs|cookies|set'],
-    target:  self.method(:endpoint_set),
-  )
+  def self.register_endpoints
+    Kit::Router::Services::Router.register(
+      uid:     'kit-domain|specs|cookies|get',
+      aliases: ['specs|cookies|get'],
+      target:  self.method(:endpoint_get),
+    )
+
+    Kit::Router::Services::Router.register(
+      uid:     'kit-domain|specs|cookies|set',
+      aliases: ['specs|cookies|set'],
+      target:  self.method(:endpoint_set),
+    )
+  end
 
 end

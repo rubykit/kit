@@ -1,1 +1,3 @@
-Kit::Domain::Services::Initializers.load_endpoints(dir: __dir__)
+Rails.application.config.to_prepare do
+  Kit::Domain::Endpoints::Specs.register_endpoints
+end

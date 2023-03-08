@@ -11,10 +11,12 @@ module Kit::Domain::Endpoints::Specs::LinkTo
     )
   end
 
-  Kit::Router::Services::Router.register(
-    uid:     'kit-domain|specs|link_to',
-    aliases: ['specs|link_to'],
-    target:  self.method(:endpoint),
-  )
+  def self.register_endpoint
+    Kit::Router::Services::Router.register(
+      uid:     'kit-domain|specs|link_to',
+      aliases: ['specs|link_to'],
+      target:  self.method(:endpoint),
+    )
+  end
 
 end
