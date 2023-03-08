@@ -3,14 +3,14 @@ class ActiveAdmin::Application
   # Prevent the loading of the default namsepace.
   #
   # ### References
-  # - https://github.com/activeadmin/activeadmin/blob/v2.9.0/lib/active_admin/application.rb#L116
+  # - https://github.com/activeadmin/activeadmin/blob/v2.13.1/lib/active_admin/application.rb#L113
   def load!
     unless loaded?
-      ActiveSupport::Notifications.publish BeforeLoadEvent, self # before_load hook
-      files.each { |file| load file }                            # load files
+      ActiveSupport::Notifications.instrument BeforeLoadEvent, { active_admin_application: self } # before_load hook
+      files.each { |file| load file } # load files
       # NOTE: the change is the next commented line.
-      #namespace(default_namespace)                               # init AA resources
-      ActiveSupport::Notifications.publish AfterLoadEvent, self  # after_load hook
+      # namespace(default_namespace) # init AA resources
+      ActiveSupport::Notifications.instrument AfterLoadEvent, { active_admin_application: self } # after_load hook
       @@loaded = true
     end
   end
@@ -18,7 +18,7 @@ class ActiveAdmin::Application
   # Allow to select what admin namespaces to mount.
   #
   # ### References
-  # - https://github.com/activeadmin/activeadmin/blob/v2.9.0/lib/active_admin/application.rb#L140
+  # - https://github.com/activeadmin/activeadmin/blob/v2.13.1/lib/active_admin/application.rb#L141
   def routes(rails_router, list = {})
     load!
 
@@ -37,7 +37,7 @@ class ActiveAdmin::Application
   # Prevents AA from hijacking auto-loading behaviour.
   #
   # ### References
-  # - https://github.com/activeadmin/activeadmin/blob/v2.9.0/lib/active_admin/application.rb#L177
+  # - https://github.com/activeadmin/activeadmin/blob/v2.13.1/lib/active_admin/application.rb#L177
   def remove_active_admin_load_paths_from_rails_autoload_and_eager_load
   end
 
