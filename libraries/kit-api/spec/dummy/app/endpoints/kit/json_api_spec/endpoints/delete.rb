@@ -16,13 +16,15 @@ module Kit::JsonApiSpec::Endpoints::Delete # rubocop:disable Style/Documentation
     )
   end
 
-  Kit::JsonApiSpec::Services::Routing.register_endpoints(
-    resources: KIT_DUMMY_APP_API_CONFIG[:resources],
-    endpoint:  self.method(:endpoint),
-    routes:    [
-      { route_type: :delete, singular: true },
-    ],
-  )
+  def self.register_endpoints
+    Kit::JsonApiSpec::Services::Routing.register_endpoints(
+      resources: KIT_DUMMY_APP_API_CONFIG[:resources],
+      endpoint:  self.method(:endpoint),
+      routes:    [
+        { route_type: :delete, singular: true },
+      ],
+    )
+  end
 
   def self.delete(router_conn:, api_request:)
     resource       = api_request[:top_level_resource]

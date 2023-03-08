@@ -18,12 +18,14 @@ module Kit::JsonApiSpec::Endpoints::Index # rubocop:disable Style/Documentation
     )
   end
 
-  Kit::JsonApiSpec::Services::Routing.register_endpoints(
-    resources: KIT_DUMMY_APP_API_CONFIG[:resources],
-    endpoint:  self.method(:endpoint),
-    routes:    [
-      { route_type: :index, singular: false },
-    ],
-  )
+  def self.register_endpoints
+    Kit::JsonApiSpec::Services::Routing.register_endpoints(
+      resources: KIT_DUMMY_APP_API_CONFIG[:resources],
+      endpoint:  self.method(:endpoint),
+      routes:    [
+        { route_type: :index, singular: false },
+      ],
+    )
+  end
 
 end

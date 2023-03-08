@@ -20,13 +20,15 @@ module Kit::JsonApiSpec::Endpoints::Show # rubocop:disable Style/Documentation
     )
   end
 
-  Kit::JsonApiSpec::Services::Routing.register_endpoints(
-    resources: KIT_DUMMY_APP_API_CONFIG[:resources],
-    endpoint:  self.method(:endpoint),
-    routes:    [
-      { route_type: :show, singular: true },
-    ],
-  )
+  def self.register_endpoints
+    Kit::JsonApiSpec::Services::Routing.register_endpoints(
+      resources: KIT_DUMMY_APP_API_CONFIG[:resources],
+      endpoint:  self.method(:endpoint),
+      routes:    [
+        { route_type: :show, singular: true },
+      ],
+    )
+  end
 
   def self.add_api_request_condition(api_request:, router_conn:)
     api_request[:condition] = { column: :id, op: :eq, values: [router_conn.request[:params][:resource_id]] }
