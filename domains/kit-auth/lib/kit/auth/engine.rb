@@ -17,7 +17,9 @@ class Kit::Auth::Engine < ::Rails::Engine
   )
 
   initializer 'kit-auth.view_helpers' do
-    ActionView::Base.include Kit::Auth::Helpers::ViewHelpers
+    Rails.application.config.to_prepare do
+      ActionView::Base.include Kit::Auth::Helpers::ViewHelpers
+    end
   end
 
 =begin
