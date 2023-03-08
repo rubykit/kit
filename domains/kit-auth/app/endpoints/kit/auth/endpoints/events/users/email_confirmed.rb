@@ -16,11 +16,13 @@ module Kit::Auth::Endpoints::Events::Users::EmailConfirmed
     )
   end
 
-  Kit::Router::Services::Router.register(
-    uid:     'kit_auth|event|users|auth|email_confirmation|confirmed',
-    target:  self.method(:endpoint),
-    aliases: ['event|users|auth|email_confirmation|confirmed'],
-  )
+  def self.register_endpoint
+    Kit::Router::Services::Router.register(
+      uid:     'kit_auth|event|users|auth|email_confirmation|confirmed',
+      target:  self.method(:endpoint),
+      aliases: ['event|users|auth|email_confirmation|confirmed'],
+    )
+  end
 
   def self.load_from_params(router_conn:)
     params = router_conn.request[:params]

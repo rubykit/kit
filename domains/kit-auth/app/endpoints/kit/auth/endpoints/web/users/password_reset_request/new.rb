@@ -1,5 +1,6 @@
 module Kit::Auth::Endpoints::Web::Users::PasswordResetRequest::New
 
+  # Display a form to create a PasswordResetRequest for a given email
   def self.endpoint(router_conn:, component: nil)
     Kit::Organizer.call(
       ok:  [
@@ -8,18 +9,20 @@ module Kit::Auth::Endpoints::Web::Users::PasswordResetRequest::New
         self.method(:set_page_component),
         Kit::Domain::Endpoints::Http.method(:render_form_page),
       ],
-      ctx:   {
+      ctx: {
         router_conn: router_conn,
         component:   component,
       },
     )
   end
 
-  Kit::Router::Services::Router.register(
-    uid:     'kit_auth|web|users|password_reset|request|new',
-    aliases: ['web|users|password_reset|request|new'],
-    target:  self.method(:endpoint),
-  )
+  def self.register_endpoint
+    Kit::Router::Services::Router.register(
+      uid:     'kit_auth|web|users|password_reset|request|new',
+      aliases: ['web|users|password_reset|request|new'],
+      target:  self.method(:endpoint),
+    )
+  end
 
   def self.set_form_model(router_conn:)
     form_model = { email: nil }

@@ -15,18 +15,20 @@ module Kit::Auth::Endpoints::Web::Users::SignIn::WithPassword::New
     )
   end
 
-  Kit::Router::Services::Router.register(
-    uid:     'kit_auth|web|users|sign_in|with_password|new',
-    target:  self.method(:endpoint),
-    aliases: {
-      'web|users|sign_in|with_password|new' => [
-        'web|users|sign_in|new',
-        'web|authorization_tokens|new',
-        'web|users|sign_out|after',
-        'web|users|password_reset_request|after',
-      ],
-    },
-  )
+  def self.register_endpoint
+    Kit::Router::Services::Router.register(
+      uid:     'kit_auth|web|users|sign_in|with_password|new',
+      target:  self.method(:endpoint),
+      aliases: {
+        'web|users|sign_in|with_password|new' => [
+          'web|users|sign_in|new',
+          'web|authorization_tokens|new',
+          'web|users|sign_out|after',
+          'web|users|password_reset_request|after',
+        ],
+      },
+    )
+  end
 
   def self.set_form_model
     form_model = { email: nil, password: nil }

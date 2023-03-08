@@ -17,16 +17,18 @@ module Kit::Auth::Endpoints::Web::Users::SignOut::Destroy
     )
   end
 
-  Kit::Router::Services::Router.register(
-    uid:     'kit_auth|web|users|sign_out|destroy',
-    aliases: {
-      'web|users|sign_out|destroy' => [
-        'web|authorization_tokens|destroy',
-        'web|users|sign_out',
-      ],
-    },
-    target:  self.method(:endpoint),
-  )
+  def self.register_endpoint
+    Kit::Router::Services::Router.register(
+      uid:     'kit_auth|web|users|sign_out|destroy',
+      aliases: {
+        'web|users|sign_out|destroy' => [
+          'web|authorization_tokens|destroy',
+          'web|users|sign_out',
+        ],
+      },
+      target:  self.method(:endpoint),
+    )
+  end
 
   def self.redirect(router_conn:, redirect_url: nil)
     redirect_url ||= Kit::Router::Adapters::Http::Mountpoints.path(id: 'web|users|sign_out|after')

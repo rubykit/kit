@@ -9,10 +9,12 @@ module Kit::Auth::DummyApp::Endpoints::Web::Settings
     [:ok, ctx]
   end
 
-  Kit::Router::Services::Router.register(
-    uid:     'kit-auth|dummy_app|web|settings',
-    aliases: ['web|settings'],
-    target:  self.method(:endpoint),
-  )
+  def self.register_endpoint
+    Kit::Router::Services::Router.register(
+      uid:     'kit-auth|dummy_app|web|settings',
+      aliases: ['web|settings'],
+      target:  self.method(:endpoint),
+    )
+  end
 
 end

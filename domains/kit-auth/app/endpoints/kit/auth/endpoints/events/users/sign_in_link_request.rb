@@ -24,11 +24,13 @@ module Kit::Auth::Endpoints::Events::Users::SignInLinkRequest
     )
   end
 
-  Kit::Router::Services::Router.register(
-    uid:     'kit_auth|event|users|auth|sign_in|link|request',
-    aliases: ['event|users|auth|sign_in|link|request'],
-    target:  self.method(:endpoint),
-  )
+  def self.register_endpoint
+    Kit::Router::Services::Router.register(
+      uid:     'kit_auth|event|users|auth|sign_in|link|request',
+      aliases: ['event|users|auth|sign_in|link|request'],
+      target:  self.method(:endpoint),
+    )
+  end
 
   def self.load_from_params(router_conn:)
     params = router_conn.request[:params]

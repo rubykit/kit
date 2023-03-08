@@ -23,15 +23,17 @@ module Kit::Auth::Endpoints::Web::Users::SignIn::WithMagicLink::Create
     )
   end
 
-  Kit::Router::Services::Router.register(
-    uid:     'kit_auth|web|users|sign_in|with_magic_link|create',
-    aliases: {
-      'web|users|sign_in|with_magic_link|create' => [
-        'web|authorization_tokens|email|create',
-      ],
-    },
-    target:  self.method(:endpoint),
-  )
+  def self.register_endpoint
+    Kit::Router::Services::Router.register(
+      uid:     'kit_auth|web|users|sign_in|with_magic_link|create',
+      aliases: {
+        'web|users|sign_in|with_magic_link|create' => [
+          'web|authorization_tokens|email|create',
+        ],
+      },
+      target:  self.method(:endpoint),
+    )
+  end
 
   def self.create_sign_in(router_conn:, access_token:)
     status, ctx = Kit::Organizer.call(

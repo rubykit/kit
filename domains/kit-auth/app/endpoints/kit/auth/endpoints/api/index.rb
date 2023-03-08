@@ -16,23 +16,25 @@ module Kit::Auth::Endpoints::Api::Index # rubocop:disable Style/Documentation
     )
   end
 
-  resources = {
-    user_auth:  -> { Kit::Auth::Resources::Api::UserAuth.to_h },
-    user_email: -> { Kit::Auth::Resources::Api::UserEmail.to_h },
-  }
+ def self.register_endpoints
+    resources = {
+      user_auth:  -> { Kit::Auth::Resources::Api::UserAuth.to_h },
+      user_email: -> { Kit::Auth::Resources::Api::UserEmail.to_h },
+    }
 
-  resources.each do |name, resource|
-    Kit::Router::Services::Router.register(
-      uid:     "kit|auth|api|json_api|#{ name }|index",
-      aliases: ["api|json_api|#{ name }|index"],
-      target:  self.method(:endpoint),
-      meta:    {
-        route_defaults: {
-          kit_api_top_level_resource: resource,
-          kit_api_singular:           false,
+    resources.each do |name, resource|
+      Kit::Router::Services::Router.register(
+        uid:     "kit|auth|api|json_api|#{ name }|index",
+        aliases: ["api|json_api|#{ name }|index"],
+        target:  self.method(:endpoint),
+        meta:    {
+          route_defaults: {
+            kit_api_top_level_resource: resource,
+            kit_api_singular:           false,
+          },
         },
-      },
-    )
+      )
+    end
   end
 
 end

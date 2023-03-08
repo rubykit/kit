@@ -22,15 +22,17 @@ module Kit::Auth::Endpoints::Web::Users::SignUp::WithPassword::Create
     )
   end
 
-  Kit::Router::Services::Router.register(
-    uid:     'kit_auth|web|users|sign_up|with_password|create',
-    aliases: {
-      'web|users|sign_up|with_password|create' => [
-        'web|users|create',
-      ],
-    },
-    target:  self.method(:endpoint),
-  )
+  def self.register_endpoint
+    Kit::Router::Services::Router.register(
+      uid:     'kit_auth|web|users|sign_up|with_password|create',
+      aliases: {
+        'web|users|sign_up|with_password|create' => [
+          'web|users|create',
+        ],
+      },
+      target:  self.method(:endpoint),
+    )
+  end
 
   def self.set_form_model(router_conn:)
     attributes = [:email, :password, :password_confirmation]

@@ -17,18 +17,20 @@ module Kit::Auth::Endpoints::Web::Users::Settings::Oauth::Destroy
     )
   end
 
-  Kit::Router::Services::Router.register(
-    uid:     'kit_auth|web|settings|oauth|destroy',
-    aliases: {
-      'web|settings|oauth|destroy' => {
-        'web|user_oauth_identity|destroy'  => [],
-        'web|settings|oauth|destroy|after' => [
-          'web|user_oauth_identity|destroy|after',
-        ],
+  def self.register_endpoint
+    Kit::Router::Services::Router.register(
+      uid:     'kit_auth|web|settings|oauth|destroy',
+      aliases: {
+        'web|settings|oauth|destroy' => {
+          'web|user_oauth_identity|destroy'  => [],
+          'web|settings|oauth|destroy|after' => [
+            'web|user_oauth_identity|destroy|after',
+          ],
+        },
       },
-    },
-    target:  self.method(:endpoint),
-  )
+      target:  self.method(:endpoint),
+    )
+  end
 
   def self.load_oauth_user_identity(router_conn:)
     model_id = router_conn[:params][:user_oauth_identity_id]

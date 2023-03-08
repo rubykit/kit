@@ -18,7 +18,9 @@ module Kit::Auth::Endpoints::Web::Aliases::AccessTokens
     )
   end
 
-  Kit::Organizer::Services::Callable::Alias.register(id: :kit_auth_web_redirect_if_missing_scope!, target: self.method(:redirect_if_missing_scope!))
-  Kit::Organizer::Services::Callable::Alias.register(id: :web_redirect_if_missing_scope!,          target: self.method(:redirect_if_missing_scope!))
+  def self.register_aliases
+    Kit::Organizer::Services::Callable::Alias.register(id: :kit_auth_web_redirect_if_missing_scope!, target: self.method(:redirect_if_missing_scope!))
+    Kit::Organizer::Services::Callable::Alias.register(id: :web_redirect_if_missing_scope!,          target: self.method(:redirect_if_missing_scope!))
+  end
 
 end

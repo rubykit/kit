@@ -15,11 +15,13 @@ module Kit::Auth::Endpoints::Events::Users::Oauth::Unlink
     )
   end
 
-  Kit::Router::Services::Router.register(
-    uid:     'kit_auth|event|users|oauth|unlinked',
-    target:  self.method(:endpoint),
-    aliases: ['event|users|oauth|unlinked'],
-  )
+  def self.register_endpoint
+    Kit::Router::Services::Router.register(
+      uid:     'kit_auth|event|users|oauth|unlinked',
+      target:  self.method(:endpoint),
+      aliases: ['event|users|oauth|unlinked'],
+    )
+  end
 
   def self.load_from_params(router_conn:)
     params = router_conn.request[:params]

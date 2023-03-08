@@ -11,22 +11,24 @@ module Kit::Auth::Endpoints::Web::Users::Settings::Oauth::Index
     )
   end
 
-  Kit::Router::Services::Router.register(
-    uid:     'kit_auth|web|settings|oauth|index',
-    aliases: {
-      'web|settings|oauth|index': {
-        'web|settings|oauth' => [
-          # OAuth
-          'web|users|sign_in|oauth|after_with_new_identity',
-          'web|users|oauth|new_identity',
-          'web|users|oauth|error|already_linked',
-          'web|users|oauth|error|users_oauth_identity_conflict',
-          'web|users|oauth|error|users_conflict',
-        ],
+  def self.register_endpoint
+    Kit::Router::Services::Router.register(
+      uid:     'kit_auth|web|settings|oauth|index',
+      aliases: {
+        'web|settings|oauth|index': {
+          'web|settings|oauth' => [
+            # OAuth
+            'web|users|sign_in|oauth|after_with_new_identity',
+            'web|users|oauth|new_identity',
+            'web|users|oauth|error|already_linked',
+            'web|users|oauth|error|users_oauth_identity_conflict',
+            'web|users|oauth|error|users_conflict',
+          ],
+        },
       },
-    },
-    target:  self.method(:endpoint),
-  )
+      target:  self.method(:endpoint),
+    )
+  end
 
   def self.list(router_conn:)
     list = Kit::Auth::Models::Read::UserOauthIdentity

@@ -15,11 +15,13 @@ module Kit::Auth::Endpoints::Web::Users::SignIn::LinkRequest::New
     )
   end
 
-  Kit::Router::Services::Router.register(
-    uid:     'kit_auth|web|users|sign_in|with_magic_link|request|new',
-    target:  self.method(:endpoint),
-    aliases: ['web|users|sign_in|with_magic_link|request|new'],
-  )
+  def self.register_endpoint
+    Kit::Router::Services::Router.register(
+      uid:     'kit_auth|web|users|sign_in|with_magic_link|request|new',
+      target:  self.method(:endpoint),
+      aliases: ['web|users|sign_in|with_magic_link|request|new'],
+    )
+  end
 
   def self.set_form_model
     form_model = { email: nil, password: nil }

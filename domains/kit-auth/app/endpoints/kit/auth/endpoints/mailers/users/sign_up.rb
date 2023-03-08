@@ -19,11 +19,13 @@ module Kit::Auth::Endpoints::Mailers::Users::SignUp
     )
   end
 
-  Kit::Router::Services::Router.register(
-    uid:     'kit_auth|mailers|users|sign_up',
-    target:  self.method(:endpoint),
-    aliases: ['mailers|users|sign_up'],
-  )
+  def self.register_endpoint
+    Kit::Router::Services::Router.register(
+      uid:     'kit_auth|mailers|users|sign_up',
+      target:  self.method(:endpoint),
+      aliases: ['mailers|users|sign_up'],
+    )
+  end
 
   def self.load_user_email!(router_conn:)
     user_email_id = router_conn.request[:params][:user_email_id]

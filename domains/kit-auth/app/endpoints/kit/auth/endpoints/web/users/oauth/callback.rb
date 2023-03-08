@@ -45,11 +45,13 @@ module Kit::Auth::Endpoints::Web::Users::Oauth::Callback
     )
   end
 
-  Kit::Router::Services::Router.register(
-    uid:     'kit_auth|web|users|oauth|callback',
-    aliases: ['web|users|oauth|callback'],
-    target:  self.method(:endpoint),
-  )
+  def self.register_endpoint
+    Kit::Router::Services::Router.register(
+      uid:     'kit_auth|web|users|oauth|callback',
+      aliases: ['web|users|oauth|callback'],
+      target:  self.method(:endpoint),
+    )
+  end
 
   # Ensure the OmniAuth data is present in the request and the oauth provider is supported.
   def self.ensure_omniauth_data(router_conn:)

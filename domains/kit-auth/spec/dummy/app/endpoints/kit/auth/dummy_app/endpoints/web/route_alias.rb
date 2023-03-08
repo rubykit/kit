@@ -49,7 +49,9 @@ module Kit::Auth::DummyApp::Endpoints::Web::RouteAlias
     'web|errors|missing_scope',
   ]
 
-  if Rails.env.test?
+  def self.register_endpoint
+    return if !Rails.env.test?
+
     Kit::Router::Services::Router.register(
       uid:     'kit-auth|dummy_app|web|route_alias',
       aliases: {

@@ -23,20 +23,22 @@ module Kit::Auth::Endpoints::Web::Users::Oauth::Authentify
     )
   end
 
-  Kit::Router::Services::Router.register(
-    uid:     'kit_auth|web|users|oauth|authentify',
-    aliases: {
-      'web|users|oauth|authentify' => {
-        'web|users|oauth|sign_up' => [
-          'web|users|sign_up|oauth|create',
-        ],
-        'web|users|oauth|sign_in' => [
-          'web|users|sign_in|oauth|create',
-        ],
-      }
-    },
-    target:  self.method(:endpoint),
-  )
+  def self.register_endpoint
+    Kit::Router::Services::Router.register(
+      uid:     'kit_auth|web|users|oauth|authentify',
+      aliases: {
+        'web|users|oauth|authentify' => {
+          'web|users|oauth|sign_up' => [
+            'web|users|sign_up|oauth|create',
+          ],
+          'web|users|oauth|sign_in' => [
+            'web|users|sign_in|oauth|create',
+          ],
+        }
+      },
+      target:  self.method(:endpoint),
+    )
+  end
 
   def self.ensure_omniauth_provider(router_conn:)
     provider_external_name = router_conn[:params][:provider].to_sym

@@ -17,11 +17,13 @@ module Kit::Auth::Endpoints::Events::Users::SignUp
     )
   end
 
-  Kit::Router::Services::Router.register(
-    uid:     'kit_auth|event|users|auth|sign_up',
-    target:  self.method(:endpoint),
-    aliases: ['event|users|auth|sign_up'],
-  )
+  def self.register_endpoint
+    Kit::Router::Services::Router.register(
+      uid:     'kit_auth|event|users|auth|sign_up',
+      target:  self.method(:endpoint),
+      aliases: ['event|users|auth|sign_up'],
+    )
+  end
 
   def self.load_from_params(router_conn:)
     params = router_conn.request[:params]

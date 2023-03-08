@@ -15,11 +15,13 @@ module Kit::Auth::Endpoints::Events::Users::PasswordReset
     )
   end
 
-  Kit::Router::Services::Router.register(
-    uid:     'kit_auth|event|users|auth|password_reset',
-    target:  self.method(:endpoint),
-    aliases: ['event|users|auth|password_reset'],
-  )
+  def self.register_endpoint
+    Kit::Router::Services::Router.register(
+      uid:     'kit_auth|event|users|auth|password_reset',
+      target:  self.method(:endpoint),
+      aliases: ['event|users|auth|password_reset'],
+    )
+  end
 
   def self.load_from_params(router_conn:)
     params = router_conn.request[:params]

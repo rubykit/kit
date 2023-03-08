@@ -15,15 +15,17 @@ module Kit::Auth::Endpoints::Web::Users::SignUp::WithPassword::New
     )
   end
 
-  Kit::Router::Services::Router.register(
-    uid:     'kit_auth|web|users|sign_up|with_password|new',
-    aliases: {
-      'web|users|sign_up|with_password|new' => [
-        'web|users|sign_up|new',
-      ],
-    },
-    target:  self.method(:endpoint),
-  )
+  def self.register_endpoint
+    Kit::Router::Services::Router.register(
+      uid:     'kit_auth|web|users|sign_up|with_password|new',
+      aliases: {
+        'web|users|sign_up|with_password|new' => [
+          'web|users|sign_up|new',
+        ],
+      },
+      target:  self.method(:endpoint),
+    )
+  end
 
   def self.set_form_model
     form_model = { email: nil, password: nil }

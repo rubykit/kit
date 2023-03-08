@@ -1,5 +1,15 @@
 module Kit::Auth::Endpoints::Web::Users::ConfirmEmail::Update
 
+  def self.register_endpoint
+    Kit::Router::Services::Router.register(
+      uid:     'kit_auth|web|users|email|confirm',
+      aliases: [
+        'web|users|email|confirm',
+      ],
+      target:  self.method(:endpoint),
+    )
+  end
+
   def self.endpoint(router_conn:)
     Kit::Organizer.call(
       ok:    [
@@ -18,14 +28,6 @@ module Kit::Auth::Endpoints::Web::Users::ConfirmEmail::Update
       ctx:   { router_conn: router_conn },
     )
   end
-
-  Kit::Router::Services::Router.register(
-    uid:     'kit_auth|web|users|email|confirm',
-    aliases: [
-      'web|users|email|confirm',
-    ],
-    target:  self.method(:endpoint),
-  )
 
   def self.redirect(router_conn:, redirect_url: nil)
     if !redirect_url

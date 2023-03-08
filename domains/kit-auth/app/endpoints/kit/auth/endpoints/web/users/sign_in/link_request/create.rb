@@ -19,13 +19,15 @@ module Kit::Auth::Endpoints::Web::Users::SignIn::LinkRequest::Create
     )
   end
 
-  Kit::Router::Services::Router.register(
-    uid:     'kit_auth|web|users|sign_in|with_magic_link|request|create',
-    aliases: [
-      'web|users|sign_in|with_magic_link|request|create',
-    ],
-    target:  self.method(:endpoint),
-  )
+  def self.register_endpoint
+    Kit::Router::Services::Router.register(
+      uid:     'kit_auth|web|users|sign_in|with_magic_link|request|create',
+      aliases: [
+        'web|users|sign_in|with_magic_link|request|create',
+      ],
+      target:  self.method(:endpoint),
+    )
+  end
 
   def self.set_form_model(router_conn:)
     form_model = router_conn.request[:params].slice(:email)

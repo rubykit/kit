@@ -22,8 +22,6 @@ module Kit::Auth::Endpoints::Api::Aliases::RequestUser
     Kit::Auth::Controllers::Api.render_unauthorized
   end
 
-  Kit::Organizer::Services::Callable::Alias.register(id: :api_requires_session_user!, target: self.method(:requires_session_user!))
-
   def self.requires_scope!(router_conn:, scope:)
     api_resolve_current_user(router_conn: router_conn)
 
@@ -34,8 +32,6 @@ module Kit::Auth::Endpoints::Api::Aliases::RequestUser
 
     Kit::Auth::Controllers::Api.render_forbidden
   end
-
-  Kit::Organizer::Services::Callable::Alias.register(id: :api_requires_scope!, target: self.method(:requires_scope!))
 
   def self.resolve_current_user(router_conn:)
     if !router_conn.metadata[METADATA_KEY_CURRENT_USER_ATTEMPTED_RESOLVED]
@@ -63,6 +59,12 @@ module Kit::Auth::Endpoints::Api::Aliases::RequestUser
     ]
   end
 
-  Kit::Organizer::Services::Callable::Alias.register(id: :api_resolve_current_user, target: self.method(:resolve_current_user))
+  def self.register_aliases
+    Kit::Organizer::Services::Callable::Alias.register(id: :api_requires_session_user!, target: self.method(:requires_session_user!))
+
+    Kit::Organizer::Services::Callable::Alias.register(id: :api_requires_scope!, target: self.method(:requires_scope!))
+
+    Kit::Organizer::Services::Callable::Alias.register(id: :api_resolve_current_user, target: self.method(:resolve_current_user))
+  end
 
 end

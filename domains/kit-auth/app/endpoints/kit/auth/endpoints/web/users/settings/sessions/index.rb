@@ -11,15 +11,17 @@ module Kit::Auth::Endpoints::Web::Users::Settings::Sessions::Index
     )
   end
 
-  Kit::Router::Services::Router.register(
-    uid:     'kit_auth|web|settings|sessions|index',
-    aliases: {
-      'web|settings|sessions|index': [
-        'web|settings|sessions',
-      ],
-    },
-    target:  self.method(:endpoint),
-  )
+  def self.register_endpoint
+    Kit::Router::Services::Router.register(
+      uid:     'kit_auth|web|settings|sessions|index',
+      aliases: {
+        'web|settings|sessions|index': [
+          'web|settings|sessions',
+        ],
+      },
+      target:  self.method(:endpoint),
+    )
+  end
 
   def self.list(router_conn:)
     # Note: currently has to be in write mode because of polymorphic relationship issue.

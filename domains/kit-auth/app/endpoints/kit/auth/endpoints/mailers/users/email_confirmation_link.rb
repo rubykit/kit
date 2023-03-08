@@ -19,11 +19,13 @@ module Kit::Auth::Endpoints::Mailers::Users::EmailConfirmationLink
     )
   end
 
-  Kit::Router::Services::Router.register(
-    uid:     'kit_auth|mailers|users|email_confirmation_link',
-    target:  self.method(:endpoint),
-    aliases: ['mailers|users|email_confirmation_link'],
-  )
+  def self.register_endpoint
+    Kit::Router::Services::Router.register(
+      uid:     'kit_auth|mailers|users|email_confirmation_link',
+      target:  self.method(:endpoint),
+      aliases: ['mailers|users|email_confirmation_link'],
+    )
+  end
 
   def self.load_user_email!(router_conn:)
     user_email_id = router_conn.request[:params][:user_email_id]

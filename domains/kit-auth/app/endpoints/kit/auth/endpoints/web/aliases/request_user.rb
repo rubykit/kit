@@ -15,9 +15,6 @@ module Kit::Auth::Endpoints::Web::Aliases::RequestUser
     )
   end
 
-  Kit::Organizer::Services::Callable::Alias.register(id: :kit_auth_web_require_request_user!, target: self.method(:require_request_user!))
-  Kit::Organizer::Services::Callable::Alias.register(id: :web_require_request_user!,          target: self.method(:require_request_user!))
-
   def self.redirect_if_request_user!(router_conn:, i18n_params: nil)
     return [:ok] if !router_conn.metadata[:request_user]
 
@@ -31,9 +28,6 @@ module Kit::Auth::Endpoints::Web::Aliases::RequestUser
       },
     )
   end
-
-  Kit::Organizer::Services::Callable::Alias.register(id: :kit_auth_web_redirect_if_request_user!, target: self.method(:redirect_if_request_user!))
-  Kit::Organizer::Services::Callable::Alias.register(id: :web_redirect_if_request_user!,          target: self.method(:redirect_if_request_user!))
 
   def self.redirect_if_request_missing_scope!(router_conn:, scope:, i18n_params: nil)
     model = router_conn.metadata[:request_user_access_token]
@@ -53,7 +47,15 @@ module Kit::Auth::Endpoints::Web::Aliases::RequestUser
     )
   end
 
-  Kit::Organizer::Services::Callable::Alias.register(id: :kit_auth_web_redirect_if_request_missing_scope!, target: self.method(:redirect_if_request_missing_scope!))
-  Kit::Organizer::Services::Callable::Alias.register(id: :web_redirect_if_request_missing_scope!,          target: self.method(:redirect_if_request_missing_scope!))
+  def self.register_aliases
+    Kit::Organizer::Services::Callable::Alias.register(id: :kit_auth_web_require_request_user!, target: self.method(:require_request_user!))
+    Kit::Organizer::Services::Callable::Alias.register(id: :web_require_request_user!,          target: self.method(:require_request_user!))
+
+    Kit::Organizer::Services::Callable::Alias.register(id: :kit_auth_web_redirect_if_request_user!, target: self.method(:redirect_if_request_user!))
+    Kit::Organizer::Services::Callable::Alias.register(id: :web_redirect_if_request_user!,          target: self.method(:redirect_if_request_user!))
+
+    Kit::Organizer::Services::Callable::Alias.register(id: :kit_auth_web_redirect_if_request_missing_scope!, target: self.method(:redirect_if_request_missing_scope!))
+    Kit::Organizer::Services::Callable::Alias.register(id: :web_redirect_if_request_missing_scope!,          target: self.method(:redirect_if_request_missing_scope!))
+  end
 
 end

@@ -16,11 +16,13 @@ module Kit::Auth::Endpoints::Events::Users::Oauth::Link
     )
   end
 
-  Kit::Router::Services::Router.register(
-    uid:     'kit_auth|event|users|oauth|linked',
-    target:  self.method(:endpoint),
-    aliases: ['event|users|oauth|linked'],
-  )
+  def self.register_endpoint
+    Kit::Router::Services::Router.register(
+      uid:     'kit_auth|event|users|oauth|linked',
+      target:  self.method(:endpoint),
+      aliases: ['event|users|oauth|linked'],
+    )
+  end
 
   def self.persist_event(user_oauth_identity_id:, emitted_at: nil)
     user_oauth_identity = Kit::Auth::Models::Read::UserOauthIdentity.find_by(id: user_oauth_identity_id)

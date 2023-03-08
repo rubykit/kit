@@ -17,18 +17,20 @@ module Kit::Auth::Endpoints::Web::Users::Settings::Sessions::Destroy
     )
   end
 
-  Kit::Router::Services::Router.register(
-    uid:     'kit_auth|web|settings|sessions|destroy',
-    aliases: {
-      'web|settings|sessions|destroy' => {
-        'web|users|access_token|revoke'       => [],
-        'web|settings|sessions|destroy|after' => [
-          'web|users|access_token|revoke|after',
-        ],
+  def self.register_endpoint
+    Kit::Router::Services::Router.register(
+      uid:     'kit_auth|web|settings|sessions|destroy',
+      aliases: {
+        'web|settings|sessions|destroy' => {
+          'web|users|access_token|revoke'       => [],
+          'web|settings|sessions|destroy|after' => [
+            'web|users|access_token|revoke|after',
+          ],
+        },
       },
-    },
-    target:  self.method(:endpoint),
-  )
+      target:  self.method(:endpoint),
+    )
+  end
 
   def self.load_user_secret(router_conn:)
     model_id = router_conn[:params][:user_secret_id]

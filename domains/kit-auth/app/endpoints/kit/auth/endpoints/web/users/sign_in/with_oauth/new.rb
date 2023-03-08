@@ -14,13 +14,15 @@ module Kit::Auth::Endpoints::Web::Users::SignIn::WithOauth::New
     )
   end
 
-  Kit::Router::Services::Router.register(
-    uid:     'kit_auth|web|users|sign_in|with_oauth|new',
-    target:  self.method(:endpoint),
-    aliases: [
-      'web|users|sign_in|with_oauth|new',
-    ],
-  )
+  def self.register_endpoint
+    Kit::Router::Services::Router.register(
+      uid:     'kit_auth|web|users|sign_in|with_oauth|new',
+      target:  self.method(:endpoint),
+      aliases: [
+        'web|users|sign_in|with_oauth|new',
+      ],
+    )
+  end
 
   def self.set_page_component(component: nil)
     [:ok, component: component || Kit::Auth::Components::Pages::Users::SignIn::WithOauth::NewComponent]

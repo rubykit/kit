@@ -15,11 +15,13 @@ module Kit::Auth::Endpoints::Events::Users::AccessTokenRevoked
     )
   end
 
-  Kit::Router::Services::Router.register(
-    uid:     'kit_auth|event|users|auth|access_token|revoked',
-    target:  self.method(:endpoint),
-    aliases: ['event|users|auth|access_token|revoked'],
-  )
+  def self.register_endpoint
+    Kit::Router::Services::Router.register(
+      uid:     'kit_auth|event|users|auth|access_token|revoked',
+      target:  self.method(:endpoint),
+      aliases: ['event|users|auth|access_token|revoked'],
+    )
+  end
 
   def self.load_from_params(router_conn:)
     params = router_conn.request[:params]

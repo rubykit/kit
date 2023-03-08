@@ -1,5 +1,6 @@
 module Kit::Auth::Endpoints::Web::Users::PasswordReset::Update
 
+  # Update a user password
   def self.endpoint(router_conn:, component: nil)
     Kit::Organizer.call(
       ok:    [
@@ -26,11 +27,13 @@ module Kit::Auth::Endpoints::Web::Users::PasswordReset::Update
     )
   end
 
-  Kit::Router::Services::Router.register(
-    uid:     'kit_auth|web|users|password_reset|update',
-    aliases: ['web|users|password_reset|update'],
-    target:  self.method(:endpoint),
-  )
+  def self.register_endpoint
+    Kit::Router::Services::Router.register(
+      uid:     'kit_auth|web|users|password_reset|update',
+      aliases: ['web|users|password_reset|update'],
+      target:  self.method(:endpoint),
+    )
+  end
 
   def self.set_form_model(router_conn:)
     form_model = router_conn.request[:params].slice(:password, :password_confirmation)
