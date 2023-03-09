@@ -11,12 +11,10 @@ module Kit::Auth::Models::Base::UserOauthSecret
 
     # NOTE: needed for dev mode code reload.
     extend ::Lockbox::Model
-    #extend Lockbox::Model::Attached
-    singleton_class.send(:alias_method, :encrypts, :lockbox_encrypts) if ActiveRecord::VERSION::MAJOR < 7
     ActiveRecord::Relation.prepend ::Lockbox::Calculations
 
-    encrypts :token,         encrypted_attribute: :secret_token
-    encrypts :refresh_token, encrypted_attribute: :secret_refresh_token
+    has_encrypted :token,         encrypted_attribute: :secret_token
+    has_encrypted :refresh_token, encrypted_attribute: :secret_refresh_token
 
     read_columns = []
 
