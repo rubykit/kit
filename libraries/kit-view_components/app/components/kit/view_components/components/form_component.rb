@@ -1,6 +1,13 @@
 # Shared logic for any Domain Component
 class Kit::ViewComponents::Components::FormComponent < Kit::ViewComponents::Components::BaseComponent
 
+  include ActiveSupport::Configurable
+
+  # NOTE: overwrite `ActiveSupport::Configurable` default that cause ViewComponent::Base.config to be used
+  def self.config
+    Class.new(ActiveSupport::Configurable::Configuration).new
+  end
+
   include ActionController::RequestForgeryProtection
 
   attr_reader :form_action, :form_method, :model, :csrf_token
