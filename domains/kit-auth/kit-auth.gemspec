@@ -27,7 +27,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'browser'
   s.add_dependency 'doorkeeper',                     '~> 5.4.0'
   s.add_dependency 'email_inquire',                  '~> 0.10.0'
-  s.add_dependency 'jsonb_accessor'
+  s.add_dependency 'jsonb_accessor',                 '>= 1.3.7'
   s.add_dependency 'lockbox'
   s.add_dependency 'oauth2',                         '~> 1.4.4'
   s.add_dependency 'omniauth',                       '~> 1.9.1'

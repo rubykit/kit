@@ -31,6 +31,8 @@ gem 'slim-rails' # DEV MODE ? doesn't get loaded otherwise
 
 gem 'jsonb_accessor'
 
+gem 'rails', '>= 7'
+
 gem 'omniauth'
 gem 'omniauth-facebook'
 
@@ -39,7 +41,7 @@ gem 'lockbox'
 gem 'view_component'
 
 gem 'bootstrap-email', '~> 1.1', '>= 1.1.1'
-gem 'kit_liquid_rails'
+gem 'kit_liquid_rails', git: 'https://github.com/rubykit/liquid_rails', branch: 'main'
 #gem 'letter_opener', git: 'https://github.com/Kulgar/letter_opener.git', group: :development
 gem 'letter_opener', group: :development
 gem 'liquid', '~> 5.0', '>= 5.0.1'
@@ -47,7 +49,7 @@ gem 'liquid', '~> 5.0', '>= 5.0.1'
 gem 'i18n-interpolate_nested'
 
 group :development do
-  gem 'annotate', '~> 2.7', '>= 2.7.4'
+  gem 'annotate', '~> 3.2'
 end
 
 group :development, :test do

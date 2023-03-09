@@ -21,6 +21,16 @@ GIT
       view_component
 
 GIT
+  remote: https://github.com/rubykit/liquid_rails
+  revision: aa63056b4e6f42902cc9e1894e6d1937e565523b
+  branch: main
+  specs:
+    kit_liquid_rails (0.1.0)
+      liquid (>= 5.0)
+      railties (>= 6.0)
+      view_component (~> 2.40)
+
+GIT
   remote: https://github.com/twalpole/apparition.git
   revision: ca86be4d54af835d531dbcd2b86e7b2c77f85f34
   ref: ca86be4d54af835d531dbcd2b86e7b2c77f85f34
@@ -148,7 +158,7 @@ PATH
   specs:
     kit-view_components (0.1.0)
       slim-rails
-      view_component (>= 2.40.0)
+      view_component (~> 2.82)
 
 PATH
   remote: .
@@ -158,7 +168,7 @@ PATH
       browser
       doorkeeper (~> 5.4.0)
       email_inquire (~> 0.10.0)
-      jsonb_accessor
+      jsonb_accessor (>= 1.3.7)
       lockbox
       oauth2 (~> 1.4.4)
       omniauth (~> 1.9.1)
@@ -171,40 +181,47 @@ GEM
   remote: https://rubygems.org/
   specs:
     ace-rails-ap (4.5)
-    actioncable (6.1.7.2)
-      actionpack (= 6.1.7.2)
-      activesupport (= 6.1.7.2)
+    actioncable (7.0.4.2)
+      actionpack (= 7.0.4.2)
+      activesupport (= 7.0.4.2)
       nio4r (~> 2.0)
       websocket-driver (>= 0.6.1)
-    actionmailbox (6.1.7.2)
-      actionpack (= 6.1.7.2)
-      activejob (= 6.1.7.2)
-      activerecord (= 6.1.7.2)
-      activestorage (= 6.1.7.2)
-      activesupport (= 6.1.7.2)
+    actionmailbox (7.0.4.2)
+      actionpack (= 7.0.4.2)
+      activejob (= 7.0.4.2)
+      activerecord (= 7.0.4.2)
+      activestorage (= 7.0.4.2)
+      activesupport (= 7.0.4.2)
       mail (>= 2.7.1)
-    actionmailer (6.1.7.2)
-      actionpack (= 6.1.7.2)
-      actionview (= 6.1.7.2)
-      activejob (= 6.1.7.2)
-      activesupport (= 6.1.7.2)
+      net-imap
+      net-pop
+      net-smtp
+    actionmailer (7.0.4.2)
+      actionpack (= 7.0.4.2)
+      actionview (= 7.0.4.2)
+      activejob (= 7.0.4.2)
+      activesupport (= 7.0.4.2)
       mail (~> 2.5, >= 2.5.4)
+      net-imap
+      net-pop
+      net-smtp
       rails-dom-testing (~> 2.0)
-    actionpack (6.1.7.2)
-      actionview (= 6.1.7.2)
-      activesupport (= 6.1.7.2)
-      rack (~> 2.0, >= 2.0.9)
+    actionpack (7.0.4.2)
+      actionview (= 7.0.4.2)
+      activesupport (= 7.0.4.2)
+      rack (~> 2.0, >= 2.2.0)
       rack-test (>= 0.6.3)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.2.0)
-    actiontext (6.1.7.2)
-      actionpack (= 6.1.7.2)
-      activerecord (= 6.1.7.2)
-      activestorage (= 6.1.7.2)
-      activesupport (= 6.1.7.2)
+    actiontext (7.0.4.2)
+      actionpack (= 7.0.4.2)
+      activerecord (= 7.0.4.2)
+      activestorage (= 7.0.4.2)
+      activesupport (= 7.0.4.2)
+      globalid (>= 0.6.0)
       nokogiri (>= 1.8.5)
-    actionview (6.1.7.2)
-      activesupport (= 6.1.7.2)
+    actionview (7.0.4.2)
+      activesupport (= 7.0.4.2)
       builder (~> 3.1)
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
@@ -232,34 +249,33 @@ GEM
     activeadmin_json_editor (0.0.10)
       ace-rails-ap
       railties (>= 3.0)
-    activejob (6.1.7.2)
-      activesupport (= 6.1.7.2)
+    activejob (7.0.4.2)
+      activesupport (= 7.0.4.2)
       globalid (>= 0.3.6)
-    activemodel (6.1.7.2)
-      activesupport (= 6.1.7.2)
-    activerecord (6.1.7.2)
-      activemodel (= 6.1.7.2)
-      activesupport (= 6.1.7.2)
+    activemodel (7.0.4.2)
+      activesupport (= 7.0.4.2)
+    activerecord (7.0.4.2)
+      activemodel (= 7.0.4.2)
+      activesupport (= 7.0.4.2)
     activerecord-nulldb-adapter (0.8.0)
       activerecord (>= 5.2.0, < 7.1)
-    activestorage (6.1.7.2)
-      actionpack (= 6.1.7.2)
-      activejob (= 6.1.7.2)
-      activerecord (= 6.1.7.2)
-      activesupport (= 6.1.7.2)
+    activestorage (7.0.4.2)
+      actionpack (= 7.0.4.2)
+      activejob (= 7.0.4.2)
+      activerecord (= 7.0.4.2)
+      activesupport (= 7.0.4.2)
       marcel (~> 1.0)
       mini_mime (>= 1.1.0)
-    activesupport (6.1.7.2)
+    activesupport (7.0.4.2)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
-      zeitwerk (~> 2.3)
     addressable (2.8.1)
       public_suffix (>= 2.0.2, < 6.0)
-    annotate (2.7.5)
-      activerecord (>= 3.2, < 7.0)
-      rake (>= 10.4, < 13.0)
+    annotate (3.2.0)
+      activerecord (>= 3.2, < 8.0)
+      rake (>= 10.4, < 14.0)
     arbre (1.5.0)
       activesupport (>= 3.0.0, < 7.1)
       ruby2_keywords (>= 0.0.2, < 1.0)
@@ -379,10 +395,6 @@ GEM
       activerecord
       kaminari-core (= 1.2.2)
     kaminari-core (1.2.2)
-    kit_liquid_rails (0.1.0)
-      liquid (~> 5.0)
-      railties (~> 6.0)
-      view_component (~> 2.40)
     launchy (2.5.2)
       addressable (~> 2.8)
     letter_opener (1.8.1)
@@ -404,7 +416,6 @@ GEM
     matrix (0.4.2)
     method_source (1.0.0)
     mini_mime (1.1.2)
-    mini_portile2 (2.8.1)
     minitest (5.18.0)
     multi_json (1.15.0)
     multi_xml (0.6.0)
@@ -422,8 +433,7 @@ GEM
     net-smtp (0.3.3)
       net-protocol
     nio4r (2.5.8)
-    nokogiri (1.14.2)
-      mini_portile2 (~> 2.8.0)
+    nokogiri (1.14.2-arm64-darwin)
       racc (~> 1.4)
     oauth2 (1.4.11)
       faraday (>= 0.17.3, < 3.0)
@@ -471,34 +481,34 @@ GEM
     rack (2.2.6.3)
     rack-test (2.0.2)
       rack (>= 1.3)
-    rails (6.1.7.2)
-      actioncable (= 6.1.7.2)
-      actionmailbox (= 6.1.7.2)
-      actionmailer (= 6.1.7.2)
-      actionpack (= 6.1.7.2)
-      actiontext (= 6.1.7.2)
-      actionview (= 6.1.7.2)
-      activejob (= 6.1.7.2)
-      activemodel (= 6.1.7.2)
-      activerecord (= 6.1.7.2)
-      activestorage (= 6.1.7.2)
-      activesupport (= 6.1.7.2)
+    rails (7.0.4.2)
+      actioncable (= 7.0.4.2)
+      actionmailbox (= 7.0.4.2)
+      actionmailer (= 7.0.4.2)
+      actionpack (= 7.0.4.2)
+      actiontext (= 7.0.4.2)
+      actionview (= 7.0.4.2)
+      activejob (= 7.0.4.2)
+      activemodel (= 7.0.4.2)
+      activerecord (= 7.0.4.2)
+      activestorage (= 7.0.4.2)
+      activesupport (= 7.0.4.2)
       bundler (>= 1.15.0)
-      railties (= 6.1.7.2)
-      sprockets-rails (>= 2.0.0)
+      railties (= 7.0.4.2)
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
     rails-html-sanitizer (1.5.0)
       loofah (~> 2.19, >= 2.19.1)
-    railties (6.1.7.2)
-      actionpack (= 6.1.7.2)
-      activesupport (= 6.1.7.2)
+    railties (7.0.4.2)
+      actionpack (= 7.0.4.2)
+      activesupport (= 7.0.4.2)
       method_source
       rake (>= 12.2)
       thor (~> 1.0)
+      zeitwerk (~> 2.5)
     rainbow (3.1.1)
-    rake (12.3.3)
+    rake (13.0.6)
     ransack (3.2.1)
       activerecord (>= 6.1.5)
       activesupport (>= 6.1.5)
@@ -626,10 +636,10 @@ GEM
     zeitwerk (2.6.7)
 
 PLATFORMS
-  ruby
+  arm64-darwin-20
 
 DEPENDENCIES
-  annotate (~> 2.7, >= 2.7.4)
+  annotate (~> 3.2)
   apparition!
   awesome_print!
   better_errors
@@ -662,7 +672,7 @@ DEPENDENCIES
   kit-rspec_formatter!
   kit-support!
   kit-view_components!
-  kit_liquid_rails
+  kit_liquid_rails!
   kit_theme_bootstrap!
   letter_opener
   liquid (~> 5.0, >= 5.0.1)
@@ -675,6 +685,7 @@ DEPENDENCIES
   pry-byebug
   pry-stack_explorer
   puma
+  rails (>= 7)
   rspec-rails
   rubocop
   sidekiq
@@ -684,4 +695,4 @@ DEPENDENCIES
   view_component
 
 BUNDLED WITH
-   2.2.21
+   2.2.22
