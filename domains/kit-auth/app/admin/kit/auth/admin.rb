@@ -37,10 +37,4 @@ module Kit::Auth::Admin
     [:ok]
   end
 
-  def self.setup_tables
-    Kit::ActiveAdmin::Table.class_eval do
-      include Kit::Auth::Routes
-    end
-  end
-
 end

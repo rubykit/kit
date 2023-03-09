@@ -64,7 +64,6 @@ Rails.application.routes.draw do
   scope path: 'admin', as: 'admin' do
     Kit::Auth::Admin.register_namespace
     Kit::Auth::Admin.register_resources
-    Kit::Auth::Admin.setup_tables
     ActiveAdmin.routes(self)
   end
 
