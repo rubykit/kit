@@ -31,14 +31,16 @@ if defined?(::ActiveAdmin)
     config.include_default_association_filters = false
   end
 
-  ActiveAdmin::BaseController.class_eval do
-    helper ActiveAdmin::ViewsHelper
+  Rails.application.config.to_prepare do
+    ActiveAdmin::BaseController.class_eval do
+      helper ActiveAdmin::ViewsHelper
 
-    # Note: redundant with dummy WebController in this case, but the declaration happens way later and does not work for the following Admin Concern.
-    include Kit::Router::Controllers::Concerns::RouterConn
-    include Kit::Auth::Controllers::Web::Concerns::RailsCurrentUser
+      # Note: redundant with dummy WebController in this case, but the declaration happens way later and does not work for the following Admin Concern.
+      include Kit::Router::Controllers::Concerns::RouterConn
+      include Kit::Auth::Controllers::Web::Concerns::RailsCurrentUser
 
-    include Kit::Auth::DummyAppContainer::Controllers::Web::Concerns::Admin
+      include Kit::Auth::DummyAppContainer::Controllers::Web::Concerns::Admin
+    end
   end
 
 end

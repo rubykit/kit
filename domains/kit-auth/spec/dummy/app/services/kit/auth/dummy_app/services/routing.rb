@@ -84,10 +84,18 @@ module Kit::Auth::DummyApp::Services::Routing
         rails_router_context:   context,
         list:                   mountpoints,
         request_config:         {
-          api: DUMMY_APP_API_CONFIG,
+          api: api_config,
         },
       )
     end
+  end
+
+  def self.api_config(config: nil)
+    if config
+      @api_config = config
+    end
+
+    @api_config
   end
 
 end
